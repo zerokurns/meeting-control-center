@@ -27,7 +27,7 @@ function isOutputMatch(projectItem: any, outData: any) {
         return true
     }
 
-    if (type === "pdf") return outSlide?.id === projectId
+    if (type === "pdf" || type === "document") return outSlide?.id === projectId
 
     if (type === "image" || type === "video" || type === "player") return outBackground?.path === projectId || outBackground?.id === projectId
 

@@ -1,6 +1,7 @@
 import { get } from "svelte/store"
 import { outputs, slideTimers } from "../../stores"
 import { playFolder } from "../../utils/shortcuts"
+import { isDocumentPath } from "../../viewers/registry"
 import { clone } from "./array"
 import { startFolderTimer } from "./output"
 import { OutputHelper } from "./OutputHelper"
@@ -37,7 +38,7 @@ export function newSlideTimer(timerId: string, duration: number, folderPath = ""
         })
 
         if (data) {
-            const isPDF = data.endsWith(".pdf")
+            const isPDF = isDocumentPath(data)
             if (isPDF) {
                 startFolderTimer(data, { type: "pdf", path: "" })
                 OutputHelper.advanceOutput(id, "", { playNext: true })

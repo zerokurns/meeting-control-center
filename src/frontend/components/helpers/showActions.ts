@@ -1,6 +1,5 @@
 import type { ExifData } from "exif"
 import type { ICommonTagsResult } from "music-metadata/lib/type"
-import { getDocument, GlobalWorkerOptions } from "pdfjs-dist"
 import { get } from "svelte/store"
 import { OUTPUT } from "../../../types/Channels"
 import { Main } from "../../../types/IPC/Main"
@@ -15,6 +14,8 @@ import { isMainWindow, isOutputWindow } from "../../utils/common"
 import { convertTXTToString, getTXT } from "../../utils/dynamicTXT"
 import { send } from "../../utils/request"
 import { convertRSSToString, getRSS } from "../../utils/rss"
+import { getViewer } from "../../viewers"
+import { documentKindOf } from "../../viewers/registry"
 import { runAction, slideHasAction } from "../actions/actions"
 import type { API_output_style } from "../actions/api"
 import { getCurrentTimerValue, getTimeUntilClock, playPauseGlobal } from "../drawer/timers/timers"
@@ -23,7 +24,7 @@ import { getTextLines } from "../edit/scripts/textStyle"
 import { clearBackground, clearOverlays, clearTimers } from "../output/clear"
 import { activeEdit, activeFocus, activePage, activeProject, activeShow, allOutputs, audioChannelsData, audioData, cachedDynamicValues, customMetadata, dictionary, dynamicValueData, editingProjectTemplate, focusMode, media, outLocked, outputDisplay, outputs, overlays, playerVideos, playingAudio, playingVideoState, projects, projectTemplates, shows, showsCache, slideTimers, special, stageShows, styles, templates, timers, variables } from "./../../stores"
 import { clone, keysToID, sortByName } from "./array"
-import { downloadOnlineMedia, encodeFilePath, getExtension, getFileName, getMedia, getMediaStyle, getMediaType, locateMediaFile, removeExtension } from "./media"
+import { downloadOnlineMedia, getExtension, getFileName, getMedia, getMediaStyle, getMediaType, removeExtension } from "./media"
 import { defaultLayers, getActiveOutputs, getAllActiveOutputIds, getAllNormalOutputs, getAllStageOutputs, getFirstActiveOutput, getFirstOutput, getWindowOutputId, isOutCleared, refreshOut, resolveOutputId, resolveOutputIds, setOutput, startFolderTimer } from "./output"
 import { OutputHelper } from "./OutputHelper"
 import { getSetChars } from "./randomValue"
@@ -205,38 +206,50 @@ export function checkActionTrigger(layoutData: SlideData, slideIndex = 0) {
     })
 }
 
-export async function playPdf(data: OutSlide | null, next: boolean, loop = false, page?: number) {
-    if (!data?.id || data?.type !== "pdf") return
+/** Step through the units (pages/sheets) of a document output, or jump to `unit`. Legacy pdf items are documents of kind pdf. */
+export async function playDocument(data: OutSlide | null, next: boolean, loop = false, unit?: number) {
+    if (!data?.id || (data.type !== "pdf" && data.type !== "document")) return
 
-    const located = await locateMediaFile(data.id)
-    const targetId = located?.path || data.id
+    const kind = data.kind || documentKindOf(data.id) || "pdf"
+    const viewer = getViewer(kind)
+    if (!viewer) return
 
-    GlobalWorkerOptions.workerSrc = "./assets/pdf.worker.min.mjs"
-    const loadingTask = getDocument(encodeFilePath(targetId))
-    const pdfDoc = await loadingTask.promise
-    const pages = pdfDoc.numPages
+    let units: number
+    try {
+        units = (await viewer.load(data.id)).units.length
+    } catch (err) {
+        console.error("Could not open document", data.id, err)
+        return
+    }
+    if (!units) return
 
-    let nextPage: number
-    if (page !== undefined) {
-        nextPage = page
+    let nextUnit: number
+    if (unit !== undefined) {
+        nextUnit = unit
     } else {
-        const currentPage = data.page !== undefined ? data.page : next ? -1 : pages
-        nextPage = currentPage + (next ? 1 : -1)
+        // legacy outputs store the page instead of the unit
+        const currentUnit = data.unit ?? data.page
+        const current = currentUnit !== undefined ? currentUnit : next ? -1 : units
+        nextUnit = current + (next ? 1 : -1)
     }
 
-    if (nextPage > pages - 1) {
+    if (nextUnit > units - 1) {
         if (!loop) return
-        nextPage = 0
+        nextUnit = 0
     }
+    if (nextUnit < 0) return
 
     const projectItem = get(projects)[get(activeProject) || ""]?.shows?.[get(activeShow)?.index || 0]
-    const name = data?.name || projectItem?.name || removeExtension(getFileName(targetId))
+    const name = data.name || projectItem?.name || removeExtension(getFileName(data.id))
 
-    setOutput("slide", { type: "pdf", id: targetId, page: nextPage, pages, name })
+    // keep zoom and fit while stepping through the same document; every new unit starts at the top
+    const current = getFirstActiveOutput()?.out?.slide
+    const sameDocument = current?.id === data.id
+    setOutput("slide", { type: "document", id: data.id, kind, unit: nextUnit, units, zoom: (sameDocument && current?.zoom) || 1, scrollY: 0, fit: (sameDocument && current?.fit) || "page", name, projectIndex: get(activeShow)?.index })
     clearBackground()
 
     const timer = projectItem?.data?.timer || 0
-    if (timer) startFolderTimer(targetId, { type: "pdf", path: "" })
+    if (timer) startFolderTimer(data.id, { type: "pdf", path: "" })
 }
 
 // go to random slide in current project

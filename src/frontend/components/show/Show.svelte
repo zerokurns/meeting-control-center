@@ -16,7 +16,7 @@
     import FolderShow from "./folder/FolderShow.svelte"
     import MediaPreview from "./media/MediaPreview.svelte"
     import OverlayPreview from "./overlay/OverlayPreview.svelte"
-    import PdfPreview from "./pdf/PdfPreview.svelte"
+    import DocumentPreview from "./document/DocumentPreview.svelte"
     import ProjectShowPlaceholder from "./placeholder/ProjectShowPlaceholder.svelte"
     import PowerPointPreview from "./ppt/PowerPointPreview.svelte"
     import Section from "./Section.svelte"
@@ -77,9 +77,9 @@
                 <OverlayPreview {show} />
             {:else if show.type === "effect"}
                 <EffectPreview {show} />
-            {:else if show.type === "pdf"}
+            {:else if show.type === "pdf" || show.type === "document"}
                 {#key show}
-                    <PdfPreview {show} index={show.index || 0} />
+                    <DocumentPreview {show} index={show.index || 0} />
                 {/key}
             {:else if show.type === "ppt"}
                 <!-- DEPRECATED -->

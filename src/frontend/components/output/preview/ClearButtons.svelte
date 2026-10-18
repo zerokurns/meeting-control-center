@@ -137,7 +137,7 @@
     </span>
 
     <span class="group">
-        {#if outputContent?.type !== "pdf" && outputContent?.type !== "ppt"}
+        {#if outputContent?.type !== "pdf" && outputContent?.type !== "document" && outputContent?.type !== "ppt"}
             <div class="combinedButton">
                 <MaterialButton style="padding: 0.3em 0.6em;{styleBackground ? 'opacity: 0.5;cursor: default;' : ''}" disabled={($outLocked || backgroundCleared) && !styleBackground} title={$outLocked || backgroundCleared ? "" : "clear.background [F1]"} on:click={() => clear("background")} red>
                     <Icon id="image" size={1.2} white />
@@ -157,7 +157,7 @@
                 <MaterialButton style="padding: 0.3em 0.6em;" disabled={$outLocked || slideCleared} title="clear.slide  [F2]" on:click={() => clear("slide")} red>
                     <!-- PDFs are visually the background layer as it is toggled by the style "Background" layer, but it behaves as a slide in the code -->
                     <!-- display recording icon here if a slide recoring is playing -->
-                    <Icon id={outputContent?.type === "pdf" ? "image" : "slide"} size={1.2} white />
+                    <Icon id={outputContent?.type === "pdf" || outputContent?.type === "document" ? "image" : "slide"} size={1.2} white />
                 </MaterialButton>
                 {#if !allCleared}
                     <MaterialButton style="padding: {activeClear === 'slide' ? 0 : 2}px !important;min-height: 15px;" isActive={activeClear === "slide"} disabled={slideCleared} on:click={() => openPreview("slide")} title="preview.slide">
@@ -195,7 +195,7 @@
             {/if}
         </div>
 
-        {#if outputContent?.type !== "pdf"}
+        {#if outputContent?.type !== "pdf" && outputContent?.type !== "document"}
             <div class="combinedButton">
                 <MaterialButton style="padding: 0.3em 0.6em;{isTimer ? 'opacity: 0.9;' : ''}" disabled={$outLocked || (slideTimerCleared && activeClear !== "nextTimer")} title="{isTimer ? 'actions.stop_timers' : `clear.${Object.keys($overlayTimers).length ? 'timer' : 'nextTimer'}`}{presentationControllersKeysDisabled() ? ' [F5]' : ''}" on:click={() => (isTimer ? activeTimers.set([]) : clear("nextTimer"))} red>
                     <Icon id={isTimer ? "timer" : "clock"} size={1.2} white />

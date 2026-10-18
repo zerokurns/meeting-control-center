@@ -152,10 +152,10 @@ export function setOutput(type: string, data: any, toggle = false, outputId = ""
 
     if (type === "slide" && data?.id) {
         const slide = _show(data.id).get("slides")?.[ref[data.index]?.id] || {}
-        if (data.type === "pdf") {
+        if (data.type === "pdf" || data.type === "document") {
             const out = get(outputs)[outs[0]]?.out?.slide
             // timeout to activate after output has updated
-            if (out?.type !== "pdf") setTimeout(() => customActionActivation("pdf_start"))
+            if (out?.type !== "pdf" && out?.type !== "document") setTimeout(() => customActionActivation("pdf_start"))
         } else {
             const groupId = slide.globalGroup
             // timeout to activate after output has updated
@@ -240,7 +240,7 @@ export function setOutput(type: string, data: any, toggle = false, outputId = ""
             if (type === "background") {
                 // clear if PDF/PPT is active
                 const slideContent = getOutputContent(id)
-                if (data && (slideContent.type === "pdf" || slideContent.type === "ppt")) clearSlide()
+                if (data && (slideContent.type === "pdf" || slideContent.type === "document" || slideContent.type === "ppt")) clearSlide()
 
                 if (data) data = changeOutputBackground(data, { id })
             }
@@ -283,6 +283,7 @@ export function setOutput(type: string, data: any, toggle = false, outputId = ""
                     previousSlide.layout === outData.layout &&
                     previousSlide.index === outData.index &&
                     previousSlide.page === outData.page &&
+                    previousSlide.unit === outData.unit &&
                     previousSlide.type === outData.type
 
                 if (sameSlideOutput) {
@@ -383,7 +384,7 @@ export function startFolderTimer(folderPath: string, file: { type: string; path:
     // WIP timer loop does not work if project is changed (should be global for the folder instead of per project item)
     const projectItems = get(projects)[get(activeProject) || ""]?.shows || []
     // this does not work with multiple of the same folder
-    const projectItemIndex = projectItems.findIndex((a) => (a.type === "folder" || a.type === "pdf") && a.id === folderPath)
+    const projectItemIndex = projectItems.findIndex((a) => (a.type === "folder" || a.type === "pdf" || a.type === "document") && a.id === folderPath)
     const timer = Number(projectItems?.[projectItemIndex]?.data?.timer ?? 10)
     if (!timer || (file.type !== "image" && file.type !== "pdf")) return
 
