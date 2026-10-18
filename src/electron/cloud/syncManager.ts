@@ -58,7 +58,7 @@ const EXTRACT_LOCATION = path.join(app.getPath("temp"), "freeshow-cloud")
 const MERGE_INDIVIDUAL = ["OVERLAYS", "PROJECTS", "STAGE", "TEMPLATES", "SYNCED_SETTINGS"] // "EVENTS", "THEMES"
 
 // SYNCED_SETTINGS item-collections merged per-item via ledger.
-// Atomic settings (e.g. drawSettings) keep newest-file-wins behavior.
+// Atomic settings (e.g. overlayCategories) keep newest-file-wins behavior.
 const SYNCED_SETTINGS_COLLECTIONS = ["categories", "overlayCategories", "templateCategories", "styles", "profiles", "timers", "variables", "audioStreams", "audioPlaylists", "scriptures", "groups", "midiIn", "emitters", "playerVideos", "videoMarkers", "mediaTags", "playerTags", "actionTags", "variableTags", "timerTags", "customizedIcons", "globalTags", "globalRegexes", "customMetadata", "effects", "syncedOutputs"]
 
 const STALE_MERGE_GUARD_MS = 1000 * 60 * 60 * 24 * 30 // 30 days
@@ -375,7 +375,7 @@ export async function syncData(data: { id: SyncProviderId; churchId: string; tea
             for (const [type, object] of Object.entries<{ [key: string]: any }>(cloudFileData)) {
                 const isCollection = SYNCED_SETTINGS_COLLECTIONS.includes(type) && !!object && typeof object === "object" && !Array.isArray(object)
                 if (!isCollection) {
-                    // atomic setting (e.g. drawSettings): keep newest-file-wins
+                    // atomic setting (e.g. overlayCategories): keep newest-file-wins
                     if (cloudFileIsNewer) localData[type] = object
                     continue
                 }

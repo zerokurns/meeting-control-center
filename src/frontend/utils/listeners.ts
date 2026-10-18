@@ -21,9 +21,6 @@ import {
     colorbars,
     customMessageCredits,
     customMetadata,
-    draw,
-    drawSettings,
-    drawTool,
     driveKeys,
     effects,
     events,
@@ -240,34 +237,6 @@ export function storeSubscriber() {
         )
     })
 
-    draw.subscribe((data) => {
-        // if (await hasNewerUpdate("LISTENER_DRAW")) return
-
-        const activeOutputIds = getAllActiveOutputIds()
-        getAllNormalOutputs().forEach(({ id }) => {
-            if (activeOutputIds.includes(id)) send(OUTPUT, ["DRAW"], { id, data })
-            else send(OUTPUT, ["DRAW"], { id, data: null })
-        })
-    })
-    drawTool.subscribe((data) => {
-        // WIP changing tool while output is not active, will not update tool in output if set to active before changing tool again
-        const activeOutputIds = getAllActiveOutputIds()
-        getAllNormalOutputs().forEach(({ id }) => {
-            if (activeOutputIds.includes(id)) send(OUTPUT, ["DRAW_TOOL"], { id, data })
-            else send(OUTPUT, ["DRAW_TOOL"], { id, data: "focus" })
-        })
-    })
-    drawSettings.subscribe((data) => {
-        const activeOutputIds = getAllActiveOutputIds()
-        getAllNormalOutputs().forEach(({ id }) => {
-            if (activeOutputIds.includes(id)) send(OUTPUT, ["DRAW_SETTINGS"], data)
-            else {
-                send(OUTPUT, ["DRAW_TOOL"], { id, data: "focus" })
-                send(OUTPUT, ["DRAW"], { id, data: null })
-            }
-        })
-    })
-
     transitionData.subscribe((data) => {
         send(OUTPUT, ["TRANSITION"], data)
     })
@@ -463,10 +432,6 @@ const initalOutputData = {
     OVERLAYS: "overlays",
     EVENTS: "events",
     GROUPS: "groups",
-
-    DRAW: { data: "draw" },
-    DRAW_TOOL: { data: "drawTool" },
-    DRAW_SETTINGS: "drawSettings",
 
     VISUALIZER_DATA: "visualizerData",
     MEDIA: "media",

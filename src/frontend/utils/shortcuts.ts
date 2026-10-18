@@ -32,7 +32,7 @@ import { send } from "./request"
 import { save } from "./save"
 import { isTypingTarget } from "./shortcutsHelper"
 
-const menus: TopViews[] = ["show", "edit", "stage", "draw", "settings"]
+const menus: TopViews[] = ["show", "edit", "stage", "settings"]
 
 const ctrlKeys = {
     a: () => selectAll(),

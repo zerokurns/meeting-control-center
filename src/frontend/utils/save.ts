@@ -38,7 +38,6 @@ import {
     deletedDefaults,
     deletedShows,
     disabledServers,
-    drawSettings,
     drawer,
     drawerTabsData,
     driveData,
@@ -252,7 +251,6 @@ export function save(closeWhenFinished = false, customTriggers: SaveActions = {}
 export function getSyncedSettings(): { [key in SaveListSyncedSettings]: any } {
     return {
         categories,
-        drawSettings,
         groups,
         overlayCategories,
         scriptures,
@@ -451,7 +449,6 @@ const saveList: { [key in SaveList]: any } = {
     activeScenes: null,
     drawer: null,
     drawerTabsData: null,
-    drawSettings,
     groupNumbers,
     fullColors,
     formatNewShow,

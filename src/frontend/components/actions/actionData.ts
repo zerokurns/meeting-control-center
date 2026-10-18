@@ -38,7 +38,6 @@ export const actionData = {
     clear_audio: { slideId: "clearAudio", common: true, name: "clear.audio", icon: "audio", red: true, incompatible: ["restore_output", "clear_all"] },
     clear_next_timer: { name: "clear.nextTimer", icon: "timer", red: true, incompatible: ["restore_output", "clear_all"] },
     clear_scene: { name: "clear.scene", icon: "scene", red: true },
-    clear_drawing: { name: "clear.drawing", icon: "paint", red: true },
 
     // MEDIA
     start_camera: { SECTION: "tabs.media", common: true, name: "actions.start_camera", icon: "camera", input: "camera" },
@@ -99,8 +98,6 @@ export const actionData = {
 
     // FUNCTIONS
     change_variable: { SECTION: "tabs.functions", common: true, canAddMultiple: true, name: "actions.change_variable", icon: "variable", input: "variable" },
-
-    change_draw_zoom: { SECTION: "menu.draw", name: "actions.change_draw_zoom", icon: "zoom", input: "draw_zoom" },
 
     // EMIT
     // send_midi: { SECTION: "actions.emit_data", canAddMultiple: true, slideId: "sendMidi", name: "actions.send_midi", icon: "music", input: "midi" },

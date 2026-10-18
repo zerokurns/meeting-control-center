@@ -240,9 +240,8 @@
 
     let enablePreview = true
 
-    // hide preview in draw page
+    // hide preview
     // $: enablePreview = ["show", "edit", "settings"].includes($activePage)
-    // $: if ($activePage === "draw") enablePreview = false
 
     const light = !isDarkTheme()
     $: isOptimized = $special.optimizedMode
