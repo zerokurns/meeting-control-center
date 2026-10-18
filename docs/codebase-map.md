@@ -368,6 +368,25 @@ OMT, Blackmagic, capture, RTMP/WebRTC streaming, Icecast, timecode, OBS integrat
   `public/import-logos/`.
 - Network identity: Bonjour service names in `data/bonjour.ts`, update feed in `utils/updater.ts`.
 
+## 12. MCC additions (Phase 0–1)
+
+New code lives in clearly separated folders so upstream merges stay mechanical:
+
+| Path | What |
+| --- | --- |
+| `src/frontend/viewers/` | `types.ts` (the `DocumentViewer` contract), `registry.ts`, `index.ts` (registers viewers), `pdf/` (PDF.js, LRU cache, thumbnails), `docx/` (docx-preview), `xlsx/` (SheetJS → styled HTML table) |
+| `src/frontend/agenda/` | `agenda.ts`: agenda kinds over project item types, `DocumentItemData`, `TimerItemData` |
+| `src/frontend/components/show/document/` | `DocumentPreview.svelte`: operator view (thumbnails, viewer, toolbar, notes) |
+| `src/frontend/components/show/timer/` | timer agenda item view and activation |
+| `src/frontend/components/output/layers/DocumentOutput.svelte` | output layer mounting the viewer for `type: "document"` slides |
+| `src/electron/document/` | `importDocument.ts` (`Main.IMPORT_DOCUMENTS`: copy into `<data>/Documents`, convert, notes), `libreoffice.ts`, `pptxNotes.ts` |
+| `config/testing/fixtures/` | sample PDF/DOCX/XLSX/PPTX used by tests and the user-testing walkthrough |
+
+Data model: a document agenda item is a `ProjectShowRef` with `type: "document"`, `id` = copied file path,
+`data: DocumentItemData`; a timer item has `type: "timer"`, `id` = timers-store id. Output state for documents is
+`OutSlide { type: "document", kind, unit, units, zoom, scrollY, fit }`. API: `next_slide`/`previous_slide`/
+`index_select_slide` work on document units; `set_document_view { unit?, zoom?, fit?, scrollY? }` is new.
+
 ## 11. Working with upstream
 
 Upstream lands roughly 6 squash-merged PRs a month, each touching hundreds of files (last 3 months: 20
