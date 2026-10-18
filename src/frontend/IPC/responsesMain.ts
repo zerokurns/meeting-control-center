@@ -22,46 +22,7 @@ import { importAction, importOverlay, importShow, importSpecific, importStage, i
 import { convertPowerpoint } from "../converters/powerpoint/powerpointImporter"
 import { addToProject, importProject, updateRecentlyAddedFiles } from "../converters/project"
 import { convertTexts } from "../converters/txt"
-import {
-    activeEdit,
-    activePage,
-    activePopup,
-    activeShow,
-    activeTimers,
-    aiSttStatus,
-    alertMessage,
-    audioData,
-    currentOutputSettings,
-    dataPath,
-    folders,
-    icecastStatus,
-    media,
-    mediaDownloads,
-    outputs,
-    overlays,
-    pdfImports,
-    popupData,
-    presentationData,
-    projects,
-    projectTemplates,
-    providerConnections,
-    recentFiles,
-    redoHistory,
-    rtmpStatus,
-    shows,
-    showsCache,
-    spellcheck,
-    stageShows,
-    templates,
-    textCache,
-    theme,
-    themes,
-    timers,
-    undoHistory,
-    usageLog,
-    variables,
-    windowState
-} from "../stores"
+import { activeEdit, activePage, activePopup, activeShow, activeTimers, aiSttStatus, alertMessage, audioData, currentOutputSettings, dataPath, folders, icecastStatus, media, mediaDownloads, outputs, overlays, pdfImports, popupData, presentationData, projects, projectTemplates, providerConnections, recentFiles, redoHistory, rtmpStatus, shows, showsCache, spellcheck, stageShows, templates, textCache, theme, themes, timers, undoHistory, usageLog, variables, windowState } from "../stores"
 import { newToast } from "../utils/common"
 import { translateText } from "../utils/language"
 import { initializeClosing, saveComplete } from "../utils/save"
@@ -369,7 +330,7 @@ export const mainResponses: MainResponses = {
             txt: () => convertTexts(data),
             csv: () => convertCSV(data),
             powerpoint: () => convertPowerpoint(data),
-            word: () => convertTexts(data),
+            word: () => convertTexts(data)
             // Media
             // Other
         }

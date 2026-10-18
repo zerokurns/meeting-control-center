@@ -259,7 +259,6 @@ export const receiveOUTPUTasOUTPUT: any = {
     PLAYING_VIDEO_STATE: (a: any) => playingVideoState.set(a),
     WEBSITE_ACTION: (a: any) => websiteAction.set(a),
 
-
     // dynamic values
     PLAYING_AUDIO: (a: any) => playingAudioPaths.set(a),
     AUDIO_DATA: (a: any) => audioData.set(a),

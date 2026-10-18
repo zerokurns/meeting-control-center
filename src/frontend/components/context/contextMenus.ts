@@ -378,7 +378,6 @@ export const contextMenuLayouts: { [key: string]: string[] } = {
     video_subtitle_embedded: ["rename"],
     video_marker: ["GROUP_rename_only", "delete"],
 
-
     // STAGE
     stage_slide: ["GROUP_rename_only", "move_connections", "disable", "SEPARATOR", "export", "SEPARATOR", "duplicate", "delete"], // "GROUP_duplicate_delete"
     stage_slide_readonly: ["move_connections"],

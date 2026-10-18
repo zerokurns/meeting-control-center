@@ -440,5 +440,4 @@
     {#if overlaysActive}
         <Overlays {outputId} overlays={clonedOverlays} activeOverlays={outOverlays} transition={transitions.overlay} {mirror} {preview} styleIdOverride={styleIdOverride || sceneStyleId} />
     {/if}
-
 </Zoomed>

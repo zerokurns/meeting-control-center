@@ -35,7 +35,6 @@
     $: submenuActive = isSubmenu ? (active === "actions" ? $activeActionTagFilter.includes(id) : active === "variables" ? $activeVariableTagFilter.includes(id) : active === "timer" ? $activeTimerTagFilter.includes(id) : false) : false
     $: isActive = submenuActive || active === id
 
-
     $: drawerId = $activeDrawerTab
     $: selectId = `category_${drawerId}` as SelectIds
 

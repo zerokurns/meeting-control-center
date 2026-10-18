@@ -318,7 +318,7 @@
 >
     {#if item.lines}
         <div class="align" style={style ? item.align : null} bind:this={alignElem}>
-            <div class="lines" style="{style ? lineStyleBox : ''}">
+            <div class="lines" style={style ? lineStyleBox : ""}>
                 {#each createVirtualBreaks(item.lines) as line, i}
                     {#if !maxLines || i < maxLines}
                         <div class="break" class:reveal={item?.lineReveal && revealed < i} style="{style ? lineStyle : ''}{style ? line.align : ''}">

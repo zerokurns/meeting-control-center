@@ -158,7 +158,6 @@ export function storeSubscriber() {
         send(REMOTE, ["OVERLAY_CATEGORIES"], data)
     })
 
-
     outputs.subscribe(async (data) => {
         // wait in case multiple slide layers get activated right after each other - to reduce the amount of updates
         if (await hasNewerUpdate("LISTENER_OUTPUTS", 1)) return

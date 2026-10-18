@@ -3,7 +3,7 @@
     import type { FileFolder } from "../../../../types/Main"
     import { requestMain } from "../../../IPC/main"
     import { AudioPlayer } from "../../../audio/audioPlayer"
-        import { addProjectItem } from "../../../converters/project"
+    import { addProjectItem } from "../../../converters/project"
     import { activePopup, audioFolders, drawerTabsData, effectsLibrary, labelsDisabled, media, selectAllAudio, selected } from "../../../stores"
     import Icon from "../../helpers/Icon.svelte"
     import T from "../../helpers/T.svelte"
@@ -336,7 +336,6 @@
             </p>
         </FloatingInputs>
     {/if}
-
 {/if}
 
 <style>

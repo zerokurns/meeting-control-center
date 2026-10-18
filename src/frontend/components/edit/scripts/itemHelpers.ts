@@ -380,7 +380,6 @@ export function isConditionMet(condition: Condition | undefined, itemsText: stri
         return cached.result
     }
 
-
     // outerOr
     const conditionMet = !!condition.find((outerAnd) => {
         return outerAnd.every((innerOr) => {

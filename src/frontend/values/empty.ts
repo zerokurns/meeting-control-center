@@ -33,7 +33,6 @@ export const EMPTY_PROJECT_FOLDER = { name: "", created: 0, parent: "/" }
 
 export const EMPTY_SECTION: ProjectShowRef = { id: "", type: "section", name: "", notes: "" }
 
-
 export const EMPTY_TAG = { name: "", color: "" }
 
 // SLIDE

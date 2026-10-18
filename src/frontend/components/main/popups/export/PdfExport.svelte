@@ -37,7 +37,12 @@
     $: pdfOptions.oneFile = exportType === "project"
     console.log("Shows:", showCount)
 
-    $: pdfTypeOptions = [{ value: "default", label: translateText("example.default") }, { value: "text", label: translateText("export.text") }, { value: "slides", label: translateText("export.slides") }, { value: "media", label: translateText("items.media") }]
+    $: pdfTypeOptions = [
+        { value: "default", label: translateText("example.default") },
+        { value: "text", label: translateText("export.text") },
+        { value: "slides", label: translateText("export.slides") },
+        { value: "media", label: translateText("items.media") }
+    ]
 
     function updatePdfOptions(e: any, key: string) {
         pdfOptions[key] = e.detail

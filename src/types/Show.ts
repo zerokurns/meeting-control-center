@@ -102,7 +102,6 @@ export interface Slide {
     notes: string
     items: Item[]
     timeline?: Timeline
-
 }
 
 export interface Item {

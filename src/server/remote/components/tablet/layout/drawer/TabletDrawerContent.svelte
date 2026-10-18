@@ -76,7 +76,6 @@
         </div>
     {/if}
 
-
     {#if loaded.includes("functions")}
         <div style="display: {id === 'functions' ? 'contents' : 'none'}">
             {#if TabletDrawerFunctions}

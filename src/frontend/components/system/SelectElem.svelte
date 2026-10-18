@@ -206,7 +206,6 @@
             return
         }
 
-
         let alreadySelected: boolean = $selected.id === id && arrayHasData($selected.data, data)
         let selectMultiple: boolean = e.ctrlKey || e.metaKey || e.shiftKey || e.buttons === 4 // middle mouse button
 

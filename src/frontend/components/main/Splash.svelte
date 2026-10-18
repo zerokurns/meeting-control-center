@@ -105,7 +105,6 @@
         padding: 8px 12px;
     }
 
-
     @media screen and (max-height: 500px) {
         h1 {
             font-size: 3em;

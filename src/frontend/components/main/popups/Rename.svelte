@@ -158,7 +158,7 @@
                 if (index > -1) a[index].name = groupName
                 return a
             })
-        },
+        }
     }
 
     function rename() {

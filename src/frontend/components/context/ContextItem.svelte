@@ -1,46 +1,7 @@
 <script lang="ts">
     import { AudioPlayer } from "../../audio/audioPlayer"
     import { cameraManager } from "../../media/cameraManager"
-    import {
-        actions,
-        activeEdit,
-        activePage,
-        activeProject,
-        activeRecording,
-        activeShow,
-        categories,
-        colorbars,
-        dictionary,
-        disabledServers,
-        drawerTabsData,
-        effects,
-        effectsLibrary,
-        forceClock,
-        globalTags,
-        livePrepare,
-        media,
-        mediaFolders,
-        os,
-        outputs,
-        overlayCategories,
-        overlays,
-        projects,
-        redoHistory,
-        scenes,
-        selected,
-        shows,
-        showsCache,
-        slideDeleteHighlight,
-        slidesOptions,
-        special,
-        spellcheck,
-        stageShows,
-        styles,
-        templateCategories,
-        timers,
-        topContextActive,
-        undoHistory
-    } from "../../stores"
+    import { actions, activeEdit, activePage, activeProject, activeRecording, activeShow, categories, colorbars, dictionary, disabledServers, drawerTabsData, effects, effectsLibrary, forceClock, globalTags, livePrepare, media, mediaFolders, os, outputs, overlayCategories, overlays, projects, redoHistory, scenes, selected, shows, showsCache, slideDeleteHighlight, slidesOptions, special, spellcheck, stageShows, styles, templateCategories, timers, topContextActive, undoHistory } from "../../stores"
     import { translateText } from "../../utils/language"
     import { closeContextMenu } from "../../utils/shortcuts"
     import { keysToID } from "../helpers/array"

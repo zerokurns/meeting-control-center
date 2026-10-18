@@ -12,7 +12,6 @@
 
     $: data = show?.reference?.data || {}
 
-
     function openInteraction() {
         openedInteractionId.set(data.id)
 

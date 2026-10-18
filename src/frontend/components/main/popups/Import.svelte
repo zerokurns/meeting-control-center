@@ -77,7 +77,6 @@
         displayTutorial(format)
     }
 
-
     let openedPage = ""
 </script>
 

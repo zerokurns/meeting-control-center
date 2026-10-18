@@ -278,7 +278,6 @@
                 })
             }
 
-
             history({ id: "SHOW_ITEMS", newData: { key: "lines", data: clone([newLines]), slides: [ref.id], items: [index], showId: ref.showId }, location: { page: "none", override: itemRef } })
 
             // refresh list view boxes

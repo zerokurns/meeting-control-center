@@ -22,43 +22,7 @@ import { getCurrentTimerValue, getTimeUntilClock, playPauseGlobal } from "../dra
 import { getDynamicValue } from "../edit/scripts/itemHelpers"
 import { getTextLines } from "../edit/scripts/textStyle"
 import { clearBackground, clearOverlays, clearTimers } from "../output/clear"
-import {
-    activeEdit,
-    activeFocus,
-    activeInteractions,
-    activePage,
-    activeProject,
-    activeShow,
-    allOutputs,
-    audioChannelsData,
-    audioData,
-    cachedDynamicValues,
-    customMetadata,
-    dictionary,
-    dynamicValueData,
-    editingProjectTemplate,
-    focusMode,
-    interactions,
-    media,
-    outLocked,
-    outputDisplay,
-    outputs,
-    overlays,
-    playerVideos,
-    playingAudio,
-    playingVideoState,
-    projects,
-    projectTemplates,
-    shows,
-    showsCache,
-    slideTimers,
-    special,
-    stageShows,
-    styles,
-    templates,
-    timers,
-    variables
-} from "./../../stores"
+import { activeEdit, activeFocus, activeInteractions, activePage, activeProject, activeShow, allOutputs, audioChannelsData, audioData, cachedDynamicValues, customMetadata, dictionary, dynamicValueData, editingProjectTemplate, focusMode, interactions, media, outLocked, outputDisplay, outputs, overlays, playerVideos, playingAudio, playingVideoState, projects, projectTemplates, shows, showsCache, slideTimers, special, stageShows, styles, templates, timers, variables } from "./../../stores"
 import { clone, keysToID, sortByName } from "./array"
 import { downloadOnlineMedia, encodeFilePath, getExtension, getFileName, getMedia, getMediaStyle, getMediaType, locateMediaFile, removeExtension } from "./media"
 import { defaultLayers, getActiveOutputs, getAllActiveOutputIds, getAllNormalOutputs, getAllStageOutputs, getFirstActiveOutput, getFirstOutput, getWindowOutputId, isOutCleared, refreshOut, resolveOutputId, resolveOutputIds, setOutput, startFolderTimer } from "./output"
@@ -1319,7 +1283,6 @@ const dynamicValues = {
     interaction_player_answer_latest: ({ show }) => getInteractionPlayerAnswerLatest(show),
     interaction_leaderboard: ({ show }) => getInteractionLeaderboard(show)
 }
-
 
 function getOffsetDate(offset = 0, unit: "date" | "month" | "year" | "hours" | "minutes" | "seconds" = "date") {
     const d = new Date()
