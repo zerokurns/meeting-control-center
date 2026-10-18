@@ -14,12 +14,7 @@ const THIS_FILE = path.resolve(__filename)
 const DRY_RUN = process.argv.includes("--dry-run")
 
 // keys that are dead regardless of the code scan (features that were removed)
-const REMOVED_ACTIONS = [
-    "start_metronome", "clear_drawing", "change_draw_zoom", "transpose_show_up", "transpose_show_down",
-    "start_scripture", "scripture_next", "scripture_previous", "start_playlist", "name_start_playlist",
-    "playlist_next", "get_playlists", "get_playlist", "spotify_play", "spotify_pause", "spotify_fade_out",
-    "spotify_next", "spotify_previous",
-]
+const REMOVED_ACTIONS = ["start_metronome", "clear_drawing", "change_draw_zoom", "transpose_show_up", "transpose_show_down", "start_scripture", "scripture_next", "scripture_previous", "start_playlist", "name_start_playlist", "playlist_next", "get_playlists", "get_playlist", "spotify_play", "spotify_pause", "spotify_fade_out", "spotify_next", "spotify_previous"]
 function isForcedDead(group, key) {
     if (group === "actions" && REMOVED_ACTIONS.includes(key)) return true
     if (group === "create_show" && (key === "quick_lyrics" || key === "quick_lyrics_tip" || key.startsWith("quick_lyrics_example_"))) return true
@@ -64,7 +59,10 @@ for (const [group, keys] of Object.entries(en)) {
     }
 }
 
-const langFiles = fs.readdirSync(LANG_DIR).filter((f) => f.endsWith(".json")).sort()
+const langFiles = fs
+    .readdirSync(LANG_DIR)
+    .filter((f) => f.endsWith(".json"))
+    .sort()
 const perFile = {}
 const removedGroups = []
 

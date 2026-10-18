@@ -1,4 +1,3 @@
-
 // clone objects
 export function clone<T>(object: T): T {
     if (object === null || typeof object !== "object") return object
