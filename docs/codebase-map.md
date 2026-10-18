@@ -3,14 +3,15 @@
 Where things live in the FreeShow fork (upstream 1.6.7-beta.2, mapped 2026-10-18), and which modules are
 church-specific. Read this before any strip or feature task; do not re-explore what it already answers.
 Line counts are from `find … | xargs cat | wc -l` on `.ts`/`.svelte`/`.js` files and are there to size work,
-not to be kept exact.
+not to be kept exact. Table counts were refreshed after the task-3 strip; the per-directory numbers further
+down are the pre-strip figures from the first mapping and overstate removed areas.
 
 | Area           | Path            | Files | Lines   | What it is                                                     |
 | -------------- | --------------- | ----: | ------: | -------------------------------------------------------------- |
-| Main process   | `src/electron`  |   149 |  31,900 | Electron main: windows, servers, stores, outputs, I/O addons   |
-| Renderer       | `src/frontend`  |   719 | 159,300 | Svelte UI for the operator window and the output windows        |
-| LAN web apps   | `src/server`    |   125 |  22,200 | Remote, stage, controller and output-stream pages (Svelte)      |
-| Shared types   | `src/types`     |    23 |   2,900 | Show/project/settings/IPC contracts shared by all of the above  |
+| Main process   | `src/electron`  |   118 |  23,028 | Electron main: windows, servers, stores, outputs, I/O addons   |
+| Renderer       | `src/frontend`  |   637 | 134,495 | Svelte UI for the operator window and the output windows        |
+| LAN web apps   | `src/server`    |   117 |  17,453 | Remote, stage, controller and output-stream pages (Svelte)      |
+| Shared types   | `src/types`     |    19 |   2,538 | Show/project/settings/IPC contracts shared by all of the above  |
 | Build scripts  | `scripts`       |     9 |     500 | `start.js`, pre/post build, server bundling                     |
 | Config         | `config`        |     7 |     600 | electron-builder, Vite servers config, tsconfigs, lint, tests   |
 
@@ -246,6 +247,11 @@ Other renderer anchors: keyboard shortcuts `utils/shortcuts.ts` (`ctrlKeys`, `sh
 ChurchApps/freeshow, also mocked in the Playwright test).
 
 ## 9. Church-specific and out-of-scope modules
+
+> **Status (task 3, 2026-10-18):** sections 9a–9h are done. Scripture, songs/chords/CCLI, Planning Center and the
+> other church providers, cloud sync, draw, metronome, audio playlists/Spotify and the calendar are removed on
+> branch `task/03-strip-church-features` (one commit each, about 41,800 lines). The inventories below are kept as
+> the record of what was there and where the seams were; 9i is still open and 9j is the keep list.
 
 Grouped as the spec's strip commits. "Couplings" are the shared files each removal touches; expect every
 strip commit to also edit `stores.ts`, `types/Save.ts`, `public/lang/*.json`, `context/contextMenus.ts`,

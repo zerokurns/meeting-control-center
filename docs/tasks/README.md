@@ -21,6 +21,8 @@ files it names, and nothing else. This page is the shared part of every brief.
   quotes). Never run Prettier on whole files, never reorder imports, never rename unrelated things.
 - Do not add `any`. If removing something forces a wider change, prefer the smallest stub and report it.
 - Do not edit `package.json` dependencies or `package-lock.json`; the orchestrator prunes npm deps once.
+- `npm run test:format` must not flag files it did not flag before your change; if you edit a flagged line, run
+  Prettier on that file only (`npx prettier --config config/formatting/.prettierrc.yaml --write <file>`).
 - Do not edit `public/lang/*.json` except `en.json`, and `en.json` only to rename or add a key the brief
   mentions. Dead strings are pruned later in one mechanical commit.
 - Do not edit anything under `docs/`.
@@ -35,10 +37,10 @@ files it names, and nothing else. This page is the shared part of every brief.
 1. `grep -rniE "<feature identifiers from the brief>" src --include=*.ts --include=*.svelte` shows no
    remaining references except those the brief says to keep.
 2. `npm run build` exits 0 (this type-checks the Electron main process and bundles renderer + servers).
-3. `npm run test:svelte 2>&1 | tail -3` reports **at most 195 errors** (upstream baseline). Record the number.
-4. `npm run test:unit 2>&1 | tail -6` reports **at most 3 failed tests** (baseline: 2 in
-   `src/electron/cloud/syncManager.test.ts`, 1 in `src/electron/streaming/RtmpStreamer.integration.test.ts`).
-   Record the numbers.
+3. `npm run test:svelte 2>&1 | tail -3` reports **no more errors than the current baseline** in `docs/dev-setup.md`
+   (177 after task 3). Record the number.
+4. `npm run test:unit 2>&1 | tail -6` reports **no more failures than the current baseline** in `docs/dev-setup.md`
+   (1 after task 3: `src/electron/streaming/RtmpStreamer.integration.test.ts`). Record the numbers.
 5. `xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npm run test:playwright` passes
    (boots the production build, completes first-run setup, creates a project and a show, saves). If it
    fails on a timeout, rerun once before investigating. Record the result.
