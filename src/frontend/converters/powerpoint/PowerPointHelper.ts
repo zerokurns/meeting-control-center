@@ -826,7 +826,7 @@ export class PowerPointPackage {
                     if (rs.length) hasText = true
 
                     function getAlignment(algn: string) {
-                        if (algn === "ctr") return "" // FreeShow default is center
+                        if (algn === "ctr") return "" // App default is center
                         if (algn === "r") return "text-align: right;"
                         if (algn === "just") return "text-align: justify;"
                         if (algn === "l") return "text-align: left;"
@@ -947,7 +947,7 @@ export class PowerPointPackage {
         const itemAlign = getAttribute(shape.shape, "anchor", "p:txBody") || getAttribute(getValue(shape.shape, "p:txBody"), "anchor", "a:bodyPr") || getAttribute(getValue(shape.layoutShape, "p:txBody"), "anchor", "a:bodyPr") || getAttribute(getValue(shape.masterShape, "p:txBody"), "anchor", "a:bodyPr") || ""
         item.align = getItemAlign(itemAlign) + "overflow: visible;" // PPT shows overflow text
         function getItemAlign(anchor: string) {
-            if (anchor === "ctr") return "" // FreeShow default is center alignment
+            if (anchor === "ctr") return "" // App default is center alignment
             if (anchor === "b") return "align-items: flex-end;"
             if (anchor === "t") return "align-items: flex-start;"
             if (svgText) return ""

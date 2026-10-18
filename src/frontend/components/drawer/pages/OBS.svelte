@@ -373,7 +373,7 @@
     </FloatingInputs>
 {:else}
     <Center>
-        <Link url="https://freeshow.app/docs/livestreaming#setting-up-obs-control-from-freeshow">
+        <Link url="https://github.com/zerokurns/meeting-control-center">
             <T id="main.docs" />
             <Icon id="launch" white />
         </Link>

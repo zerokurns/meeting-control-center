@@ -33,7 +33,7 @@ export async function loadFromUnsplash(query = ""): Promise<any[]> {
     })
 }
 
-const UTM = "?utm_source=freeshow&utm_medium=referral"
+const UTM = "?utm_source=mcc&utm_medium=referral"
 function getUnsplashCredits(media) {
     return {
         type: "unsplash",

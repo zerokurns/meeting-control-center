@@ -1,4 +1,4 @@
-// ----- FreeShow -----
+// ----- Meeting Control Center -----
 // Options for electron windows
 // https://www.electronjs.org/docs/latest/api/browser-window
 

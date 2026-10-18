@@ -6,8 +6,8 @@ import { ToMain } from "../../types/IPC/ToMain"
 
 // const virtualDevices: any = {}
 // export function createVirtualMidi() {
-//     virtualDevices.input = new easymidi.Input("FreeShow MIDI Input", true)
-//     virtualDevices.output = new easymidi.Output("FreeShow MIDI Output", true)
+//     virtualDevices.input = new easymidi.Input("MCC MIDI Input", true)
+//     virtualDevices.output = new easymidi.Output("MCC MIDI Output", true)
 //     console.log("Created MIDI devices")
 // }
 

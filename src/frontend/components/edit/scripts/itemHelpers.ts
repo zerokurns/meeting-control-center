@@ -94,7 +94,7 @@ export function addItem(type: ItemType, id: string | null = null, options: any =
     else if (type === "slide_tracker") newData.auto = true
     else if (type === "web") newData.web = { url: "" }
     else if (type === "qr_code") newData.qr_code = { text: "" }
-    else if (type === "captions") newData.captions = { roomId: "freeshow" + uid(6) }
+    else if (type === "captions") newData.captions = { roomId: "mcc" + uid(6) }
     else if (type === "chart") newData.chart = { type: "bar", data: "" }
     else if (type === "table") {
         newData.table = {

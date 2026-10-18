@@ -1,4 +1,4 @@
-// ----- FreeShow -----
+// ----- Meeting Control Center -----
 // This is for media/file functions
 
 import { get } from "svelte/store"

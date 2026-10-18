@@ -16,7 +16,7 @@
     const ninjaURL = "https://caption.ninja/"
 
     // can't have more than one active per computer
-    const defaultRoomId = "freeshow" + (item?.id ? item.id.replace(/[^a-zA-Z0-9]/g, "").slice(-6) : uid(6))
+    const defaultRoomId = "mcc" + (item?.id ? item.id.replace(/[^a-zA-Z0-9]/g, "").slice(-6) : uid(6))
     $: roomId = captionData.roomId || defaultRoomId
 
     $: if (item && !item.captions) item.captions = {}

@@ -83,7 +83,7 @@
 {:else}
     <div class="gridgap">
         <Center style="flex-direction: column;">
-            <Link url="https://freeshow.app/docs/media#connecting-to-canva">
+            <Link url="https://github.com/zerokurns/meeting-control-center">
                 <T id="main.docs" />
                 <Icon id="launch" white />
             </Link>

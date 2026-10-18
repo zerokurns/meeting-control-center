@@ -315,7 +315,7 @@
         touch-action: pan-y;
         overscroll-behavior: contain;
         padding: 0 0 70px;
-        /* FreeShow UI scrollbar */
+        /* MCC UI scrollbar */
         scrollbar-width: thin; /* Firefox */
         scrollbar-color: rgb(255 255 255 / 0.3) rgb(255 255 255 / 0.05);
     }

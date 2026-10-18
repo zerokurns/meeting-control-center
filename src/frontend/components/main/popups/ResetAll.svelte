@@ -37,7 +37,7 @@
         } as SaveData)
 
         // WIP reset error log / other config files
-        // all content in FreeShow/ folder, including Shows files are not deleted
+        // all content in the Meeting Control Center folder, including Shows files are not deleted
         // media cache is not deleted
 
         clearAll()

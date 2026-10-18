@@ -1,4 +1,4 @@
-// ----- FreeShow -----
+// ----- Meeting Control Center -----
 // Functions to interact with local files
 
 import { app, dialog, shell } from "electron"
@@ -347,12 +347,12 @@ export const dataFolderNames = {
     userData: "Config"
 }
 
-// Documents/FreeShow
+// Documents/Meeting Control Center
 export function getDefaultDataFolderRoot() {
     const documentsPath = getMediaFolderPath("documents")
     if (!documentsPath) return appDataPath
 
-    const appFolderName = "FreeShow"
+    const appFolderName = "Meeting Control Center"
     const fullPath = path.join(documentsPath, appFolderName)
 
     try {
@@ -1102,7 +1102,7 @@ export function bundleMediaFiles({ openFolder = false, outputPath = "" }: { open
         return
     }
 
-    // use custom output path or FreeShow Media folder
+    // use custom output path or Meeting Control Center Media folder
     const outputFolder = outputPath || getDataFolderPath("media")
 
     // copy media files
@@ -1435,7 +1435,7 @@ export function getShowsFromIds(showIds: string[], projectItems?: any[]) {
 
 // some users might have got themselves in a situation they can't get out of
 // example: enables "kiosk" mode on mac might have resulted in a black screen, and they can't find the app data location to revert it!
-// how: Place any file in your Documents/FreeShow folder that has the FIXES key in it's name (e.g. OPEN_APPDATA_SETTINGS), when you now start your app the fix will be triggered!
+// how: Place any file in your Documents/Meeting Control Center folder that has the FIXES key in it's name (e.g. OPEN_APPDATA_SETTINGS), when you now start your app the fix will be triggered!
 const FIXES = {
     OPEN_APPDATA_SETTINGS: () => {
         // this will open the "settings.json" file located at the app data location (can also be used to find other setting files here)

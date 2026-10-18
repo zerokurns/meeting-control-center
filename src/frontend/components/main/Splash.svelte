@@ -39,7 +39,7 @@
 </script>
 
 <Center class="context #splash">
-    <h1>FreeShow</h1>
+    <h1>Meeting Control Center</h1>
     <p style="opacity: 0.7;">v{$version}</p>
     {#if $special.splashText}
         <p style="padding-top: 30px">
@@ -56,7 +56,7 @@
     {:else if Object.keys($shows).length < 20}
         <!-- shows up for new users (can be found in "About" menu) -->
         <p style="padding-top: 30px">
-            <Link url="https://freeshow.app/docs">
+            <Link url="https://github.com/zerokurns/meeting-control-center">
                 <T id="main.docs" />
                 <Icon id="launch" white />
             </Link>

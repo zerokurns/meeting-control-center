@@ -1,4 +1,4 @@
-// ----- FreeShow -----
+// ----- Meeting Control Center -----
 // Get all user configs
 // https://www.npmjs.com/package/electron-store
 
@@ -142,7 +142,7 @@ function getWritableConfigPath(previousLocation?: string | null, setup = false):
     if (setup && previousLocation) return previousLocation
 
     const downloadsPath = getMediaFolderPath("downloads")
-    const downloadsDataPath = downloadsPath ? path.join(downloadsPath, "FreeShow") : ""
+    const downloadsDataPath = downloadsPath ? path.join(downloadsPath, "Meeting Control Center") : ""
 
     const candidates = [getDataFolderRoot(), previousLocation || getDefaultDataFolderRoot(), downloadsDataPath, appDataPath].filter((p): p is string => !!p)
     const uniqueCandidates = [...new Set(candidates)]

@@ -84,7 +84,7 @@
             touch-action: manipulation;
         }
 
-        /* Match FreeShow main app scrollbar */
+        /* Match MCC main app scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
