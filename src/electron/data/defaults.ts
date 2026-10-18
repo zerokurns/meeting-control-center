@@ -67,8 +67,6 @@ export const defaultSettings: { [key in SaveListSettings]: any } = {
     },
     audioRouting: {},
     audioChannelsData: {},
-    cloudSyncData: {},
-    driveData: { mainFolderId: null, disabled: false, initializeMethod: null, disableUpload: false },
     calendarAddShow: "",
     audioEffects: {},
     audioEffectPresets: {},

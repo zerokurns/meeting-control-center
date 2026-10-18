@@ -35,7 +35,6 @@ import {
     audioData,
     currentOutputSettings,
     dataPath,
-    driveKeys,
     events,
     folders,
     icecastStatus,
@@ -121,7 +120,6 @@ export const mainResponses: MainResponses = {
         // update if themes are loaded after settings
         if (get(theme) !== "default") updateThemeValues(get(themes)[get(theme)])
     },
-    [Main.DRIVE_API_KEY]: (a) => driveKeys.set(a),
     [Main.HISTORY]: (a) => {
         undoHistory.set(a.undo || [])
         redoHistory.set(a.redo || [])

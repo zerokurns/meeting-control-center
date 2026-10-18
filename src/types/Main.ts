@@ -236,12 +236,6 @@ export interface MainFilePaths {
     music: string
 }
 
-export interface DriveData {
-    mainFolderId: string | null
-    method: string | null
-    closeWhenFinished: boolean
-}
-
 export interface Variable {
     id?: string
     name: string
@@ -435,9 +429,6 @@ export type Popups =
     | "custom_action"
     | "slide_midi"
     | "connect"
-    | "cloud_sync"
-    | "cloud_update"
-    | "cloud_method"
     | "effect_items"
     | "timeline"
     | "timecode"

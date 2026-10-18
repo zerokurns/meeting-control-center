@@ -81,14 +81,12 @@ export const activeTriggerFunction: Writable<string> = writable("")
 export const guideActive: Writable<boolean> = writable(false)
 export const runningActions: Writable<string[]> = writable([])
 export const scriptureMode: Writable<"grid" | "list"> = writable("list")
-// "churchApps" is only used by the cloud sync code, which is removed separately
-export const providerConnections: Writable<{ [key in ContentProviderId | "churchApps"]?: boolean }> = writable({})
+export const providerConnections: Writable<{ [key in ContentProviderId]?: boolean }> = writable({})
 export const mediaDownloads: Writable<Map<string, { progress: number; total: number; status: string; name?: string }>> = writable(new Map())
 export const rtmpStatus: Writable<{ [outputId: string]: RtmpStatus }> = writable({})
 export const icecastStatus: Writable<{ connected: boolean; connecting?: boolean; error?: string }> = writable({ connected: false })
 export const pdfImports: Writable<Map<string, { name: string; progress: number; total: number; status: "importing" | "complete" | "error"; message?: string }>> = writable(new Map())
 export const showChangeProfileMenu: Writable<boolean> = writable(false)
-export const cloudUsers: Writable<{ displayName: string; deviceId?: string; color: string; lastUpdate?: number; activePage?: string; activeShow?: ShowRef }[]> = writable([])
 export const isTimelinePlaying: Writable<boolean> = writable(false)
 export const timelineRecordingAction: Writable<{ id: string; data?: any }> = writable({ id: "" })
 export const autoOpenedTimeline: Writable<boolean> = writable(false)
@@ -389,11 +387,6 @@ export const serverData: Writable<{ [key: string]: ServerData }> = writable({}) 
 export const maxConnections: Writable<number> = writable(10) // 10
 export const contentProviderData: Writable<{ [key in ContentProviderId]?: any }> = writable({}) // {}
 export const obsData: Writable<{ enabled?: boolean; connected?: boolean; ip?: string; port?: number; password?: string }> = writable({}) // {}
-
-// CLOUD
-export const cloudSyncData: Writable<{ enabled?: boolean; id?: string; deviceName?: string; team?: { id: string; churchId: string; name: string; count?: number }; cloudMethod?: "merge" | "read_only" | "upload" | "replace" }> = writable({}) // {}
-export const driveKeys: Writable<any> = writable({})
-export const driveData: Writable<any> = writable({ mainFolderId: null, disabled: false, initializeMethod: null, disableUpload: false })
 
 // AI
 export const ai: Writable<AiSettings> = writable({}) // {}

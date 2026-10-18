@@ -7,7 +7,7 @@ import { customActionActivation } from "../components/actions/actions"
 import { stopMediaRecorder } from "../components/drawer/live/recorder"
 import { stopAllInteractions } from "../components/drawer/pages/interactions"
 import { clone, keysToID, removeDeleted } from "../components/helpers/array"
-import { isOutCleared, updateSyncedOutputs } from "../components/helpers/output"
+import { updateSyncedOutputs } from "../components/helpers/output"
 import { sendMain } from "../IPC/main"
 import {
     actionTags,
@@ -30,7 +30,6 @@ import {
     calendarAddShow,
     calendars,
     categories,
-    cloudSyncData,
     contentProviderData,
     customFonts,
     customMetadata,
@@ -40,8 +39,6 @@ import {
     disabledServers,
     drawer,
     drawerTabsData,
-    driveData,
-    driveKeys,
     effects,
     effectsLibrary,
     emitters,
@@ -75,7 +72,6 @@ import {
     profiles,
     projectTemplates,
     projects,
-    providerConnections,
     redoHistory,
     renamedShows,
     resized,
@@ -113,9 +109,7 @@ import {
     videoMarkers
 } from "../stores"
 import type { SaveActions, SaveData, SaveList, SaveListSettings, SaveListSyncedSettings } from "./../../types/Save"
-import { isSyncing, socketDisconnect, syncWithCloud } from "./cloudSync"
 import { newToast, setStatus, startAutosave } from "./common"
-import { syncDrive } from "./drive"
 import { autoDisableRemoteController, stopRemoteController } from "./remoteController"
 
 export function save(closeWhenFinished = false, customTriggers: SaveActions = {}) {
@@ -190,8 +184,6 @@ export function save(closeWhenFinished = false, customTriggers: SaveActions = {}
         // themes: get(themes),
         audioRouting: get(audioRouting),
         audioChannelsData: get(audioChannelsData),
-        cloudSyncData: get(cloudSyncData),
-        driveData: get(driveData),
         calendarAddShow: get(calendarAddShow),
         audioEffects: get(audioEffects),
         audioEffectPresets: get(audioEffectPresets),
@@ -223,7 +215,6 @@ export function save(closeWhenFinished = false, customTriggers: SaveActions = {}
         EVENTS: get(events),
         MEDIA: get(media),
         THEMES: get(themes),
-        DRIVE_API_KEY: get(driveKeys),
         // CACHES SAVED TO MULTIPLE FILES
         showsCache: get(showsCache),
         scripturesCache: get(scripturesCache),
@@ -293,39 +284,9 @@ export async function saveComplete({ closeWhenFinished, customTriggers }: { clos
         console.info("SAVED!")
     }
 
-    // cloud sync (only when autosaving or closing)
-    if ((customTriggers?.autosave || closeWhenFinished) && (get(providerConnections).churchApps || !get(driveData)?.mainFolderId)) {
-        if (closeWhenFinished) {
-            alertMessage.set("actions.closing")
-            activePopup.set("alert")
-        }
-
-        let shouldSync = true
-        if (customTriggers?.autosave) {
-            // don't sync if already saved or if a slide is currently outputted or if cloud sync is in progress
-            if (alreadySaved || !isOutCleared("slide") || isSyncing) shouldSync = false
-        }
-
-        if (shouldSync) await syncWithCloud(false, closeWhenFinished)
-
-        if (closeWhenFinished) {
-            await socketDisconnect()
-            closeApp()
-        }
-        return
-    }
-
     if (customTriggers?.backup || customTriggers?.reset) return
 
-    // DEPRECATED drive sync
-    const mainFolderId = get(driveData)?.mainFolderId
-    if (!mainFolderId || get(driveData)?.disabled === true || !Object.keys(get(driveKeys)).length) {
-        if (closeWhenFinished) closeApp()
-
-        return
-    }
-
-    syncDrive(false, closeWhenFinished)
+    if (closeWhenFinished) closeApp()
 }
 
 export function initializeClosing(skipPopup = false) {
@@ -494,9 +455,6 @@ const saveList: { [key in SaveList]: any } = {
     variableTags,
     timerTags,
     customizedIcons,
-    driveKeys,
-    cloudSyncData,
-    driveData,
     calendarAddShow: null,
     audioEffects: null,
     audioEffectPresets: null,

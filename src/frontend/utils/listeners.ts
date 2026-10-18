@@ -21,7 +21,6 @@ import {
     colorbars,
     customMessageCredits,
     customMetadata,
-    driveKeys,
     effects,
     events,
     folders,
@@ -60,7 +59,6 @@ import {
     variableTags
 } from "../stores"
 import { hasNewerUpdate } from "./common"
-import { driveConnect } from "./drive"
 import { convertBackgrounds, getFilteredAudioChannels } from "./remoteTalk"
 import { send } from "./request"
 import { arrayToObject, eachConnection, filterObjectArray, sendData, timedout } from "./sendData"
@@ -410,8 +408,6 @@ export function storeSubscriber() {
         // TODO: only update groups, not all the other values
         updateCachedShows(get(showsCache))
     })
-
-    driveKeys.subscribe(driveConnect)
 
     refreshSlideThumbnails.subscribe(() => {
         setTimeout(() => {

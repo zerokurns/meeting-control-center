@@ -9,7 +9,6 @@ import type { Cropping, Styles } from "../../../types/Settings"
 import type { ShowType } from "../../../types/Show"
 import { requestMain, sendMain } from "../../IPC/main"
 import { audioFolders, cachePath, loadedMediaThumbnails, media, mediaFolders, special, videoMarkers } from "../../stores"
-import { addToMediaFolder } from "../../utils/cloudSync"
 import { isMainWindow, newToast, wait, waitUntilValueIsDefined } from "../../utils/common"
 import { audioExtensions, imageExtensions, mediaExtensions, presentationExtensions, videoExtensions } from "../../values/extensions"
 import type { API_media, API_slide_thumbnail } from "../actions/api"
@@ -212,7 +211,6 @@ export async function getMedia(path: string, size: number = mediaSize.drawerSize
         if (!located) return null
 
         const newPath = located.path
-        if (!located.hasChanged) addToMediaFolder(newPath)
 
         if (!isMainWindow()) {
             const thumbnail = getThumbnailPath(newPath, size)

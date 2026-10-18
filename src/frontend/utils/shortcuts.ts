@@ -86,7 +86,7 @@ const altKeys = {
     Enter: () => (get(activePage) === "show" && !document.activeElement?.closest(".quickEdit") ? menuClick("cut_in_half", true, null, null, null, get(selected)) : null)
 }
 
-export const disablePopupClose = ["initialize", "cloud_method"]
+export const disablePopupClose = ["initialize"]
 const keys = {
     Escape: () => {
         // hide quick search

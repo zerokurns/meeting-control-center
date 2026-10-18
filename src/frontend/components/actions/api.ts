@@ -330,7 +330,6 @@ export const API_ACTIONS = {
 
     // CONNECTION
     sync_content_provider: () => contentProviderSync(),
-    // sync_cloud_now
 
     // EMIT
     send_midi: (data: API_midi) => sendMidi(data), // DEPRECATED, use emit_action instead

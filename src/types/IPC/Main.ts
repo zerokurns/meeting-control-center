@@ -2,7 +2,6 @@ import type { Display } from "electron"
 import type { ExifData } from "exif"
 import type { Stats } from "fs"
 import type { Bible } from "json-bible/lib/Bible"
-import type { SyncProviderId } from "../../electron/cloud/syncManager"
 import type { ContentFile, ContentLibraryCategory, ContentProviderId, MediaLicense } from "../../electron/contentProviders/base/types"
 import type { _store } from "../../electron/data/store"
 import type { EncoderDetection } from "../../electron/streaming/encoderDetection"
@@ -44,7 +43,6 @@ export enum Main {
     EVENTS = "EVENTS",
     MEDIA = "MEDIA",
     THEMES = "THEMES",
-    DRIVE_API_KEY = "DRIVE_API_KEY",
     HISTORY = "HISTORY",
     USAGE = "USAGE",
     CACHE = "CACHE",
@@ -138,14 +136,6 @@ export enum Main {
     READ_FILE = "READ_FILE",
     OPEN_FOLDER = "OPEN_FOLDER",
     OPEN_FILE = "OPEN_FILE",
-    // SYNC
-    CAN_SYNC = "CAN_SYNC",
-    GET_TEAMS = "GET_TEAMS",
-    CLOUD_DATA = "CLOUD_DATA",
-    CLOUD_SYNC = "CLOUD_SYNC",
-    RESTORE_CLOUD_BACKUP = "RESTORE_CLOUD_BACKUP",
-    GET_CONVERSATION_ID = "GET_CONVERSATION_ID",
-    SEND_SOCKET_MESSAGE = "SEND_SOCKET_MESSAGE",
     // Provider-based routing
     PROVIDER_LOAD_SERVICES = "PROVIDER_LOAD_SERVICES",
     PROVIDER_CONNECTIONS = "PROVIDER_CONNECTIONS",
@@ -245,18 +235,10 @@ export interface MainSendPayloads {
     [Main.READ_FILE]: { path: string }
     [Main.OPEN_FOLDER]: { channel: string; title?: string; path?: string }
     [Main.OPEN_FILE]: { id: string; channel: string; title?: string; filter: any; multiple: boolean; read?: boolean }
-    // SYNC
-    [Main.CAN_SYNC]?: { id: SyncProviderId }
-    [Main.GET_TEAMS]?: { id: SyncProviderId }
-    [Main.CLOUD_DATA]: { id: SyncProviderId; churchId: string; teamId: string }
-    [Main.CLOUD_SYNC]: { id: SyncProviderId; churchId: string; teamId: string; method: "merge" | "read_only" | "upload" | "replace" }
-    [Main.RESTORE_CLOUD_BACKUP]: { id: SyncProviderId; churchId: string; teamId: string }
-    [Main.GET_CONVERSATION_ID]: { teamId: string }
-    [Main.SEND_SOCKET_MESSAGE]: { churchId: string; teamId: string; displayName: string; content: string }
     // Provider-based routing
-    [Main.PROVIDER_LOAD_SERVICES]: { providerId: ContentProviderId; cloudOnly?: boolean; data?: any }
+    [Main.PROVIDER_LOAD_SERVICES]: { providerId: ContentProviderId; data?: any }
     [Main.PROVIDER_DISCONNECT]: { providerId: ContentProviderId; scope?: string }
-    [Main.PROVIDER_STARTUP_LOAD]: { providerId: ContentProviderId; scope?: string; data?: any; cloudOnly?: boolean }
+    [Main.PROVIDER_STARTUP_LOAD]: { providerId: ContentProviderId; scope?: string; data?: any }
     // Content Library
     [Main.GET_CONTENT_LIBRARY]: { providerId: ContentProviderId }
     [Main.GET_PROVIDER_CONTENT]: { providerId: ContentProviderId; key: string }
@@ -309,7 +291,6 @@ export interface MainReturnPayloads {
     [Main.EVENTS]: { [key: string]: Event }
     [Main.MEDIA]: Media
     [Main.THEMES]: { [key: string]: Themes }
-    [Main.DRIVE_API_KEY]: any
     [Main.HISTORY]: { undo: History[]; redo: History[] }
     [Main.USAGE]: any
     [Main.CACHE]: any
@@ -345,7 +326,6 @@ export interface MainReturnPayloads {
     [Main.GET_MIDI_OUTPUTS]: { name: string }[]
     [Main.GET_MIDI_INPUTS]: { name: string }[]
     [Main.GET_SIMILAR]: { path: string; name: string }[]
-    [Main.RESTORE_CLOUD_BACKUP]: Promise<{ success: boolean; error?: string }>
     [Main.MEDIA_FOLDER_COPY]: Promise<boolean>
     [Main.LOCATE_MEDIA_FILE]: Promise<{ path: string; hasChanged: boolean } | null>
     [Main.GET_MEDIA_FOLDER_PATH]: string
@@ -353,13 +333,6 @@ export interface MainReturnPayloads {
     [Main.FILE_INFO]: { path: string; stat: Stats; extension: string; folder: boolean } | null
     [Main.READ_FOLDER]: Promise<{ [key: string]: FileFolder }>
     [Main.READ_FILE]: { content: string }
-    // SYNC
-    [Main.CAN_SYNC]: Promise<boolean>
-    [Main.GET_TEAMS]: Promise<{ id: string; churchId: string; name: string }[]>
-    [Main.CLOUD_DATA]: Promise<boolean>
-    [Main.CLOUD_SYNC]: Promise<{ success?: boolean; error?: string; changedFiles?: any[]; downloadedShowIds?: string[]; replacedShows?: string[] }>
-    [Main.GET_CONVERSATION_ID]: Promise<string | null>
-    [Main.SEND_SOCKET_MESSAGE]: Promise<boolean>
     // Provider-based routing
     [Main.PROVIDER_CONNECTIONS]: { [key in ContentProviderId]?: boolean }
     [Main.PROVIDER_DISCONNECT]: { success: boolean }

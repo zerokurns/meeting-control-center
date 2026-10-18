@@ -9,8 +9,6 @@
     const titles = {
         saving: "toast.saving",
         saved: "toast.saved",
-        syncing: "cloud.syncing",
-        synced: "cloud.sync_complete",
         copied: "actions.copied",
         pasted: "actions.pasted",
         duplicated: "actions.duplicated",
@@ -21,8 +19,6 @@
         switch (indicatorId) {
             case "saving":
             case "saved":
-            case "syncing":
-            case "synced":
                 settingsTab.set("files")
                 activePage.set("settings")
                 break
@@ -69,10 +65,6 @@
                 <div class="marker">
                     <Icon id="check" size={0.5} white />
                 </div>
-            {:else if indicatorId === "syncing"}
-                <Icon id="loop" white />
-            {:else if indicatorId === "synced"}
-                <Icon id="cloud_done" white />
             {:else if indicatorId === "copied"}
                 <Icon id="copy" white />
             {:else if indicatorId === "pasted"}
@@ -119,11 +111,6 @@
 
     .status :global(.saving) {
         animation: wave 1.4s linear infinite;
-        display: flex;
-    }
-
-    .status :global(.syncing) {
-        animation: spin 2s linear infinite;
         display: flex;
     }
 

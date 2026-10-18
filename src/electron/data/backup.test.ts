@@ -151,27 +151,6 @@ describe("backup.ts", () => {
             expect(openInSystem).not.toHaveBeenCalled()
         })
 
-        it("returns entries directly for cloud sync", async () => {
-            vi.mocked(readFolder).mockImplementation((folderPath: string) => {
-                if (folderPath.endsWith("scriptures")) return ["KJV.json"]
-                if (folderPath.endsWith("shows")) return ["song1.show"]
-                return []
-            })
-
-            const result = await startBackup({ isCloudSync: true })
-
-            expect(compressToZip).not.toHaveBeenCalled()
-            expect(result?.entries).toEqual(
-                expect.arrayContaining([
-                    { name: "SYNCED_SETTINGS.json", filePath: "/mock/data/settings_synced.json" },
-                    { name: "PROJECTS.json", filePath: "/mock/data/projects.json" },
-                    { name: "MEDIA.json", filePath: "/mock/data/media.json" },
-                    { name: "BIBLE_KJV.json", filePath: path.join("/mock/data/scriptures", "KJV.json") },
-                    { name: "SHOWS/song1.show", filePath: path.join("/mock/data/shows", "song1.show") }
-                ])
-            )
-        })
-
         it("handles zip compression error", async () => {
             vi.mocked(compressToZip).mockRejectedValueOnce(new Error("Zip compression failed"))
 

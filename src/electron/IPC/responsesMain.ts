@@ -16,7 +16,6 @@ import { SpeechToText } from "../ai/stt/SpeechToTextManager"
 import { getAudioMetadata } from "../audio/audio"
 import { openNowPlaying, setPlayingState, unsetPlayingAudio } from "../audio/nowPlaying"
 import { CaptureHelper } from "../capture/CaptureHelper"
-import { canSync, getSyncTeams, hasTeamData, markAsNewSync, restoreCloudBackup, syncData } from "../cloud/syncManager"
 import { ContentProviderRegistry } from "../contentProviders/ContentProviderRegistry"
 import { deleteBackup, getBackups, restoreFiles } from "../data/backup"
 import { getLocalIPs } from "../data/bonjour"
@@ -67,7 +66,6 @@ export const mainResponses: MainResponses = {
     [Main.EVENTS]: () => getStore("EVENTS"),
     [Main.MEDIA]: () => getStore("MEDIA"),
     [Main.THEMES]: () => getStore("THEMES"),
-    [Main.DRIVE_API_KEY]: () => getStore("DRIVE_API_KEY"),
     [Main.HISTORY]: () => getStore("HISTORY"),
     [Main.USAGE]: () => getStore("USAGE"),
     [Main.CACHE]: () => getStore("CACHE"),
@@ -173,25 +171,16 @@ export const mainResponses: MainResponses = {
     [Main.READ_FILE]: (data) => ({ content: readFile(data.path) }),
     [Main.OPEN_FOLDER]: (data) => selectFolder(data),
     [Main.OPEN_FILE]: (data) => selectFiles(data),
-    // SYNC
-    [Main.CAN_SYNC]: (data) => canSync(data),
-    [Main.GET_TEAMS]: (data) => getSyncTeams(data),
-    [Main.CLOUD_DATA]: (data) => hasTeamData(data),
-    [Main.CLOUD_SYNC]: (data) => syncData(data),
-    [Main.RESTORE_CLOUD_BACKUP]: (data) => restoreCloudBackup(data),
-    [Main.GET_CONVERSATION_ID]: (data) => getConversationId(data.teamId),
-    [Main.SEND_SOCKET_MESSAGE]: (data) => sendSocketMessage(data),
     // Provider-based routing
     [Main.PROVIDER_LOAD_SERVICES]: async (data) => {
-        if (data.cloudOnly) markAsNewSync()
-        await ContentProviderRegistry.loadServices(data.providerId, data.cloudOnly || false, data.data)
+        await ContentProviderRegistry.loadServices(data.providerId, data.data)
     },
     [Main.PROVIDER_CONNECTIONS]: () => ContentProviderRegistry.getConnectedProviders(),
     [Main.PROVIDER_DISCONNECT]: (data) => {
         ContentProviderRegistry.disconnect(data.providerId, data.scope)
         return { success: true }
     },
-    [Main.PROVIDER_STARTUP_LOAD]: (data) => ContentProviderRegistry.startupLoad(data.providerId, data.scope || "", data.data, data.cloudOnly),
+    [Main.PROVIDER_STARTUP_LOAD]: (data) => ContentProviderRegistry.startupLoad(data.providerId, data.scope || "", data.data),
     // Content Library
     [Main.GET_CONTENT_PROVIDERS]: () => {
         const providers = ContentProviderRegistry.getAvailableProviders()
@@ -345,15 +334,6 @@ function getVersion() {
         console.error("Could not get version:", err)
         return "0.0.0"
     }
-}
-
-// the ChurchApps chat backend is gone, so the cloud sync socket has nothing to talk to (removed with cloud sync)
-async function getConversationId(_teamId: string): Promise<string | null> {
-    return null
-}
-
-async function sendSocketMessage(_data: { churchId: string; teamId: string; displayName: string; content: string }): Promise<boolean> {
-    return false
 }
 
 function getOS() {

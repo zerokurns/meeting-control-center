@@ -7,7 +7,6 @@ import { encodeFilePath, getFileName, isLocalFile, locateMediaFile, removeExtens
 import { checkNextAfterMedia } from "../components/helpers/showActions"
 import { requestMain, sendMain } from "../IPC/main"
 import { activePlaylist, dictionary, media, outLocked, playingAudio, playingAudioPaths, special } from "../stores"
-import { addToMediaFolder } from "../utils/cloudSync"
 import { AudioAnalyser } from "./audioAnalyser"
 import { clearAudio, clearing, currentlyCrossfadingIn, fadeInAudio, fadeOutAudio } from "./audioFading"
 import { AudioMultichannel } from "./audioMultichannel"
@@ -107,7 +106,6 @@ export class AudioPlayer {
         }
 
         path = resolvedPath
-        if (!located.hasChanged && !isOnline) addToMediaFolder(path)
 
         // get type
         const duration = await this.getDuration(path)

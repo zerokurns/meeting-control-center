@@ -19,9 +19,6 @@ import ChooseOutput from "../components/main/popups/ChooseOutput.svelte"
 import ChooseScreen from "../components/main/popups/ChooseScreen.svelte"
 import ChooseStyle from "../components/main/popups/ChooseStyle.svelte"
 import CleaningUtility from "../components/main/popups/CleaningUtility.svelte"
-import CloudMethod from "../components/main/popups/CloudMethod.svelte"
-import CloudSync from "../components/main/popups/CloudSync.svelte"
-import CloudUpdate from "../components/main/popups/CloudUpdate.svelte"
 import Color from "../components/main/popups/Color.svelte"
 import ColorGradient from "../components/main/popups/ColorGradient.svelte"
 import Conditions from "../components/main/popups/Conditions.svelte"
@@ -166,9 +163,6 @@ export const popups: { [key in Popups]: ComponentType } = {
     custom_action: CustomAction,
     slide_midi: SlideMidi,
     connect: Connect,
-    cloud_sync: CloudSync,
-    cloud_update: CloudUpdate,
-    cloud_method: CloudMethod,
     effect_items: EffectItems,
     timeline: TimelineSettings,
     timecode: Timecode,

@@ -7,9 +7,8 @@ import { syncIcsCalendars } from "../components/drawer/calendar/calendars"
 import { getTimeFromInterval } from "../components/helpers/time"
 import { requestMain, requestMainMultiple, sendMain, sendMainMultiple } from "../IPC/main"
 import { cameraManager } from "../media/cameraManager"
-import { activePopup, activeProfile, cachePath, cloudSyncData, currentWindow, dataPath, deviceId, isDev, loaded, loadedState, os, profiles, providerConnections, shows, special, version, windowState } from "../stores"
+import { activePopup, activeProfile, cachePath, currentWindow, dataPath, deviceId, isDev, loaded, loadedState, os, profiles, providerConnections, shows, special, version, windowState } from "../stores"
 import { startTracking } from "./analytics"
-import { setupCloudSync } from "./cloudSync"
 import { wait, waitUntilValueIsDefined } from "./common"
 import { getDefaultElements } from "./createData"
 import { setLanguage } from "./language"
@@ -136,14 +135,7 @@ function autoBackup() {
 }
 
 const lastProviderSyncs: Partial<Record<ContentProviderId, number>> = {}
-export async function contentProviderSync(startup = false, remainingOnly = false) {
-    const isCloudSyncEnabled = get(cloudSyncData).enabled && get(cloudSyncData).id
-
-    if (isCloudSyncEnabled && !remainingOnly) {
-        setupCloudSync(startup)
-        return
-    }
-
+export async function contentProviderSync(startup = false) {
     // on startup, wait until data is loaded
     if (!Object.keys(get(shows)).length) {
         await waitUntilValueIsDefined(() => get(loadedState).includes("synced_settings"), 200, 8000) // same await in getStoredData
@@ -189,7 +181,7 @@ function getMainData() {
 }
 
 async function getStoredData() {
-    sendMainMultiple([Main.SYNCED_SETTINGS, Main.STAGE, Main.PROJECTS, Main.OVERLAYS, Main.TEMPLATES, Main.EVENTS, Main.MEDIA, Main.THEMES, Main.DRIVE_API_KEY, Main.HISTORY, Main.CACHE, Main.USAGE])
+    sendMainMultiple([Main.SYNCED_SETTINGS, Main.STAGE, Main.PROJECTS, Main.OVERLAYS, Main.TEMPLATES, Main.EVENTS, Main.MEDIA, Main.THEMES, Main.HISTORY, Main.CACHE, Main.USAGE])
 
     await waitUntilValueIsDefined(() => get(loadedState).includes("synced_settings"), 200, 8000)
     sendMain(Main.SETTINGS)

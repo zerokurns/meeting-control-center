@@ -1,5 +1,5 @@
 import { get } from "svelte/store"
-import { CLOUD, CONTROLLER, NDI, OMT, OUTPUT, OUTPUT_STREAM, REMOTE, STAGE } from "../../types/Channels"
+import { CONTROLLER, NDI, OMT, OUTPUT, OUTPUT_STREAM, REMOTE, STAGE } from "../../types/Channels"
 import type { ClientMessage } from "../../types/Socket"
 import { AudioMicrophone } from "../audio/audioMicrophone"
 import { MIN_DB } from "../audio/dBUtils"
@@ -24,7 +24,6 @@ import {
     colorbars,
     customMessageCredits,
     customMetadata,
-    driveData,
     dynamicValueData,
     effects,
     events,
@@ -62,7 +61,6 @@ import {
     websiteAction
 } from "../stores"
 import { newToast } from "./common"
-import { syncDrive } from "./drive"
 import { setLanguage } from "./language"
 import { sendInitialOutputData } from "./listeners"
 import { receive, send } from "./request"
@@ -81,7 +79,6 @@ export function setupMainReceivers() {
     receive(OUTPUT, receiveOUTPUTasMAIN)
     receive(NDI, receiveNDI)
     receive(OMT, receiveOMT)
-    receive(CLOUD, receiveCLOUD)
 }
 
 let remoteReceiversInitialized = false
@@ -308,108 +305,5 @@ const receiveOMT: any = {
 
             return a
         })
-    }
-}
-
-// CLOUD
-
-const receiveCLOUD = {
-    DRIVE_CONNECT: ({ status, error }: any) => {
-        if (error) {
-            newToast(error)
-            return
-        }
-        if (status !== "connected") return
-
-        // WIP set connected status, and see in settings
-
-        if (get(driveData)?.mainFolderId) {
-            driveData.update((a) => {
-                a.initializeMethod = "done"
-                return a
-            })
-
-            syncDrive(false, false, true)
-            return
-        }
-
-        send(CLOUD, ["GET_MAIN_FOLDER"], { method: get(driveData).initializeMethod })
-    },
-    GET_MAIN_FOLDER: ({ id, error, existingData }: any) => {
-        if (error) {
-            newToast(error)
-            return
-        }
-        if (!id) return
-
-        driveData.update((a) => {
-            a.mainFolderId = id
-            return a
-        })
-
-        let method = get(driveData).initializeMethod
-        if (get(driveData).disableUpload) method = "download"
-        if (!method) {
-            // this is not needed for the shows, but for all the other data
-            if (existingData) {
-                activePopup.set("cloud_method")
-                return
-            }
-
-            driveData.update((a) => {
-                a.initializeMethod = existingData ? "done" : "upload"
-                return a
-            })
-        }
-
-        syncDrive(true)
-    },
-    SYNC_DATA: ({ changes, closeWhenFinished }) => {
-        if (changes.error) {
-            newToast(changes.error)
-            if (!closeWhenFinished) return
-        }
-
-        if (closeWhenFinished) {
-            popupData.set(changes)
-            activePopup.set("cloud_update")
-
-            // timeout so user can see the sync has finished before it closes!
-            setTimeout(closeApp, 800)
-            return
-        }
-
-        driveData.update((a) => {
-            a.initializeMethod = "done"
-            return a
-        })
-
-        if (!changes.length) {
-            newToast("cloud.sync_complete")
-
-            if (get(activePopup) !== "cloud_update") return
-
-            popupData.set({})
-            activePopup.set(null)
-
-            return
-        }
-
-        // reload shows cache (because there could be some changes)
-        if (!get(focusMode)) showsCache.set({})
-        activeShow.set(null)
-
-        // show completed toast
-        newToast("cloud.sync_complete")
-
-        // show popup if manually syncing
-        if (get(activePopup) === "cloud_update") {
-            popupData.set(changes)
-            // activePopup.set("cloud_update")
-        }
-
-        // hide sync popup on startup/close sync
-        // popupData.set({})
-        // activePopup.set(null)
     }
 }

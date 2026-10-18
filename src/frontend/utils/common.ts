@@ -127,7 +127,7 @@ export function startAutosave() {
 
     previousAutosave = Date.now()
     autosaveTimeout = setTimeout(() => {
-        const skip = get(activePopup) === "initialize" || get(activePopup) === "cloud_method"
+        const skip = get(activePopup) === "initialize"
         if (skip) startAutosave()
         else save(false, { autosave: true })
     }, saveInterval)

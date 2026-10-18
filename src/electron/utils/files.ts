@@ -345,8 +345,7 @@ export const dataFolderNames = {
     imports: "Imports",
     recordings: "Recordings",
     audio: "Audio",
-    userData: "Config",
-    cloud: "Cloud"
+    userData: "Config"
 }
 
 // Documents/FreeShow
@@ -842,24 +841,10 @@ export async function locateMediaFile({ filePath, folders }: { filePath: string;
     if ((await doesMediaExist({ path: mediaFilePath })).exists) return { path: mediaFilePath, hasChanged: true }
     const searchFolders = [mediaFolder, ...folders].map(normalizeLocalPath).filter((folderPath) => folderPath)
 
-    // lookup already replaced paths from cache
-    const syncCache = getStore("CACHE_SYNC")
-    if (!syncCache.replacedPaths) syncCache.replacedPaths = {}
-    const cacheId = `${folderId}_${fileName}`
-    const cachedPath = syncCache.replacedPaths[cacheId]
-    // TEMP disable in case the wrong file is cached
-    if (false && cachedPath && (await doesMediaExist({ path: cachedPath })).exists) {
-        return { path: cachedPath, hasChanged: false }
-    }
-
     const parentFolderName = upath.basename(upath.dirname(normalizedOriginalPath))
 
     const newPath = await findMatches()
     if (!newPath) return null
-
-    // store replaced path in cache
-    syncCache.replacedPaths[cacheId] = newPath
-    setStore(_store.CACHE_SYNC, syncCache)
 
     return { path: newPath, hasChanged: true }
 
@@ -1239,7 +1224,7 @@ export function loadShows(returnShows = false, reCacheNames: string[] = []) {
 
     if (returnShows) return newCachedShows
 
-    // save this (for cloud sync)
+    // save this
     setStore(_store.SHOWS, newCachedShows)
 
     return newCachedShows

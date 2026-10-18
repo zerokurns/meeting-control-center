@@ -7,7 +7,7 @@ import type { Themes } from "./Settings"
 import type { Overlays, Shows, Templates, TrimmedShows } from "./Show"
 import type { StageLayouts } from "./Stage"
 
-export type SaveList = SaveListSettings | SaveListSyncedSettings | "themes" | "events" | "templates" | "overlays" | "driveKeys"
+export type SaveList = SaveListSettings | SaveListSyncedSettings | "themes" | "events" | "templates" | "overlays"
 
 export type SaveListSyncedSettings =
     | "categories"
@@ -77,8 +77,6 @@ export type SaveListSettings =
     | "transitionData"
     | "audioRouting"
     | "audioChannelsData"
-    | "cloudSyncData"
-    | "driveData"
     | "calendarAddShow"
     | "audioEffects"
     | "audioEffectPresets"
@@ -104,7 +102,6 @@ export interface SaveData {
     EVENTS: { [key: string]: Event }
     MEDIA: Media
     THEMES: { [key: string]: Themes }
-    DRIVE_API_KEY: any
     // CACHES SAVED TO MULTIPLE FILES
     showsCache?: Shows
     scripturesCache?: { [key: string]: Bible }

@@ -682,7 +682,7 @@ const settings = [
         id: "files",
         name: "settings.files",
         icon: "files",
-        aliases: ["settings.autosave", "settings.auto_backup", "settings.data_location", "settings.cloud", "-Cloud sync", "-Sync", "settings.backup_all", "settings.restore"]
+        aliases: ["settings.autosave", "settings.auto_backup", "settings.data_location", "settings.backup_all", "settings.restore"]
     },
     { id: "profiles", name: "settings.profiles", icon: "profiles" },
     { id: "theme", name: "settings.theme", icon: "theme" }
@@ -700,7 +700,6 @@ const faq = [
     { id: "https://freeshow.app/docs/overlays", name: "About Overlays", icon: "help" },
     { id: "https://freeshow.app/docs/templates", name: "About Templates", icon: "help" },
     { id: "https://freeshow.app/docs/outputs", name: "Multiple Outputs", icon: "help", aliases: ["-Livestream", "-OBS"] },
-    { id: "https://freeshow.app/docs/cloud", name: "Cloud Sync", icon: "help" },
     // Docs Help
     { id: "https://freeshow.app/docs/scripture#create-a-collection", name: "Multiple Scripture Versions", icon: "help", aliases: ["-Multilingual", "-Multiple translations", "-Multiple Bibles", "-Multiple languages"] },
     { id: "https://freeshow.app/docs/faq#multilingual-songs", name: "Multilingual Song Lyrics", icon: "help", aliases: ["-Multilingual", "-translations", "-lyrics", "-languages", "-translated"] },
@@ -710,7 +709,6 @@ const faq = [
     { id: "https://freeshow.app/docs/importing#powerpoint", name: "How to import PowerPoint as text", icon: "help", aliases: ["-PowerPoint", "-slides", "-presentation"] },
     { id: "https://freeshow.app/docs/importing#pdf", name: "How to import a PDF file", icon: "help", aliases: ["-PDF"] },
     { id: "https://freeshow.app/docs/faq#videos-are-muted", name: "Videos are muted", icon: "help", aliases: ["-No audio"] },
-    { id: "https://freeshow.app/docs/faq#cloud-sync-between-two-computers", name: "Cloud Sync Between Multiple Computers", icon: "help" },
     { id: "https://freeshow.app/docs/faq#how-to-transfer-the-files-between-computers", name: "Transfer Files Between Computers", icon: "help" },
     { id: "https://freeshow.app/docs/faq#the-app-is-slow", name: "The App is Slow", icon: "help", aliases: ["-Lagging", "-Performance"] },
     { id: "https://freeshow.app/docs/faq#freeshow-keeps-freezing", name: "FreeShow Freezed Suddenly", icon: "help", aliases: ["-Freezing", "-Crash"] },
@@ -811,7 +809,6 @@ const faq = [
     { id: "https://youtu.be/NJdPaHMc8FQ", name: "Download Bibles", icon: "youtube" },
     { id: "https://youtu.be/XUYjbzKHP7U", name: "Zoom with Lower Thirds with FreeShow", icon: "youtube" },
     { id: "https://youtu.be/DGnscG6qzgo", name: "Edit Slides Fast with Quick Timer", icon: "youtube" },
-    { id: "https://youtu.be/ikzQwB0r7rc", name: "Cloud Sync", icon: "youtube" },
     { id: "https://youtu.be/o6OFAT-uvpM", name: "Easy Action Shortcuts", icon: "youtube" },
     { id: "https://youtu.be/gukCeIWNBB8", name: "Loop Slides", icon: "youtube" },
     { id: "https://youtu.be/ArLVr_Bsoww", name: "Create and Edit Overlays", icon: "youtube" },
