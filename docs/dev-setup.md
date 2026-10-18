@@ -33,10 +33,11 @@ clearly separated folders (see `docs/decisions.md`) so `git merge upstream/main`
 4. **Linux native-addon headers**, the same set upstream CI installs:
 
    ```sh
-   sudo apt-get install -y libfontconfig1-dev uuid-dev libltc-dev
+   sudo apt-get install -y libfontconfig1-dev uuid-dev libltc-dev libegl1-mesa-dev libgles2-mesa-dev
    ```
 
-   (`libegl1-mesa-dev libgles2-mesa-dev` are additionally needed only for `npm run release`.)
+   (`osr-capture` links against `libEGL.so.1` and `libGLESv2.so.2`; on a desktop they are usually present
+   already, on a bare CI runner they are not.)
 5. **Git access to GitHub over HTTPS.** Seven dependencies are pinned to GitHub commits
    (`grandiose`, `libltc-wrapper`, `macadam`, `openmediatransport`, `osr-capture`, `slideshow`,
    `svelte-inspector`, plus transitive `open-in-editor`). npm resolves them to `git+ssh://` URLs, which
