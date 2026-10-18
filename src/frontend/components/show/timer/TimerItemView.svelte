@@ -30,10 +30,10 @@
 </script>
 
 {#if timer}
-    <div class="timer-item">
+    <div class="timer-item" data-testid="timer-item-view">
         <h2>{itemName}</h2>
 
-        <p class="time" class:overtime class:running={isRunning}>{overtime ? "-" : ""}{display}</p>
+        <p class="time" data-testid="timer-item-time" class:overtime class:running={isRunning}>{overtime ? "-" : ""}{display}</p>
 
         {#if isCounter}
             <div class="buttons">

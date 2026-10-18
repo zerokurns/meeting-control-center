@@ -150,7 +150,7 @@
 
 <div class="viewer" class:interactive bind:clientWidth={width} bind:clientHeight={height} style={background ? `background: ${background};` : ""} tabindex={interactive ? 0 : -1} role="document" on:wheel={onWheel} on:keydown={onKeydown}>
     <div class="scroller" bind:this={scroller} on:scroll={onScroll}>
-        <canvas bind:this={canvas} />
+        <canvas bind:this={canvas} data-testid="pdf-canvas" />
     </div>
 
     {#if error}

@@ -112,7 +112,7 @@
 <svelte:window on:keydown={onKeydown} />
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="xlsx" style={background ? `background: ${background};` : ""} data-path={loadedPath}>
+<div class="xlsx" data-testid="xlsx-viewer" style={background ? `background: ${background};` : ""} data-path={loadedPath}>
     <div class="viewport" class:interactive bind:this={viewport} bind:clientWidth={viewWidth} bind:clientHeight={viewHeight} on:scroll={onScroll} on:wheel={onWheel}>
         <div class="sizer" style="width: {naturalWidth * scale}px; height: {naturalHeight * scale}px;">
             <div class="sheet" bind:this={table} style="transform: scale({scale});">

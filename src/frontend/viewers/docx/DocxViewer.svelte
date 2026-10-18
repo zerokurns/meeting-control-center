@@ -105,7 +105,7 @@
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-<div class="viewport" style={background ? `background: ${background};` : ""} bind:this={viewport} on:wheel={onWheel} on:keydown={onKeydown} tabindex={interactive ? 0 : -1}>
+<div class="viewport" data-testid="docx-viewer" style={background ? `background: ${background};` : ""} bind:this={viewport} on:wheel={onWheel} on:keydown={onKeydown} tabindex={interactive ? 0 : -1}>
     <div class="stage" style="width: {pageSize.width}px; height: {pageSize.height}px; transform: translate({offsetX}px, {offsetY}px) scale({scale});" bind:this={content} />
 </div>
 

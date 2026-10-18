@@ -148,8 +148,8 @@
     }
 </script>
 
-<div class="document">
-    <div class="strip" bind:this={strip}>
+<div class="document" data-testid="document-preview">
+    <div class="strip" bind:this={strip} data-testid="document-thumbnails">
         {#each info?.units || [] as u (u.index)}
             <div class="thumb" class:selected={view.unit === u.index} class:out={outUnit === u.index} data-unit={u.index} use:lazy={u.index}>
                 <button class="image" title={u.label} on:click={(e) => onThumbnailClick(e, u.index)}>
@@ -167,7 +167,7 @@
     <div class="main">
         <div class="toolbar">
             <MaterialButton icon="arrow_back_modern" title="media.previous" disabled={view.unit <= 0} on:click={() => select(view.unit - 1)} />
-            <span class="count">{unitCount ? view.unit + 1 : 0} / {unitCount}</span>
+            <span class="count" data-testid="document-unit-indicator">{unitCount ? view.unit + 1 : 0} / {unitCount}</span>
             <MaterialButton icon="arrow_forward" title="media.next" disabled={view.unit >= unitCount - 1} on:click={() => select(view.unit + 1)} />
 
             <div class="divider"></div>
@@ -200,7 +200,7 @@
         </div>
 
         {#if note}
-            <div class="note">{note}</div>
+            <div class="note" data-testid="document-note">{note}</div>
         {/if}
     </div>
 </div>
