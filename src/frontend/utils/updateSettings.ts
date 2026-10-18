@@ -18,7 +18,6 @@ import {
     activePopup,
     activeProject,
     ai,
-    alertUpdates,
     audioChannelsData,
     audioEffectPresets,
     audioEffects,
@@ -44,7 +43,6 @@ import {
     globalTags,
     groupNumbers,
     groups,
-    interactions,
     labelsDisabled,
     language,
     loaded,
@@ -90,10 +88,8 @@ import {
     version,
     videoMarkers
 } from "./../stores"
-import { checkForUpdates } from "./checkForUpdates"
 import { isMainWindow, startAutosave } from "./common"
 import { setLanguage } from "./language"
-import { startRemoteController } from "./remoteController"
 import { send } from "./request"
 
 export function updateSyncedSettings(data: any) {
@@ -302,11 +298,6 @@ const updateList: { [key in SaveListSettings | SaveListSyncedSettings]: any } = 
         setLanguage(v)
     },
     customFonts: (v: any) => customFonts.set(v),
-    alertUpdates: (v: any) => {
-        alertUpdates.set(v !== false)
-        // make sure "special" is set before checking
-        setTimeout(() => checkForUpdates(get(version)), 50)
-    },
     autoOutput: (v: any) => autoOutput.set(v),
     maxConnections: (v: any) => maxConnections.set(v),
     ports: (v: any) => ports.set(v),
@@ -376,7 +367,6 @@ const updateList: { [key in SaveListSettings | SaveListSyncedSettings]: any } = 
     timers: (v: any) => timers.set(v),
     variables: (v: any) => variables.set(v),
     scenes: (v: any) => scenes.set(v),
-    interactions: (v: any) => interactions.set(v),
     audioStreams: (v: any) => audioStreams.set(v),
     theme: (v: any) => theme.set(v),
     transitionData: (v: any) => transitionData.set(v),
@@ -398,7 +388,6 @@ const updateList: { [key in SaveListSettings | SaveListSyncedSettings]: any } = 
     customMetadata: (v: any) => customMetadata.set(v),
     special: (v: any) => {
         if (v.capitalize_words === undefined) v.capitalize_words = "Jesus, Lord" // God
-        if (v.autoUpdates) sendMain(Main.AUTO_UPDATE)
         // don't backup when just initialized (or reset)
         if (!v.autoBackupPrevious) v.autoBackupPrevious = Date.now()
         if (v.startupProjectsList) {
@@ -406,9 +395,6 @@ const updateList: { [key in SaveListSettings | SaveListSyncedSettings]: any } = 
             // let "activeProject" setting update first
             setTimeout(() => projectView.set(true))
             showRecentlyUsedProjects.set(false)
-        }
-        if (v.remoteController) {
-            startRemoteController(v.remoteControllerId)
         }
 
         // DEPRECATED (migrate)

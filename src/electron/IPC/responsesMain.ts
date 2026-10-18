@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/electron/main"
 import type { BrowserWindow, DesktopCapturerSource } from "electron"
 import { app, desktopCapturer, screen, shell, systemPreferences } from "electron"
 import os from "os"
@@ -39,7 +38,6 @@ import { getMachineId } from "../utils/helpers"
 import { closeMidiInPorts, getMidiInputs, getMidiOutputs, receiveMidi, sendMidi } from "../utils/midi"
 import { deleteShows, deleteShowsNotIndexed, getAllShows, getEmptyShows, refreshAllShows } from "../utils/shows"
 import { correctSpelling } from "../utils/spellcheck"
-import checkForUpdates from "../utils/updater"
 import { sendToMain } from "./main"
 
 // no need to await Promise returns here
@@ -83,7 +81,6 @@ export const mainResponses: MainResponses = {
     [Main.SHOW]: (data) => loadShow(data),
     // MAIN
     [Main.SHOWS]: (() => loadShowsAsync()) as any,
-    [Main.AUTO_UPDATE]: () => checkForUpdates(),
     [Main.URL]: (data) => openURL(data),
     [Main.LANGUAGE]: (data) => setGlobalMenu(data.strings),
     [Main.GET_PATHS]: () => getPaths(),
@@ -419,28 +416,6 @@ export function createLog(err: Error) {
         message: err.message,
         stack: err.stack
     } as ErrorLog
-}
-
-export function autoErrorReport() {
-    if (!isProd) return
-    if (config.get("autoErrorReporting") === false) return
-
-    // prevent random forks from sending error reports
-    // dots to prevent auto find/replace
-    const originalName = "f.r.e.e.s.h.o.w".replace(/\./g, "")
-    if (app.name !== originalName) return
-
-    console.info("Starting Sentry error reporting...")
-
-    Sentry.init({
-        dsn: "https://5d1069c3cb6faaa6e7ad0d9dc0145361@o4510419080445952.ingest.us.sentry.io/4510419082346496",
-        beforeSend(event) {
-            // filter out known non-critical errors
-            const errorMessage = event.exception?.values?.[0]?.value || ""
-            const shouldFilter = ERROR_FILTER.some((filter) => errorMessage.includes(filter))
-            return shouldFilter ? null : event
-        }
-    })
 }
 
 // STORE MEDIA AS BASE64

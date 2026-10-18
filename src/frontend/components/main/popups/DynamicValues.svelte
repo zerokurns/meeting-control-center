@@ -41,14 +41,13 @@
         const isStage = $activePage === "stage"
         const hidden = ["slide_text", "slide_group_color", "slide_group_upcoming_color"]
         let nonStageHidden = ["show_text_full", "slide_group_text"]
-        if ($showsCache[$activeShow?.id || ""]?.reference?.type !== "interaction") nonStageHidden.push("interaction_")
-        const stageHidden = ["interaction_"]
+        const stageHidden: string[] = []
         if (isStage) list = list.filter((a) => !hidden.includes(a.id) && !stageHidden.some((h) => a.id.startsWith(h)))
         else list = list.filter((a) => !hidden.includes(a.id) && !nonStageHidden.some((h) => a.id.startsWith(h)))
 
         let separatorId = ""
         // the ones that can have a custom name should be first (to prevent it from overwriting a category)
-        const separators = ["$", "timer_", "meta_", "rss_", "txt_", "project_", "time_", "show_", "slide_text", "exif_", "video_", "audio_", "interaction_"]
+        const separators = ["$", "timer_", "meta_", "rss_", "txt_", "project_", "time_", "show_", "slide_text", "exif_", "video_", "audio_"]
 
         let newList: { [key: string]: typeof list } = {}
         list.forEach((value) => {
@@ -67,7 +66,6 @@
     }
 
     function getTitle(id: string) {
-        if (id === "interaction_") return "tabs.interactions"
         if (id === "time_") return "timer.time"
         if (id === "project_") return "guide_title.project"
         if (id === "show_") return "guide_title.show"

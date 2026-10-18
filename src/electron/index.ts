@@ -13,7 +13,6 @@ import { startExport } from "./data/export"
 import { cleanupProtectedCache, registerProtectedProtocol } from "./data/protected"
 import { config, setupStores } from "./data/store"
 import { receiveMain, sendMain, sendToMain } from "./IPC/main"
-import { autoErrorReport } from "./IPC/responsesMain"
 import { receiveNDI } from "./ndi/talk"
 import { receiveOMT } from "./omt/talk"
 import { OutputHelper } from "./output/OutputHelper"
@@ -72,9 +71,6 @@ if (!isProd) console.info("Building app! (This may take 5-40 seconds)")
 
 // set application menu
 setGlobalMenu()
-
-// error reporting
-autoErrorReport()
 
 // hardware acceleration: startup snapshot of the actual runtime decision. Capture/convert paths must
 // gate on this, not the live config value — a not-yet-applied toggle would otherwise mismatch the real

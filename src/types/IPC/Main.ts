@@ -60,7 +60,6 @@ export enum Main {
     SPELLCHECK = "SPELLCHECK",
     ////
     SHOWS = "SHOWS",
-    AUTO_UPDATE = "AUTO_UPDATE",
     URL = "URL",
     LANGUAGE = "LANGUAGE",
     GET_PATHS = "GET_PATHS",

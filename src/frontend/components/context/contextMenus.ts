@@ -313,8 +313,6 @@ export const contextMenuLayouts: { [key: string]: string[] } = {
     actions_readonly: ["action_tag_filter"],
     action: ["GROUP_edit", "disable", "action_tag_set", "action_tag_filter", "SEPARATOR", "export", "SEPARATOR", "duplicate", "delete"], // GROUP_duplicate_delete
     action_readonly: ["action_tag_filter"],
-    interaction: ["GROUP_edit", "rename", "delete"],
-    interaction_input: ["GROUP_edit", "duplicate", "delete"],
 
     // PROJECT
     projects: ["newProject", "newFolder", "SEPARATOR", "sort_projects_by"],

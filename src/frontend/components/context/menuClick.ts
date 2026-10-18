@@ -47,12 +47,10 @@ import {
     focusMode,
     forceClock,
     guideActive,
-    interactions,
     livePrepare,
     media,
     mediaFolders,
     mediaOptions,
-    openedInteractionId,
     outLocked,
     outputs,
     overlayCategories,
@@ -249,7 +247,7 @@ const clickActions = {
         if (!id) return
         const data = obj.sel?.data?.[0] || {}
 
-        const renameById = ["show_drawer", "project", "folder", "stage", "theme", "style", "output", "tag", "profile", "interaction"]
+        const renameById = ["show_drawer", "project", "folder", "stage", "theme", "style", "output", "tag", "profile"]
         const renameByIdDirect = ["overlay", "template", "player", "layout", "effect", "scene"]
 
         if (renameById.includes(id)) activeRename.set(id + "_" + data.id)
@@ -359,10 +357,6 @@ const clickActions = {
             deleteAction({ id: "video_marker", data: { index: obj.contextElem.id } })
             return
         }
-        if (obj.contextElem?.classList.value.includes("#interaction_input")) {
-            deleteAction({ id: "interaction_input", data: { index: Number(obj.contextElem.id?.slice(1)) } })
-            return
-        }
 
         if (obj.sel && deleteAction(obj.sel)) return
 
@@ -395,20 +389,6 @@ const clickActions = {
         }
 
         if (updateEffectItem(obj, (items, index) => items.splice(index + 1, 0, clone(items[index])))) return
-
-        if (obj.contextElem?.classList.value.includes("#interaction_input")) {
-            const index = parseInt(obj.contextElem.id.slice(1))
-            const interactionId = get(openedInteractionId)
-            if (!interactionId) return
-
-            interactions.update((a) => {
-                if (!a[interactionId]) return a
-                const input = clone(a[interactionId].inputs[index])
-                a[interactionId].inputs.splice(index + 1, 0, { ...input, question: input.question + " 2" })
-                return a
-            })
-            return
-        }
 
         if (obj.contextElem?.classList.value.includes("stage_item")) {
             duplicate({ id: "stage_item", data: get(activeStage) })
@@ -1269,12 +1249,6 @@ const clickActions = {
             activePopup.set("timer")
         } else if (obj.sel.id === "variable") {
             activePopup.set("variable")
-        } else if (obj.sel.id === "interaction") {
-            openedInteractionId.set(obj.sel.data[0]?.id)
-        } else if (obj.contextElem?.classList?.contains("#interaction_input")) {
-            const id = (obj.contextElem.id || "").slice(1)
-            popupData.set({ id: get(openedInteractionId), inputIndex: Number(id) })
-            activePopup.set("interaction_input")
         } else if (obj.sel.id === "audio_stream") {
             activePopup.set("audio_stream")
         } else if (obj.contextElem?.classList?.contains("#project_template")) {

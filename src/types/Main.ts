@@ -8,7 +8,6 @@ export interface Config {
     dataPath: string | null
     disableHardwareAcceleration: boolean | null
     graphicsDevice: string | null
-    autoErrorReporting?: boolean
     mediaFolderPath?: string
 }
 
@@ -93,7 +92,6 @@ export type SelectIds =
     | "variable"
     | "scene"
     | "scene_overlay"
-    | "interaction"
     | "audio_stream"
     | "midi"
     | "theme"
@@ -252,51 +250,6 @@ export interface Variable {
     textSets?: { [key: string]: string }[]
 }
 
-export interface Interaction {
-    name: string
-    inputs: InteractionInput[]
-    options?: Options
-    history?: { time: number; leaderboard?: { name: string; score: number }[]; inputs: { question: string; answers: { name: string; value: any }[] }[] }[]
-    lastConnection?: { id: string; secret: string }
-}
-type Options = {
-    requireName?: boolean // default = true
-    randomNames?: boolean // default = false
-    allAtOnce?: boolean // default = false
-    maxTime?: number // seconds, default = no limit
-    scoreSystem?: "incremental" | "falloff" | "speed" // default = "incremental"
-    scorePoints?: number // default for incremental = 1, falloff = 10, speed = 100
-}
-
-export type InteractionInput = Heading | TextQuestion | NumberQuestion | MultipleChoiceQuestion
-interface Heading {
-    type: "heading"
-    question: string
-    inputType?: "none"
-}
-interface QuestionBase {
-    question: string
-}
-interface TextQuestion extends QuestionBase {
-    type: "text"
-    inputType: "input" // "textarea"
-    answer?: string // text does not need a precise answer
-    allowMultiple?: boolean
-}
-interface NumberQuestion extends QuestionBase {
-    type: "number"
-    inputType: "input" | "slider" | "number_range" | "time_range"
-    answer?: number
-    min?: number // 0
-    max?: number // 1000
-}
-interface MultipleChoiceQuestion extends QuestionBase {
-    type: "multi_choice"
-    inputType: "buttons" | "checkbox" | "dropdown" | "radio"
-    options?: { value: string; isAnswer?: boolean }[]
-    randomize?: boolean
-}
-
 export interface Trigger {
     name: string
     type: "http"
@@ -367,7 +320,6 @@ export type Popups =
     | "find_replace"
     | "timer"
     | "variable"
-    | "interaction_input"
     | "audio_stream"
     | "audio_effect"
     | "add_audio_effect"
@@ -394,13 +346,11 @@ export type Popups =
     | "display_duration"
     | "manage_tags"
     | "about"
-    | "update_manager"
     | "shortcuts"
     | "unsaved"
     | "restore"
     | "reset_all"
     | "alert"
-    | "new_update"
     | "history"
     | "action_history"
     | "manage_emitters"

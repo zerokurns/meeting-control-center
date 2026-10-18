@@ -5,7 +5,6 @@
     import Icon from "../../helpers/Icon.svelte"
     import T from "../../helpers/T.svelte"
     import Button from "../../inputs/Button.svelte"
-    import InteractionsInfo from "../pages/InteractionsInfo.svelte"
     import TimerInfo from "../timers/TimerInfo.svelte"
     import OBSInfo from "./OBSInfo.svelte"
     import ScenesInfo from "./ScenesInfo.svelte"
@@ -53,8 +52,6 @@
     <!-- VARIABLE -->
 {:else if type === "scenes"}
     <ScenesInfo />
-{:else if type === "interactions"}
-    <InteractionsInfo />
 {:else if type === "obs"}
     <OBSInfo />
 {/if}

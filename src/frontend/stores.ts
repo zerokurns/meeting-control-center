@@ -10,7 +10,7 @@ import type { AudioChannelData, AudioStream } from "../types/Audio"
 import type { AudioRoutingConfig } from "../types/AudioRouting"
 import type { Effects } from "../types/Effects"
 import type { History, HistoryNew } from "../types/History"
-import type { ActiveEdit, Clipboard, Interaction, Media, MediaOptions, NumberObject, OS, Popups, Profiles, Selected, SlidesOptions, Variable } from "../types/Main"
+import type { ActiveEdit, Clipboard, Media, MediaOptions, NumberObject, OS, Popups, Profiles, Selected, SlidesOptions, Variable } from "../types/Main"
 import type { Folders, Projects, ShowRef } from "../types/Projects"
 import type { Dictionary, Styles, Themes } from "../types/Settings"
 import type { Action, CustomFont, Emitter, ID, Overlays, Scene, ShowGroups, ShowList, Shows, ShowType, SlideTimer, Tag, Templates, Timer, Transition, TrimmedShows } from "../types/Show"
@@ -92,8 +92,6 @@ export const showNotesActive: Writable<boolean> = writable(false)
 export const slideNotesActive: Writable<boolean> = writable(false)
 export const templateApplied: Writable<boolean> = writable(false)
 export const activeAudioEffects: Writable<string> = writable("")
-export const openedInteractionId: Writable<string> = writable("")
-export const activeInteractions: Writable<string[]> = writable([])
 export const openedMediaFolders: Writable<{ [key: string]: any }> = writable({})
 
 // TAGS
@@ -238,9 +236,6 @@ export const variables: Writable<{ [key: string]: Variable }> = writable({}) // 
 // SCENES
 export const scenes: Writable<{ [key: string]: Scene }> = writable({}) // {}
 
-// INTERACTIONS
-export const interactions: Writable<{ [key: string]: Interaction }> = writable({}) // {}
-
 // MEDIA
 export const media: Writable<Media> = writable({}) // {}
 export const mediaFolders: Writable<Categories> = writable({}) // {default}
@@ -311,7 +306,6 @@ export const special: Writable<any> = writable({}) // {}
 export const language: Writable<string> = writable("en") // get locale
 export const autosave: Writable<string> = writable("15min") // "15min"
 export const timeFormat: Writable<string> = writable("24") // "24"
-export const alertUpdates: Writable<boolean> = writable(true) // true
 export const autoOutput: Writable<boolean> = writable(false) // false
 export const labelsDisabled: Writable<boolean> = writable(false) // false
 export const groupNumbers: Writable<boolean> = writable(true) // true
@@ -423,7 +417,6 @@ export const $ = {
     language,
     direction: localeDirection,
     timeFormat,
-    alertUpdates,
     autoOutput,
     labelsDisabled,
     groupNumbers,
