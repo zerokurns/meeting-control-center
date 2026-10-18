@@ -166,5 +166,21 @@
     "optionalDependencies": {
         "libspotifyctl": "^0.3.4",
         "sherpa-onnx-node": "^1.13.7"
+    },
+    "allowScripts": {
+        "electron": true,
+        "esbuild": true,
+        "better-sqlite3": true,
+        "github:ChurchApps/grandiose": true,
+        "github:bitfocus/libltc-wrapper": true,
+        "github:vassbo/macadam": true,
+        "github:meros-co/openmediatransport-node": true,
+        "github:meros-co/osr-capture": true,
+        "@discordjs/opus": true,
+        "protobufjs": true,
+        "electron-winstaller": true,
+        "@firebase/util": true,
+        "core-js-pure": false,
+        "svelte-preprocess": false
     }
 }
