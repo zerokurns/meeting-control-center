@@ -17,20 +17,23 @@ Sample files for the steps below are in `config/testing/fixtures/` (`agenda.pdf`
 
 ## 1. Build an agenda (5 min)
 
-1. In the left panel, **New project** → name it "Board meeting". A project is a meeting; its items are the agenda.
+1. **New project** (left panel, or the button on the start screen) → it opens straight away; double-click its name in the
+   project list to rename it "Board meeting". A project is a meeting; its items are the agenda.
 2. Press **+** at the bottom of the item list → **Document** → pick `deck.pptx`. Expect a toast while LibreOffice
    converts it, then a "deck" item with a document icon.
 3. **+** → **Document** → pick `minutes.docx` and `budget.xlsx` together.
 4. Drag `agenda.pdf` from your file manager onto the item list. It is copied into the data folder, not linked.
 5. **+** → **Section** → "Treasurer's report"; drag it above the budget item. Sections are agenda headings.
-6. **+** → **Timer** → create a 5-minute countdown called "Discussion".
+6. **+** → **Timer** → **New timer** → type "From/To", 5 minutes, name "Discussion", close the popup, then pick
+   "Discussion" in the list.
 7. **+** → **New show** → "Welcome" with one text slide ("Welcome, we start at 10:00") using Quick text.
    Drag it to the top.
 
 ## 2. Present (10 min)
 
 1. Click **Welcome** and press `Space`: the slide should appear on the output. `Space`/`→` advances,
-   `←` goes back. `F1` blanks the output, `F1` again restores it.
+   `←` goes back. `F1` blanks the output, `F1` again restores it. Arrow keys always drive the **output**; the
+   preview follows it (FreeShow's model), so if nothing is out yet, `→` puts the selected item out first.
 2. Click **deck**: the thumbnails strip shows the slides, the main area the current slide, the speaker note under
    it. Click slide 2 → it should be on the output. Use `→` to page through; at the last slide `→` moves to the next
    agenda item.
@@ -63,6 +66,8 @@ remote side sees documents at full resolution and that advancing works while sha
   presets come in Phase 2.
 - Virtual display driver and Google Meet attendance export are Phase 3; today you share a window or screen.
 - The LAN remote still shows FreeShow's layout and wording in places.
+- On a machine without GPU video decoding (or under a virtual display) a "Graphics acceleration is unavailable"
+  popup can appear about 20 s after start; close it, it is informational.
 
 ## What to report
 
