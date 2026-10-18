@@ -1,12 +1,12 @@
 {
     "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-    "name": "ControlShow",
-    "short_name": "ControlShow",
+    "name": "MCC Controller",
+    "short_name": "MCC Controller",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#242832",
     "theme_color": "#242832",
-    "description": "A remote controller app for FreeShow.",
+    "description": "Remote controller for Meeting Control Center.",
     "icons": [
         {
             "src": "icon.png",

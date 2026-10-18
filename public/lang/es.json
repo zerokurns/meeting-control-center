@@ -49,18 +49,9 @@
         "cropping_tip": "Ajustar con precisión la posición del contenido de la ventana recortando los lados"
     },
     "about": {
-        "check_updates": "Buscar actualizaciones",
         "made": "Desarrollado en Noruega por",
-        "more": "Por favor, echar un vistazo a más de nuestras aplicaciones en",
         "report": "Para reportar un problema o solicitar una función, vaya a",
-        "translate": "¿Quiere ayudar a traducir? Por favor diríjase a",
-        "mail": "Contacto por correo electrónico",
-        "support": "Si está agradecido por este proyecto, ¡por favor considere apoyarlo",
-        "assets": "Recursos utilizados",
-        "new_update": "Nueva actualización disponible",
-        "download_latest": "Descargar la última versión",
-        "download_auto": "La actualización automática está habilitada.  Esperar unos minutos para que la actualización se descargue e instale automáticamente, para luego reiniciar la aplicación.",
-        "changes": "Novedades"
+        "assets": "Recursos utilizados"
     },
     "tooltip": {
         "project": "Crear un nuevo proyecto que permita añadir y organizar presentaciones.",
@@ -542,7 +533,7 @@
         "drawer_search_options": "Opciones de búsqueda",
         "template_info": "Información de plantilla",
         "cleaning_utility": "Herramienta de limpieza",
-        "initialize": "Bienvenido a FreeShow",
+        "initialize": "Bienvenido a Meeting Control Center",
         "unsaved": "¿Seguro que desea salir?",
         "cancel": "Cancelar",
         "continue": "Continuar",
@@ -604,8 +595,7 @@
         "template": "Nueva plantilla",
         "action": "Nueva acción",
         "effect": "Nuevo efecto",
-        "scene": "Nueva escena",
-        "interaction": "Nueva interacción"
+        "scene": "Nueva escena"
     },
     "show": {
         "name": "Nombre",
@@ -909,7 +899,6 @@
         "all_shows": "Todas las presentaciones",
         "all_projects": "Todos los proyectos",
         "project": "Proyecto",
-        "data_link": "Copiar URL de datos",
         "option_type": "¿Qué desea exportar?",
         "option_format": "¿Qué formato desea?",
         "include_media": "Incluir archivos multimedia",
@@ -1621,35 +1610,7 @@
         "hollow": "Hueco"
     },
     "interaction": {
-        "add_input": "Añadir entrada",
-        "add_option": "Añadir opción",
-        "multi_choice": "Opción múltiple",
-        "heading": "Título",
-        "option": "Opción",
-        "question": "Pregunta",
-        "answer": "Respuesta",
-        "mark_as_correct": "Marcar como correcta",
-        "mark_as_incorrect": "Marcar como incorrecta",
-        "reveal_answer": "Mostrar respuesta",
-        "allow_multiple": "Permitir múltiples respuestas",
-        "optional": "Opcional",
-        "min": "Mín.",
-        "max": "Máx.",
-        "input": "Entrada",
-        "buttons": "Botones",
-        "checkboxes": "Casillas de verificación",
-        "radio_buttons": "Botones de opción",
-        "dropdown": "Menú desplegable",
-        "slider": "Control deslizante",
-        "range": "Rango",
-        "kick": "Eliminar",
-        "generate_slide": "Generar diapositiva",
-        "require_name": "Solicitar nombres",
-        "random_names": "Nombres aleatorios",
-        "all_at_once": "Todas las entradas a la vez",
-        "max_time": "Tiempo máximo por entrada",
-        "score_system": "Sistema de puntuación",
-        "points": "Puntos"
+        "generate_slide": "Generar diapositiva"
     },
     "info": {
         "created": "Creado",

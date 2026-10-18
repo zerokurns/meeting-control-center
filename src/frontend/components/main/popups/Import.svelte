@@ -15,13 +15,13 @@
     popupData.set({})
 
     const freeshow_formats = [
-        { name: "formats.show", title: "FreeShow Song/Presentation File", icon: "slide", extensions: ["show", "json"], id: "freeshow" },
-        { name: "formats.project", title: "FreeShow Project File", icon: "project", extensions: ["project", "shows", "json", "zip"], id: "freeshow_project" }, // , "fsproject", "fsp"
-        { name: "formats.template", title: "FreeShow Template File", icon: "templates", extensions: ["fstemplate", "fst", "template", "json", "zip"], id: "freeshow_template" },
-        { name: "formats.overlay", title: "FreeShow Overlay File", icon: "overlays", extensions: ["fsoverlay", "fso", "overlay", "json", "zip"], id: "freeshow_overlay" },
-        { name: "formats.action", title: "FreeShow Action File", icon: "actions", extensions: ["fsaction", "action", "json"], id: "freeshow_action" },
-        { name: "stage.stage_layout", title: "FreeShow Stage Layout File", icon: "stage", extensions: ["fsstage", "stage", "json"], id: "freeshow_stage" },
-        { name: "formats.theme", title: "FreeShow Theme File", icon: "theme", extensions: ["fstheme", "theme", "json"], id: "freeshow_theme" }
+        { name: "formats.show", title: "Meeting Control Center Song/Presentation File", icon: "slide", extensions: ["show", "json"], id: "freeshow" },
+        { name: "formats.project", title: "Meeting Control Center Project File", icon: "project", extensions: ["project", "shows", "json", "zip"], id: "freeshow_project" }, // , "fsproject", "fsp"
+        { name: "formats.template", title: "Meeting Control Center Template File", icon: "templates", extensions: ["fstemplate", "fst", "template", "json", "zip"], id: "freeshow_template" },
+        { name: "formats.overlay", title: "Meeting Control Center Overlay File", icon: "overlays", extensions: ["fsoverlay", "fso", "overlay", "json", "zip"], id: "freeshow_overlay" },
+        { name: "formats.action", title: "Meeting Control Center Action File", icon: "actions", extensions: ["fsaction", "action", "json"], id: "freeshow_action" },
+        { name: "stage.stage_layout", title: "Meeting Control Center Stage Layout File", icon: "stage", extensions: ["fsstage", "stage", "json"], id: "freeshow_stage" },
+        { name: "formats.theme", title: "Meeting Control Center Theme File", icon: "theme", extensions: ["fstheme", "theme", "json"], id: "freeshow_theme" }
     ]
 
     const freeshow_primary_formats = freeshow_formats.filter((format) => ["freeshow", "freeshow_project"].includes(format.id))
@@ -114,7 +114,7 @@
                 <p>{translateText(format.name)}</p>
 
                 <div class="freeshow">
-                    <img style="height: 18px;padding: 0;" src="./import-logos/freeshow.webp" alt="FreeShow-logo" draggable={false} />
+                    <img style="height: 18px;padding: 0;" src="./icon.png" alt="Meeting Control Center logo" draggable={false} />
                 </div>
             </MaterialButton>
         {/each}
@@ -193,7 +193,7 @@
                 <p>{translateText(format.name)}</p>
 
                 <div class="freeshow">
-                    <img style="height: 18px;padding: 0;" src="./import-logos/freeshow.webp" alt="FreeShow-logo" draggable={false} />
+                    <img style="height: 18px;padding: 0;" src="./icon.png" alt="Meeting Control Center logo" draggable={false} />
                 </div>
             </MaterialButton>
         {/each}

@@ -5,14 +5,14 @@ import { requestMain } from "../../IPC/main"
 import { ai } from "../../stores"
 import { getEditItems } from "../../components/edit/scripts/itemHelpers"
 import { CHAT_RESPONSE_SCHEMA, CHAT_SYSTEM_PROMPT, getSlideChatSystemPrompt, SLIDE_CHAT_RESPONSE_SCHEMA, STT_CONTROLLER_PROMPT, STT_CONTROLLER_SCHEMA } from "./prompts"
-import type { FreeShowAction } from "../manager/ChatAction"
+import type { MccAction } from "../manager/ChatAction"
 
 export interface ChatMessage {
     id: string
     role: "user" | "assistant" | "system"
     content: string
     timestamp: number
-    action?: FreeShowAction
+    action?: MccAction
 }
 
 export interface ChatSendOptions {
@@ -129,7 +129,7 @@ export class LLMManager {
         clearChatHistory(sessionKey)
     }
 
-    addMessage(sessionKey: string, role: ChatMessage["role"], content: string, action?: FreeShowAction): ChatMessage {
+    addMessage(sessionKey: string, role: ChatMessage["role"], content: string, action?: MccAction): ChatMessage {
         return addChatMessage(sessionKey, role, content, action)
     }
 
@@ -190,7 +190,7 @@ export class LLMManager {
         let content = rawResponse.content || rawResponse.text || rawResponse.response || ""
         content = content.replace(/\s*content\s*$/i, "").trim()
 
-        let action: FreeShowAction | undefined = rawResponse.action?.type && rawResponse.action?.data ? (rawResponse.action as FreeShowAction) : undefined
+        let action: MccAction | undefined = rawResponse.action?.type && rawResponse.action?.data ? (rawResponse.action as MccAction) : undefined
 
         if (!action && Array.isArray(rawResponse.items) && rawResponse.items.length > 0) {
             action = {
@@ -222,7 +222,7 @@ export function clearChatHistory(sessionKey: string = "default"): void {
     })
 }
 
-export function addChatMessage(sessionKey: string, role: ChatMessage["role"], content: string, action?: FreeShowAction): ChatMessage {
+export function addChatMessage(sessionKey: string, role: ChatMessage["role"], content: string, action?: MccAction): ChatMessage {
     const message: ChatMessage = {
         id: crypto.randomUUID(),
         role,

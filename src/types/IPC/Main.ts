@@ -27,7 +27,6 @@ export enum Main {
     // APP
     VERSION = "VERSION",
     GET_OS = "GET_OS",
-    DEVICE_ID = "DEVICE_ID",
     GET_DEVICE_NAME = "GET_DEVICE_NAME",
     IP = "IP",
     CHECK_RAM_USAGE = "CHECK_RAM_USAGE",
@@ -60,7 +59,6 @@ export enum Main {
     SPELLCHECK = "SPELLCHECK",
     ////
     SHOWS = "SHOWS",
-    AUTO_UPDATE = "AUTO_UPDATE",
     URL = "URL",
     LANGUAGE = "LANGUAGE",
     GET_PATHS = "GET_PATHS",
@@ -262,7 +260,6 @@ export interface MainReturnPayloads {
     // APP
     [Main.VERSION]: string
     [Main.GET_OS]: OS
-    [Main.DEVICE_ID]: string
     [Main.GET_DEVICE_NAME]: string
     [Main.IP]: string[]
     [Main.CHECK_RAM_USAGE]: { total: number; free: number; performanceMode: boolean }

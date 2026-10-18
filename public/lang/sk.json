@@ -2,7 +2,7 @@
     "main": {
         "quit": "Ukončiť",
         "docs": "Dokumentácia",
-        "about": "O FreeShow",
+        "about": "O Meeting Control Center",
         "unnamed": "Bez názvu",
         "drop": "Pusti sem",
         "search": "Hľadať",
@@ -43,17 +43,10 @@
         "cropping_tip": "Doladenie pozície okna obsahu orezaním snímkov"
     },
     "about": {
-        "check_updates": "Skontrolovať aktualizácie",
         "made": "Vyrobil v Nórsku",
-        "more": "Zistite viac o našej aplikácii na",
         "report": "Nahlásiť problém alebo požiadať o funkciu môžete na",
-        "translate": "Chcete pomôcť prekladať? Prosím prejdite na",
-        "mail": "Kontaktovať emailom",
-        "support": "Ak ste vďační za tento projekt, prosím zvážte jeho podporu",
         "assets": "Použité materiály",
-        "new_update": "Aktualizácia je k dispozícii",
-        "download": "Aplikáciu aktualizujete reštartovaní, alebo prejdite na freeshow.app a stiahnite ručne",
-        "changes": "Čo je nové"
+        "download": "Aplikáciu aktualizujete reštartovaní, alebo prejdite na freeshow.app a stiahnite ručne"
     },
     "tooltip": {
         "project": "Vytvorí projekt, kde môžete pridávať a upravovať prezentácie.",
@@ -431,7 +424,7 @@
         "manage_metadata": "Spravovať metadáta",
         "choose_camera": "Zvoľte kameru",
         "manage_tags": "Spravovať značky",
-        "initialize": "Vitajte vo FreeShow",
+        "initialize": "Vitajte vo Meeting Control Center",
         "unsaved": "Naozaj si prajete skončiť?",
         "cancel": "Zrušiť",
         "continue": "Pokračovať",

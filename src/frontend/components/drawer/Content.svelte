@@ -5,7 +5,6 @@
     import Audio from "./audio/Audio.svelte"
     import Media from "./media/Media.svelte"
     import Actions from "./pages/Actions.svelte"
-    import Interactions from "./pages/Interactions.svelte"
     import OBS from "./pages/OBS.svelte"
     import Overlays from "./pages/Overlays.svelte"
     import Scenes from "./pages/Scenes.svelte"
@@ -68,8 +67,6 @@
             <Variables {searchValue} />
         {:else if active === "scenes"}
             <Scenes {searchValue} />
-        {:else if active === "interactions"}
-            <Interactions {searchValue} />
         {:else if active === "obs"}
             <OBS {searchValue} />
         {/if}

@@ -46,7 +46,7 @@
 
 {#if !mode || mode === "setup"}
     <div style="display: flex;justify-content: center;font-size: 0.9em;">
-        <Link url="https://freeshow.app/docs/smart">
+        <Link url="https://github.com/zerokurns/meeting-control-center">
             <T id="main.docs" />
             <Icon id="launch" white />
         </Link>

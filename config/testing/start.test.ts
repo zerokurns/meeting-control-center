@@ -5,10 +5,6 @@ import tmp from "tmp"
 const timeoutMs = 2_000
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-test.beforeEach(async ({ context }) => {
-    await context.route("https://api.github.com/repos/ChurchApps/freeshow/releases", (route) => route.abort())
-})
-
 test("Launch electron app", async () => {
     const tmpSettingFolder = tmp.dirSync({ unsafeCleanup: true })
     const electronApp = await electron.launch({
@@ -27,7 +23,7 @@ test("Launch electron app", async () => {
 
     await electronApp.waitForEvent("window")
 
-    // Seems like we need some delay for FreeShow to start up correctly,
+    // Seems like we need some delay for the app to start up correctly,
     // before doing anything
     // TODO: would be great if we can identify the loading window and main window
     await delay(5_000)

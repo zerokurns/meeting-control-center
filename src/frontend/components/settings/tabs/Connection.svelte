@@ -3,7 +3,6 @@
     import { Main } from "../../../../types/IPC/Main"
     import { requestMain, sendMain } from "../../../IPC/main"
     import { activePopup, activeTriggerFunction, connections, disabledServers, maxConnections, obsData, outputs, popupData, ports, serverData, special } from "../../../stores"
-    import { startRemoteController, stopRemoteController } from "../../../utils/remoteController"
     import Icon from "../../helpers/Icon.svelte"
     import { checkWindowCapture } from "../../helpers/output"
     import InputRow from "../../input/InputRow.svelte"
@@ -95,25 +94,10 @@
         // ...(($special.optimizedMode && $disabledServers.output_stream !== false) ? [] : [{ id: "output_stream", name: "OutputShow", icon: "stage", enabledByDefault: false }]),
         { id: "output_stream", name: "OutputShow", icon: "stage", enabledByDefault: false },
         // Bitfocus Companion (WebSocket/REST)
-        { id: "companion", name: "API", icon: "companion", enabledByDefault: false, url: "https://freeshow.app/docs/companion" }
-        // { id: "rest", name: "REST Listener", icon: "companion", enabledByDefault: false, url: "https://freeshow.app/docs/api" },
+        { id: "companion", name: "API", icon: "companion", enabledByDefault: false, url: "https://github.com/zerokurns/meeting-control-center" }
+        // { id: "rest", name: "REST Listener", icon: "companion", enabledByDefault: false, url: "https://github.com/zerokurns/meeting-control-center" },
     ]
     // Camera
-    // Answer / Guess / Poll
-
-    // Remote Control
-
-    function toggleRemoteController(value: boolean) {
-        special.update((a) => ({ ...a, remoteController: value }))
-
-        if (value) {
-            popupData.set({ remoteController: true })
-            activePopup.set("connect")
-            if ($special.remoteControllerId) startRemoteController()
-        } else {
-            stopRemoteController()
-        }
-    }
 
     // OBS Controller
 
@@ -164,25 +148,6 @@
         {/if}
     </InputRow>
 {/each}
-
-<InputRow>
-    <MaterialButton
-        style="flex: 1;justify-content: space-between;"
-        disabled={!$special.remoteController}
-        on:click={() => {
-            popupData.set({ remoteController: true })
-            activePopup.set("connect")
-        }}
-    >
-        <span style="display: flex;align-items: center;justify-content: center;gap: 15px;">
-            <Icon id="web" size={1.1} />
-
-            Remote Clicker
-        </span>
-    </MaterialButton>
-
-    <MaterialToggleSwitch label="" checked={$special.remoteController} on:change={(e) => toggleRemoteController(e.detail)} />
-</InputRow>
 
 <!-- OBS Studio Controller -->
 <Title label="OBS Studio" icon="record" />

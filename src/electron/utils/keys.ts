@@ -1,7 +1,7 @@
 // due to this being open source, there is no easy way to hide the API keys (that I know of),
 // so this is a basic encryption to hide it from scrapers
 // you could easily find the keys, but please don't do that, thanks! :)
-// you are not allowed to used these keys outside of the FreeShow software!
+// you are not allowed to used these keys outside of the Meeting Control Center software!
 // (they are all free, so you can just get your own keys if you want)
 
 export function getKey(type: string) {

@@ -24,7 +24,7 @@ export interface Show {
     category: null | ID
     quickAccess?: any
     reference?: {
-        type: "canva" | "interaction"
+        type: "canva"
         data: any
     }
     settings: {

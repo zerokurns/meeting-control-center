@@ -1,4 +1,4 @@
-// ----- FreeShow -----
+// ----- Meeting Control Center -----
 // Content Provider Helper Functions
 // Handles access and settings for external content providers like Canva.
 

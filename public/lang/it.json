@@ -46,18 +46,9 @@
         "cropping_tip": "Regola con precissione la posizione del contenuto della finestra ritagliando i bordi"
     },
     "about": {
-        "check_updates": "Cerca aggiornamenti",
         "made": "Creato in Norvegia da",
-        "more": "Controlla altre nostre applicazioni su",
         "report": "Per segnalare un problema o richiedere una funzionalità, vai a",
-        "translate": "Vuoi aiutare a tradurre? Per favore, vai a",
-        "mail": "Contatto tramite e-mail",
-        "support": "Se sei grato per questo progetto, considera di sostenerlo",
-        "assets": "Assets usati",
-        "new_update": "Nuovo aggiornamento disponibile",
-        "download_latest": "Scarica l'ultima versione disponibile",
-        "download_auto": "Hai gli aggiornamenti automatici abilitati, attendi qualche minuto affinché l'aggiornamento venga scaricato e installato automaticamente, poi riavvia l'applicazione",
-        "changes": "Cosa c'è di nuovo"
+        "assets": "Assets usati"
     },
     "tooltip": {
         "project": "Crea un nuovo progetto in cui puoi aggiungere e organizzare le scene.",
@@ -486,7 +477,7 @@
         "effect_items": "Elementi effetto",
         "timeline": "Timeline",
         "timecode": "Timecode",
-        "initialize": "Benvenuto su FreeShow",
+        "initialize": "Benvenuto su Meeting Control Center",
         "unsaved": "Sei sicuro di voler uscire?",
         "cancel": "Cancella",
         "continue": "Continua",

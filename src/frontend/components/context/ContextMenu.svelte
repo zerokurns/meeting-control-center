@@ -62,7 +62,7 @@
         // show "Copy ID" button if API is enabled
         if ($serverData?.companion?.enabled && id) {
             const baseId = id.slice(1).split("_readonly")[0].split("_default")[0]
-            const idCopyableMenus = ["action", "overlay_card", "drawer_show_button", "global_timer", "variable", "project_button", "template_card", "stage_slide", "style", "audio_stream", "interaction", "camera_card", "screen_card", "output_screen", "output_screen_stage"]
+            const idCopyableMenus = ["action", "overlay_card", "drawer_show_button", "global_timer", "variable", "project_button", "template_card", "stage_slide", "style", "audio_stream", "camera_card", "screen_card", "output_screen", "output_screen_stage"]
             if (idCopyableMenus.includes(baseId) && !activeMenu.includes("copy_id")) {
                 activeMenu.push("SEPARATOR", "copy_id")
             }

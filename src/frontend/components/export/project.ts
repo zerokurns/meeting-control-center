@@ -1,4 +1,4 @@
-// ----- FreeShow -----
+// ----- Meeting Control Center -----
 // Function for exporting project/shows as a project (.project)
 
 import { get } from "svelte/store"

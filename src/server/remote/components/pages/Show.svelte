@@ -269,7 +269,7 @@
         flex: 1;
         overflow-y: auto;
         overflow-x: hidden;
-        /* FreeShow UI scrollbar */
+        /* MCC UI scrollbar */
         scrollbar-width: thin; /* Firefox */
         scrollbar-color: rgb(255 255 255 / 0.3) rgb(255 255 255 / 0.05);
     }

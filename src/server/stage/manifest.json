@@ -1,12 +1,12 @@
 {
     "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-    "name": "StageShow",
-    "short_name": "StageShow",
+    "name": "MCC Stage",
+    "short_name": "MCC Stage",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#242832",
     "theme_color": "#242832",
-    "description": "A stage display for FreeShow.",
+    "description": "Stage display for Meeting Control Center.",
     "icons": [
         {
             "src": "icon.png",

@@ -1,11 +1,13 @@
 {
-    "name": "freeshow",
+    "name": "meeting-control-center",
+    "productName": "Meeting Control Center",
     "version": "1.6.7-beta.2",
     "private": true,
     "main": "build/electron/index.js",
-    "description": "Show song lyrics and more for free!",
-    "repository": "git@github.com:ChurchApps/FreeShow.git",
-    "author": "ChurchApps <support@livecs.org>",
+    "description": "Meeting Control Center: a presenter for virtual and hybrid meetings (FreeShow fork)",
+    "repository": "https://github.com/zerokurns/meeting-control-center",
+    "homepage": "https://github.com/zerokurns/meeting-control-center",
+    "author": "Eric Kearns",
     "license": "GPL-3.0",
     "engines": {
         "node": ">=22.12.0"
@@ -97,7 +99,6 @@
         "eslint-plugin-jsdoc": "^39.9.1",
         "eslint-plugin-prefer-arrow": "^1.2.3",
         "eslint-plugin-svelte3": "^4.0.0",
-        "firebase": "^12.15.0",
         "npm-run-all2": "^9.0.1",
         "pdfjs-dist": "^5.4.296",
         "playwright": "^1.56.1",
@@ -129,12 +130,10 @@
     },
     "dependencies": {
         "@discordjs/opus": "^0.10.0",
-        "@sentry/electron": "^7.3.0",
         "axios": "^1.12.2",
         "bonjour-service": "^1.3.0",
         "ebml": "^3.0.0",
         "electron-store": "^8.2.0",
-        "electron-updater": "^6.6.7",
         "exif": "^0.6.0",
         "express": "^4.21.2",
         "fast-xml-parser": "^5.10.1",
@@ -144,7 +143,6 @@
         "macadam": "github:vassbo/macadam#7274be8",
         "mp4box": "^0.6.5",
         "music-metadata": "^7.14.0",
-        "node-machine-id": "^1.1.12",
         "openmediatransport": "github:meros-co/openmediatransport-node#abf6c34cb69450b24de0f69ecb6aeadc0387d9e0",
         "osc-js": "^2.4.1",
         "osr-capture": "github:meros-co/osr-capture#4c78276",
@@ -169,7 +167,6 @@
         "github:meros-co/osr-capture": true,
         "@discordjs/opus": true,
         "electron-winstaller": true,
-        "@firebase/util": true,
         "core-js-pure": false,
         "svelte-preprocess": false
     }

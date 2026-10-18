@@ -31,7 +31,6 @@ export const defaultSettings: { [key in SaveListSettings]: any } = {
     sorted: {},
     openedFolders: ["default"],
     activeProject: null,
-    alertUpdates: true,
     autoOutput: false,
     autosave: "15min",
     timeFormat: "24",
@@ -101,7 +100,6 @@ export const defaultSyncedSettings: { [key in SaveListSyncedSettings]: any } = {
         default: { name: "Counter", type: "number" }
     },
     scenes: {},
-    interactions: {},
     audioStreams: {},
     groups: defaultGroups,
     midiIn: {},

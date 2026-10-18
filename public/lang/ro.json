@@ -48,18 +48,9 @@
         "cropping_tip": "Ajustare a poziției ferestrei decupând marginile"
     },
     "about": {
-        "check_updates": "Căutare actualizare",
         "made": "Creat în Norvegia de",
-        "more": "Vă rugăm să căutați mai multe informații despre aplicatia noastră la",
         "report": "Ca să raportați o problemă sau să cereți o nouă caracteristică, mergeți la",
-        "translate": "Vrei să ajuți la traducere? Vă rugăm să mergeți la",
-        "mail": "Contactați via email",
-        "support": "Dacă sunteți recunoscători pentru acest proiect, vă rugăm să luați în considerare susținerea acestuia",
-        "assets": "Active utilizate",
-        "new_update": "Actualizare nouă valabilă",
-        "download_latest": "Descarcă ultima versiune",
-        "download_auto": "Aveți auto actualizarea pornită, vă rugăm să așteptați câteva minute pentru descărcare si instalare automată, după aceea reponiți aplicația",
-        "changes": "Ce e nou"
+        "assets": "Active utilizate"
     },
     "tooltip": {
         "project": "Creează un proiect nou unde poți adăuga si aranja prezentări",
@@ -529,7 +520,7 @@
         "drawer_search_options": "Opțiuni de căutare",
         "template_info": "Informații despre șablon",
         "cleaning_utility": "Utilitar de curățare",
-        "initialize": "Bine ai venit pe FreeShow",
+        "initialize": "Bine ai venit pe Meeting Control Center",
         "unsaved": "Ești sigur că vrei să renunți?",
         "cancel": "Anulează",
         "continue": "Continuă",
@@ -588,8 +579,7 @@
         "overlay": "Overlay nou",
         "template": "Șablon nou",
         "action": "Acțiune nouă",
-        "effect": "Efect nou",
-        "interaction": "Interacțiune nouă"
+        "effect": "Efect nou"
     },
     "show": {
         "name": "Nume",
@@ -888,7 +878,6 @@
         "all_shows": "Toate prezentările",
         "all_projects": "Toate proiectele",
         "project": "Proiect",
-        "data_link": "Copiază URL-ul datelor",
         "option_type": "Ce dorești să exporți?",
         "option_format": "Ce format dorești?",
         "include_media": "Include fișierele media",
@@ -1577,35 +1566,7 @@
         "hollow": "Gol"
     },
     "interaction": {
-        "add_input": "Adaugă intrare",
-        "add_option": "Adaugă opțiune",
-        "multi_choice": "Alegere multiplă",
-        "heading": "Titlu",
-        "option": "Opțiune",
-        "question": "Întrebare",
-        "answer": "Răspuns",
-        "mark_as_correct": "Marchează ca corect",
-        "mark_as_incorrect": "Marchează ca incorect",
-        "reveal_answer": "Dezvăluie răspunsul",
-        "allow_multiple": "Permite mai multe răspunsuri",
-        "optional": "Opțional",
-        "min": "Min",
-        "max": "Max",
-        "input": "Intrare",
-        "buttons": "Butoane",
-        "checkboxes": "Casete de bifat",
-        "radio_buttons": "Butoane radio",
-        "dropdown": "Listă derulantă",
-        "slider": "Glisor",
-        "range": "Interval",
-        "kick": "Elimină",
-        "generate_slide": "Generează slide",
-        "require_name": "Solicită numele",
-        "random_names": "Nume aleatorii",
-        "all_at_once": "Toate intrările simultan",
-        "max_time": "Timp maxim pe intrare",
-        "score_system": "Sistem de punctaj",
-        "points": "Puncte"
+        "generate_slide": "Generează slide"
     },
     "info": {
         "created": "Creat",

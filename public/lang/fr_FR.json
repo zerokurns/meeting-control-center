@@ -49,18 +49,9 @@
         "cropping_tip": "Ajuster finement la position du contenu de la fenêtre en rognant les côtés"
     },
     "about": {
-        "check_updates": "Rechercher des mises à jour",
         "made": "Créé en Norvège par",
-        "more": "Découvrez nos autres applications sur",
         "report": "Pour signaler un problème ou demander une fonctionnalité, rendez-vous sur",
-        "translate": "Vous souhaitez aider à traduire ? Veuillez vous rendre sur",
-        "mail": "Contacter par email",
-        "support": "Si vous appréciez ce projet, veuillez envisager de le soutenir",
-        "assets": "Ressources utilisées",
-        "new_update": "Nouvelle mise à jour disponible",
-        "download_latest": "Télécharger la dernière version",
-        "download_auto": "La mise à jour automatique est activée. Veuillez patienter quelques minutes le temps que la mise à jour soit téléchargée et installée automatiquement, puis redémarrez l'application.",
-        "changes": "Quoi de neuf"
+        "assets": "Ressources utilisées"
     },
     "tooltip": {
         "project": "Créez un nouveau projet où vous pouvez ajouter et organiser des présentations.",
@@ -542,7 +533,7 @@
         "drawer_search_options": "Options de recherche",
         "template_info": "Informations sur le modèle",
         "cleaning_utility": "Utilitaire de nettoyage",
-        "initialize": "Bienvenue sur FreeShow",
+        "initialize": "Bienvenue sur Meeting Control Center",
         "unsaved": "Êtes-vous sur de vouloir quitter ?",
         "cancel": "Annuler",
         "continue": "Continuer",
@@ -604,8 +595,7 @@
         "template": "Nouveau modèle",
         "action": "Nouvelle action",
         "effect": "Nouvel effet",
-        "scene": "Nouvelle scène",
-        "interaction": "Nouvelle interaction"
+        "scene": "Nouvelle scène"
     },
     "show": {
         "name": "Nom",
@@ -909,7 +899,6 @@
         "all_shows": "Toutes les présentations",
         "all_projects": "Tous les projets",
         "project": "Projet",
-        "data_link": "Copier l'URL des données",
         "option_type": "Que souhaitez-vous exporter ?",
         "option_format": "Quel format souhaitez-vous ?",
         "include_media": "Inclure les fichiers médias",
@@ -1621,35 +1610,7 @@
         "hollow": "Creux"
     },
     "interaction": {
-        "add_input": "Ajouter une entrée",
-        "add_option": "Ajouter une option",
-        "multi_choice": "Choix multiple",
-        "heading": "Titre",
-        "option": "Option",
-        "question": "Question",
-        "answer": "Réponse",
-        "mark_as_correct": "Marquer comme correct",
-        "mark_as_incorrect": "Marquer comme incorrect",
-        "reveal_answer": "Afficher la réponse",
-        "allow_multiple": "Autoriser plusieurs réponses",
-        "optional": "Optionnel",
-        "min": "Min",
-        "max": "Max",
-        "input": "Entrée",
-        "buttons": "Boutons",
-        "checkboxes": "Cases à cocher",
-        "radio_buttons": "Boutons radio",
-        "dropdown": "Dérouler",
-        "slider": "Curseur",
-        "range": "Rangée",
-        "kick": "Supprimer",
-        "generate_slide": "Générer diapositive",
-        "require_name": "Demander des noms",
-        "random_names": "Noms aléatoires",
-        "all_at_once": "Toutes les entrées simultanément",
-        "max_time": "Durée maximale par entrée",
-        "score_system": "Système de notation",
-        "points": "Points"
+        "generate_slide": "Générer diapositive"
     },
     "info": {
         "created": "Crée",

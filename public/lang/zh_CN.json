@@ -49,18 +49,9 @@
         "cropping_tip": "通过裁剪边缘微调窗口内容位置"
     },
     "about": {
-        "check_updates": "检查更新...",
         "made": "源自挪威，作者：",
-        "more": "查看更多应用程序",
         "report": "要报告问题或请求新功能，请访问：",
-        "translate": "想帮忙翻译吗？请前往",
-        "mail": "通过邮件联系",
-        "support": "如果您对这个项目心存感激，请考虑支持它",
-        "assets": "使用的素材",
-        "new_update": "有可用版本更新",
-        "download_latest": "下载最新版本",
-        "download_auto": "您已启用自动更新，请等待几分钟，更新文件将自动下载并安装，然后重启应用程序。",
-        "changes": "更新日志<br>"
+        "assets": "使用的素材"
     },
     "tooltip": {
         "project": "创建一个新项目，您可以在其中添加和安排节目。",
@@ -542,7 +533,7 @@
         "drawer_search_options": "搜索选项",
         "template_info": "模板信息",
         "cleaning_utility": "清理工具",
-        "initialize": "欢迎使用 FreeShow",
+        "initialize": "欢迎使用 Meeting Control Center",
         "unsaved": "您确定要退出吗？",
         "cancel": "取消",
         "continue": "继续",
@@ -604,8 +595,7 @@
         "template": "新建模板",
         "action": "新建动作",
         "effect": "新建效果",
-        "scene": "新建场景",
-        "interaction": "新建交互"
+        "scene": "新建场景"
     },
     "show": {
         "name": "名称",
@@ -909,7 +899,6 @@
         "all_shows": "全部节目",
         "all_projects": "全部项目",
         "project": "项目",
-        "data_link": "复制数据 URL",
         "option_type": "您希望导出什么内容？",
         "option_format": "您希望以什么格式导出？",
         "include_media": "包含媒体文件",
@@ -1621,35 +1610,7 @@
         "hollow": "镂空"
     },
     "interaction": {
-        "add_input": "添加输入",
-        "add_option": "添加选项",
-        "multi_choice": "多选",
-        "heading": "标题",
-        "option": "选项",
-        "question": "问题",
-        "answer": "答案",
-        "mark_as_correct": "标记为正确",
-        "mark_as_incorrect": "标记为错误",
-        "reveal_answer": "显示答案",
-        "allow_multiple": "允许多个答案",
-        "optional": "可选",
-        "min": "最小",
-        "max": "最大",
-        "input": "输入",
-        "buttons": "按钮",
-        "checkboxes": "复选框",
-        "radio_buttons": "单选按钮",
-        "dropdown": "下拉菜单",
-        "slider": "滑块",
-        "range": "范围",
-        "kick": "切入",
-        "generate_slide": "生成幻灯片",
-        "require_name": "显示请求名称",
-        "random_names": "随机名称",
-        "all_at_once": "同时响应所有输入",
-        "max_time": "单次输入最长时长",
-        "score_system": "计分系统",
-        "points": "分值"
+        "generate_slide": "生成幻灯片"
     },
     "info": {
         "created": "已创建",

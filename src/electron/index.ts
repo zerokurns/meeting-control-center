@@ -1,4 +1,4 @@
-// ----- FreeShow -----
+// ----- Meeting Control Center -----
 // This is the electron entry point
 
 import type { Rectangle } from "electron"
@@ -13,7 +13,6 @@ import { startExport } from "./data/export"
 import { cleanupProtectedCache, registerProtectedProtocol } from "./data/protected"
 import { config, setupStores } from "./data/store"
 import { receiveMain, sendMain, sendToMain } from "./IPC/main"
-import { autoErrorReport } from "./IPC/responsesMain"
 import { receiveNDI } from "./ndi/talk"
 import { receiveOMT } from "./omt/talk"
 import { OutputHelper } from "./output/OutputHelper"
@@ -67,14 +66,11 @@ config.set("loaded", true)
 if (!config.get("loaded")) console.error("Could not get stored data!")
 
 // info
-console.info("Starting FreeShow...")
+console.info("Starting Meeting Control Center...")
 if (!isProd) console.info("Building app! (This may take 5-40 seconds)")
 
 // set application menu
 setGlobalMenu()
-
-// error reporting
-autoErrorReport()
 
 // hardware acceleration: startup snapshot of the actual runtime decision. Capture/convert paths must
 // gate on this, not the live config value — a not-yet-applied toggle would otherwise mismatch the real
@@ -179,6 +175,7 @@ function requestHeaders() {
     const session = require("electron").session.defaultSession
     session.webRequest.onBeforeSendHeaders((details: any, callback: any) => {
         if (details.url.includes("youtube.com") || details.url.includes("youtube-nocookie.com")) {
+            // any https referer works here; freeshow.app is kept until MCC has a domain
             details.requestHeaders.Referer = "https://freeshow.app/"
         }
         callback({ requestHeaders: details.requestHeaders })

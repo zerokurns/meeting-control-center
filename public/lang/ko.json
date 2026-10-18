@@ -46,18 +46,9 @@
         "cropping_tip": "가장자리를 잘라내어 창 내용의 위치를 정밀하게 조정합니다."
     },
     "about": {
-        "check_updates": "업데이트 확인",
         "made": "노르웨이에서 제작.",
-        "more": "우리의 더 많은 애플리케이션을 확인하려면:",
         "report": "문제를 보고하거나 기능을 요청하려면:",
-        "translate": "번역을 돕고 싶으신가요? 이곳으로:",
-        "mail": "이메일 문의",
-        "support": "이 프로젝트가 마음에 드신다면, 지원을 고려해주세요.",
-        "assets": "사용한 자산",
-        "new_update": "새로운 업데이트 사용 가능",
-        "download_latest": "최신 버전 다운로드",
-        "download_auto": "자동 업데이트를 활성화했습니다. 업데이트를 자동으로 내려받고 설치하기까지 몇 분 정도 기다린 후 애플리케이션을 다시 시작하시기 바랍니다.",
-        "changes": "새로운 기능"
+        "assets": "사용한 자산"
     },
     "tooltip": {
         "project": "쇼를 추가하고 정렬할 수 있는 새 프로젝트를 만듭니다.",
@@ -517,7 +508,7 @@
         "timecode": "타임코드",
         "drawer_search_options": "검색 선택사항",
         "template_info": "템플릿 정보",
-        "initialize": "FreeShow에 오신 것을 환영합니다",
+        "initialize": "Meeting Control Center에 오신 것을 환영합니다",
         "unsaved": "정말 종료하시겠습니까?",
         "cancel": "취소",
         "continue": "계속",

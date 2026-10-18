@@ -49,18 +49,9 @@
         "cropping_tip": "Natančna nastavitev položaja vsebine okna s porezavo stranic"
     },
     "about": {
-        "check_updates": "Preveri za posodobitve",
         "made": "Na Norveškem naredil",
-        "more": "Več o našem programu si lahko pogledate na",
         "report": "Če želite prijaviti težavo ali prositi za novo zmožnost, pojdite na",
-        "translate": "Ali želite pomagati s prevodom? Pojdite na",
-        "mail": "Stopite v stik preko epošte",
-        "support": "Vašo hvaležnost za ta projekt lahko izkažete tudi tako, da ga podprete",
-        "assets": "Assets used",
-        "new_update": "Na voljo je nadgradnja",
-        "download_latest": "Prenesi najnovejšo različico",
-        "download_auto": "Omogočeno imate samodejno posodobitev. Počakajte nekaj minut, da se posodobitev prenese in samodejno namesti, nato pa ponovno zaženite program.",
-        "changes": "Kaj je novega"
+        "assets": "Assets used"
     },
     "tooltip": {
         "project": "Ustvarite nov projekt, spored, v katerem lahko dodajate in urejate predstavitve, pesmi.",
@@ -542,7 +533,7 @@
         "drawer_search_options": "Možnosti iskanja",
         "template_info": "Podatki o predlogi",
         "cleaning_utility": "Čistilnik",
-        "initialize": "Dobrodošli v FreeShowu",
+        "initialize": "Dobrodošli v Meeting Control Centeru",
         "unsaved": "Ali ste prepričani, da želi končati?",
         "cancel": "Prekliči",
         "continue": "Nadaljuj",
@@ -604,8 +595,7 @@
         "template": "Nova predloga",
         "action": "Novo dejanje",
         "effect": "Nov učinek",
-        "scene": "Nov prizor",
-        "interaction": "Novi medvplivi"
+        "scene": "Nov prizor"
     },
     "show": {
         "name": "Ime",
@@ -909,7 +899,6 @@
         "all_shows": "Vse predstavitve",
         "all_projects": "Vsi projekti",
         "project": "Projekt",
-        "data_link": "Pomni URL podatkov",
         "option_type": "Kaj želite izvoziti?",
         "option_format": "Kateri zapis želite?",
         "include_media": "Vdelaj predstavnostne datoteke",
@@ -1621,35 +1610,7 @@
         "hollow": "Duplina"
     },
     "interaction": {
-        "add_input": "Dodaj vhod",
-        "add_option": "Dodaj možnost",
-        "multi_choice": "Več možnih izbir",
-        "heading": "Naslov",
-        "option": "Možnost",
-        "question": "Vprašanje",
-        "answer": "Odgovor",
-        "mark_as_correct": "Označi kot pravilen",
-        "mark_as_incorrect": "Označi kot napačen",
-        "reveal_answer": "Razkrij odgovor",
-        "allow_multiple": "Dovoli več odgovorov",
-        "optional": "Neobvezno",
-        "min": "Najm.",
-        "max": "Najv.",
-        "input": "Vnašanje",
-        "buttons": "Gumbi",
-        "checkboxes": "Označna polja",
-        "radio_buttons": "Izbirni gumbi",
-        "dropdown": "Spustni",
-        "slider": "Drsnik",
-        "range": "Razpon",
-        "kick": "Sprožilec",
-        "generate_slide": "Ustvari drsnik",
-        "require_name": "Zaprosi za imena",
-        "random_names": "Naključna imena",
-        "all_at_once": "Vsi vnosi na enkrat",
-        "max_time": "Najdaljši čas na vnos",
-        "score_system": "Vrsta točkovanja",
-        "points": "Točke"
+        "generate_slide": "Ustvari drsnik"
     },
     "info": {
         "created": "Ustvarjeno",

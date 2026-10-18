@@ -17,12 +17,11 @@ import { send } from "../../utils/request"
 import { convertRSSToString, getRSS } from "../../utils/rss"
 import { runAction, slideHasAction } from "../actions/actions"
 import type { API_output_style } from "../actions/api"
-import { getInteraction } from "../drawer/pages/interactions"
 import { getCurrentTimerValue, getTimeUntilClock, playPauseGlobal } from "../drawer/timers/timers"
 import { getDynamicValue } from "../edit/scripts/itemHelpers"
 import { getTextLines } from "../edit/scripts/textStyle"
 import { clearBackground, clearOverlays, clearTimers } from "../output/clear"
-import { activeEdit, activeFocus, activeInteractions, activePage, activeProject, activeShow, allOutputs, audioChannelsData, audioData, cachedDynamicValues, customMetadata, dictionary, dynamicValueData, editingProjectTemplate, focusMode, interactions, media, outLocked, outputDisplay, outputs, overlays, playerVideos, playingAudio, playingVideoState, projects, projectTemplates, shows, showsCache, slideTimers, special, stageShows, styles, templates, timers, variables } from "./../../stores"
+import { activeEdit, activeFocus, activePage, activeProject, activeShow, allOutputs, audioChannelsData, audioData, cachedDynamicValues, customMetadata, dictionary, dynamicValueData, editingProjectTemplate, focusMode, media, outLocked, outputDisplay, outputs, overlays, playerVideos, playingAudio, playingVideoState, projects, projectTemplates, shows, showsCache, slideTimers, special, stageShows, styles, templates, timers, variables } from "./../../stores"
 import { clone, keysToID, sortByName } from "./array"
 import { downloadOnlineMedia, encodeFilePath, getExtension, getFileName, getMedia, getMediaStyle, getMediaType, locateMediaFile, removeExtension } from "./media"
 import { defaultLayers, getActiveOutputs, getAllActiveOutputIds, getAllNormalOutputs, getAllStageOutputs, getFirstActiveOutput, getFirstOutput, getWindowOutputId, isOutCleared, refreshOut, resolveOutputId, resolveOutputIds, setOutput, startFolderTimer } from "./output"
@@ -949,17 +948,6 @@ export function replaceDynamicValues(text: string, { showId, layoutId, slideInde
 
     function getDynamicValueText(dynamicId: string, show: Show | null, offset = 0): string | string[] {
         // request from frontend
-        if (isOutputWin && dynamicId.startsWith("interaction_")) {
-            const matches = [...text.matchAll(createRegex(dynamicId))]
-            if (matches.length === 0) return requestDynamicValue(dynamicId)
-            const results: string[] = []
-            matches.forEach(([_, _off, num]) => {
-                const idx = num ? parseInt(num, 10) : 0
-                results[idx] = requestDynamicValue(num ? `${dynamicId}#${num}` : dynamicId) as string
-            })
-            return results
-        }
-
         // VARIABLE
         if (dynamicId.startsWith("variable_set_") || dynamicId.startsWith("$") || dynamicId.startsWith("variable_")) {
             return getVariableValue(dynamicId, { showId, layoutId, slideIndex, type, id: dynamicId })
@@ -1269,19 +1257,7 @@ const dynamicValues = {
     audio_time: ({ audioTime }) => joinTime(secondsToTime(audioTime)),
     audio_countdown: ({ audioTime, audioDuration }) => joinTime(secondsToTime(audioDuration > 0 ? audioDuration - Math.floor(audioTime) : 0)),
     audio_duration: ({ audioDuration }) => joinTime(secondsToTime(audioDuration)),
-    audio_volume: () => Math.round((get(audioChannelsData).main?.volume ?? 1) * 100),
-
-    // interaction
-    interaction_players: ({ show }) => getInteractionPlayers(show),
-    interaction_players_count: ({ show }) => getInteractionPlayersCount(show),
-    interaction_question: ({ show }) => getInteractionQuestion(show),
-    interaction_input_options: ({ show }) => getInteractionInputOptions(show),
-    interaction_option_percentages: ({ show }) => getInteractionOptionPercentages(show),
-    interaction_time: ({ show }) => getInteractionTime(show),
-    interaction_answer: ({ show }) => getInteractionAnswer(show),
-    interaction_player_answers: ({ show }) => getInteractionPlayerAnswers(show),
-    interaction_player_answer_latest: ({ show }) => getInteractionPlayerAnswerLatest(show),
-    interaction_leaderboard: ({ show }) => getInteractionLeaderboard(show)
+    audio_volume: () => Math.round((get(audioChannelsData).main?.volume ?? 1) * 100)
 }
 
 function getOffsetDate(offset = 0, unit: "date" | "month" | "year" | "hours" | "minutes" | "seconds" = "date") {
@@ -1466,139 +1442,4 @@ function getArtist(metadata: ICommonTagsResult) {
     if (!metadata) return ""
     const list = (metadata.artists?.length ? metadata.artists : [metadata.artist || metadata.albumartist || metadata.originalartist]).filter((a): a is string => Boolean(a))
     return [...new Set(list.map((a) => a.trim()).filter(Boolean))].join(", ")
-}
-
-// INTERACTION
-
-function getInteractionId(show: Show | null): string | null {
-    if (!show) return null
-
-    let interactionId = show?.reference?.data?.id
-
-    // get any active ones
-    if (!interactionId) interactionId = get(activeInteractions)[0]
-
-    return interactionId || null
-}
-
-function _getInteraction(show: Show | null) {
-    const interactionId = getInteractionId(show)
-    if (!interactionId) return null
-
-    return getInteraction(interactionId) || null
-}
-
-function getInteractionPlayers(show: Show | null) {
-    const interaction = _getInteraction(show)
-    if (!interaction) return ""
-
-    return interaction
-        .getClients()
-        .map((p) => p.name)
-        .join(", ")
-}
-
-function getInteractionPlayersCount(show: Show | null) {
-    const interaction = _getInteraction(show)
-    if (!interaction) return ""
-
-    return String(interaction.getClientsCount())
-}
-
-function getInteractionQuestion(show: Show | null) {
-    const interaction = _getInteraction(show)
-    if (!interaction) return ""
-
-    const questions = interaction.getQuestion()
-    return [questions.join("<br>"), ...questions]
-}
-
-function getInteractionInputOptions(show: Show | null) {
-    const interaction = _getInteraction(show)
-    if (!interaction) return ""
-
-    const options = interaction.getInputOptions()
-    return [options.join("<br>"), ...options]
-}
-
-function getInteractionTime(show: Show | null) {
-    const interaction = _getInteraction(show)
-    if (!interaction) return ""
-
-    return interaction.getTime()
-}
-
-function getInteractionAnswer(show: Show | null) {
-    const interaction = _getInteraction(show)
-    if (!interaction) return ""
-
-    return interaction.getAnswer()
-}
-
-function getInteractionPlayerAnswers(show: Show | null) {
-    const interaction = _getInteraction(show)
-    if (!interaction) return ""
-
-    const answers = interaction.getPlayerAnswers()
-    return [answers.join(", "), ...answers]
-}
-
-function getInteractionPlayerAnswerLatest(show: Show | null) {
-    const interaction = _getInteraction(show)
-    if (!interaction) return ""
-
-    return interaction.getPlayerAnswerLatest()
-}
-
-function getInteractionLeaderboard(show: Show | null) {
-    const interaction = _getInteraction(show)
-    if (interaction) {
-        const leaderboard = interaction.getLeaderboard()
-        return [leaderboard.join("<br>"), ...leaderboard]
-    }
-
-    // fallback to previous leaderboard when closed
-    const interactionId = getInteractionId(show)
-    const savedInteraction = interactionId ? get(interactions)[interactionId] : null
-    const lastHistory = savedInteraction?.history?.at(-1)
-    if (lastHistory?.leaderboard) {
-        const leaderboard = lastHistory.leaderboard.map((c: any) => `${c.name}: ${c.score}`)
-        return [leaderboard.join("<br>"), ...leaderboard]
-    }
-
-    return ""
-}
-
-function getInteractionOptionPercentages(show: Show | null) {
-    const interaction = _getInteraction(show)
-    if (interaction) {
-        const percentages = interaction.getOptionPercentages()
-        return percentages.length > 0 ? percentages : ""
-    }
-
-    // fallback to previous option percentages when closed
-    const interactionId = getInteractionId(show)
-    const savedInteraction = interactionId ? get(interactions)[interactionId] : null
-    const lastHistory = savedInteraction?.history?.at(-1)
-    if (lastHistory?.inputs && savedInteraction?.inputs) {
-        const inputIndex = lastHistory.inputs.length - 1
-        const input = savedInteraction.inputs[inputIndex]
-        const historyInput = lastHistory.inputs[inputIndex]
-        if (input && input.type === "multi_choice" && input.options && historyInput?.answers) {
-            const totalAnswers = historyInput.answers.length
-            const percentages = input.options.map((o: any) => {
-                if (totalAnswers === 0) return "0%"
-                const chosenCount = historyInput.answers.filter((ans: any) => {
-                    if (!ans || ans.value === undefined) return false
-                    const clientValues = Array.isArray(ans.value) ? ans.value : [ans.value]
-                    return clientValues.includes(o.value)
-                }).length
-                const percent = Math.round((chosenCount / totalAnswers) * 100)
-                return `${percent}%`
-            })
-            return [percentages.join("<br>"), ...percentages]
-        }
-    }
-
-    return ""
 }

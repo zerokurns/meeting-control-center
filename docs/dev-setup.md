@@ -109,7 +109,7 @@ Configuration for all of these lives under `config/` (`building/`, `formatting/`
 `public/build/` and restore the dev `index.html`, otherwise `git status` shows a spurious change and
 `npm start` serves the stale bundle.
 
-### Current baseline (after task 3, the church-feature strip, 2026-10-18)
+### Current baseline (after task 4, the rebrand and telemetry removal, 2026-10-18)
 
 | Check                  | Result                                                                                   |
 | ---------------------- | ---------------------------------------------------------------------------------------- |
@@ -118,7 +118,7 @@ Configuration for all of these lives under `config/` (`building/`, `formatting/`
 | `npm run test:playwright` | OK, 1 passed                                                                          |
 | `npm run test:unit`    | 104 passed, 1 failed: `src/electron/streaming/RtmpStreamer.integration.test.ts` (real-ffmpeg pipeline). Pre-existing. |
 | `npm run test:format`  | 32 files not Prettier-clean, all pre-existing upstream drift (the strip formatted only files it had changed). |
-| `npm run test:svelte`  | 177 errors, 56 warnings. Pre-existing.                                                   |
+| `npm run test:svelte`  | 151 errors, 56 warnings. Pre-existing.                                                   |
 
 Rule for every task: build and Playwright green; the other three not worse than this table. Update the table
 when a task legitimately moves a number.
@@ -136,6 +136,21 @@ upstream. Numbers below are the starting point; MCC work must not make them wors
 | `npm run test:unit`    | 178 passed, 3 failed: two in `src/electron/cloud/syncManager.test.ts`, one in `src/electron/streaming/RtmpStreamer.integration.test.ts` (real-ffmpeg pipeline). Pre-existing. |
 | `npm run test:format`  | 40 files not Prettier-clean (mostly `src/frontend/components`). Pre-existing.            |
 | `npm run test:svelte`  | 195 errors, 60 warnings. Pre-existing; identical with and without build output present.  |
+
+## Data locations and moving from FreeShow
+
+MCC keeps its data apart from FreeShow:
+
+| What | FreeShow | Meeting Control Center |
+| --- | --- | --- |
+| Electron `userData` (settings, projects, caches) | `…/FreeShow` (`…/freeshow` in dev) | `…/Meeting Control Center` (`…/meeting-control-center` in dev) |
+| Default data folder (shows, media, backups) | `~/Documents/FreeShow` | `~/Documents/Meeting Control Center` |
+
+On Linux `…` is `~/.config`, on macOS `~/Library/Application Support`, on Windows `%APPDATA%`. Nothing is
+migrated automatically. To reuse FreeShow content, quit both apps, copy the FreeShow `userData` directory to the
+MCC one (or just `projects.json`, `settings_synced.json`, `themes.json`, `templates.json`, `overlays.json`,
+`stage.json`) and copy or point `config.dataPath` at the old data folder from Settings → Files. Shows removed
+by the church-feature strip (scripture, chords, calendar items) load as plain text slides or are skipped.
 
 ## Platform notes
 

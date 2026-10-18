@@ -46,18 +46,9 @@
         "cropping_tip": "Hienosäädä ikkunan sisällön sijaintia leikkaamalla reunoilta"
     },
     "about": {
-        "check_updates": "Tarkista päivitykset",
         "made": "Tehnyt Norjassa ",
-        "more": "Näet lisää sovelluksiamme osoitteessa",
         "report": "Ilmoita ongelmasta tai pyydä ominaisuutta osoitteessa ",
-        "translate": "Haluatko auttaa kääntämisessä? Mene ",
-        "mail": "Ota yhteyttä sähköpostilla",
-        "support": "Jos pidät projektista, harkitse sen tukemista",
-        "assets": "Käytetyt resurssit",
-        "new_update": "Päivitys saatavilla",
-        "download_latest": "Lataa uusin versio",
-        "download_auto": "Automaattiset päivitykset ovat käytössä. Odota muutama minuutti, että päivitys latautuu ja asentuu automaattisesti, ja käynnistä sitten sovellus uudelleen.",
-        "changes": "Uutta"
+        "assets": "Käytetyt resurssit"
     },
     "tooltip": {
         "project": "Luo uusi projekti, jonne voit lisätä esityksiä ja järjestellä niitä.",

@@ -46,18 +46,9 @@
         "cropping_tip": "Sesuaikan posisi konten jendela dengan memotong sisi-sisinya."
     },
     "about": {
-        "check_updates": "Periksa pembaruan",
         "made": "Dibuat di Norwegia oleh",
-        "more": "Silakan periksa lebih lanjut aplikasi kami di",
         "report": "Untuk melaporkan masalah atau meminta fitur, buka",
-        "translate": "Ingin membantu menerjemahkan? Silakan kunjungi",
-        "mail": "Kontak melalui email",
-        "support": "Jika Anda berterima kasih atas proyek ini, harap pertimbangkan untuk mendukungnya",
-        "assets": "Aset yang digunakan",
-        "new_update": "Pembaruan baru tersedia",
-        "download_latest": "Unduh versi terakhir",
-        "download_auto": "Pembaruan otomatis telah diaktifkan, harap tunggu beberapa menit hingga pembaruan diunduh dan diinstal secara otomatis, lalu mulai ulang aplikasi.",
-        "changes": "Apa yang baru"
+        "assets": "Aset yang digunakan"
     },
     "tooltip": {
         "project": "Buat proyek baru dimana Anda dapat menambahkan dan mengatur pertunjukan.",
@@ -486,7 +477,7 @@
         "effect_items": "Item efek",
         "timeline": "Timeline",
         "timecode": "Kode waktu",
-        "initialize": "Selamat datang di FreeShow",
+        "initialize": "Selamat datang di Meeting Control Center",
         "unsaved": "Apakah anda yakin ingin keluar?",
         "cancel": "Batal",
         "continue": "Lanjutkan",

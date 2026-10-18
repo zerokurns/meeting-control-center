@@ -1,19 +1,19 @@
-name: freeshow
+name: meeting-control-center
 version: 1.4.9
-title: FreeShow
+title: Meeting Control Center
 summary: Show song lyrics and more for free!
 description: A dynamic, user-friendly, and open-source presenter built for all of your presentations.
 contact:
-    - dev@freeshow.app
+    - https://github.com/zerokurns/meeting-control-center
 license: GPL-3.0-or-later
 donation:
     - https://churchapps.org/partner
 issues:
-    - https://github.com/churchapps/freeshow/issues
+    - https://github.com/zerokurns/meeting-control-center/issues
 source-code:
-    - https://github.com/churchapps/freeshow
+    - https://github.com/zerokurns/meeting-control-center
 website:
-    - https://freeshow.app
+    - https://github.com/zerokurns/meeting-control-center
 platforms:
     amd64:
         build-on: amd64
@@ -30,7 +30,7 @@ layout:
     /usr/share/libdrm:
         bind: $SNAP/usr/share/libdrm
 parts:
-    freeshow:
+    meeting-control-center:
         source: dist/linux-unpacked/
         plugin: dump
         stage-packages:
@@ -41,7 +41,7 @@ parts:
             - libproxy1v5
             - libdrm-common
 apps:
-    freeshow:
+    meeting-control-center:
         command: command.sh
         extensions: [gnome]
         plugs:

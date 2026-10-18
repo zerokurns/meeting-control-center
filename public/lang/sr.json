@@ -11,14 +11,11 @@
         "system_open": "Open in system"
     },
     "about": {
-        "check_updates": "Proveri da li postoji nova verzija",
         "made": "Napravljeno u Norveškoj od strane",
         "report": "Hteo bi da prijaviš problem? Napravi tiket na Github-u",
         "help": "Hteo bi da pomogneš sa prevodom ili misliš da fali neka funkcija? Pošalji mejl na",
         "assets": "Upotrebljeni materijali",
-        "new_update": "Dostupna je nova verzija",
-        "download": "Idi na freeshow.app da ju preuzmeš",
-        "changes": "Šta je novo"
+        "download": "Idi na freeshow.app da ju preuzmeš"
     },
     "tooltip": {
         "project": "Napravi novi projekat u kojem ćeš moći da dodaš i menjaš raspored prezentacija.",
@@ -326,7 +323,7 @@
         "icon": "Ikoknice",
         "manage_icons": "Manage icons",
         "choose_camera": "Chooose camera",
-        "initialize": "Dobrodošli u FreeShow",
+        "initialize": "Dobrodošli u Meeting Control Center",
         "unsaved": "Promene nisu sačuvane! Svejedno izađi iz programa?",
         "cancel": "Odustani",
         "continue": "Nastavi",

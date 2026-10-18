@@ -318,7 +318,7 @@ export const mainResponses: MainResponses = {
         const data = mainData as { content: string; name?: string; extension?: string }[]
 
         const receiveIMPORT = {
-            // FreeShow
+            // Meeting Control Center
             freeshow: () => importShow(data),
             freeshow_project: () => importProject(data),
             freeshow_template: () => importTemplate(data),

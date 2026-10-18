@@ -46,17 +46,10 @@
         "cropping_tip": "透過裁切邊緣來微調視窗內容位置"
     },
     "about": {
-        "check_updates": "檢查更新",
         "made": "由該團隊開發（挪威）：",
-        "more": "請查看更多我們的應用程式：",
         "report": "要回報問題或建議新功能，請前往：",
-        "translate": "想要協助翻譯？請前往：",
-        "mail": "透過電子郵件聯繫",
-        "support": "如果您感謝這個專案，請考慮支持它",
         "assets": "使用的資產",
-        "new_update": "有可用的更新",
-        "download": "重啟應用程式以更新，或前往 freeshow.app 手動下載",
-        "changes": "更新日誌"
+        "download": "重啟應用程式以更新，或前往 freeshow.app 手動下載"
     },
     "tooltip": {
         "project": "建立一個新專案，您可以在其中添加和排列投影片。",
@@ -481,7 +474,7 @@
         "effect_items": "特效項目",
         "timeline": "時間軸",
         "timecode": "時間碼",
-        "initialize": "歡迎使用 FreeShow",
+        "initialize": "歡迎使用 Meeting Control Center",
         "unsaved": "您確定要結束嗎？",
         "cancel": "取消",
         "continue": "繼續",

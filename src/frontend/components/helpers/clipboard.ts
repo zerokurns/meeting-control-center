@@ -28,10 +28,8 @@ import {
     effects,
     focusedArea,
     folders,
-    interactions,
     media,
     mediaFolders,
-    openedInteractionId,
     outputs,
     overlayCategories,
     overlays,
@@ -750,19 +748,6 @@ const deleteActions = {
     global_timer: (data: any) => deleteActions.timer(data),
     variable: (data: any) => {
         data.forEach(({ id }) => deleteStore("variables", id))
-    },
-    interaction: (data: any) => {
-        historyDelete("UPDATE", data, { updater: "interaction" })
-    },
-    interaction_input: (data: any) => {
-        const id = get(openedInteractionId)
-        interactions.update((a) => {
-            if (!a[id]?.inputs) return a
-
-            a[id].inputs.splice(data.index, 1)
-
-            return a
-        })
     },
     scene_overlay: (data: any) => {
         const sceneId = get(activeEdit).id || ""

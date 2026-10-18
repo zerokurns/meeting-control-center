@@ -10,7 +10,13 @@ files it names, and nothing else. This page is the shared part of every brief.
 - Create your branch from the current HEAD first: `git checkout -b <branch named in the brief>`.
 - Do **not** run `npm install`. Reuse the main checkout's dependencies:
   `ln -s /home/ekearns/projects/pngas/meeting-command-center/node_modules node_modules`
-- Use Node 24 in every shell: `export NVM_DIR="$HOME/.nvm"; . "$NVM_DIR/nvm.sh"; nvm use 24 >/dev/null`
+- Use Node 24 **by absolute path**, never via the nvm wrapper: the worktree guard refuses any command line that
+  sources a script (`source …`, `. "$NVM_DIR/nvm.sh"`). Run `/home/ekearns/.nvm/versions/node/v24.15.0/bin/npm run build`,
+  and prefix `PATH=/home/ekearns/.nvm/versions/node/v24.15.0/bin:$PATH` on single commands that need `node` on PATH.
+- The worktree is created on upstream's `main`, not on the task branch. Your first git command is a plain
+  standalone `git checkout -b <branch> <base-sha>` (the brief names both); if that is refused, run
+  `git branch <branch> <base-sha>` and then `git switch <branch>` as two separate commands. Never `cd` out of the
+  worktree, and if the harness ever reports the worktree is gone, stop and report instead of working elsewhere.
 - Read `docs/codebase-map.md` (only the section the brief cites) and the "Build and check" section of
   `docs/dev-setup.md`. Find the rest with `grep -rn` on the identifiers the brief lists; do not browse.
 
@@ -38,9 +44,9 @@ files it names, and nothing else. This page is the shared part of every brief.
    remaining references except those the brief says to keep.
 2. `npm run build` exits 0 (this type-checks the Electron main process and bundles renderer + servers).
 3. `npm run test:svelte 2>&1 | tail -3` reports **no more errors than the current baseline** in `docs/dev-setup.md`
-   (177 after task 3). Record the number.
+   (151 after task 4). Record the number.
 4. `npm run test:unit 2>&1 | tail -6` reports **no more failures than the current baseline** in `docs/dev-setup.md`
-   (1 after task 3: `src/electron/streaming/RtmpStreamer.integration.test.ts`). Record the numbers.
+   (1 after task 4: `src/electron/streaming/RtmpStreamer.integration.test.ts`). Record the numbers.
 5. `xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npm run test:playwright` passes
    (boots the production build, completes first-run setup, creates a project and a show, saves). If it
    fails on a timeout, rerun once before investigating. Record the result.

@@ -10,7 +10,7 @@ import { newToast } from "../../utils/common"
 import { translateText } from "../../utils/language"
 import { send } from "../../utils/request"
 
-export interface FreeShowAction {
+export interface MccAction {
     type: "APPLY_TO_SLIDE" | "CREATE_SLIDE" | "CREATE_TEMPLATE" | "CREATE_OVERLAY" | "CREATE_OUTPUT"
     data: {
         name?: string
@@ -42,7 +42,7 @@ export const chatActionLabels: Record<string, string> = {
 }
 
 export class ChatAction {
-    static handle(action: FreeShowAction | undefined) {
+    static handle(action: MccAction | undefined) {
         if (!action) return
 
         console.log("Chat action:", action)

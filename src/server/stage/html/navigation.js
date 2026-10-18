@@ -1,4 +1,4 @@
-// Slide navigation and timer functionality for FreeShow stage server
+// Slide navigation and timer functionality for the Meeting Control Center stage server
 // This script handles keyboard navigation, slide transitions, and auto-advance timers
 
 // Global variables - these will be set by the HTML page

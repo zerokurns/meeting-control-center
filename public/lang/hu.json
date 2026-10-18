@@ -48,18 +48,9 @@
         "cropping_tip": "Az ablak tartalmi pozíciójának finom módosítása a szélek vágásával"
     },
     "about": {
-        "check_updates": "Frissítések ellenőrzése",
         "made": "Készült Norvégiában",
-        "more": "Kérjük, tekintse meg további alkalmazásainkat a következő oldalon",
         "report": "Ha problémát szeretne jelenteni vagy funkciót kérni, lépjen a következő oldalra",
-        "translate": "Szívesen segítene a fordításban? Kérjük, látogasson el a következő oldalra",
-        "mail": "Kapcsolatfelvétel e-mailen",
-        "support": "Ha hálás ezért a projektért, kérjük, fontolja meg a támogatást",
-        "assets": "Felhasznált eszközök",
-        "new_update": "Új frissítés érhető el",
-        "download_latest": "Legújabb verzió letöltése",
-        "download_auto": "Az automatikus frissítés engedélyezve van. Kérjük, várjon néhány percet, amíg a frissítés automatikusan letöltődik és települ, majd indítsa újra az alkalmazást.",
-        "changes": "Újdonságok"
+        "assets": "Felhasznált eszközök"
     },
     "tooltip": {
         "project": "Új projekt létrehozása, ahol bemutatókat adhat hozzá és elrendezheti azokat.",
@@ -529,7 +520,7 @@
         "drawer_search_options": "Keresési beállítások",
         "template_info": "Sabloninformációk",
         "cleaning_utility": "Tisztítóprogram",
-        "initialize": "Üdvözöljük a FreeShow-ban",
+        "initialize": "Üdvözöljük a Meeting Control Center-ban",
         "unsaved": "Biztosan ki szeretne léptni?",
         "cancel": "Mégsem",
         "continue": "Folytatás",
@@ -588,8 +579,7 @@
         "overlay": "Új átfedés",
         "template": "Új sablon",
         "action": "Új művelet",
-        "effect": "Új effektus",
-        "interaction": "Új iInterakció"
+        "effect": "Új effektus"
     },
     "show": {
         "name": "Név",
@@ -888,7 +878,6 @@
         "all_shows": "Összes bemutató",
         "all_projects": "Összes projekt",
         "project": "Projekt",
-        "data_link": "Adat-URL másolása",
         "option_type": "Mit szeretne exportálni?",
         "option_format": "Milyen formátumot szeretne?",
         "include_media": "Médiafájl felvétele",
@@ -1577,35 +1566,7 @@
         "hollow": "Üreges"
     },
     "interaction": {
-        "add_input": "Bemenet hozzáadása",
-        "add_option": "Lehetőség hozzáadása",
-        "multi_choice": "Többválasztós kérdés",
-        "heading": "Cím",
-        "option": "Válaszlehetőség",
-        "question": "Kérdés",
-        "answer": "Válasz",
-        "mark_as_correct": "Jelölés helyesnek",
-        "mark_as_incorrect": "Jelölés helytelennek",
-        "reveal_answer": "Válasz megjelenítése",
-        "allow_multiple": "Több válaszlehetőség",
-        "optional": "Opcionális",
-        "min": "Min.",
-        "max": "Max.",
-        "input": "Bemenet",
-        "buttons": "Gombok",
-        "checkboxes": "Jelölőnégyzetek",
-        "radio_buttons": "Választógombok",
-        "dropdown": "Legördülő",
-        "slider": "Csúszka",
-        "range": "Tartomány",
-        "kick": "Rúgás",
-        "generate_slide": "Dia létrehozása",
-        "require_name": "Nevek lekérése",
-        "random_names": "Véletlenszerű nevek",
-        "all_at_once": "Minden bemenet egyszerre",
-        "max_time": "Bemenetenkénti maximális idő",
-        "score_system": "Pontszámrendszer",
-        "points": "Pontok"
+        "generate_slide": "Dia létrehozása"
     },
     "info": {
         "created": "Létrehozás dátuma",

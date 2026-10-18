@@ -48,18 +48,9 @@
         "cropping_tip": "Ajuste fino da posição do conteúdo da janela cortando as laterais"
     },
     "about": {
-        "check_updates": "Verificar por atualizações",
         "made": "Criado na Noruega por",
-        "more": "Veja mais apps nossos em",
         "report": "Para reportar um problema ou pedir um recurso novo, vá em",
-        "translate": "Quer ajudar a traduzir? Clique em",
-        "mail": "Contato via email",
-        "support": "Se você gosta do projeto, considere dar suporte",
-        "assets": "Recursos utilizados",
-        "new_update": "Nova atualização disponível",
-        "download_latest": "Baixar a última versão",
-        "download_auto": "Você configurou atualizações automáticas. Aguarde alguns minutos para que a atualização seja baixada e instalada automaticamente e, em seguida, reinicie o aplicativo.",
-        "changes": "Novidades"
+        "assets": "Recursos utilizados"
     },
     "tooltip": {
         "project": "Cria um novo projeto onde você pode adicionar e organizar Shows.",
@@ -529,7 +520,7 @@
         "drawer_search_options": "Opções de pesquisa",
         "template_info": "Informação de modelo",
         "cleaning_utility": "Limpeza",
-        "initialize": "Seja bem-vindo ao FreeShow",
+        "initialize": "Seja bem-vindo ao Meeting Control Center",
         "unsaved": "Tem certeza que deseja sair?",
         "cancel": "Cancelar",
         "continue": "Continuar",
@@ -588,8 +579,7 @@
         "overlay": "Nova sobreposição",
         "template": "Novo modelo",
         "action": "Nova ação",
-        "effect": "Novo efeito",
-        "interaction": "Nova interação"
+        "effect": "Novo efeito"
     },
     "show": {
         "name": "Nome",
@@ -888,7 +878,6 @@
         "all_shows": "Todos os Shows",
         "all_projects": "Todos os projetos",
         "project": "Projeto",
-        "data_link": "Copiar URL dos dados",
         "option_type": "O que gostaria de exportar?",
         "option_format": "Que formato prefere?",
         "include_media": "Incluir arquivos de mídia",
@@ -1577,35 +1566,7 @@
         "hollow": "Vazio"
     },
     "interaction": {
-        "add_input": "Adicionar entrada",
-        "add_option": "Adicionar opção",
-        "multi_choice": "Múltipla escolha",
-        "heading": "Cabeçalho",
-        "option": "Opção",
-        "question": "Questão",
-        "answer": "Resposta",
-        "mark_as_correct": "Marcar como correta",
-        "mark_as_incorrect": "Marcar como incorreta",
-        "reveal_answer": "Revelar resposta",
-        "allow_multiple": "Permitir múltiplas respostas",
-        "optional": "Opcional",
-        "min": "Mín",
-        "max": "Máx",
-        "input": "Entrada",
-        "buttons": "Botões",
-        "checkboxes": "Caixa de seleção",
-        "radio_buttons": "Botões de rádio",
-        "dropdown": "Lista",
-        "slider": "Deslizante",
-        "range": "Variação",
-        "kick": "Chute",
-        "generate_slide": "Gerar slide",
-        "require_name": "Pedir nomes",
-        "random_names": "Nomes aleatórios",
-        "all_at_once": "Todas as entradas ao mesmo tempo",
-        "max_time": "Tempo máximo por entrada",
-        "score_system": "Sistema de pontos",
-        "points": "Pontos"
+        "generate_slide": "Gerar slide"
     },
     "info": {
         "created": "Criado",

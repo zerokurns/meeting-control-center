@@ -26,7 +26,7 @@
             border-color 0.2s ease,
             box-shadow 0.2s ease,
             background-color 0.2s ease;
-        /* FreeShow UI scrollbar */
+        /* MCC UI scrollbar */
         scrollbar-width: thin; /* Firefox */
         scrollbar-color: rgb(255 255 255 / 0.3) rgb(255 255 255 / 0.05);
     }

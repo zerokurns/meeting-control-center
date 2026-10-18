@@ -5,7 +5,6 @@ import type { Shows } from "../../types/Show"
 import { stopAllChannelRecordings } from "../audio/audioChannelRecorder"
 import { customActionActivation } from "../components/actions/actions"
 import { stopMediaRecorder } from "../components/drawer/live/recorder"
-import { stopAllInteractions } from "../components/drawer/pages/interactions"
 import { clone, keysToID, removeDeleted } from "../components/helpers/array"
 import { updateSyncedOutputs } from "../components/helpers/output"
 import { sendMain } from "../IPC/main"
@@ -17,7 +16,6 @@ import {
     activeScenes,
     ai,
     alertMessage,
-    alertUpdates,
     audioChannelsData,
     audioEffectPresets,
     audioEffects,
@@ -47,7 +45,6 @@ import {
     globalTags,
     groupNumbers,
     groups,
-    interactions,
     labelsDisabled,
     language,
     lockedOverlays,
@@ -103,7 +100,6 @@ import {
 } from "../stores"
 import type { SaveActions, SaveData, SaveList, SaveListSettings, SaveListSyncedSettings } from "./../../types/Save"
 import { newToast, setStatus, startAutosave } from "./common"
-import { autoDisableRemoteController, stopRemoteController } from "./remoteController"
 
 export function save(closeWhenFinished = false, customTriggers: SaveActions = {}) {
     updateSyncedOutputs()
@@ -142,7 +138,6 @@ export function save(closeWhenFinished = false, customTriggers: SaveActions = {}
     const settings: { [key in SaveListSettings]: any } = {
         initialized: true,
         activeProject: get(activeProject),
-        alertUpdates: get(alertUpdates),
         audioFolders: get(audioFolders),
         autoOutput: get(autoOutput),
         maxConnections: get(maxConnections),
@@ -239,7 +234,6 @@ export function getSyncedSettings(): { [key in SaveListSyncedSettings]: any } {
         timers,
         variables,
         scenes,
-        interactions,
         audioStreams,
         midiIn: actions,
         emitters,
@@ -288,14 +282,10 @@ export async function closeApp() {
             return Promise.race([promise, new Promise<void>((resolve) => setTimeout(resolve, ms))])
         }
 
-        await timeout(stopAllInteractions(), 500)
-        await timeout(stopRemoteController(), 500)
-        autoDisableRemoteController()
-
         await timeout(stopMediaRecorder(), 3000)
         await timeout(stopAllChannelRecordings(), 3000)
     } catch (e) {
-        console.error("Could not stop interactions before closing!", e)
+        console.error("Could not stop recordings before closing!", e)
     }
 
     sendMain(Main.CLOSE)
@@ -380,7 +370,6 @@ const customSavedListener = {
 const saveList: { [key in SaveList]: any } = {
     initialized: null,
     activeProject: null,
-    alertUpdates,
     audioFolders,
     autoOutput,
     categories,
@@ -420,7 +409,6 @@ const saveList: { [key in SaveList]: any } = {
     scenes,
     timers,
     variables,
-    interactions,
     audioStreams,
     theme,
     themes,

@@ -95,8 +95,6 @@
 
         ...(scenesAccess.global === "none" ? [] : [[{ id: "scenes", label: "tabs.scenes", icon: "scene" }]]),
 
-        [{ id: "interactions", label: "tabs.interactions", icon: "game" }],
-
         ...($obsData.enabled ? [[{ id: "obs", label: "OBS Studio", icon: "player" }]] : [])
     ]
 </script>

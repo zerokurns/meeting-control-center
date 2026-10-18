@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/electron/main"
 import type { BrowserWindow, DesktopCapturerSource } from "electron"
 import { app, desktopCapturer, screen, shell, systemPreferences } from "electron"
 import os from "os"
@@ -35,11 +34,10 @@ import { apiReturnData, emitOSC, startWebSocketAndRest, stopApiListener } from "
 import { closeMain } from "../utils/close"
 import { addToMediaFolder, bundleMediaFiles, createFolder, getDataFolderPath, getDataFolderRoot, getFileInfo, getMediaCodec, getMediaSyncFolderPath, getMediaTracks, getPaths, getSimularPaths, loadFile, loadShowsAsync, locateMediaFile, openInSystem, readExifData, readFile, readFolderContent, selectFiles, selectFilesDialog, selectFolder, setMediaSyncFolderPath, writeFile } from "../utils/files"
 import { listGraphicsDevices } from "../utils/gpu"
-import { getMachineId } from "../utils/helpers"
+import {} from "../utils/helpers"
 import { closeMidiInPorts, getMidiInputs, getMidiOutputs, receiveMidi, sendMidi } from "../utils/midi"
 import { deleteShows, deleteShowsNotIndexed, getAllShows, getEmptyShows, refreshAllShows } from "../utils/shows"
 import { correctSpelling } from "../utils/spellcheck"
-import checkForUpdates from "../utils/updater"
 import { sendToMain } from "./main"
 
 // no need to await Promise returns here
@@ -51,7 +49,6 @@ export const mainResponses: MainResponses = {
     // APP
     [Main.VERSION]: () => getVersion(),
     [Main.GET_OS]: () => getOS(),
-    [Main.DEVICE_ID]: () => getMachineId(),
     [Main.GET_DEVICE_NAME]: () => getDeviceName(),
     [Main.IP]: () => getLocalIPs(),
     [Main.CHECK_RAM_USAGE]: () => checkRamUsage(),
@@ -83,7 +80,6 @@ export const mainResponses: MainResponses = {
     [Main.SHOW]: (data) => loadShow(data),
     // MAIN
     [Main.SHOWS]: (() => loadShowsAsync()) as any,
-    [Main.AUTO_UPDATE]: () => checkForUpdates(),
     [Main.URL]: (data) => openURL(data),
     [Main.LANGUAGE]: (data) => setGlobalMenu(data.strings),
     [Main.GET_PATHS]: () => getPaths(),
@@ -335,7 +331,7 @@ function getScreens(type: "window" | "screen" = "screen"): Promise<{ name: strin
             .then((sources) => {
                 let screens: { name: string; id: string }[] = []
                 sources.map((source) => screens.push({ name: source.name, id: source.id }))
-                if (type === "window") screens = addFreeShowWindows(screens, sources)
+                if (type === "window") screens = addAppWindows(screens, sources)
 
                 resolve(screens)
             })
@@ -345,7 +341,7 @@ function getScreens(type: "window" | "screen" = "screen"): Promise<{ name: strin
             })
     })
 
-    function addFreeShowWindows(screens: { name: string; id: string }[], sources: DesktopCapturerSource[]) {
+    function addAppWindows(screens: { name: string; id: string }[], sources: DesktopCapturerSource[]) {
         const windows: BrowserWindow[] = []
         OutputHelper.getAllOutputs().forEach((output) => {
             if (output.window) windows.push(output.window)
@@ -419,28 +415,6 @@ export function createLog(err: Error) {
         message: err.message,
         stack: err.stack
     } as ErrorLog
-}
-
-export function autoErrorReport() {
-    if (!isProd) return
-    if (config.get("autoErrorReporting") === false) return
-
-    // prevent random forks from sending error reports
-    // dots to prevent auto find/replace
-    const originalName = "f.r.e.e.s.h.o.w".replace(/\./g, "")
-    if (app.name !== originalName) return
-
-    console.info("Starting Sentry error reporting...")
-
-    Sentry.init({
-        dsn: "https://5d1069c3cb6faaa6e7ad0d9dc0145361@o4510419080445952.ingest.us.sentry.io/4510419082346496",
-        beforeSend(event) {
-            // filter out known non-critical errors
-            const errorMessage = event.exception?.values?.[0]?.value || ""
-            const shouldFilter = ERROR_FILTER.some((filter) => errorMessage.includes(filter))
-            return shouldFilter ? null : event
-        }
-    })
 }
 
 // STORE MEDIA AS BASE64
