@@ -29,7 +29,7 @@ One Playwright spec, run locally and in CI.
       after a save, or expose nothing new: simplest is to press `Ctrl+S` then parse that JSON file from the test).
       Skip this step with a logged note when LibreOffice is absent.
    e. Click the `agenda` row → expect the PDF viewer canvas to appear; press `ArrowRight` → the unit indicator
-      shows 2 / 2 (or the thumbnail selection moves). Click `budget` → expect a table with a cell containing
+      shows 2 / 5 (the fixture has five pages; or assert the thumbnail selection moves). Click `budget` → expect a table with a cell containing
       "Line item"; press `ArrowRight` → the second sheet (a cell "Meeting"). Click `minutes` → expect rendered
       docx content containing "Minutes" (heading text).
    f. "+" → "Timer" → pick/create a timer named "Smoke timer" (the picker popup; if creating requires the timer
