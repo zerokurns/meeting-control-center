@@ -6,6 +6,7 @@ import { isMac, isWindows } from "../.."
 import { ToMain } from "../../../types/IPC/ToMain"
 import { sendToMain } from "../../IPC/main"
 import { openURL } from "../../IPC/responsesMain"
+import { convertToPdf } from "../../document/libreoffice"
 import { getDataFolderPath, sanitizeFileName, selectFilesDialog } from "../../utils/files"
 
 export async function pptToPdf() {
@@ -49,25 +50,11 @@ async function processPptToPdf(inputPath: string, outputPath: string, outputFold
 
 const execFileAsync = promisify(execFile)
 
-const DEFAULT_SOFFICE_PATHS: Record<string, string[]> = {
-    win32: [path.join(process.env.PROGRAMFILES || "C:\\Program Files", "LibreOffice", "program", "soffice.exe"), path.join(process.env["PROGRAMFILES(X86)"] || "C:\\Program Files (x86)", "LibreOffice", "program", "soffice.exe")],
-    darwin: ["/Applications/LibreOffice.app/Contents/MacOS/soffice"],
-    linux: ["/usr/bin/soffice", "/usr/bin/libreoffice"]
-}
-
-function getSofficePath(): string {
-    const paths = DEFAULT_SOFFICE_PATHS[process.platform] || []
-    return paths.find((p) => fs.existsSync(p)) || "soffice"
-}
-
 async function convertWithLibreOffice(inputPath: string, outputPath: string, outputFolder: string): Promise<boolean> {
-    try {
-        const sofficePath = getSofficePath()
-        await execFileAsync(sofficePath, ["--headless", "--convert-to", "pdf", "--outdir", outputFolder, inputPath], { timeout: 120000 })
-        return fs.existsSync(outputPath)
-    } catch (err) {
-        return false
-    }
+    const converted = await convertToPdf(inputPath, outputFolder)
+    if (!converted) return false
+    if (converted !== outputPath) fs.renameSync(converted, outputPath)
+    return fs.existsSync(outputPath)
 }
 
 async function convertWithPowerPoint(inputPath: string, outputPath: string): Promise<boolean> {

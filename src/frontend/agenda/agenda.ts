@@ -42,7 +42,7 @@ export function isDocumentItem(ref: Pick<ShowRef, "id" | "type">): boolean {
 export const AGENDA_KIND_ICONS: { [kind in AgendaKind]: string } = {
     slides: "slide",
     document: "document",
-    spreadsheet: "table",
+    spreadsheet: "grid",
     media: "media",
     timer: "timer",
     overlay: "overlays",

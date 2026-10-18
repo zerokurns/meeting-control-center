@@ -22,6 +22,7 @@
     import Section from "./Section.svelte"
     import ShowNotes from "./ShowNotes.svelte"
     import Slides from "./Slides.svelte"
+    import TimerItemView from "./timer/TimerItemView.svelte"
 
     $: show = $activeShow
 
@@ -120,6 +121,10 @@
             {:else if (show.type || "show") === "show"}
                 <Slides showId={$activeShow?.id || ""} />
                 <Layouts />
+            {:else if show.type === "timer"}
+                {#key show.id}
+                    <TimerItemView {show} />
+                {/key}
             {:else if show.type === "show_placeholder"}
                 <ProjectShowPlaceholder />
             {:else}

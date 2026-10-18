@@ -1,12 +1,16 @@
 <script lang="ts">
     import { createEventDispatcher, onDestroy, onMount } from "svelte"
     import { fade } from "svelte/transition"
+    import { Main } from "../../../types/IPC/Main"
     import type { ProjectShowRef, Tree } from "../../../types/Projects"
     import type { ShowType } from "../../../types/Show"
+    import { AGENDA_KIND_ICONS } from "../../agenda/agenda"
     import { addProjectItem, addToProject, updateRecentlyAddedFiles } from "../../converters/project"
+    import { sendMain } from "../../IPC/main"
     import { actions, activeFocus, activePopup, activeProject, activeShow, contextActive, drawer, editingProjectTemplate, focusMode, fullColors, playerVideos, popupData, projects, projectTemplates, projectView, recentFiles, selected, special } from "../../stores"
     import { triggerFunction } from "../../utils/common"
     import { getAccess } from "../../utils/profile"
+    import { acceptedDocumentExtensions } from "../../viewers/registry"
     import { getActionIcon } from "../actions/actions"
     import { getTimeUntilClock } from "../drawer/timers/timers"
     import { openDrawer } from "../edit/scripts/edit"
@@ -25,6 +29,11 @@
     import DropArea from "../system/DropArea.svelte"
     import SelectElem from "../system/SelectElem.svelte"
     import { clipboardToProject } from "./project"
+
+    function openTimerPicker() {
+        popupData.set({ popupTitle: "new.timer_item" })
+        activePopup.set("timer_item")
+    }
 
     export let tree: Tree[]
     export let recentlyUsedList: any[] = []
@@ -458,6 +467,19 @@
 
                 <div class="actionType">
                     <Icon id="search" size={0.7} white />
+                </div>
+            </MaterialButton>
+
+            <!-- documents are copied into the data folder, PowerPoint/Word/… are converted to PDF -->
+            <MaterialButton variant="outlined" icon={AGENDA_KIND_ICONS.document} title="new.document" on:click={() => sendMain(Main.IMPORT_DOCUMENTS, { pick: true, extensions: acceptedDocumentExtensions() })} white>
+                <div class="label">
+                    <p><T id="new.document" /></p>
+                </div>
+            </MaterialButton>
+
+            <MaterialButton variant="outlined" icon={AGENDA_KIND_ICONS.timer} title="new.timer_item" on:click={openTimerPicker} white>
+                <div class="label">
+                    <p><T id="new.timer_item" /></p>
                 </div>
             </MaterialButton>
 

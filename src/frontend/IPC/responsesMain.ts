@@ -20,7 +20,7 @@ import { convertCSV } from "../converters/csv"
 import { createImageShow } from "../converters/imageShow"
 import { importAction, importOverlay, importShow, importSpecific, importStage, importTemplate } from "../converters/importHelpers"
 import { convertPowerpoint } from "../converters/powerpoint/powerpointImporter"
-import { addToProject, importProject, updateRecentlyAddedFiles } from "../converters/project"
+import { addProjectItems, addToProject, importProject, updateRecentlyAddedFiles } from "../converters/project"
 import { convertTexts } from "../converters/txt"
 import { activeEdit, activePage, activePopup, activeShow, activeTimers, aiSttStatus, alertMessage, audioData, currentOutputSettings, dataPath, folders, icecastStatus, media, mediaDownloads, outputs, overlays, pdfImports, popupData, presentationData, projects, projectTemplates, providerConnections, recentFiles, redoHistory, rtmpStatus, shows, showsCache, spellcheck, stageShows, templates, textCache, theme, themes, timers, undoHistory, usageLog, variables, windowState } from "../stores"
 import { newToast } from "../utils/common"
@@ -288,6 +288,12 @@ export const mainResponses: MainResponses = {
 
         if (!receiveFOLDER[a.channel]) return
         receiveFOLDER[a.channel]()
+    },
+    [ToMain.DOCUMENTS_IMPORTED]: (a) => {
+        addProjectItems(a.items.map((item) => ({ id: item.id, name: item.name, type: item.type, data: item.data })))
+
+        // a missing LibreOffice is reported by its own alert
+        a.failed.filter((file) => !file.reason.startsWith("LibreOffice is not installed")).forEach((file) => newToast(`${translateText("agenda.import_failed")}: ${getFileName(file.path)} (${file.reason})`))
     },
     [ToMain.IMPORT2]: (a) => {
         const mainData = a.data

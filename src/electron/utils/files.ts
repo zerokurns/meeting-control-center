@@ -344,6 +344,7 @@ export const dataFolderNames = {
     imports: "Imports",
     recordings: "Recordings",
     audio: "Audio",
+    documents: "Documents",
     userData: "Config"
 }
 

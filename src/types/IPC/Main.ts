@@ -51,6 +51,7 @@ export enum Main {
     /////
     IMPORT = "IMPORT",
     IMPORT_FILES = "IMPORT_FILES",
+    IMPORT_DOCUMENTS = "IMPORT_DOCUMENTS",
     SHOW = "SHOW",
     SAVE = "SAVE",
     BACKUPS = "BACKUPS",
@@ -169,6 +170,7 @@ export interface MainSendPayloads {
     /////
     [Main.IMPORT]: { channel: string; format: { name: string; extensions: string[] } }
     [Main.IMPORT_FILES]: { id: string; paths: string[] }
+    [Main.IMPORT_DOCUMENTS]: { paths?: string[]; pick?: boolean; extensions: string[] }
     [Main.SHOW]: { id: string; name: string }
     [Main.SAVE]: SaveData
     ////////////

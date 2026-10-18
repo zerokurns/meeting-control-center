@@ -32,6 +32,7 @@ import { getCustomMetadata, getGroupName, getLayoutRef } from "./show"
 import { _show } from "./shows"
 import { addZero, getMonthName, getWeekday, joinTime, joinTimeBig, secondsToTime } from "./time"
 import { stopTimers } from "./timerTick"
+import { activateTimerItem } from "../show/timer/timerItem"
 
 const getProjectIndex = {
     next: (index: number | null, items: ProjectShowRef[]) => {
@@ -81,6 +82,8 @@ export function selectProjectShow(select: number | "next" | "previous") {
     // set active show in project list
     if (get(focusMode)) activeFocus.set({ id: items[newIndex].id, index: newIndex, type: items[newIndex].type })
     else activeShow.set({ ...items[newIndex], index: newIndex })
+
+    activateTimerItem(items[newIndex])
 }
 
 export function swichProjectItem(pos: number, id: string) {

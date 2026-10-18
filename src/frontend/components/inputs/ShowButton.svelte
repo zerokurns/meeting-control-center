@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { ClickEvent } from "../../../types/Main"
+    import { agendaKindOf, AGENDA_KIND_ICONS } from "../../agenda/agenda"
     import { AudioPlayer } from "../../audio/audioPlayer"
     import { activeEdit, activeFocus, activePage, activeProject, activeShow, categories, editingProjectTemplate, effects, focusMode, globalTags, media, notFound, outLocked, outputs, overlayCategories, overlays, playerVideos, playingAudio, projects, projectTemplates, refreshEditSlide, shows, showsCache, special, styles, textCache } from "../../stores"
     import { translateText } from "../../utils/language"
@@ -15,6 +16,7 @@
     import T from "../helpers/T.svelte"
     import { joinTime, secondsToTime } from "../helpers/time"
     import { clearSlide } from "../output/clear"
+    import { activateTimerItem } from "../show/timer/timerItem"
     import { getTextSnippet, highlightText } from "../quicksearch/searchHighlight"
     import HiddenInput from "./HiddenInput.svelte"
     import MaterialButton from "./MaterialButton.svelte"
@@ -82,6 +84,7 @@
                 iconID = "effects"
             }
             // else if (type === "player") iconID = "live"
+            else if (type === "document" || type === "pdf" || type === "timer") iconID = AGENDA_KIND_ICONS[agendaKindOf({ id, type })]
             else iconID = type
         }
     }
@@ -128,6 +131,7 @@
         }
 
         activeShow.set(newShow)
+        if (type === "timer") activateTimerItem(show)
 
         if (type === "image" || type === "video") activeEdit.set({ id, type: "media", items: [] })
         else if ($activeEdit.id) activeEdit.set({ type: "show", slide: 0, items: [], showId: $activeShow?.id })

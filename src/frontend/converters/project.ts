@@ -156,6 +156,34 @@ export function addProjectItem(data: ProjectShowRef) {
     activeShow.set({ ...data, index: project.data.length - 1 })
 }
 
+/** Appends several items to the active project (or project template) and selects the first new one. */
+export function addProjectItems(items: ProjectShowRef[]) {
+    if (!items.length) return
+
+    const isTemplate = !!get(editingProjectTemplate)
+    let projectId = isTemplate ? get(editingProjectTemplate) : get(activeProject)
+    if (!isTemplate && !projectId) {
+        // auto-create a new project
+        projectId = uid()
+        history({ id: "UPDATE", oldData: { id: projectId }, location: { page: "show", id: "project" } })
+        activeProject.set(projectId)
+        projectView.set(false)
+    }
+    if (!projectId) return
+
+    const currentProject = isTemplate ? get(projectTemplates)[projectId] : get(projects)[projectId]
+    const projectShows = currentProject?.shows || []
+
+    const project = { key: "shows", data: [...projectShows, ...items] }
+    history({ id: "UPDATE", newData: project, oldData: { id: projectId }, location: { page: "show", id: isTemplate ? "project_template" : "project_ref" } })
+
+    if (get(focusMode)) return
+
+    // open the first new project item
+    activePage.set("show")
+    activeShow.set({ ...items[0], index: projectShows.length })
+}
+
 export function addSection() {
     const activeShowIndex = get(activeShow)?.index !== undefined ? (get(activeShow)?.index ?? -1) + 1 : null
     const isTemplate = !!get(editingProjectTemplate)
