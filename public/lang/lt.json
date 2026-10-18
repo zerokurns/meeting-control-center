@@ -26,6 +26,7 @@
         "skip": "Praleisti"
     },
     "titlebar": {
+        "file": "Failas",
         "edit": "Taisa",
         "view": "Rodinys",
         "help": "Pagalba"
@@ -102,12 +103,14 @@
         "slideshow": "Skaidrių rodymas"
     },
     "preview": {
+        "_previous_show": "Previous show",
         "_previous_slide": "Ankstesnė skaidrė",
         "_lock": "Užrakinti išvestį",
         "_unlock": "Atrakinti išvestį",
         "_start": "Start show",
         "_update": "Atnaujinti išvestį",
         "_next_slide": "Kita skaidrė",
+        "_next_show": "Next show",
         "_hide_preview": "Slėpti peržiūrą",
         "show_preview": "Rodyti peržiūrą",
         "restore_output": "Atkurti išvestį",
@@ -120,6 +123,7 @@
         "to_start": "Eiti į pradžią",
         "nextTimer": "Perjungimo į kitą skaidrę laikmatis",
         "lock": "Užrakinti",
+        "unlock": "Atrakinti",
         "test_pattern": "Bandomasis šablonas"
     },
     "clear": {
@@ -148,6 +152,8 @@
     "media": {
         "_loop": "Atkurti cikliškai",
         "play": "Atkurti",
+        "play_multiple": "Play multiple",
+        "toggle_shuffle": "Toggle shuffle",
         "next": "Kitas",
         "previous": "Ankstesnis",
         "play_no_audio": "Atkurti be garso",
@@ -160,6 +166,7 @@
         "back10": "Atsukti 10 sekundžių atgal",
         "forward10": "Persukti 10 sekundžių pirmyn",
         "volume": "Garsis",
+        "gain": "Stiprinimas",
         "speed": "Greitis",
         "flip": "Veidrodinis atspindys",
         "flip_horizontally": "Apversti horizontaliai",
@@ -180,13 +187,24 @@
     },
     "audio": {
         "settings": "Garso nuostatos",
+        "playlist_settings": "Grojaraščio nuostatos",
         "custom_output": "Tinkinta garso išvestis",
         "mute_when_video_plays": "Nutildyti, kai atkuriamas vaizdo įrašas",
         "allow_gaining": "Leisti stiprinimą",
+        "allow_gaining_tip": "Leisti pagarsinti daugiau kaip 100% (Gali sukelti iškraipymus)",
         "pre_fader_volume_meter": "Pre fader volume meter",
+        "mixer": "Maišiklis",
+        "metronome": "Metronomas",
+        "toggle_metronome": "Perjungti metronomą",
+        "use_metadata_bpm": "Use BPM from metadata",
         "tempo": "Tempas",
+        "bpm": "BPM",
+        "beats": "Beats",
         "type_music": "Music",
-        "type_effect": "Effect"
+        "type_effect": "Effect",
+        "unknown_artist": "Nežinomas atlikėjas",
+        "unknown_title": "Nežinomas pavadinimas",
+        "unknown_album": "Nežinomas albumas"
     },
     "menu": {
         "show": "Show",
@@ -496,6 +514,8 @@
         "locked_info": "This show has been locked for editing. Unlock it again in the shows drawer.",
         "slide_template": "Skaidrės šablonas",
         "source": "Šaltinis",
+        "artist": "Atlikėjas",
+        "song": "Giesmė",
         "delete_manual": "Manual check",
         "delete_match": "Delete if exact match",
         "delete_keep_last_modified": "Delete all except last modified",
@@ -1262,6 +1282,8 @@
         "current_slide": "for current slide",
         "text": "Teksto perėjimas",
         "media": "Medijos perėjimas",
+        "slide_transition": "Skaidrės perėjimas",
+        "background_transition": "Fono perėjimas",
         "specific": "Įjungti konkretesnius perėjimus",
         "between": "Between",
         "in": "In",

@@ -51,6 +51,7 @@
         "bold": "Podebljano"
     },
     "titlebar": {
+        "file": "Fajl",
         "edit": "Uredi",
         "view": "Izgled",
         "help": "Pomoć"
@@ -70,12 +71,14 @@
         "split_lines": "Broj linija"
     },
     "preview": {
+        "_previous_show": "Prethodna prezentacija",
         "_previous_slide": "Prethodni slajd",
         "_lock": "Zaključaj prikaz",
         "_unlock": "Otključaj prikaz",
         "_start": "Pokreni prezentaciju",
         "_update": "Ažuriraj prikaz",
         "_next_slide": "Sledeći slajd",
+        "_next_show": "Sledeća prezentacija",
         "_hide_preview": "Sakri pregled",
         "show_preview": "Prikaži pregled",
         "restore_output": "Restore output",
@@ -87,7 +90,8 @@
         "audio": "Audio",
         "to_start": "Idi na početak",
         "nextTimer": "Tajmer do sledećeg slajda",
-        "lock": "Zaključaj"
+        "lock": "Zaključaj",
+        "unlock": "Otključaj"
     },
     "clear": {
         "all": "Očisti sve",
@@ -116,6 +120,7 @@
         "back10": "Go back 10 seconds",
         "forward10": "Go forward 10 seconds",
         "volume": "Zvuk",
+        "gain": "Gain",
         "speed": "Brzina",
         "show": "Prikaži",
         "flip": "Okreni",

@@ -28,6 +28,7 @@
         "skip": "略過"
     },
     "titlebar": {
+        "file": "檔案",
         "edit": "編輯",
         "view": "檢視",
         "help": "幫助"
@@ -111,12 +112,14 @@
         "slideshow": "投影片輪播"
     },
     "preview": {
+        "_previous_show": "上一首曲目",
         "_previous_slide": "上一張投影片",
         "_lock": "鎖定輸出",
         "_unlock": "解鎖輸出",
         "_start": "開始播放",
         "_update": "更新輸出",
         "_next_slide": "下一張投影片",
+        "_next_show": "下一首曲目",
         "_hide_preview": "隱藏預覽",
         "show_preview": "顯示預覽",
         "restore_output": "恢復輸出",
@@ -128,6 +131,7 @@
         "to_start": "回到開頭",
         "nextTimer": "自動下一張計時器",
         "lock": "鎖定",
+        "unlock": "解鎖",
         "test_pattern": "測試圖案",
         "live_prepare": "隱藏輸出內容 (黑幕)"
     },
@@ -157,6 +161,8 @@
     "media": {
         "_loop": "循環",
         "play": "播放",
+        "play_multiple": "播放多個",
+        "toggle_shuffle": "切換隨機播放",
         "next": "下一個",
         "previous": "上一個",
         "play_no_audio": "靜音播放",
@@ -169,6 +175,7 @@
         "back10": "倒退 10 秒",
         "forward10": "快進 10 秒",
         "volume": "音量",
+        "gain": "增益",
         "speed": "速度",
         "flip": "翻轉",
         "flip_horizontally": "水平翻轉",
@@ -186,20 +193,36 @@
         "online": "線上",
         "downloading": "下載中",
         "recommended": "推薦",
+        "media_sync_folder": "媒體同步資料夾",
+        "media_sync_folder_tip": "將所有使用的媒體檔案持續複製到一個共享資料夾中。任何自訂的同步服務都可以指向該資料夾。",
         "bundle_media_files": "封裝所有媒體檔案",
         "bundle_media_files_tip": "將所有曲目和專案中的媒體檔案複製到單一資料夾中。"
     },
     "audio": {
         "settings": "音訊設定",
+        "playlists": "播放清單",
+        "playlist_settings": "播放清單設定",
+        "open_audio_folder": "開啟相關音訊資料夾",
+        "create_audio_folder": "建立音訊資料夾",
         "custom_output": "自訂音訊輸出",
         "mute_when_video_plays": "影片播放時靜音",
         "allow_gaining": "允許音量增益",
+        "allow_gaining_tip": "允許音量設置超過 100%（可能導致失真）",
+        "mixer": "混音器",
         "equalizer": "等化器",
         "preset": "預設",
         "main": "主聲道",
+        "metronome": "節拍器",
+        "toggle_metronome": "切換節拍器",
+        "use_metadata_bpm": "使用歌曲資訊中的 BPM",
         "tempo": "速度",
+        "bpm": "BPM",
+        "beats": "拍子",
         "type_music": "音樂",
-        "type_effect": "音效"
+        "type_effect": "音效",
+        "unknown_artist": "未知藝術家",
+        "unknown_title": "未知標題",
+        "unknown_album": "未知專輯"
     },
     "menu": {
         "show": "投影片",
@@ -534,6 +557,8 @@
         "locked_info": "此曲目已被鎖定編輯。請在曲目欄中解鎖。",
         "slide_template": "投影片範本",
         "source": "來源",
+        "artist": "藝術家/歌手",
+        "song": "詩歌",
         "enter_create": "按下 Enter 建立",
         "delete_manual": "手動檢查",
         "delete_match": "完全匹配則刪除",
@@ -1345,6 +1370,8 @@
         "current_slide": "針對目前投影片",
         "text": "文字過渡",
         "media": "媒體過渡",
+        "slide_transition": "投影片過渡",
+        "background_transition": "背景過渡",
         "specific": "啟用更具體的過渡效果",
         "between": "之間",
         "in": "進入",

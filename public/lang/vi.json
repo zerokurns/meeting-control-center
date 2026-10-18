@@ -11,6 +11,7 @@
         "system_open": "Mở trong hệ thống"
     },
     "titlebar": {
+        "file": "Tệp",
         "edit": "Chỉnh sửa",
         "view": "Xem",
         "help": "Trợ giúp"
@@ -74,12 +75,14 @@
         "split_lines": "Số dòng"
     },
     "preview": {
+        "_previous_show": "Bản trình chiếu trước",
         "_previous_slide": "Slide trước",
         "_lock": "Khóa đầu ra",
         "_unlock": "Mở khóa đầu ra",
         "_start": "Bắt đầu trình chiếu",
         "_update": "Cập nhật đầu ra",
         "_next_slide": "Slide tiếp theo",
+        "_next_show": "Bản trình chiếu tiếp theo",
         "_hide_preview": "Ẩn xem trước",
         "show_preview": "Hiện xem trước",
         "restore_output": "Khôi phục đầu ra",
@@ -91,7 +94,8 @@
         "audio": "Âm thanh",
         "to_start": "Về đầu",
         "nextTimer": "Hẹn giờ slide tiếp theo",
-        "lock": "Khóa"
+        "lock": "Khóa",
+        "unlock": "Mở khóa"
     },
     "clear": {
         "all": "Xóa tất cả",
@@ -113,6 +117,8 @@
     "media": {
         "_loop": "Lặp lại",
         "play": "Phát",
+        "play_multiple": "Phát nhiều",
+        "toggle_shuffle": "Bật/Tắt phát ngẫu nhiên",
         "next": "Tiếp theo",
         "previous": "Trước đó",
         "play_no_filters": "Phát không có bộ lọc",
@@ -122,6 +128,7 @@
         "back10": "Lùi lại 10 giây",
         "forward10": "Tiến tới 10 giây",
         "volume": "Âm lượng",
+        "gain": "Khuếch đại",
         "speed": "Tốc độ",
         "show": "Hiển thị",
         "flip": "Lật",

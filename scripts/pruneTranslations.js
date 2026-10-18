@@ -46,7 +46,7 @@ SOURCE_DIRS.forEach((d) => collectFiles(path.join(ROOT, d), files))
 const blob = files.map((f) => fs.readFileSync(f, "utf8")).join("\n")
 
 function isDynamicGroup(group) {
-    return [`\`${group}.\${`, `${group}." +`, `${group}.' +`, `\`${group}.\``, `${group} + "."`].some((p) => blob.includes(p))
+    return [`\`${group}.\${`, `${group}." +`, `${group}.' +`, `\`${group}.\``, `${group} + "."`, `${group}.{`].some((p) => blob.includes(p))
 }
 
 const en = readJson(path.join(LANG_DIR, "en.json"))
@@ -60,7 +60,7 @@ for (const [group, keys] of Object.entries(en)) {
     for (const key of Object.keys(keys)) {
         keysBefore++
         const id = group + "." + key
-        if (isForcedDead(group, key) || (!dynamic && !blob.includes(id))) dead.add(id)
+        if (isForcedDead(group, key) || (!dynamic && !blob.includes(id) && !blob.includes(`${group}?.${key}`))) dead.add(id)
     }
 }
 

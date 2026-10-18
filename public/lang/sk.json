@@ -25,6 +25,7 @@
         "skip": "Preskočiť"
     },
     "titlebar": {
+        "file": "Súbor",
         "edit": "Upraviť",
         "view": "Zobrazenie",
         "help": "Pomoc"
@@ -99,12 +100,14 @@
         "slideshow": "Prezentácia"
     },
     "preview": {
+        "_previous_show": "Predchádzajúca prezentácia",
         "_previous_slide": "Ďalšia prezentácia",
         "_lock": "Zamknúť výstup",
         "_unlock": "Odomknúť výstup",
         "_start": "Spustiť prezentáciu",
         "_update": "Aktualizovať výstup",
         "_next_slide": "Ďalší snímok",
+        "_next_show": "Ďalšia prezentácia",
         "_hide_preview": "Skryť náhľad",
         "show_preview": "Zobraziť náhľad",
         "restore_output": "Obnoviť výstup",
@@ -117,6 +120,7 @@
         "to_start": "Prejsť a začiatok",
         "nextTimer": "Časovač ďalšieho snímku",
         "lock": "Zamknúť",
+        "unlock": "Odomknúť",
         "test_pattern": "Testovací vzor"
     },
     "clear": {
@@ -142,6 +146,8 @@
     "media": {
         "_loop": "Slučka",
         "play": "Prehrať",
+        "play_multiple": "Prehrať viaceré",
+        "toggle_shuffle": "Prepnúť náhodné",
         "next": "Ďalšie",
         "previous": "Predošlé",
         "play_no_audio": "Prehrať bez zvuku",
@@ -154,6 +160,7 @@
         "back10": "Späť 10 sekúnd",
         "forward10": "Dopredu 10 sekúnd",
         "volume": "Hlasitosť",
+        "gain": "Gain",
         "speed": "Rýchlosť",
         "flip": "Preklopiť",
         "flip_horizontally": "Prevrátiť horizontálne",
@@ -174,11 +181,18 @@
     },
     "audio": {
         "settings": "Audio nastavenia",
+        "playlist_settings": "Playlist nastavenia",
         "custom_output": "Vlastný audio výstup",
         "mute_when_video_plays": "Stíšiť keď hrá video",
         "allow_gaining": "Povoliť hlasitosť",
+        "allow_gaining_tip": "Povolí zvýšenie hlasitosti na 100% (Môže skresliť zvuk)",
         "pre_fader_volume_meter": "Pre fader ukazovateľ hlasitosti",
+        "mixer": "Mix",
+        "metronome": "Metronóm",
+        "toggle_metronome": "Prepnúť metronóm",
         "tempo": "Tempo",
+        "bpm": "BPM",
+        "beats": "Takty",
         "type_music": "Hudba",
         "type_effect": "Efekt"
     },
@@ -482,6 +496,8 @@
         "locked_info": "Táto prezentácia je zamknutá na úpravy. Odomknete ju v zásuvke prezentácií.",
         "slide_template": "Šablóna snímku",
         "source": "Zdroj",
+        "artist": "Umelec",
+        "song": "Pieseň",
         "delete_manual": "Ručná kontrola",
         "delete_match": "Odstrániť pri presnej zhode",
         "delete_keep_last_modified": "Odstrániť všetky okrem naposledy upravenej",
@@ -1226,6 +1242,8 @@
         "current_slide": "pre aktuálny snímok",
         "text": "Prechod textu",
         "media": "Prechod média",
+        "slide_transition": "Prechod snímku",
+        "background_transition": "Prechod pozadia",
         "specific": "Zapnúť konkrétnejšie prechody",
         "between": "Medzi",
         "in": "Do",

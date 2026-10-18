@@ -28,6 +28,7 @@
         "skip": "スキップ"
     },
     "titlebar": {
+        "file": "ファイル",
         "edit": "編集",
         "view": "表示",
         "help": "ヘルプ"
@@ -104,12 +105,14 @@
         "slideshow": "スライドショー"
     },
     "preview": {
+        "_previous_show": "前のショー",
         "_previous_slide": "前のスライド",
         "_lock": "出力をロック",
         "_unlock": "出力のロックを解除",
         "_start": "ショーを開始",
         "_update": "出力を更新",
         "_next_slide": "次のスライド",
+        "_next_show": "次のショー",
         "_hide_preview": "プレビューを隠す",
         "show_preview": "プレビューを表示",
         "restore_output": "出力を復元",
@@ -121,6 +124,7 @@
         "to_start": "最初に移動",
         "nextTimer": "次スライドタイマー",
         "lock": "ロック",
+        "unlock": "ロック解除",
         "test_pattern": "テストパターン",
         "live_prepare": "出力内容を非表示（黒色でオーバーレイ）"
     },
@@ -150,6 +154,8 @@
     "media": {
         "_loop": "ループ",
         "play": "再生",
+        "play_multiple": "複数を再生",
+        "toggle_shuffle": "シャッフルを切り替え",
         "next": "次へ",
         "previous": "前へ",
         "play_no_audio": "音声なしで再生",
@@ -162,6 +168,7 @@
         "back10": "10秒戻る",
         "forward10": "10秒進む",
         "volume": "音量",
+        "gain": "ゲイン",
         "speed": "速度",
         "flip": "反転",
         "flip_horizontally": "水平方向に反転",
@@ -183,15 +190,27 @@
     },
     "audio": {
         "settings": "オーディオ設定",
+        "playlists": "プレイリスト",
+        "playlist_settings": "プレイリスト設定",
         "custom_output": "カスタムオーディオ出力",
         "mute_when_video_plays": "動画再生中はミュート",
         "allow_gaining": "ゲインの適用を許可",
+        "allow_gaining_tip": "音量を100%以上に設定できるようにする（歪みの原因となる場合があります）",
+        "mixer": "ミキサー",
         "equalizer": "イコライザー",
         "preset": "プリセット",
         "main": "メイン",
+        "metronome": "メトロノーム",
+        "toggle_metronome": "メトロノームを切り替え",
+        "use_metadata_bpm": "メタデータのBPMを使用",
         "tempo": "テンポ",
+        "bpm": "BPM",
+        "beats": "拍",
         "type_music": "音楽",
-        "type_effect": "効果"
+        "type_effect": "効果",
+        "unknown_artist": "不明なアーティスト",
+        "unknown_title": "不明なタイトル",
+        "unknown_album": "不明なアルバム"
     },
     "menu": {
         "show": "ショー",
@@ -517,6 +536,8 @@
         "locked_info": "このショーは編集のためにロックされています。ショーのドロワーで再度ロックを解除してください。",
         "slide_template": "スライドテンプレート",
         "source": "ソース",
+        "artist": "アーティスト",
+        "song": "曲",
         "enter_create": "Enterキーで作成",
         "delete_manual": "手動で確認",
         "delete_match": "完全一致なら削除",
@@ -1331,6 +1352,8 @@
         "current_slide": "現在のスライド用",
         "text": "テキストトランジション",
         "media": "メディアトランジション",
+        "slide_transition": "スライドトランジション",
+        "background_transition": "背景トランジション",
         "specific": "より詳細なトランジションを有効化",
         "between": "間",
         "in": "入り",
