@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onDestroy } from "svelte"
-    import { activePopup, activeStyle, drawerTabsData, outputs, popupData, scriptures, styles, templates } from "../../../stores"
+    import { activePopup, outputs, popupData, styles, templates } from "../../../stores"
     import { translateText } from "../../../utils/language"
     import { formatSearch } from "../../../utils/search"
     import Card from "../../drawer/Card.svelte"
@@ -9,7 +9,6 @@
     import { getResolution } from "../../helpers/output"
     import T from "../../helpers/T.svelte"
     import MaterialButton from "../../inputs/MaterialButton.svelte"
-    import MaterialDropdown from "../../inputs/MaterialDropdown.svelte"
     import MaterialTextInput from "../../inputs/MaterialTextInput.svelte"
     import Center from "../../system/Center.svelte"
     import Icon from "../../helpers/Icon.svelte"
@@ -31,30 +30,7 @@
 
     $: active = $popupData.active || ""
 
-    // multiple types (scripture)
-    const id = $popupData.id || ""
-    let types: { value: string; label: string }[] = []
-    let values: { value: string; label: string }[] = []
-    if (id === "scripture") {
-        const scriptureTemplateTypes = Object.values($scriptures).find((a) => a.collection)
-            ? [
-                  { value: "", label: translateText("example.default (1)") },
-                  { value: "_2", label: "2" },
-                  { value: "_3", label: "3" },
-                  { value: "_4", label: "4" }
-              ]
-            : []
-
-        const currentStyle = $styles[$activeStyle]
-
-        types = scriptureTemplateTypes
-        values = scriptureTemplateTypes.map((a) => currentStyle?.["templateScripture" + a.value] || "")
-    }
-
-    let selectedType = types[0]?.value || ""
-
-    $: customTypes = types.length > 1
-    $: value = customTypes ? values[types.findIndex((a) => a.value === selectedType)] || "" : active
+    $: value = active
 
     let searchedTemplates = clone(defaultTemplates)
     let searchValue = ""
@@ -77,10 +53,7 @@
         value = template.id
 
         setTimeout(() => {
-            if ($popupData.trigger) {
-                if (selectedType) $popupData.trigger({ value, type: selectedType })
-                else $popupData.trigger(value)
-            }
+            if ($popupData.trigger) $popupData.trigger(value)
 
             if ($popupData.doubleClick && !keyboard && previousValue !== template.id) return
 
@@ -91,9 +64,7 @@
 
     let resolution = getResolution(null, { $outputs, $styles })
 
-    $: normalTemplates = searchedTemplates.filter((a) => a.category !== "scripture")
-    $: scriptureTemplates = searchedTemplates.filter((a) => a.category === "scripture")
-    $: templatesList = id.includes("scripture") ? [...trimScriptureTemplates(scriptureTemplates, selectedType), ...normalTemplates] : [...normalTemplates, ...scriptureTemplates]
+    $: templatesList = searchedTemplates
 
     // lazy loader
     let lazyLoader = 0
@@ -104,7 +75,7 @@
         if (timeout) clearTimeout(timeout)
     })
 
-    $: if (searchValue !== undefined || selectedType) {
+    $: if (searchValue !== undefined) {
         loaded = false
         lazyLoader = 0
     }
@@ -121,29 +92,6 @@
         }
     }
 
-    function trimScriptureTemplates(templates: any[], _updater: any) {
-        let countId = ""
-
-        if (id === "scripture") {
-            countId = selectedType
-        } else if (id === "scripture_drawer") {
-            let count = 1
-            const activeScripture = $drawerTabsData.scripture?.activeSubTab || ""
-            const currentScripture = $scriptures[activeScripture]
-            if (!currentScripture) return templates
-
-            if (currentScripture.collection?.versions?.length) count = currentScripture.collection.versions.length
-            countId = count > 1 ? "_" + count : ""
-        }
-
-        // only show relevant default templates (with the correct count)
-        const keepId = "scripture" + countId
-        const keepIdLT = "scriptureLT" + countId
-        const toRemove = ["scripture", "scripture_2", "scripture_3", "scripture_4", "scriptureLT", "scriptureLT_2"].filter((a) => a !== keepId && a !== keepIdLT)
-        templates = templates.filter((a) => !toRemove.includes(a.id))
-
-        return templates
-    }
 </script>
 
 {#if revert}
@@ -152,14 +100,11 @@
 
 <MaterialTextInput label="main.search" value="" on:input={(e) => search(e.detail)} autofocus />
 
-{#if customTypes}
-    <MaterialDropdown label="scripture.translations" options={types} value={selectedType} on:change={(e) => (selectedType = e.detail)} />
-{/if}
 
 <div style="position: relative;height: 100%;width: calc(100vw - (var(--navigation-width) + 20px) * 2);margin-top: 10px;overflow-y: auto;">
     {#if templatesList.length}
         <div class="grid">
-            {#if allowEmpty || (customTypes && selectedType !== types[0]?.value)}
+            {#if allowEmpty}
                 <Card active={!value} label={translateText(allowEmpty ? "main.none" : "example.default")} icon="templates" {resolution} on:click={() => selectTemplate("")}>
                     <Center faded>
                         <Icon id="close" size={2} white />

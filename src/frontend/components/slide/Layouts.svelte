@@ -131,9 +131,7 @@
     $: referenceType = currentShow?.reference?.type
 </script>
 
-{#if referenceType === "lessons"}
-    <MaterialZoom hidden columns={$slidesOptions.columns} on:change={(e) => slidesOptions.set({ ...$slidesOptions, columns: e.detail })} />
-{:else if layoutSlides.length}
+{#if layoutSlides.length}
     <FloatingInputs arrow={!isLocked} let:open>
         <div slot="menu">
             {#if Object.keys($actions).length && !reference && (!isLocked || customAction)}
@@ -169,17 +167,15 @@
                 <Icon size={1.1} id="locked" />
             </MaterialButton>
         {:else}
-            {#if !open && (isTranslated || referenceType === "scripture")}
+            {#if !open && isTranslated}
                 <MaterialButton on:click={() => activePopup.set("translate")} title="popup.translate">
                     <Icon size={1.1} id="translate" white={!isTranslated} />
                 </MaterialButton>
             {/if}
 
-            {#if open || totalTime !== "0s" || referenceType !== "scripture"}
-                <MaterialButton title="popup.next_timer{totalTime !== '0s' ? ': ' + totalTime : ''} [Ctrl+Shift+D]" on:click={() => activePopup.set("next_timer")}>
-                    <Icon size={1.1} id="clock" white={totalTime === "0s"} />
-                </MaterialButton>
-            {/if}
+            <MaterialButton title="popup.next_timer{totalTime !== '0s' ? ': ' + totalTime : ''} [Ctrl+Shift+D]" on:click={() => activePopup.set("next_timer")}>
+                <Icon size={1.1} id="clock" white={totalTime === "0s"} />
+            </MaterialButton>
         {/if}
 
         {#if open}

@@ -12,10 +12,9 @@
     const currentShow = $showsCache[showId]
 
     const referenceType = currentShow?.reference?.type
-    const isScripture = referenceType === "scripture"
 
     const outputStyleId = getFirstActiveOutput()?.style || ""
-    const outputStyleTemplate = allOutputsHasStyleTemplate(isScripture) ? $styles[outputStyleId]?.[isScripture ? "templateScripture" : "template"] || "" : ""
+    const outputStyleTemplate = allOutputsHasStyleTemplate() ? $styles[outputStyleId]?.template || "" : ""
     const enableStylePreview = !!(outputStyleTemplate && $special.styleTemplatePreview !== false && $templates[outputStyleTemplate])
 
     const ref = showId && currentShow ? getLayoutRef(showId) : []
@@ -29,7 +28,7 @@
 
     const showTemplateId = currentShow?.settings?.template || ""
     const showTemplateIcon = !!(showTemplateId && $templates[showTemplateId])
-    let enableShowTemplate = showTemplateIcon && (!referenceType || referenceType === "scripture" || open)
+    let enableShowTemplate = showTemplateIcon && (!referenceType || open)
 
     function openStylePage() {
         activeStyle.set(outputStyleId)
@@ -68,7 +67,7 @@
 
 {#if enableStylePreview}
     <!-- Output has a style template. -->
-    <p><b>{translateText("edit.style")}:</b> {translateText(`settings.override${isScripture ? "_scripture" : ""}_with_template`)}</p>
+    <p><b>{translateText("edit.style")}:</b> {translateText(`settings.override_with_template`)}</p>
 
     <div class="flex">
         <MaterialButton style="flex: 1;" variant="outlined" title="menu.edit: {$templates[outputStyleTemplate]?.name || ''}" on:click={() => editTemplate(outputStyleTemplate)}>

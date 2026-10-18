@@ -17,7 +17,7 @@ import { exportOptions } from "../utils/windowOptions"
 import { filePathHashCode } from "./thumbnails"
 import { compressToZip } from "./zip"
 
-// SHOW: .show, PROJECT: .project, BIBLE: .fsb
+// SHOW: .show, PROJECT: .project
 const customJSONExtensions = {
     TEMPLATE: ".fstemplate",
     OVERLAY: ".fsoverlay",
@@ -237,15 +237,6 @@ function getSlidesText(show: Show) {
                 line.text?.forEach((txt) => {
                     tempText += txt.value
                 })
-
-                if (Array.isArray(line.chords) && line.chords.length) {
-                    const sortedChords = [...line.chords].map((chord, originalIndex) => ({ chord, originalIndex })).sort((a, b) => b.chord.pos - a.chord.pos || b.originalIndex - a.originalIndex)
-
-                    sortedChords.forEach(({ chord }) => {
-                        while (!tempText[chord.pos]) tempText += " "
-                        tempText = tempText.slice(0, chord.pos) + `[${chord.key}]` + tempText.slice(chord.pos)
-                    })
-                }
 
                 text += tempText + "\n"
             })

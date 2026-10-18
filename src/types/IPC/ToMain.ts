@@ -14,7 +14,6 @@ export enum ToMain {
     PRESENTATION_STATE = "PRESENTATION_STATE",
     CAPTURE_CANVAS = "CAPTURE_CANVAS",
     REPLACE_MEDIA_PATHS = "REPLACE_MEDIA_PATHS",
-    LESSONS_DONE = "LESSONS_DONE",
     IMAGES_TO_SHOW = "IMAGES_TO_SHOW",
     MEDIA_DOWNLOAD_PROGRESS = "MEDIA_DOWNLOAD_PROGRESS",
     PDF_IMPORT_PROGRESS = "PDF_IMPORT_PROGRESS",
@@ -26,7 +25,6 @@ export enum ToMain {
     AI_TRANSCRIPT = "AI_TRANSCRIPT",
     // Unified provider callbacks
     PROVIDER_CONNECT = "PROVIDER_CONNECT",
-    PROVIDER_PROJECTS = "PROVIDER_PROJECTS",
     WEBSOCKET = "WEBSOCKET",
     AUDIO_METADATA = "AUDIO_METADATA",
     GET_DYNAMIC_VALUES = "GET_DYNAMIC_VALUES",
@@ -52,7 +50,6 @@ export interface ToMainSendPayloads {
     [ToMain.PRESENTATION_STATE]: { id: string; stat: any; info: any }
     [ToMain.CAPTURE_CANVAS]: { input: string; output: string; size: any; extension: string; config: any; id: string }
     [ToMain.REPLACE_MEDIA_PATHS]: any[]
-    [ToMain.LESSONS_DONE]: { showId: string; status: { finished: number; failed: number } }
     [ToMain.IMAGES_TO_SHOW]: { images: string[]; name: string }
     [ToMain.MEDIA_DOWNLOAD_PROGRESS]: { url: string; progress: number; total: number; status: "downloading" | "complete" | "error"; name?: string }
     [ToMain.PDF_IMPORT_PROGRESS]: { filePath: string; name: string; progress: number; total: number; status: "importing" | "complete" | "error"; message?: string }
@@ -61,7 +58,6 @@ export interface ToMainSendPayloads {
     [ToMain.GPU_HEALTH]: { issue: "compositing" | "video-decode"; platform: string; vendorName: string; vaDriverMissing: boolean; packages: string[] }
     // Unified provider callbacks
     [ToMain.PROVIDER_CONNECT]: { providerId: ContentProviderId; success: boolean; isFirstConnection?: boolean }
-    [ToMain.PROVIDER_PROJECTS]: { providerId: ContentProviderId; categoryName: string; shows: any; projects: any; pcoPlans?: { planId: string; serviceTypeId: string; name: string; date: string }[] }
     [ToMain.WEBSOCKET]: "connected"
     [ToMain.AUDIO_METADATA]: { filePath: string; metadata: ICommonTagsResult }
     [ToMain.GET_DYNAMIC_VALUES]: string[]

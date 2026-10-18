@@ -9,7 +9,6 @@ import type { Cropping, Styles } from "../../../types/Settings"
 import type { ShowType } from "../../../types/Show"
 import { requestMain, sendMain } from "../../IPC/main"
 import { audioFolders, cachePath, loadedMediaThumbnails, media, mediaFolders, special, videoMarkers } from "../../stores"
-import { addToMediaFolder } from "../../utils/cloudSync"
 import { isMainWindow, newToast, wait, waitUntilValueIsDefined } from "../../utils/common"
 import { audioExtensions, imageExtensions, mediaExtensions, presentationExtensions, videoExtensions } from "../../values/extensions"
 import type { API_media, API_slide_thumbnail } from "../actions/api"
@@ -208,16 +207,10 @@ export async function getMedia(path: string, size: number = mediaSize.drawerSize
             return finish(path, path)
         }
 
-        // lessons
-        // let thumbnailPath = getThumbnailPath(path, data.size)
-        // // cache after it's downloaded
-        // setTimeout(() => loadThumbnail(path, data.size), 1000)
-
         const located = await locateMediaFile(path)
         if (!located) return null
 
         const newPath = located.path
-        if (!located.hasChanged) addToMediaFolder(newPath)
 
         if (!isMainWindow()) {
             const thumbnail = getThumbnailPath(newPath, size)
@@ -681,10 +674,6 @@ export function captureCanvas(data: { input: string; output: string; size: any; 
         const ctx = canvas.getContext("2d")
         if (!ctx || completed || !mediaElem) return exit()
 
-        // ensure lessons are downloaded and loaded before capturing
-        const isLessons = data.input.includes("Lessons")
-        const loading = isLessons ? 3000 : 0
-        await wait(loading)
         ctx.drawImage(mediaElem, 0, 0, currentMediaSize.width, currentMediaSize.height, 0, 0, canvas.width, canvas.height)
         await new Promise(requestAnimationFrame)
 

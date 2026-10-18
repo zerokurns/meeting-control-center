@@ -2,11 +2,6 @@ export const DEFAULT_DICTIONARY = {
     empty: {
         shows: "No shows"
     },
-    edit: {
-        transpose: "Transpose",
-        transpose_up: "Transpose up",
-        transpose_down: "Transpose down"
-    },
     actions: {
         reset: "Reset"
     },

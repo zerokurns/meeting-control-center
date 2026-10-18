@@ -2,8 +2,7 @@ import { get } from "svelte/store"
 import type { Item, Template } from "../../types/Show"
 import { getItemText } from "../components/edit/scripts/textStyle"
 import { clone } from "../components/helpers/array"
-import { mergeWithTemplate } from "../components/helpers/output"
-import { overlays, templates } from "../stores"
+import { templates } from "../stores"
 import { runAction } from "../components/actions/actions"
 
 const DEFAULT_TEMPLATE: Template = { name: "", color: null, category: null, items: [] }
@@ -53,29 +52,5 @@ export class TemplateHelper {
     runActions() {
         const actions = this.template.settings?.actions || []
         actions.forEach((a) => runAction(a, { source: "template" }))
-    }
-
-    // used for scripture slides
-    createSlides(count: number = 1, skipFirst: boolean = false): Item[][] {
-        const slides: Item[][] = []
-
-        if (this.template.settings?.firstSlideTemplate && !skipFirst) {
-            const firstSlideTemplate = new TemplateHelper(this.template.settings.firstSlideTemplate)
-            slides.push(firstSlideTemplate.createSlides(1, true)[0])
-        }
-
-        for (let i = 0; i < count; i++) {
-            const items = mergeWithTemplate([], this.getItems(), true)
-
-            // add overlay items
-            if (this.template.settings?.overlayId) {
-                const overlayItems = get(overlays)[this.template.settings.overlayId]?.items || []
-                items.push(...overlayItems)
-            }
-
-            slides.push(items)
-        }
-
-        return slides
     }
 }

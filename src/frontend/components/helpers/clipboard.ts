@@ -9,7 +9,6 @@ import { getProjectsInFolder } from "../../converters/project"
 import { sendMain } from "../../IPC/main"
 import {
     actions,
-    activeDays,
     activeDrawerTab,
     activePage,
     activePopup,
@@ -18,7 +17,6 @@ import {
     activeShow,
     activeStage,
     audioFolders,
-    audioPlaylists,
     audioRouting,
     audioStreams,
     categories,
@@ -28,7 +26,6 @@ import {
     drawerTabsData,
     editingProjectTemplate,
     effects,
-    events,
     focusedArea,
     folders,
     interactions,
@@ -44,8 +41,6 @@ import {
     projectTemplates,
     refreshEditSlide,
     scenes,
-    scriptures,
-    scriptureSettings,
     selectAllAudio,
     selectAllMedia,
     selected,
@@ -243,7 +238,6 @@ export function selectAll(data: any = {}) {
     } else if (!selectId) {
         if (get(activeEdit) && get(activePage) === "edit") selectId = "edit_items"
         else if (get(activeStage) && get(activePage) === "stage") selectId = "stage_items"
-        else if (get(activeDrawerTab) === "calendar" && get(drawerTabsData).calendar?.activeSubTab !== "timers") selectId = "events"
         else if ((get(activeShow)?.type === "show" || get(activeShow)?.type === undefined) && get(activePage) === "show") selectId = "slide"
         else return
     }
@@ -257,13 +251,8 @@ export function selectAll(data: any = {}) {
     else console.info("MISSING SELECT:", selectId)
 
     // NOT IN USE
-    // category_calendar
     // media, player, cameram, microphone, audio
 }
-
-// WIP duplicate of functions in Calendar.svelte
-const getMonthIndex = (month: number) => (month + 1 < 12 ? month + 1 : 0)
-const getDaysInMonth = (year: number, month: number) => new Date(year, getMonthIndex(month), 0).getDate()
 
 /// //
 
@@ -333,18 +322,6 @@ const selectActions = {
         activeStage.set({ ...get(activeStage), items })
         return
     },
-    events: () => {
-        const currentDay = get(activeDays)[0]
-        if (!currentDay) return
-
-        const dayDate = new Date(currentDay)
-        const year = dayDate.getFullYear()
-        const month = dayDate.getMonth()
-
-        const daysList: number[] = []
-        for (let i = 1; i <= getDaysInMonth(year, month); i++) daysList.push(new Date(year, month, i).getTime())
-        activeDays.set(daysList)
-    },
     slide: () => {
         let newSelection: any[] = []
         const ref = getLayoutRef()
@@ -374,11 +351,6 @@ const selectActions = {
         const newSelection: any[] = Object.keys(get(templateCategories))
         selected.set({ id: "category_templates", data: newSelection })
     },
-    category_scripture: () => {
-        const newSelection: any[] = Object.values(get(scriptures)).map(({ id }) => id)
-        selected.set({ id: "category_scripture", data: newSelection })
-    },
-    scripture: () => triggerFunction("scripture_selectAll"),
     stage: () => {
         let newSelection: any[] = Object.keys(get(stageShows))
         newSelection = newSelection.map((id) => ({ id }))
@@ -821,25 +793,6 @@ const deleteActions = {
             return a
         })
     },
-    audio: (data: any) => {
-        // remove audio from playlist
-        const activePlaylist = get(drawerTabsData).audio?.activeSubTab || ""
-        if (!activePlaylist) return
-
-        audioPlaylists.update((a) => {
-            if (!a[activePlaylist]) return a
-
-            const songs = clone(a[activePlaylist].songs || [])
-            data.forEach((song) => {
-                const currentSongIndex = songs.findIndex((path) => path === song.path)
-                if (currentSongIndex >= 0) songs.splice(currentSongIndex, 1)
-            })
-
-            a[activePlaylist].songs = songs
-
-            return a
-        })
-    },
     folder: async (data: any) => {
         let projectIds: string[] = []
         let folderIds: string[] = []
@@ -871,8 +824,7 @@ const deleteActions = {
     category_shows: (data: any) => historyDelete("UPDATE", data, { updater: "category_shows" }),
     category_media: (data: any) => historyDelete("UPDATE", data, { updater: "category_media" }),
     category_audio: (data: any) => {
-        if (get(audioPlaylists)[data[0]]) historyDelete("UPDATE", data, { updater: "audio_playlists" })
-        else historyDelete("UPDATE", data, { updater: "category_audio" })
+        historyDelete("UPDATE", data, { updater: "category_audio" })
     },
     category_overlays: (data: any) => historyDelete("UPDATE", data, { updater: "category_overlays" }),
     category_templates: (data: any) => historyDelete("UPDATE", data, { updater: "category_templates" }),
@@ -888,14 +840,9 @@ const deleteActions = {
         let styleTemplates: string[] = []
         Object.values(get(styles)).forEach((a) => {
             if (a.template) styleTemplates.push(a.template)
-            if (a.templateScripture) styleTemplates.push(a.templateScripture)
         })
         if (ids.some((id) => styleTemplates.includes(id))) {
             if (!(await confirmCustom(translateText("This template is in use by Styles.<br>popup.delete_show_confirmation?")))) return
-        }
-        // SCRIPTURE
-        if (ids.includes(get(scriptureSettings).template)) {
-            if (!(await confirmCustom(translateText("This template is in use by Scripture.<br>popup.delete_show_confirmation?")))) return
         }
         // TEMPLATE (First slide template)
         let firstSlideTemplateIds: string[] = []
@@ -909,22 +856,6 @@ const deleteActions = {
         // Style overwrites (not relevant as it's not in the global list)
 
         historyDelete("UPDATE", data, { updater: "template" })
-    },
-    category_scripture: (data: any) => {
-        scriptures.update((a) => {
-            data.forEach((id: string) => {
-                let key: string | null = null
-                Object.entries(a).forEach(([sId, value]) => {
-                    if (value.id === id || sId === id) key = sId
-                })
-
-                if (key) delete a[key]
-            })
-            return a
-        })
-    },
-    event: (data: any) => {
-        history({ id: "UPDATE", newData: { id: data.id }, location: { page: "drawer", id: "event" } })
     },
     midi: (data: any) => {
         data = data[0]
@@ -1094,22 +1025,6 @@ const deleteActions = {
         const tagId = data[0]?.id || ""
         history({ id: "UPDATE", newData: { id: tagId }, location: { page: "show", id: "tag" } })
     },
-    chord: (data: any) => {
-        data = data[0]
-
-        const item: Item = _show().slides([data.slideId]).items([data.itemIndex]).get()[0][0]
-
-        const newLines = clone(item.lines || [])
-        const currentChordIndex = newLines[data.index].chords?.findIndex((a) => a.id === data.chord.id) ?? -1
-        if (currentChordIndex < 0) return
-
-        newLines[data.index].chords!.splice(currentChordIndex, 1)
-
-        _show()
-            .slides([data.slideId])
-            .items([data.itemIndex])
-            .set({ key: "lines", values: [newLines] })
-    },
     stage_item: (data: any) => {
         const activeItems = get(activeStage).items || []
         if (!data.id || !activeItems.length) return
@@ -1129,17 +1044,6 @@ const deleteActions = {
 }
 
 const duplicateActions = {
-    event: (data: any) => {
-        const event = clone(get(events)[data.id])
-        if (!event) return
-
-        event.name += " 2"
-        event.repeat = false
-        delete event.group
-        delete event.repeatData
-
-        history({ id: "UPDATE", newData: { data: event }, location: { page: "drawer", id: "event" } })
-    },
     show: (data: any) => {
         const isTemplate = !!get(editingProjectTemplate)
         const projectId = isTemplate ? get(editingProjectTemplate) : get(activeProject)

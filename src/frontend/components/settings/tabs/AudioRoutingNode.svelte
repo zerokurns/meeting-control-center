@@ -44,9 +44,7 @@
 
     const NODE_ICONS: Record<string, string> = {
         drawer_audio: "audio",
-        playlist: "playlist",
         mic: "mic",
-        metronome: "timer",
         desktop_audio: "volume",
         output_window: "display_settings",
         speaker: "volume",
@@ -210,10 +208,6 @@
                 small
             />
         {/if}
-
-        <!-- {#if type === "metronome"}
-            <MaterialToggleSwitch label="" checked={$playingMetronome} on:change={toggleMetronome} small />
-        {/if} -->
 
         {#if type === "desktop_audio"}
             <MaterialToggleSwitch label="" checked={isEnabled} on:change={(e) => onToggleEnabled?.(e.detail)} small />

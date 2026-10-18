@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { actions, activePage, activePopup, activeShow, activeTimers, contextActive, groups, guideActive, outLocked, outputs, overlayTimers, playingAudio, playingMetronome, resized, slideTimers, special } from "../../../stores"
+    import { actions, activePage, activePopup, activeShow, activeTimers, contextActive, groups, guideActive, outLocked, outputs, overlayTimers, playingAudio, resized, slideTimers, special } from "../../../stores"
     import { DEFAULT_WIDTH, isDarkTheme } from "../../../utils/common"
     import { formatSearch } from "../../../utils/search"
     import { getNormalizedKey, previewCtrlShortcuts, previewShortcuts } from "../../../utils/shortcuts"
@@ -25,7 +25,6 @@
     import ClearButtons from "./ClearButtons.svelte"
     import MultiOutputs from "./MultiOutputs.svelte"
     import IcecastStatus from "./IcecastStatus.svelte"
-    import SpotifyController from "./SpotifyController.svelte"
 
     $: allActiveOutputs = getActiveOutputs($outputs, true, true, true)
     $: outputId = allActiveOutputs[0]
@@ -175,15 +174,15 @@
     let activeClear: string | null = null
     let autoChange = true
     $: if (outputId) autoChange = true
-    $: if (autoChange && ($outputs || $overlayTimers || $activeTimers || $playingMetronome)) {
-        let active = getActiveClear(!isOutCleared("transition"), Object.keys($playingAudio).length || $playingMetronome, !isOutCleared("overlays") || !isOutCleared("effects"), !isOutCleared("slide") && (outputSlideHasContent(currentOutput) || isOutCleared("background")), !isOutCleared("background"))
+    $: if (autoChange && ($outputs || $overlayTimers || $activeTimers)) {
+        let active = getActiveClear(!isOutCleared("transition"), Object.keys($playingAudio).length, !isOutCleared("overlays") || !isOutCleared("effects"), !isOutCleared("slide") && (outputSlideHasContent(currentOutput) || isOutCleared("background")), !isOutCleared("background"))
         if (active !== activeClear) activeClear = active
     }
     // enable autochange again if active has no value
-    $: if (!autoChange && ($outputs || $playingAudio || $playingMetronome || $overlayTimers || $activeTimers)) checkStillActive()
+    $: if (!autoChange && ($outputs || $playingAudio || $overlayTimers || $activeTimers)) checkStillActive()
     function checkStillActive() {
         if (activeClear === "nextTimer" && isOutCleared("transition")) autoChange = true
-        else if (activeClear === "audio" && !Object.keys($playingAudio).length && !$playingMetronome) autoChange = true
+        else if (activeClear === "audio" && !Object.keys($playingAudio).length) autoChange = true
         else if (activeClear === "overlays" && isOutCleared("overlays") && isOutCleared("effects")) autoChange = true
         else if (activeClear === "slide" && !(!isOutCleared("slide") && (outputSlideHasContent(currentOutput) || isOutCleared("background")))) autoChange = true
         else if (activeClear === "background" && isOutCleared("background")) autoChange = true
@@ -240,9 +239,8 @@
 
     let enablePreview = true
 
-    // hide preview in draw page
+    // hide preview
     // $: enablePreview = ["show", "edit", "settings"].includes($activePage)
-    // $: if ($activePage === "draw") enablePreview = false
 
     const light = !isDarkTheme()
     $: isOptimized = $special.optimizedMode
@@ -298,7 +296,6 @@
         </div>
 
         <IcecastStatus />
-        <SpotifyController />
     {/if}
 </div>
 

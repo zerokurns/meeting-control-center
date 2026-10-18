@@ -7,7 +7,7 @@ import { getMainWindow, isProd, mainWindow, maximizeMain, setGlobalMenu } from "
 import type { MainResponses } from "../../types/IPC/Main"
 import { Main } from "../../types/IPC/Main"
 import { ToMain } from "../../types/IPC/ToMain"
-import type { ErrorLog, LyricSearchResult, OS } from "../../types/Main"
+import type { ErrorLog, OS } from "../../types/Main"
 import { completeLLM, fetchProviderModels } from "../ai/llm/llmProviders"
 import { setAiKey } from "../ai/setup/aiKeys"
 import { aiHandleLocalSetup, LocalModelManager } from "../ai/setup/LocalModelManager"
@@ -16,12 +16,10 @@ import { SpeechToText } from "../ai/stt/SpeechToTextManager"
 import { getAudioMetadata } from "../audio/audio"
 import { openNowPlaying, setPlayingState, unsetPlayingAudio } from "../audio/nowPlaying"
 import { CaptureHelper } from "../capture/CaptureHelper"
-import { canSync, getSyncTeams, hasTeamData, markAsNewSync, restoreCloudBackup, syncData } from "../cloud/syncManager"
-import { ChurchAppsChat } from "../contentProviders/churchApps/ChurchAppsChat"
 import { ContentProviderRegistry } from "../contentProviders/ContentProviderRegistry"
 import { deleteBackup, getBackups, restoreFiles } from "../data/backup"
 import { getLocalIPs } from "../data/bonjour"
-import { checkIfMediaDownloaded, downloadLessonsMedia, downloadMedia } from "../data/downloadMedia"
+import { checkIfMediaDownloaded, downloadMedia } from "../data/downloadMedia"
 import { importShow } from "../data/import"
 import { save } from "../data/save"
 import { _store, appDataPath, config, createStores, getStore, getStoreValue, setStoreValue } from "../data/store"
@@ -35,14 +33,12 @@ import { downloadFfmpeg, resolveFfmpegPath } from "../streaming/ffmpegManager"
 import { processAudioData, timecodeStart, timecodeStop, updateTimecodeValue } from "../timecode/timecode"
 import { apiReturnData, emitOSC, startWebSocketAndRest, stopApiListener } from "../utils/api"
 import { closeMain } from "../utils/close"
-import { addToMediaFolder, bundleMediaFiles, createFolder, getDataFolderPath, getDataFolderRoot, getFileInfo, getMediaCodec, getMediaSyncFolderPath, getMediaTracks, getPaths, getSimularPaths, loadFile, loadShowsAsync, locateMediaFile, openInSystem, readExifData, readFile, readFolder, readFolderContent, selectFiles, selectFilesDialog, selectFolder, setMediaSyncFolderPath, writeFile } from "../utils/files"
+import { addToMediaFolder, bundleMediaFiles, createFolder, getDataFolderPath, getDataFolderRoot, getFileInfo, getMediaCodec, getMediaSyncFolderPath, getMediaTracks, getPaths, getSimularPaths, loadFile, loadShowsAsync, locateMediaFile, openInSystem, readExifData, readFile, readFolderContent, selectFiles, selectFilesDialog, selectFolder, setMediaSyncFolderPath, writeFile } from "../utils/files"
 import { listGraphicsDevices } from "../utils/gpu"
 import { getMachineId } from "../utils/helpers"
-import { LyricSearch } from "../utils/LyricSearch"
 import { closeMidiInPorts, getMidiInputs, getMidiOutputs, receiveMidi, sendMidi } from "../utils/midi"
 import { deleteShows, deleteShowsNotIndexed, getAllShows, getEmptyShows, refreshAllShows } from "../utils/shows"
 import { correctSpelling } from "../utils/spellcheck"
-import { executeSpotifyCommand, getSpotifyState } from "../utils/spotify"
 import checkForUpdates from "../utils/updater"
 import { sendToMain } from "./main"
 
@@ -66,10 +62,8 @@ export const mainResponses: MainResponses = {
     [Main.PROJECTS]: () => getStore("PROJECTS"),
     [Main.OVERLAYS]: () => getStore("OVERLAYS"),
     [Main.TEMPLATES]: () => getStore("TEMPLATES"),
-    [Main.EVENTS]: () => getStore("EVENTS"),
     [Main.MEDIA]: () => getStore("MEDIA"),
     [Main.THEMES]: () => getStore("THEMES"),
-    [Main.DRIVE_API_KEY]: () => getStore("DRIVE_API_KEY"),
     [Main.HISTORY]: () => getStore("HISTORY"),
     [Main.USAGE]: () => getStore("USAGE"),
     [Main.CACHE]: () => getStore("CACHE"),
@@ -86,7 +80,6 @@ export const mainResponses: MainResponses = {
     [Main.DELETE_BACKUP]: (data) => deleteBackup(data),
     [Main.IMPORT]: (data) => startImport(data),
     [Main.IMPORT_FILES]: (data) => importFiles(data),
-    [Main.BIBLE]: (data) => loadScripture(data),
     [Main.SHOW]: (data) => loadShow(data),
     // MAIN
     [Main.SHOWS]: (() => loadShowsAsync()) as any,
@@ -127,7 +120,6 @@ export const mainResponses: MainResponses = {
     [Main.READ_EXIF]: (data) => readExifData(data),
     [Main.MEDIA_CODEC]: (data) => getMediaCodec(data),
     [Main.MEDIA_TRACKS]: (data) => getMediaTracks(data),
-    [Main.DOWNLOAD_LESSONS_MEDIA]: (data) => downloadLessonsMedia(data),
     [Main.MEDIA_DOWNLOAD]: (data) => downloadMedia(data),
     [Main.MEDIA_IS_DOWNLOADED]: async (data) => await checkIfMediaDownloaded(data),
     [Main.NOW_PLAYING]: (data) => setPlayingState(data),
@@ -160,9 +152,6 @@ export const mainResponses: MainResponses = {
     },
     [Main.RECEIVE_MIDI]: (data) => receiveMidi(data),
     [Main.CLOSE_MIDI]: (data) => closeMidiInPorts(data.id),
-    // LYRICS
-    [Main.GET_LYRICS]: (data) => getLyrics(data),
-    [Main.SEARCH_LYRICS]: (data) => searchLyrics(data),
     // FILES
     [Main.RESTORE]: (data) => restoreFiles(data),
     [Main.RECORDER]: (data) => saveRecording(data),
@@ -173,39 +162,21 @@ export const mainResponses: MainResponses = {
     [Main.GET_SIMILAR]: (data) => getSimularPaths(data),
     [Main.BUNDLE_MEDIA_FILES]: (data) => bundleMediaFiles(data),
     [Main.MEDIA_FOLDER_COPY]: (data) => addToMediaFolder(data.paths),
-    [Main.READ_BIBLES_FOLDER]: () => readBiblesFolder(),
     [Main.FILE_INFO]: (data) => getFileInfo(data),
     [Main.READ_FOLDER]: (data) => readFolderContent(data),
     [Main.READ_FILE]: (data) => ({ content: readFile(data.path) }),
     [Main.OPEN_FOLDER]: (data) => selectFolder(data),
     [Main.OPEN_FILE]: (data) => selectFiles(data),
-    // SYNC
-    [Main.CAN_SYNC]: (data) => canSync(data),
-    [Main.GET_TEAMS]: (data) => getSyncTeams(data),
-    [Main.CLOUD_DATA]: (data) => hasTeamData(data),
-    [Main.CLOUD_SYNC]: (data) => syncData(data),
-    [Main.RESTORE_CLOUD_BACKUP]: (data) => restoreCloudBackup(data),
-    [Main.GET_CONVERSATION_ID]: (data) => getConversationId(data.teamId),
-    [Main.SEND_SOCKET_MESSAGE]: (data) => sendSocketMessage(data),
     // Provider-based routing
     [Main.PROVIDER_LOAD_SERVICES]: async (data) => {
-        if (data.cloudOnly) markAsNewSync()
-        await ContentProviderRegistry.loadServices(data.providerId, data.cloudOnly || false, data.data)
+        await ContentProviderRegistry.loadServices(data.providerId, data.data)
     },
     [Main.PROVIDER_CONNECTIONS]: () => ContentProviderRegistry.getConnectedProviders(),
     [Main.PROVIDER_DISCONNECT]: (data) => {
         ContentProviderRegistry.disconnect(data.providerId, data.scope)
         return { success: true }
     },
-    [Main.PROVIDER_STARTUP_LOAD]: (data) => ContentProviderRegistry.startupLoad(data.providerId, data.scope || "", data.data, data.cloudOnly),
-    [Main.PROVIDER_FETCH_FOLDERS]: (data) => ContentProviderRegistry.fetchFolderTree(data.providerId),
-    [Main.PCO_FETCH_SERVICE_TREE]: () => ContentProviderRegistry.fetchServiceTree("planningcenter"),
-    [Main.PCO_LOAD_PLAN]: (data) => ContentProviderRegistry.loadSinglePlan(data.serviceTypeId, data.planId),
-    [Main.PCO_LIVE_GET]: (data) => ContentProviderRegistry.getPcoLiveData(data.serviceTypeId, data.planId).catch(() => null),
-    [Main.PCO_PUSHER_AUTH]: (data) => ContentProviderRegistry.getPcoPusherAuth(data.socketId, data.channelName, data.serviceTypeId),
-    [Main.ONSTAGE_GET_TEAMS]: () => ContentProviderRegistry.getOnStageTeams().catch(() => []),
-    [Main.ONSTAGE_SWITCH_TEAM]: (data) => ContentProviderRegistry.switchOnStageTeam(data.teamId).catch(() => ({ success: false })),
-    [Main.ONSTAGE_LOAD_SERVICE]: (data) => ContentProviderRegistry.loadOnStageService(data.serviceId, data.data),
+    [Main.PROVIDER_STARTUP_LOAD]: (data) => ContentProviderRegistry.startupLoad(data.providerId, data.scope || "", data.data),
     // Content Library
     [Main.GET_CONTENT_PROVIDERS]: () => {
         const providers = ContentProviderRegistry.getAvailableProviders()
@@ -248,12 +219,6 @@ export const mainResponses: MainResponses = {
     [Main.TIMECODE_VALUE]: (data) => updateTimecodeValue(data),
     [Main.TIMECODE_STATUS]: (data) => console.log(data),
     [Main.TIMECODE_AUDIO_DATA]: (data) => processAudioData(data),
-    // Spotify
-    [Main.SPOTIFY_GET_STATE]: () => getSpotifyState(),
-    [Main.SPOTIFY_COMMAND]: async (data) => {
-        await executeSpotifyCommand(data.command, data.value)
-        return true
-    },
     // FFmpeg
     [Main.FFMPEG_CHECK]: async () => {
         const path = await resolveFfmpegPath()
@@ -306,43 +271,6 @@ function importFiles(data: { id: string; paths: string[] }) {
     importShow(data.id, data.paths)
 }
 
-// BIBLE
-export function loadScripture(msg: { id: string; name: string }) {
-    const bibleFolder: string = getDataFolderPath("scriptures")
-    let filePath: string = path.join(bibleFolder, msg.name + ".fsb")
-
-    let bible = loadFile(filePath, msg.id)
-
-    // pre v0.5.6
-    if (bible.error) filePath = path.join(app.getPath("documents"), "Bibles", msg.name + ".fsb")
-    bible = loadFile(filePath, msg.id)
-
-    // convert "value" keys to correct "text" key, pre v1.3.0
-    if (bible.content?.[1]?.books?.[0]?.chapters?.[0]?.verses?.[0]?.value) {
-        bible.content[1].books.forEach((book: any) => {
-            book.chapters.forEach((chapter: any) => {
-                chapter.verses.forEach((verse: any) => {
-                    if (!verse.text) {
-                        verse.text = verse.value || ""
-                        delete verse.value
-                    }
-                })
-            })
-        })
-    }
-
-    return bible
-}
-
-function readBiblesFolder() {
-    const bibleFolder: string = getDataFolderPath("scriptures")
-    const names = readFolder(bibleFolder)
-    return names.map((name) => {
-        const filePath = path.join(bibleFolder, name)
-        return { path: filePath, name: name.replace(/\.fsb$/i, "") }
-    })
-}
-
 // SHOW
 export function loadShow(msg: { id: string; name: string }) {
     const showsFolder = getDataFolderPath("shows")
@@ -359,16 +287,6 @@ function getVersion() {
         console.error("Could not get version:", err)
         return "0.0.0"
     }
-}
-
-async function getConversationId(teamId: string): Promise<string | null> {
-    return ChurchAppsChat.getOrCreateConversation(teamId)
-}
-
-async function sendSocketMessage(data: { churchId: string; teamId: string; displayName: string; content: string }): Promise<boolean> {
-    const conversationId = await ChurchAppsChat.getOrCreateConversation(data.teamId)
-    if (!conversationId) return false
-    return ChurchAppsChat.sendMessage({ churchId: data.churchId, conversationId, displayName: data.displayName, content: data.content })
 }
 
 function getOS() {
@@ -400,16 +318,6 @@ function checkRamUsage() {
 export const openURL = (url: string) => {
     shell.openExternal(url)
     return
-}
-
-async function searchLyrics({ artist, title }: { artist: string; title: string }) {
-    const songs = await LyricSearch.search(artist, title)
-    return songs
-}
-
-async function getLyrics({ song }: { song: LyricSearchResult }) {
-    const lyrics = await LyricSearch.get(song)
-    return { lyrics, source: song.source, title: song.title, artist: song.artist }
 }
 
 // GET DEVICE MEDIA PERMISSION

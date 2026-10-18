@@ -8,13 +8,12 @@ import type { DropData, Selected } from "../../../types/Main"
 import type { Item, Slide, SlideAction } from "../../../types/Show"
 import { sendMain } from "../../IPC/main"
 import { changeLayout, changeSlideGroups } from "../../show/slides"
-import { activeDrawerTab, activeEdit, activePage, activePopup, activeProject, activeShow, alertMessage, audioFolders, audioPlaylists, audioStreams, drawerTabsData, editingProjectTemplate, effectsLibrary, media, mediaFolders, overlays, playerVideos, projects, projectTemplates, scenes, scriptureSettings, shows, showsCache, slidesOptions, templates, timers } from "../../stores"
+import { activeDrawerTab, activeEdit, activePage, activePopup, activeProject, activeShow, alertMessage, audioFolders, audioStreams, drawerTabsData, editingProjectTemplate, effectsLibrary, media, mediaFolders, overlays, playerVideos, projects, projectTemplates, scenes, shows, showsCache, slidesOptions, templates, timers } from "../../stores"
 import { newToast } from "../../utils/common"
 import { getAccess } from "../../utils/profile"
 import { audioExtensions, imageExtensions, mediaExtensions, presentationExtensions, videoExtensions } from "../../values/extensions"
 import { actionData } from "../actions/actionData"
 import { addSlideAction, getActionTriggerId, isMatchingSlideAction } from "../actions/actions"
-import { getActiveScripturesContent, getReferenceText, getScriptureShow, getScriptureSlidesNew } from "../drawer/bible/scripture"
 import { getVimeoData, getYouTubeData, trimPlayerId } from "../drawer/player/playerHelper"
 import { addItem, DEFAULT_ITEM_STYLE } from "../edit/scripts/itemHelpers"
 import { addStageItem } from "../stage/stage"
@@ -226,20 +225,6 @@ export const dropActions = {
             })
         } else if (drag.id === "camera" || drag.id === "screen" || drag.id === "ndi" || drag.id === "omt" || drag.id === "blackmagic") {
             data = data.map((a) => ({ id: a.id, name: a.name, type: a.type || drag.id, data: { groupId: a.cameraGroup } }))
-        } else if (drag.id === "scripture") {
-            const biblesContent = await getActiveScripturesContent()
-            const show = await getScriptureShow(biblesContent)
-            if (!show) return
-
-            const activeShowObj = get(activeShow)
-            const isReplacingPlaceholderArea = !drop.data?.id && activeShowObj?.type === "show_placeholder"
-            const isReplacing = (drop.data?.type === "show_placeholder" && drop.center) || isReplacingPlaceholderArea
-            const replaceIndex = isReplacing ? (drop.data?.index !== undefined ? drop.data.index : activeShowObj?.index) : undefined
-            let index = isReplacing ? replaceIndex : drop.index
-            if (!isReplacing && drop.trigger?.includes("end")) index++
-
-            history({ id: "UPDATE", newData: { data: show, remember: { project: projectId, index, replacePlaceholder: isReplacing } }, location: { page: "show", id: "show" } })
-            return
         }
 
         h.newData = { key: "shows", data: [] }
@@ -416,22 +401,6 @@ export const dropActions = {
             // return history
         }
 
-        // audio playlist
-        if (get(audioPlaylists)[drop.data] && (drag.id === "audio" || drag.id === "audio_effect")) {
-            h.id = "UPDATE"
-            h.location = { page: "drawer", id: "audio_playlist_key" }
-
-            const playlistId = drop.data
-            h.oldData = { id: playlistId }
-
-            const songs = clone(get(audioPlaylists)[playlistId]?.songs || [])
-            const newSongs = drag.data.map((a) => a.path)
-            songs.push(...newSongs)
-            h.newData = { key: "songs", data: songs }
-
-            return h
-        }
-
         if (drop.data === "effects_library" && (drag.id === "audio" || drag.id === "audio_effect" || drag.id === "media")) {
             const rawFiles: any[] = drag.data
             effectsLibrary.update((effects) => {
@@ -535,29 +504,6 @@ export const dropActions = {
             })
         }
     },
-    audio_playlist: ({ drag, drop }: Data, h: History) => {
-        h.id = "UPDATE"
-        h.location = { page: "drawer", id: "audio_playlist_key" }
-
-        const playlistId = get(drawerTabsData).audio?.activeSubTab
-        if (!playlistId) return
-
-        h.oldData = { id: playlistId }
-
-        let songs = clone(get(audioPlaylists)[playlistId]?.songs || [])
-        let dropIndex = drop.index
-        if (dropIndex === undefined) dropIndex = songs.length
-
-        if (drag.id === "files") {
-            const audioFiles = drag.data.map((a) => window.api.showFilePath(a))
-            songs = addToPos(songs, audioFiles, dropIndex)
-        } else {
-            songs = mover(songs, getIndexes(drag.data), dropIndex)
-        }
-
-        h.newData = { key: "songs", data: songs }
-        return h
-    },
     effects_library: ({ drag }: Data) => {
         const rawFiles: any[] = drag.id === "files" ? drag.data.map((a: any) => ({ path: window.api.showFilePath(a), name: a.name })) : drag.data
         if (!rawFiles?.length) return
@@ -597,7 +543,6 @@ function dropFileInDrawerNavigation(drag) {
 
     // WIP drop .show/.json into show categories???
     // WIP drop .template
-    // WIP drop bibles??
 }
 
 export function addDrawerFolder(file: any, type: "media" | "audio") {
@@ -796,13 +741,6 @@ const slideDrop = {
             history(h)
         })
     },
-    category_audio: ({ drag, drop }: Data) => {
-        // drop playlist to create action
-        const playlistId = drag.data[0]
-        if (!playlistId || !get(audioPlaylists)[playlistId]) return
-
-        addSlideAction(drop.index ?? -1, "start_playlist", { id: playlistId })
-    },
     scene: ({ drag, drop }: Data) => {
         drag.data.forEach((scene) => {
             const sceneId = scene?.id || scene
@@ -992,54 +930,6 @@ const slideDrop = {
         history.newData = { key: "overlays", data, dataIsArray: true, indexes: [drop.index] }
         return history
     },
-    scripture: async ({ drop }: Data, history: History) => {
-        const biblesContent = await getActiveScripturesContent()
-        if (!biblesContent?.length) return
-
-        const selectedChapters = biblesContent[0].chapters
-        const selectedVerses = biblesContent[0].activeVerses
-
-        const { slides: scriptureSlides, groupNames, slideDynamicValues } = await getScriptureSlidesNew({ biblesContent, selectedChapters, selectedVerses })
-        const slideTemplate: string = get(scriptureSettings).verseNumbers ? "" : get(scriptureSettings).template || ""
-        let newSlides = scriptureSlides.map((items, i) => {
-            const referenceText = getReferenceText(biblesContent)
-            return { group: groupNames[i] || referenceText, color: null, settings: { template: slideTemplate }, notes: "", items, customDynamicValues: slideDynamicValues?.[i] }
-        })
-
-        // set to correct order
-        newSlides = newSlides.reverse()
-
-        // WIP duplicate of global_group
-        const ref = getLayoutRef()
-
-        history.id = "slide"
-
-        const layoutId: string = _show().get("settings.activeLayout")
-
-        const slides: { [key: string]: Slide } = clone(get(showsCache)[get(activeShow)?.id || ""]?.slides)
-        if (!slides) return
-
-        let layout: any[] = _show().layouts([layoutId]).slides().get()[0] || []
-
-        if (drop.index === undefined) drop.index = ref.length
-        let newIndex: number = drop.index
-        if (drop.trigger?.includes("end")) newIndex++
-
-        newSlides.forEach((slide) => {
-            const id = uid()
-            delete (slide as any).id
-            slides[id] = slide
-
-            let parent: any = ref[newIndex - 1] || { index: -1 }
-            if (parent.type === "child") parent = parent.parent
-
-            layout = addToPos(layout, [{ id }], parent.index + 1)
-        })
-
-        history.newData = { slides, layout }
-        history.location!.layout = layoutId
-        return history
-    },
     audio_stream: ({ drag, drop }: Data, history: History) => {
         if (drop.index === undefined) return
         history.id = "SHOW_LAYOUT"
@@ -1050,17 +940,6 @@ const slideDrop = {
 
         const data = { id: streamId, ...stream }
         const actions = createSlideAction("start_audio_stream", drop.index, data)
-        if (!actions) return
-
-        history.newData = { key: "actions", data: actions, indexes: [drop.index] }
-        return history
-    },
-    metronome: ({ drag, drop }: Data, history: History) => {
-        if (drop.index === undefined) return
-        history.id = "SHOW_LAYOUT"
-
-        const data = drag.data[0]
-        const actions = createSlideAction("start_metronome", drop.index, data, true)
         if (!actions) return
 
         history.newData = { key: "actions", data: actions, indexes: [drop.index] }

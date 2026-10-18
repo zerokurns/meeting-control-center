@@ -1,6 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte"
-    import { actionRevealUsed, actions, activePopup, ai, audioPlaylists, audioStreams, categories, effects, emitters, obsData, outputs, overlays, popupData, projects, scenes, shows, stageShows, styles, templates, timers, variables } from "../../stores"
+    import { actionRevealUsed, actions, activePopup, ai, audioStreams, categories, effects, emitters, obsData, outputs, overlays, popupData, projects, scenes, shows, stageShows, styles, templates, timers, variables } from "../../stores"
     import { translateText } from "../../utils/language"
     import { formatSearch } from "../../utils/search"
     import Icon from "../helpers/Icon.svelte"
@@ -15,7 +15,6 @@
     import MaterialButton from "../inputs/MaterialButton.svelte"
     import MaterialTextInput from "../inputs/MaterialTextInput.svelte"
     import MaterialToggleSwitch from "../inputs/MaterialToggleSwitch.svelte"
-    import { spotifyState } from "../output/preview/SpotifyManager"
     import { getGlobalGroupName } from "../show/tools/groups"
     import Center from "../system/Center.svelte"
     import CustomInput from "./CustomInput.svelte"
@@ -49,8 +48,6 @@
         "clear_audio",
         // "change_volume",
         "start_audio_stream",
-        "start_playlist",
-        "start_metronome",
         "id_start_timer",
         "start_slide_timers",
         "stop_timers",
@@ -72,7 +69,6 @@
     let usedSections: string[] = []
 
     const obsEnabled = !!$obsData.enabled
-    const spotifyEnabled = !!$spotifyState
     const webRtcOutputs = Object.values($outputs).some((a) => a.webrtc)
     const rtmpOutputs = Object.values($outputs).some((a) => a.rtmp)
     const smartEnabled = !!$ai?.enabled
@@ -103,8 +99,6 @@
 
                 // remove any OBS ones if not enabled
                 if (id.startsWith("obs_") && !obsEnabled) return false
-                // remove any Spotify ones if not active
-                if (id.startsWith("spotify_") && !spotifyEnabled) return false
                 // remove WebRTC actions if no WebRTC outputs exist
                 if (id.includes("webrtc_") && !webRtcOutputs) return false
                 // remove RTMP actions if no RTMP outputs exist
@@ -209,7 +203,6 @@
 
         if (id === "change_variable") return getName($variables)
         if (id === "id_start_timer") return getName($timers)
-        if (id === "start_playlist") return getName($audioPlaylists)
         if (id === "id_select_overlay" || id === "clear_overlay") return getName($overlays)
         if (id === "emit_action") return $emitters[actionValue.emitter]?.name || ""
         if (id === "run_action" || id === "toggle_action") return getName($actions)

@@ -21,8 +21,6 @@ export const customActionActivations = [
     { id: "slide_cleared", common: true, name: "actions.activate_slide_cleared", icon: "slide" },
     { id: "background_cleared", common: true, name: "actions.activate_background_cleared", icon: "image" },
 
-    { id: "scripture_start", common: true, name: "actions.activate_scripture_start", icon: "scripture" },
-
     { id: "video_start", common: true, name: "actions.activate_video_starting: actions.any", icon: "video" },
     { id: "video_start_foreground", name: "actions.activate_video_starting: preview.foreground", icon: "video" },
     { id: "video_start_background", name: "actions.activate_video_starting: preview.background", icon: "video" },
@@ -30,7 +28,6 @@ export const customActionActivations = [
 
     { id: "audio_start", common: true, name: "actions.activate_audio_starting", icon: "music" },
     { id: "audio_end", name: "actions.activate_audio_ending", icon: "music" },
-    { id: "audio_playlist_ended", common: true, name: "actions.activate_audio_playlist_ended", icon: "music" },
 
     { id: "timer_start", common: true, name: "actions.activate_timer_starting", icon: "timer", inputs: true },
     { id: "timer_end", common: true, name: "actions.activate_timer_ending", icon: "timer", inputs: true },

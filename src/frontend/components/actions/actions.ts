@@ -1,10 +1,9 @@
 import { writable, get } from "svelte/store"
 import { uid } from "uid"
 import { gainToDb, MIN_DB } from "../../audio/dBUtils"
-import { actionHistory, actions, audioPlaylists, audioRouting, audioStreams, outputs, runningActions, scenes, shows, stageShows, styles } from "../../stores"
+import { actionHistory, actions, audioRouting, audioStreams, outputs, runningActions, scenes, shows, stageShows, styles } from "../../stores"
 import { newToast, wait } from "../../utils/common"
 import { translateText } from "../../utils/language"
-import { getShowBPM } from "../drawer/audio/metronome"
 import { getDynamicValue } from "../edit/scripts/itemHelpers"
 import { clone, keysToID } from "../helpers/array"
 import { history } from "../helpers/history"
@@ -274,7 +273,6 @@ const namedObjects = {
     id_select_show: () => get(shows),
     start_scene: () => get(scenes),
     start_audio_stream: () => get(audioStreams),
-    start_playlist: () => get(audioPlaylists),
     id_select_stage_layout: () => get(stageShows),
     start_output_recording: () => get(outputs)
 }
@@ -283,12 +281,6 @@ export function getActionName(actionId: string, actionValue: any): string {
 
     if (actionId === "change_output_style") {
         return get(styles)[actionValue.outputStyle]?.name || ""
-    }
-
-    if (actionId === "start_metronome") {
-        const beats = (actionValue.beats || 4) === 4 ? "" : " | " + actionValue.beats
-        if (actionValue.metadataBPM) actionValue.tempo = getShowBPM()
-        return (actionValue.tempo || 120) + beats
     }
 
     if (actionId === "change_volume") {

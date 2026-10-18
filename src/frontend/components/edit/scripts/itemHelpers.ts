@@ -342,7 +342,7 @@ export function shouldItemBeShown(item: Item, allItems: Item[] = [], { outputId,
     return isConditionMet(condition, itemsText, type)
 }
 
-// get "temp" items (scripture) if stage
+// get "temp" items if stage
 function getTempItems(item: Item, allItems: Item[]) {
     const stageOutputId = getStageOutputId(get(outputs))
     const currentOutput = get(outputs)[stageOutputId] || get(allOutputs)[stageOutputId] || {}
@@ -379,10 +379,6 @@ export function isConditionMet(condition: Condition | undefined, itemsText: stri
     if (cached && Date.now() - cached.timestamp < 200) {
         return cached.result
     }
-
-    // remove unused scripture dynamic values ({scripture_X} / {scriptureNUM_X})
-    const regex = /\{scripture(?:\d+)?_[^}]*\}/g
-    if (regex.test(itemsText)) itemsText = itemsText.replace(regex, "").trim()
 
     // outerOr
     const conditionMet = !!condition.find((outerAnd) => {
@@ -471,7 +467,7 @@ function isTimerRunning(timerId: string) {
     const timer = get(timers)[timerId]
     if (!timer) return false
 
-    if (timer.type === "clock" || timer.type === "event") {
+    if (timer.type === "clock") {
         const value = Number(getTimerValue(timerId))
         return value > 0
     }

@@ -1,6 +1,6 @@
 import { get } from "svelte/store"
 import type { Shows } from "../../../types/Show"
-import { actions, activePlaylist, audioPlaylists, outputs, playingAudio, playingVideos, playingVideoState, projects, shows, showsCache, variables } from "../../stores"
+import { actions, outputs, playingAudio, playingVideos, playingVideoState, projects, shows, showsCache, variables } from "../../stores"
 import { getTextLines } from "../edit/scripts/textStyle"
 import { keysToID, sortByName } from "../helpers/array"
 import { getFirstActiveOutput } from "../helpers/output"
@@ -103,15 +103,6 @@ export function getPlayingAudioData() {
     if (!audio) return
 
     return { id: audioId, name: audio.name, paused: audio.paused, isMic: audio.isMic, duration: getPlayingAudioDuration() }
-}
-
-export function getPlaylists() {
-    return get(audioPlaylists)
-}
-
-export function getPlayingPlaylist(data: API_id_optional) {
-    const id = data?.id || get(activePlaylist)?.id
-    return get(audioPlaylists)[id] ? { ...get(audioPlaylists)[id], id } : null
 }
 
 export function getSlide(data: API_slide) {

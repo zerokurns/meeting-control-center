@@ -1,6 +1,5 @@
 {
     "main": {
-        "welcome": "欢迎",
         "quit": "退出",
         "docs": "文档",
         "about": "关于",
@@ -58,8 +57,6 @@
         "mail": "通过邮件联系",
         "support": "如果您对这个项目心存感激，请考虑支持它",
         "assets": "使用的素材",
-        "libraries": "使用的库",
-        "thanks": "鸣谢：",
         "new_update": "有可用版本更新",
         "download_latest": "下载最新版本",
         "download_auto": "您已启用自动更新，请等待几分钟，更新文件将自动下载并安装，然后重启应用程序。",
@@ -68,16 +65,8 @@
     "tooltip": {
         "project": "创建一个新项目，您可以在其中添加和安排节目。",
         "show": "创建一个新节目，您可以在其中添加歌词、演示文稿和媒体。",
-        "groups": "当前节目中的所有分组及所有全局分组。点击或拖拽即可将其添加到当前节目编排中。",
-        "media": "当前节目中的所有媒体。点击显示，或拖拽至当前节目编排中。",
-        "metadata": "编辑当前节目的元数据。",
         "notes": "写备注",
-        "text": "编辑所有选定项的元素。",
-        "item": "编辑所选元素。",
-        "slide": "编辑当前幻灯片",
-        "filters": "更改所选元素的外观。",
         "options": "更多选项",
-        "scripture": "按住 Ctrl/Cmd 或 Shift 键可选择多节经文。",
         "context_cut_in_half": "将第一个文本框拆分为两张幻灯片。",
         "context_merge": "将选中的幻灯片合并为一张。",
         "context_capitalize": "每行首字母大写。",
@@ -111,7 +100,6 @@
         "recording": "正在录制",
         "clock": "时间",
         "rounded": "圆角",
-        "call": "视频电话",
         "header": "标题",
         "text": "文本<br>",
         "big": "大",
@@ -120,20 +108,11 @@
         "bold": "加粗"
     },
     "create_show": {
-        "web": "网络搜索",
-        "search_web": "从网络上搜索歌曲",
-        "search_results": "搜索结果",
-        "block": "块",
         "more_options": "更多选项",
-        "auto_groups": "自动分配分组",
         "format_new_show": "格式化文本",
-        "format_new_show_tip": "通过自动大写、修剪/拆分文本等来改善文本格式。",
         "split_lines": "单幻灯片最大行数",
-        "split_lines_tip": "每张幻灯片在自动拆分前允许的最大行数",
         "quick_lyrics": "快速歌词",
         "quick_lyrics_tip": "粘贴文本或手动输入",
-        "quick_lyrics_example_tip": "在这里输入歌词或任何文本",
-        "quick_lyrics_example_text": "行",
         "empty": "空白节目",
         "exists": "检测到存在同名节目",
         "slideshow": "幻灯片"
@@ -321,7 +300,6 @@
         "layouts": "没有布局",
         "player": "没有视频",
         "groups": "没有分组",
-        "events": "没有事件",
         "text": "输入文字",
         "timers": "没有计时器",
         "input": "缺少输入值",
@@ -333,10 +311,8 @@
         "shows": "节目",
         "show": "节目",
         "slide": "幻灯片",
-        "lyrics": "歌词",
         "end": "结束",
         "no_output": "没有输出",
-        "remember": "记住我",
         "loading": "正在加载…",
         "submit": "提交",
         "password": "密码",
@@ -347,14 +323,11 @@
         "no_show": "找不到节目",
         "load": "无法加载",
         "media": "找不到媒体",
-        "bible": "找不到本地圣经",
         "import": "无法导入",
-        "bible_api": "无法加载 API 经文。请确保你的网络连接正常。",
         "not_found": "没有找到",
         "display": "无法在当前显示器上显示输出窗口",
         "video_unavailable": "视频不可用？该创作者已禁用视频的嵌入。",
         "folder_exists": "此文件夹已经存在",
-        "uri": "无法解析音频名称，请重命名文件",
         "ip": "无法获取您的设备IP，请转到计算机的 Wi-Fi 设置中查找本地 IPv4 地址。"
     },
     "meta": {
@@ -592,26 +565,15 @@
         "autosize_disabled": "禁用自动大小",
         "error_media": "无法获得媒体。",
         "empty_styles": "没有样式",
-        "chapter_undefined": "本书中不存在{}章。",
-        "verse_undefined": "经文 {} 在本章中不存在。",
         "recording_started": "录制已开始！",
         "recording_stopped": "录制已停止！",
         "starting_action": "正在启动动作",
-        "less_than_minute": "不到一分钟。",
-        "less_than_seconds": "少于{}秒。",
-        "now": "现在！",
         "template_applied_globally": "此模板已全局应用于当前节目。",
         "unsupported_video": "不支持的视频！",
-        "no_video_id": "无视频ID",
         "no_name": "没有名称",
-        "reverting_setting": "在{}秒内恢复更改，再次使更改保持不变！",
-        "reverted": "设置已还原！仅在未遇到任何问题时重新启用。",
         "media_replaced": "缺失的媒体文件被替换为匹配。",
-        "lyrics_undefined": "找不到任何歌词！",
-        "lyrics_copied": "歌词来自",
         "one_output": "您必须至少有一个活动输出！",
         "canva_exporting": "正在导出 Canva 演示文稿，这可能需要一些时间…",
-        "no_songswords_easyworship": "缺少 SongsWords.db 文件。",
         "delete_shows_empty": "没有节目可删除。",
         "reached_end": "播放完毕！",
         "output_capture_enabled": "已启用输出屏幕捕获，这可能会导致性能问题。仅在需要时使用！",
@@ -632,9 +594,7 @@
         "profile": "新建配置文件",
         "timer": "新建计时器",
         "variable": "新建变量",
-        "trigger": "新建触发器",
         "audio_stream": "新的音频流",
-        "playlist": "新建播放列表",
         "category": "新建分类",
         "private": "新建私有节目",
         "folder": "新建文件夹",
@@ -642,12 +602,7 @@
         "slide": "新建幻灯片",
         "overlay": "新建叠加",
         "template": "新建模板",
-        "scripture": "新建圣经",
-        "collection": "新建收藏夹",
         "action": "新建动作",
-        "event": "新建事件",
-        "event_action": "新建计划动作",
-        "calendar": "新建日历",
         "effect": "新建效果",
         "scene": "新建场景",
         "interaction": "新建交互"
@@ -880,9 +835,6 @@
         "toggle_playing_media": "切换正在播放的媒体",
         "change_volume": "修改音量",
         "start_audio_stream": "开始音频流",
-        "start_playlist": "启动播放列表",
-        "playlist_next": "播放列表中下一个音轨",
-        "start_metronome": "启动节拍器",
         "start_audio_effect": "启动音效特效",
         "id_start_timer": "启动计时器",
         "start_slide_timers": "在当前幻灯片上启动计时器",
@@ -892,7 +844,6 @@
         "change_transition": "修改转场动画",
         "change_variable": "修改变量",
         "start_trigger": "启动触发器",
-        "change_draw_zoom": "更改视图缩放​",
         "run_action": "运行动作",
         "toggle_action": "切换动作",
         "emit_data": "发出数据",
@@ -942,35 +893,10 @@
         "toggle_curve_editor": "切换曲线编辑器"
     },
     "animate": {
-        "change": "修改",
-        "set": "设置",
-        "wait": "等待",
-        "background": "背景",
-        "text": "文本",
-        "item": "元素",
-        "to": "到",
-        "for": "为了",
-        "seconds": "秒"
+        "wait": "等待"
     },
     "cloud": {
-        "info": "将文件同步到云端进行备份，或在多台电脑之间访问。",
-        "enable": "启动和关闭时自动同步",
-        "read_only": "只读",
-        "reconnect": "重新连接",
-        "enable_sync": "启动同步",
-        "sync": "现在同步",
-        "change_team": "修改团队",
-        "choose_method_tip": "云端已存在数据。您想如何操作？",
-        "merge_tip": "保留本地与云端的最新更改。",
-        "readonly_tip": "合并云端与本地数据，但禁止上传本地更改。",
-        "upload": "上传",
-        "upload_tip": "初始时用本地数据替换云端数据，随后正常合并。",
-        "replace": "下载",
-        "replace_tip": "初始时用云端数据替换本地数据，随后正常合并。",
-        "local": "本地",
-        "syncing": "同步到云端",
-        "sync_complete": "同步已完成",
-        "restore_weekly_backup": "恢复一周前的同步状态"
+        "replace": "下载"
     },
     "export": {
         "export": "导出",
@@ -998,8 +924,7 @@
         "text": "纯文本",
         "slides": "幻灯片",
         "rows": "行",
-        "columns": "列",
-        "margin": "边距"
+        "columns": "列"
     },
     "context": {
         "to_dictionary": "添加到词典",
@@ -1009,7 +934,6 @@
         "setTag": "设置标签",
         "filterByTags": "按标签过滤",
         "addToProject": "添加到项目",
-        "add_to_show": "添加到节目",
         "lockForChanges": "锁定编辑",
         "use_as_archive": "标记为存档",
         "newCategory": "新建分类",
@@ -1031,8 +955,6 @@
     },
     "tools": {
         "notes": "备注",
-        "--schedule": "计划",
-        "--actions": "动作",
         "groups": "分组",
         "metadata": "元数据",
         "media": "媒体",
@@ -1251,15 +1173,9 @@
         "flash": "闪烁",
         "preview": "预览",
         "clock": "时间",
-        "event": "事件",
-        "no_events": "近期没有事件",
-        "edit": "编辑",
         "create": "创建",
         "line": "进度条",
-        "mask": "蒙版",
-        "end_on_time": "按时结束当前项",
-        "full_length": "完整项时长",
-        "end_service": "按时结束流程"
+        "mask": "蒙版"
     },
     "clock": {
         "type": "类型",
@@ -1298,9 +1214,7 @@
         "start_action": "启动动作",
         "use_default_values": "使用默认值",
         "auto_values": "收到 MIDI 输入时更新值",
-        "tip_velocity": "将速度设置为 -1 以禁用。",
-        "tip_action": "要激活特定幻灯片，右键点击任意幻灯片并选择 MIDI 操作。",
-        "tip_index_by_velocity": "Index由接收到的速度决定，从0开始。"
+        "tip_velocity": "将速度设置为 -1 以禁用。"
     },
     "emitters": {
         "emitter": "发射器",
@@ -1312,21 +1226,7 @@
         "data": "数据"
     },
     "draw": {
-        "focus": "聚焦",
-        "pointer": "指针",
-        "zoom": "缩放",
-        "fill": "填充",
-        "paint": "油漆",
-        "particles": "粒子",
-        "radius": "半径",
-        "glow": "发光",
-        "hollow": "空心",
-        "hold": "保持",
-        "straight": "直接",
-        "rainbow": "彩虹",
-        "threed": "3D",
-        "dots": "点",
-        "link_to_slide": "链接到幻灯片"
+        "glow": "发光"
     },
     "stage": {
         "stage_layout": "舞台布局",
@@ -1536,7 +1436,6 @@
         "name": "名称",
         "name_des": "名称降序",
         "date": "日期",
-        "size": "大小",
         "type": "类型",
         "custom": "自定义"
     },
@@ -1572,29 +1471,6 @@
         "add_slides_from_show": "包含节目中的幻灯片",
         "calendars": "日历",
         "delete_confirmation": "确定要从该日历中删除所有事件吗？"
-    },
-    "scripture": {
-        "collections": "收藏夹",
-        "translations": "翻译",
-        "bibles_section": "圣经",
-        "local": "导入本地文件",
-        "supported_formats": "支持的格式：",
-        "max_verses": "每张幻灯片最大歌词数",
-        "verse_numbers": "经文章节",
-        "verses_on_individual_lines": "每行一句经文",
-        "divide_long_verses": "分割长经文",
-        "split_long_verses_suffix": "显示字母后缀",
-        "smart_split": "智能拆分",
-        "tolerance": "容差",
-        "version": "节目版本",
-        "reference": "节目偏好设置",
-        "split_reference": "拆分偏好设置",
-        "combine_with_text": "合并到文本",
-        "first_slide_reference": "在第一页幻灯片上引用",
-        "reference_at_bottom": "移到底部",
-        "red_jesus": "耶稣的话用描红显示",
-        "show_all": "显示全部",
-        "search": "在圣经中搜索"
     },
     "filter": {
         "blur": "模糊",
@@ -1648,10 +1524,6 @@
     },
     "easings": {
         "linear": "匀速",
-        "ease": "标准缓动",
-        "ease-in": "加速进入",
-        "ease-out": "减速退出",
-        "ease-in-out": "先加速后减速",
         "elastic": "弹簧效果",
         "bounce": "弹跳效果",
         "back": "回弹效果",
@@ -1828,7 +1700,6 @@
         "end": "如需了解其他功能，欢迎随时上网查阅帮助文档。"
     },
     "chat": {
-        "chat": "聊天",
         "send": "发送",
         "ask": "随便问点什么...",
         "type_message": "输入消息..."
@@ -1844,10 +1715,6 @@
         "waiting": "请稍候...",
         "processing": "处理中...",
         "transcription": "语音转写",
-        "auto_present": "自动演示",
-        "confidence_ask": "始终询问",
-        "confidence_highest": "若有把握",
-        "confidence_high": "若高度确信",
-        "confidence_medium": "若中等确信"
+        "auto_present": "自动演示"
     }
 }

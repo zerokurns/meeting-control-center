@@ -45,12 +45,7 @@
             if (active === "item") active = "text"
         }
 
-        if (item?.type === "metronome") {
-            tabs.text.disabled = true
-            if (active === "text") active = "item"
-        } else {
-            tabs.text.disabled = !activeItemId
-        }
+        tabs.text.disabled = !activeItemId
         tabs.item.disabled = !activeItemId
 
         if (activeItemId && (active === "text" || active === "item")) {
@@ -98,7 +93,7 @@
 
         if (active === "text") {
             // this will not reset text css style
-            const resetData = { auto: true, chords: {}, timer: {}, clock: {}, tracker: {}, variable: {}, device: {} }
+            const resetData = { auto: true, timer: {}, clock: {}, tracker: {}, variable: {}, device: {} }
             Object.entries(resetData).forEach(([subkey, data]) => {
                 history({
                     id: "UPDATE",

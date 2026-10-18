@@ -70,7 +70,7 @@ export function shouldItemBeShown(item: Item, allItems: Item[] = [], { outputId,
     return true
 }
 
-// get "temp" items (scripture) if stage
+// get "temp" items if stage
 function getTempItems(item: Item, allItems: Item[]) {
     const slideOffset = item.type ? Number((item as StageItem).slideOffset || 0) : 0
     const currentOutput = get(output)
@@ -166,7 +166,7 @@ function isTimerRunning(timerId: string) {
     const timer = get(timers)[timerId]
     if (!timer) return false
 
-    if (timer.type === "clock" || timer.type === "event") {
+    if (timer.type === "clock") {
         const value = Number(getTimerValue(timerId))
         return value > 0
     }

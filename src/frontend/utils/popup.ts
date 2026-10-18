@@ -14,22 +14,16 @@ import AudioStream from "../components/main/popups/AudioStream.svelte"
 import CategoryAction from "../components/main/popups/CategoryAction.svelte"
 import ChangeIcon from "../components/main/popups/ChangeIcon.svelte"
 import ChangeOutputValues from "../components/main/popups/ChangeOutputValues.svelte"
-import ChooseChord from "../components/main/popups/ChooseChord.svelte"
 import ChooseMediaInput from "../components/main/popups/ChooseMediaInput.svelte"
 import ChooseOutput from "../components/main/popups/ChooseOutput.svelte"
 import ChooseScreen from "../components/main/popups/ChooseScreen.svelte"
 import ChooseStyle from "../components/main/popups/ChooseStyle.svelte"
-import ChurchAppsSyncCategories from "../components/main/popups/ChurchAppsSyncCategories.svelte"
 import CleaningUtility from "../components/main/popups/CleaningUtility.svelte"
-import CloudMethod from "../components/main/popups/CloudMethod.svelte"
-import CloudSync from "../components/main/popups/CloudSync.svelte"
-import CloudUpdate from "../components/main/popups/CloudUpdate.svelte"
 import Color from "../components/main/popups/Color.svelte"
 import ColorGradient from "../components/main/popups/ColorGradient.svelte"
 import Conditions from "../components/main/popups/Conditions.svelte"
 import Confirm from "../components/main/popups/Confirm.svelte"
 import Connect from "../components/main/popups/Connect.svelte"
-import CreateCollection from "../components/main/popups/CreateCollection.svelte"
 import CreatePlayer from "../components/main/popups/CreatePlayer.svelte"
 import CreateShow from "../components/main/popups/createShow/CreateShow.svelte"
 import CustomAction from "../components/main/popups/CustomAction.svelte"
@@ -37,18 +31,14 @@ import CustomText from "../components/main/popups/CustomText.svelte"
 import DeleteDuplicatedShows from "../components/main/popups/DeleteDuplicatedShows.svelte"
 import DeleteShow from "../components/main/popups/DeleteShow.svelte"
 import DisplayDuration from "../components/main/popups/DisplayDuration.svelte"
-import DrawerSearchOptions from "../components/main/popups/DrawerSearchOptions.svelte"
 import DynamicValues from "../components/main/popups/DynamicValues.svelte"
 import EditChart from "../components/main/popups/EditChart.svelte"
-import EditEvent from "../components/main/popups/EditEvent.svelte"
 import EffectItems from "../components/main/popups/EffectItems.svelte"
 import Emitters from "../components/main/popups/Emitters.svelte"
 import Export from "../components/main/popups/export/Export.svelte"
 import FindReplace from "../components/main/popups/FindReplace.svelte"
 import History from "../components/main/popups/History.svelte"
 import Import from "../components/main/popups/Import.svelte"
-import ImportCalendar from "../components/main/popups/ImportCalendar.svelte"
-import ImportScripture from "../components/main/popups/ImportScripture.svelte"
 import Initialize from "../components/main/popups/Initialize.svelte"
 import InteractionInput from "../components/main/popups/InteractionInput.svelte"
 import Translate from "../components/main/popups/localization/Translate.svelte"
@@ -68,7 +58,6 @@ import NodeOptions from "../components/main/popups/NodeOptions.svelte"
 import NowPlaying from "../components/main/popups/NowPlaying.svelte"
 import OutputSelector from "../components/main/popups/OutputSelector.svelte"
 import OutputSetup from "../components/main/popups/OutputSetup.svelte"
-import PcoServicePicker from "../components/main/popups/PcoServicePicker.svelte"
 import RegexManager from "../components/main/popups/RegexManager.svelte"
 import Rename from "../components/main/popups/Rename.svelte"
 import ResetAll from "../components/main/popups/ResetAll.svelte"
@@ -82,7 +71,6 @@ import SetTime from "../components/main/popups/SetTime.svelte"
 import Shortcuts from "../components/main/popups/Shortcuts.svelte"
 import SlideMidi from "../components/main/popups/SlideMidi.svelte"
 import SlideShortcut from "../components/main/popups/SlideShortcut.svelte"
-import SyncFolders from "../components/main/popups/SyncFolders.svelte"
 import TemplateInfo from "../components/main/popups/TemplateInfo.svelte"
 import TemplateStyleOverrides from "../components/main/popups/TemplateStyleOverrides.svelte"
 import Timecode from "../components/main/popups/Timecode.svelte"
@@ -117,7 +105,6 @@ export const popups: { [key in Popups]: ComponentType } = {
     manage_dynamic_values: ManageDynamicValues,
     template_style_overrides: TemplateStyleOverrides,
     regex_manager: RegexManager,
-    choose_chord: ChooseChord,
     choose_media_input: ChooseMediaInput,
     player: CreatePlayer,
     rename: Rename,
@@ -136,10 +123,6 @@ export const popups: { [key in Popups]: ComponentType } = {
     transition: Transition,
     media_fit: MediaFit,
     metadata_display: MetadataDisplay,
-    import_scripture: ImportScripture,
-    import_calendar: ImportCalendar,
-    create_collection: CreateCollection,
-    edit_event: EditEvent,
     edit_chart: EditChart,
     choose_screen: ChooseScreen,
     choose_output_input: ChooseOutput,
@@ -171,18 +154,11 @@ export const popups: { [key in Popups]: ComponentType } = {
     custom_action: CustomAction,
     slide_midi: SlideMidi,
     connect: Connect,
-    cloud_sync: CloudSync,
-    cloud_update: CloudUpdate,
-    cloud_method: CloudMethod,
-    sync_categories: ChurchAppsSyncCategories,
     effect_items: EffectItems,
     timeline: TimelineSettings,
     timecode: Timecode,
-    drawer_search_options: DrawerSearchOptions,
     template_info: TemplateInfo,
     cleaning_utility: CleaningUtility,
-    pco_picker: PcoServicePicker,
-    sync_folders: SyncFolders,
     node_options: NodeOptions,
     ai_model_manager: AiModelManager,
     ai_chat: AiChat

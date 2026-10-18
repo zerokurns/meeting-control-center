@@ -33,8 +33,6 @@
     export let editIndex = -1
     export let ratio = 1
     export let plain = false
-    export let chordsMode = false
-    export let chordsAction = ""
 
     let itemElem: HTMLElement | undefined
     let cropElem: EditboxCropping | undefined
@@ -43,7 +41,7 @@
 
     export let mouse: any = {}
     function mousedown(e: any) {
-        if (e.target.closest(".chords") || e.target.closest(".editTools")) return
+        if (e.target.closest(".editTools")) return
         if (!e.shiftKey && !e.target.closest(".line") && !e.target.closest(".square") && !e.target.closest(".rotate") && !e.target.closest(".radius") && !e.target.closest(".cropHandle") && !e.target.closest(".cropOverlay")) {
             openToolsTab.set("text")
 
@@ -145,7 +143,7 @@
     }
 
     function deselect(e: any) {
-        if (e.target.closest(".menus") || e.target.closest(".popup") || e.target.closest(".drawer") || e.target.closest(".chords") || e.target.closest(".contextMenu") || e.target.closest(".editTools") || e.target.closest(".group") || e.target.closest(".timeline")) return
+        if (e.target.closest(".menus") || e.target.closest(".popup") || e.target.closest(".drawer") || e.target.closest(".contextMenu") || e.target.closest(".editTools") || e.target.closest(".group") || e.target.closest(".timeline")) return
 
         if (e.ctrlKey || e.metaKey || e.target.closest(".item") === itemElem || !$activeEdit.items.includes(index) || e.target.closest(".item")) return
 
@@ -234,7 +232,6 @@
     $: shapeGuideStyle = getShapeGuideStyle(getStyles(item?.style)["shape-outside"])
 </script>
 
-<!-- on:mouseup={() => chordUp({ showRef: ref, itemIndex: index, item })} -->
 <svelte:window on:mousedown={deselect} on:keydown={keydown} on:keyup={keyup} />
 
 <div
@@ -243,7 +240,6 @@
     class:selected={$activeEdit.items.includes(index)}
     class:decoration={item?.decoration}
     class:isDisabledVariable
-    class:chords={chordsMode}
     class:isOptimized
     class:showOverflow={item?.type === "table" || cropActive}
     class:isShiftPressed
@@ -256,7 +252,7 @@
         <EditboxPlain {item} {index} {ratio} hideMovebox={cropActive} />
     {/if}
     {#if item?.lines && !noTextMode}
-        <EditboxLines {item} {ref} {index} {editIndex} {plain} {chordsMode} {chordsAction} {isLocked} />
+        <EditboxLines {item} {ref} {index} {editIndex} {plain} {isLocked} />
     {:else if previewItem}
         {#if previewItem.type === "media" || previewItem.type === "camera"}
             <div class="mediaFrame" class:showOverflow={cropActive}>
@@ -302,10 +298,6 @@
     .item.selected :global(.align) {
         outline: 5px solid var(--secondary-opacity);
         overflow: visible !important;
-    }
-
-    .item.chords {
-        overflow: visible;
     }
 
     .item.isDisabledVariable {

@@ -13,7 +13,7 @@
     const maxHeight = 800
 
     // Tab configuration
-    const DRAWER_TABS = ["shows", "audio", "overlays", "templates", "scripture", "functions"] as const
+    const DRAWER_TABS = ["shows", "audio", "overlays", "templates", "functions"] as const
 
     $: height = $drawer.height ?? defaultHeight
 
@@ -129,11 +129,6 @@
     let searchValue = ""
     let searchElem: HTMLInputElement | undefined
 
-    function clearDrawerSearch() {
-        searchValue = ""
-        searchElem?.focus()
-    }
-
     function openDrawerTab(tab: string) {
         activeDrawerTab.set(tab)
         if (height <= minHeight) {
@@ -193,7 +188,7 @@
         {/if}
 
         <div class="main-content">
-            <TabletDrawerContent id={$activeDrawerTab} {searchValue} on:search-clear={clearDrawerSearch} />
+            <TabletDrawerContent id={$activeDrawerTab} {searchValue} />
         </div>
     </div>
 </div>

@@ -3,7 +3,7 @@
     import { OUTPUT } from "../../../types/Channels"
     import type { Styles } from "../../../types/Settings"
     import type { Item, Slide, TemplateStyleOverride, Transition } from "../../../types/Show"
-    import { currentWindow, groups, outputs, overlays, scriptureSettings, showsCache, styles, templates, variables } from "../../stores"
+    import { currentWindow, groups, outputs, overlays, showsCache, styles, templates, variables } from "../../stores"
     import { wait } from "../../utils/common"
     import { send } from "../../utils/request"
     import autosize from "../edit/scripts/autosize"
@@ -50,7 +50,6 @@
     export let style = true
     export let customStyle = ""
     export let stageItem: any = {}
-    export let chords = false
     export let linesStart: null | number = null
     export let linesEnd: null | number = null
     export let clickRevealed = false
@@ -181,21 +180,11 @@
     let slideData: Slide | null = null
     let groupTemplateId = ""
     let resolvedTemplateId = ""
-    let scriptureSettingsTemplateId = ""
-    let showReference: any = null
-    let isScriptureContext = false
-    let scriptureTranslationKey = ""
-    let styleScriptureTemplateId = ""
     $: slideData = (() => {
         if (!ref?.showId) return null
         const slideId = ref.slideId || ref.id
         if (!slideId) return null
         return ($showsCache[ref.showId]?.slides?.[slideId] as Slide) || null
-    })()
-    // remember show-level reference metadata so we can identify scripture flows
-    $: showReference = (() => {
-        if (!ref?.showId) return null
-        return $showsCache[ref.showId]?.reference || null
     })()
     $: groupTemplateId = (() => {
         if (!slideData) return ""
@@ -204,24 +193,6 @@
 
         // pick up template supplied by group overrides (if present)
         return $groups[groupId]?.template || ""
-    })()
-    // scripture slides can come from drawer preview or a stored show reference
-    $: isScriptureContext = (() => {
-        if (ref?.id === "scripture" || ref?.showId === "temp") return true
-        return (showReference?.type || "") === "scripture"
-    })()
-    // translation count dictates which style-specific template should apply
-    $: scriptureTranslationKey = isScriptureContext ? buildScriptureTranslationKey(showReference) : ""
-    // prefer the output-style scripture template when the current output overrides scripture layouts
-    $: styleScriptureTemplateId = (() => {
-        if (!isScriptureContext || !outputStyle) return ""
-        const translationTemplate = scriptureTranslationKey ? (outputStyle[`templateScripture${scriptureTranslationKey}` as keyof Styles] as string | undefined) : undefined
-        return translationTemplate || outputStyle.templateScripture || ""
-    })()
-    // fall back to the template captured when the scripture show was created
-    $: scriptureSettingsTemplateId = (() => {
-        if (ref?.id === "scripture" || ref?.showId === "temp") return $scriptureSettings.template || ""
-        return ""
     })()
     // track whether this textbox belongs to the first slide for the active layout
     let isFirstLayoutSlide = false
@@ -252,7 +223,7 @@
         if (slideData?.settings?.template) return slideData.settings.template
 
         // favor output-driven templates first so overrides don't bleed between outputs
-        const styleResolved = resolveTemplate(isScriptureContext ? styleScriptureTemplateId : outputStyle?.template || "")
+        const styleResolved = resolveTemplate(outputStyle?.template || "")
         if (styleResolved) return styleResolved
 
         // group templates provide per-group defaults
@@ -261,10 +232,6 @@
 
         const showResolved = resolveTemplate(currentShowTemplateId)
         if (showResolved) return showResolved
-
-        // finally fall back to the template captured when the scripture show was generated
-        const scriptureResolved = resolveTemplate(scriptureSettingsTemplateId)
-        if (scriptureResolved) return scriptureResolved
 
         return ""
     })()
@@ -275,22 +242,6 @@
 
         return clone($templates[resolvedTemplateId]?.settings?.styleOverrides || [])
     })()
-
-    // convert translation metadata into the suffix used by templateScripture_* settings
-    function buildScriptureTranslationKey(reference: any) {
-        const translationCount = getScriptureTranslationCount(reference)
-        if (translationCount <= 1) return ""
-        const limitedCount = Math.min(4, translationCount)
-        return `_${limitedCount}`
-    }
-
-    // count how many translations are present for the current scripture selection
-    function getScriptureTranslationCount(reference: any) {
-        if (!reference?.data) return 1
-        if (reference.data.translations) return Number(reference.data.translations) || 1
-        const versionList = typeof reference.data.version === "string" ? reference.data.version.split("+") : []
-        return versionList.filter((value) => value.trim().length).length || 1
-    }
 
     // AUTO SIZE
 
@@ -321,7 +272,7 @@
         }
     }
     let prevAutosizeSignature = ""
-    $: autosizeSignature = `${isStage ? stageItem?.style || "" : item?.style || ""}_${resolvedTemplateId}_${chordLines ? 1 : 0}_${stageAutoSize ? 1 : 0}_${item?.textFit || ""}_${stageItem?.textFit || ""}_${JSON.stringify(item?.lines || stageItem?.lines || "")}_${ratio}`
+    $: autosizeSignature = `${isStage ? stageItem?.style || "" : item?.style || ""}_${resolvedTemplateId}_${stageAutoSize ? 1 : 0}_${item?.textFit || ""}_${stageItem?.textFit || ""}_${JSON.stringify(item?.lines || stageItem?.lines || "")}_${ratio}`
 
     let debounceTimer: NodeJS.Timeout | null = null
     function debouncedCalculateAutosize(delay = 50) {
@@ -401,10 +352,10 @@
 
         // Immediate cache check: if we already have a cached size for the current element dimensions, return it immediately without waiting!
         const cacheKey = buildAutoSizeCacheKey()
-        const cacheSignature = buildAutoSizeSignature(undefined, undefined, chords)
+        const cacheSignature = buildAutoSizeSignature()
         const cachedResult = cacheKey ? readAutoSizeCache(cacheKey) : undefined
 
-        if (!isDynamic && !chords && !Number(outputStyle?.lines || 0) && cachedResult && cachedResult.signature === cacheSignature) {
+        if (!isDynamic && !Number(outputStyle?.lines || 0) && cachedResult && cachedResult.signature === cacheSignature) {
             fontSize = cachedResult.fontSize
             if (item.type === "slide_tracker") {
                 markAutoSizeReady()
@@ -475,7 +426,7 @@
             const itemText = allText.filter((a) => !a.customType?.includes("disableTemplate")) || []
             let itemFontSize = Number(getStyles(itemText[0]?.style, true)?.["font-size"] || "") || 100
 
-            // get scripture verse ratio
+            // get ratio of text with disabled template styling
             const verseItemText = allText.filter((a) => a.customType?.includes("disableTemplate")) || []
             const verseItemSize = Number(getStyles(verseItemText[0]?.style, true)?.["font-size"] || "") || 0
             customTypeRatio = verseItemSize / 100 || 1
@@ -489,10 +440,10 @@
 
         // short-circuit expensive DOM work when we already measured identical content
         const finalCacheKey = buildAutoSizeCacheKey()
-        const finalCacheSignature = buildAutoSizeSignature(undefined, undefined, chords)
+        const finalCacheSignature = buildAutoSizeSignature()
         const finalCachedResult = finalCacheKey ? readAutoSizeCache(finalCacheKey) : undefined
 
-        if (!isDynamic && !chords && !Number(outputStyle?.lines || 0) && finalCachedResult && finalCachedResult.signature === finalCacheSignature) {
+        if (!isDynamic && !Number(outputStyle?.lines || 0) && finalCachedResult && finalCachedResult.signature === finalCacheSignature) {
             fontSize = finalCachedResult.fontSize
             if (item.type === "slide_tracker") {
                 markAutoSizeReady()
@@ -555,7 +506,7 @@
     }
 
     // capture the bits of state that influence autosize outcomes for cache invalidation
-    function buildAutoSizeSignature(measuredWidth?: number, measuredHeight?: number, customChords?: boolean) {
+    function buildAutoSizeSignature(measuredWidth?: number, measuredHeight?: number) {
         // Extract key dimensional properties from style to ensure cache invalidation
         const activeStyle = (isStage && stageItem?.style ? stageItem.style : item?.style) || ""
         const styles = activeStyle ? getStyles(activeStyle) : {}
@@ -590,7 +541,6 @@
             boxDimensions, // Add explicit dimensions for better cache invalidation
             textFit: item?.textFit || "none",
             list: item?.list || null,
-            chords: !!(customChords !== undefined ? customChords : chords),
             stageAutoSize: !!stageAutoSize,
             stageItem: stageItem || null,
             fontSizeOverride: customFontSize || null,
@@ -626,7 +576,7 @@
         // CHECK CACHE
         const cacheKey = buildAutoSizeCacheKey()
         if (!cacheKey) return true
-        const cacheSignature = buildAutoSizeSignature(itemElem?.clientWidth, itemElem?.clientHeight, chords)
+        const cacheSignature = buildAutoSizeSignature(itemElem?.clientWidth, itemElem?.clientHeight)
         const cachedResult = readAutoSizeCache(cacheKey)
 
         return !(cachedResult && cachedResult.signature === cacheSignature)
@@ -690,20 +640,6 @@
                 return a
             })
         }
-    }
-
-    // CHORDS
-
-    let chordLines: any[] = []
-    $: if (chords && (item.lines || fontSize)) createChordLines()
-    function createChordLines() {
-        chordLines = []
-        if (!Array.isArray(item?.lines)) return
-
-        item.lines.forEach((line) => {
-            if (!line.chords?.length || !line.text) return
-            chordLines.push(line.chords)
-        })
     }
 
     function getPaddingCorrection(stageItem: any) {
@@ -808,7 +744,6 @@
     class:stageNoAuto={isStage && !stageAutoSize}
     class:isDisabledVariable
     class:noTransition
-    class:chords={chordLines.length}
     class:clickable={$currentWindow === "output" && (item?.button?.press || item?.button?.release)}
     class:reveal={(centerPreview || isStage) && item?.clickReveal && !clickRevealed}
     class:hidden
@@ -831,7 +766,6 @@
             {style}
             {customStyle}
             {stageItem}
-            {chords}
             {linesStart}
             {linesEnd}
             fontSize={smallFontSize ? 20 : fontSize}
@@ -909,10 +843,5 @@
 
     .item.isDisabledVariable {
         display: none;
-    }
-
-    .item.chords,
-    .item.chords :global(.align) {
-        overflow: visible;
     }
 </style>

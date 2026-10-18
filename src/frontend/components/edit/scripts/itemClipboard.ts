@@ -22,7 +22,7 @@ type StyleClipboard = {
 export function getBoxStyle(item: Item): StyleClipboard {
     if (!item) return { keys: {}, style: {} }
 
-    // skip scripture verse numbers (customType)
+    // skip custom text types
     const text = item.lines?.[0]?.text
     const normalText = Array.isArray(text) ? text.filter((a) => !a.customType) : []
     const style = normalText[0]?.style || item.style
@@ -211,7 +211,7 @@ export async function setBoxStyle(styles: StyleClipboard[], slides: any, type: I
                 if (!Array.isArray(textArr)) return
 
                 return textArr.map((text) => {
-                    // don't style scripture verses
+                    // don't style custom text types
                     if (text.customType && !text.customType.includes("jw")) return text
 
                     text.style = newStyle

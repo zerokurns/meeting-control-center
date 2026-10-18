@@ -1,5 +1,4 @@
 import type { Stats } from "fs"
-import type { dataFolderNames } from "../electron/utils/files"
 import type { Cropping } from "./Settings"
 
 export interface Config {
@@ -11,30 +10,12 @@ export interface Config {
     graphicsDevice: string | null
     autoErrorReporting?: boolean
     mediaFolderPath?: string
-
-    // ChurchApps API URLs
-    churchAppsApiUrl?: string
-    churchAppsAppUrl?: string
-    churchAppsContentUrl?: string
-    churchAppsLessonsUrl?: string
 }
 
 export interface OS {
     platform: NodeJS.Platform
     name: string
     arch: string
-}
-
-export interface SpotifyState {
-    isPlaying: boolean
-    title: string
-    artist: string
-    albumArt?: string
-    positionSec: number
-    durationSec: number
-    platform: NodeJS.Platform
-    volume: number
-    bgColor?: string
 }
 
 export interface Option {
@@ -88,7 +69,6 @@ export type SelectIds =
     | "category_media"
     | "category_overlays"
     | "category_audio"
-    | "category_scripture"
     | "category_templates"
     | "category_player"
     | "category_live"
@@ -97,7 +77,6 @@ export type SelectIds =
     | "media"
     | "audio"
     | "audio_effect"
-    | "metronome"
     | "overlay"
     | "template"
     | "action"
@@ -109,7 +88,6 @@ export type SelectIds =
     | "camera"
     | "microphone"
     | "player"
-    | "scripture"
     | "timer"
     | "global_timer"
     | "variable"
@@ -117,7 +95,6 @@ export type SelectIds =
     | "scene_overlay"
     | "interaction"
     | "audio_stream"
-    | "chord"
     | "midi"
     | "theme"
     | "style"
@@ -125,8 +102,6 @@ export type SelectIds =
     | "profile"
     | "audio_channel"
     | "tag"
-    | "bible_book"
-    | "calendar"
 
 export interface Selected {
     id: null | SelectIds
@@ -243,36 +218,6 @@ export interface MainFilePaths {
     pictures: string
     videos: string
     music: string
-}
-
-export type LyricSearchResult = {
-    source: "Genius" | "Hymnary" | "Letras" | "Ultimate Guitar"
-    key: string
-    artist: string
-    title: string
-    originalQuery?: string
-}
-
-export interface DriveData {
-    mainFolderId: string | null
-    method: string | null
-    closeWhenFinished: boolean
-}
-
-export interface LessonsData {
-    type?: keyof typeof dataFolderNames
-    showId: string
-    name: string
-    files: LessonFile[]
-}
-export interface LessonFile {
-    name: string
-    url: string
-    type: string
-    fileType: string
-    streamUrl?: string
-    loopVideo?: boolean
-    loop?: boolean
 }
 
 export interface Variable {
@@ -432,12 +377,7 @@ export type Popups =
     | "transition"
     | "media_fit"
     | "metadata_display"
-    | "import_scripture"
-    | "import_calendar"
-    | "create_collection"
-    | "edit_event"
     | "edit_chart"
-    | "choose_chord"
     | "choose_screen"
     | "choose_media_input"
     | "choose_output_input"
@@ -469,18 +409,11 @@ export type Popups =
     | "custom_action"
     | "slide_midi"
     | "connect"
-    | "cloud_sync"
-    | "cloud_update"
-    | "cloud_method"
-    | "sync_categories"
     | "effect_items"
     | "timeline"
     | "timecode"
-    | "drawer_search_options"
     | "template_info"
     | "cleaning_utility"
-    | "pco_picker"
-    | "sync_folders"
     | "node_options"
     | "ai_model_manager"
     | "ai_chat"

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { uid } from "uid"
     import type { Item, Transition } from "../../../../types/Show"
-    import { currentWindow, scriptureSettings, templates } from "../../../stores"
+    import { currentWindow } from "../../../stores"
     import { clone } from "../../helpers/array"
     import { getStyleTemplate, itemNeedsAutoSize, slideHasAutoSizeItem } from "../../helpers/output"
     import OutputTransition from "./OutputTransition.svelte"
@@ -44,7 +44,6 @@
 
     // WIP item wait out time will not clear other items without wait time if between transition
     // WIP slide direction from top to bottom is a bit buggy
-    // WIP image is flashing a bit in scripture transition none
 
     function startTransition() {
         // prevent stacking of the same item on update
@@ -85,7 +84,6 @@
         // auto size delay
         if (!outDelay) {
             let customTemplate = getStyleTemplate(outSlide, currentStyle)
-            if (!Object.keys(customTemplate).length && outSlide?.id === "temp") customTemplate = $templates[$scriptureSettings.template] || {}
 
             // only keep the legacy autosize delay when nothing has pre-populated a font size yet
             const templateNeedsAutoSize = slideHasAutoSizeItem(customTemplate)

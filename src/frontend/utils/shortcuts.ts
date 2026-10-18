@@ -6,7 +6,6 @@ import type { DrawerTabIds, TopViews } from "../../types/Tabs"
 import { clearAudio } from "../audio/audioFading"
 import { AudioPlayer } from "../audio/audioPlayer"
 import { menuClick } from "../components/context/menuClick"
-import { createScriptureShow } from "../components/drawer/bible/scripture"
 import { addItem } from "../components/edit/scripts/itemHelpers"
 import { keysToID, sortByName } from "../components/helpers/array"
 import { copy, cut, deleteAction, duplicate, paste, selectAll } from "../components/helpers/clipboard"
@@ -32,7 +31,7 @@ import { send } from "./request"
 import { save } from "./save"
 import { isTypingTarget } from "./shortcutsHelper"
 
-const menus: TopViews[] = ["show", "edit", "stage", "draw", "settings"]
+const menus: TopViews[] = ["show", "edit", "stage", "settings"]
 
 const ctrlKeys = {
     a: () => selectAll(),
@@ -45,7 +44,7 @@ const ctrlKeys = {
     e: () => activePopup.set("export"),
     i: (e: KeyboardEvent) => (e.altKey ? importFromClipboard() : activePopup.set("import")),
     n: () => createNew(),
-    h: () => (get(activeDrawerTab) === "scripture" ? "" : activePopup.set("history")),
+    h: () => activePopup.set("history"),
     m: () =>
         audioChannelsData.update((a) => {
             const main = a.main || {}
@@ -86,7 +85,7 @@ const altKeys = {
     Enter: () => (get(activePage) === "show" && !document.activeElement?.closest(".quickEdit") ? menuClick("cut_in_half", true, null, null, null, get(selected)) : null)
 }
 
-export const disablePopupClose = ["initialize", "cloud_method"]
+export const disablePopupClose = ["initialize"]
 const keys = {
     Escape: () => {
         // hide quick search
@@ -361,7 +360,7 @@ export const previewShortcuts = {
     },
     F2: () => {
         // return if "rename" is selected
-        if (get(outLocked) || (get(selected).id && get(selected).id !== "scripture" && !get(focusMode))) return false
+        if (get(outLocked) || (get(selected).id && !get(focusMode))) return false
         if (presentationControllersKeysDisabled()) return false
 
         clearSlide()
@@ -376,7 +375,7 @@ export const previewShortcuts = {
     },
     F4: () => {
         if (get(outLocked)) return
-        clearAudio("", { clearPlaylist: true, clearMicrophones: true, commonClear: true })
+        clearAudio("", { clearMicrophones: true, commonClear: true })
         timelineRecordingAction.set({ id: "clear_audio" })
     },
     F5: () => {
@@ -458,16 +457,13 @@ export function closeContextMenu() {
 function createNew() {
     const selectId = get(selected)?.id || get(focusedArea)
 
-    if (get(activePage) === "show" && get(activeDrawerTab) === "scripture") createScriptureShow()
-    else if (selectId === "slide")
+    if (selectId === "slide")
         history({ id: "SLIDES" }) // show
     else if (selectId === "show")
         addSection() // project
     else if (selectId.includes("category_")) {
         // if (selectId.includes("media") || selectId.includes("audio")) sendMain(Main.OPEN_FOLDER, { channel: id, title, path })
-        if (selectId.includes("scripture")) activePopup.set("import_scripture")
-        else if (selectId.includes("calendar")) activePopup.set("import_calendar")
-        else history({ id: "UPDATE", location: { page: "drawer", id: selectId } })
+        history({ id: "UPDATE", location: { page: "drawer", id: selectId } })
     } else if (selectId === "overlay") history({ id: "UPDATE", location: { page: "drawer", id: "overlay" } })
     else if (selectId === "template") history({ id: "UPDATE", location: { page: "drawer", id: "template" } })
     else if (selectId === "global_timer") activePopup.set("timer")

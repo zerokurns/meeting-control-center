@@ -6,12 +6,10 @@ import { customActionActivation } from "../components/actions/actions"
 import { encodeFilePath, getFileName, isLocalFile, locateMediaFile, removeExtension } from "../components/helpers/media"
 import { checkNextAfterMedia } from "../components/helpers/showActions"
 import { requestMain, sendMain } from "../IPC/main"
-import { activePlaylist, dictionary, media, outLocked, playingAudio, playingAudioPaths, special } from "../stores"
-import { addToMediaFolder } from "../utils/cloudSync"
+import { dictionary, media, outLocked, playingAudio, playingAudioPaths, special } from "../stores"
 import { AudioAnalyser } from "./audioAnalyser"
 import { clearAudio, clearing, currentlyCrossfadingIn, fadeInAudio, fadeOutAudio } from "./audioFading"
 import { AudioMultichannel } from "./audioMultichannel"
-import { AudioPlaylist } from "./audioPlaylist"
 import { AudioRoutingManager } from "./routing/audioRoutingManager"
 
 type AudioMetadata = {
@@ -23,12 +21,9 @@ type AudioOptions = {
     clearTime?: number // effects
     playMultiple?: boolean
     startAt?: number
-    crossfade?: number // playlist
-    playlistCrossfade?: boolean // playlist
-    startPaused?: boolean // playlist
-    volume?: number // playlist
-    playlistId?: string
-    playlistIndex?: number
+    crossfade?: number
+    startPaused?: boolean
+    volume?: number
 }
 export type AudioData = {
     name: string
@@ -37,9 +32,7 @@ export type AudioData = {
     audio: HTMLAudioElement
     stream?: MediaStream
     replayGainMultiplier?: number
-    playlistId?: string
     path?: string
-    index?: number
 }
 
 export class AudioPlayer {
@@ -80,7 +73,7 @@ export class AudioPlayer {
     // returns false when the audio file can't be found or loaded
     static async start(path: string, metadata: AudioMetadata, options: AudioOptions = {}): Promise<boolean> {
         if (typeof path !== "string") return false
-        const key = AudioPlayer.getKey(path, options.playlistIndex)
+        const key = AudioPlayer.getKey(path)
         if (get(outLocked) || clearing.includes(key) || clearing.includes(path) || this.isLoading(key)) return true
         this.setLoading(key)
 
@@ -93,21 +86,9 @@ export class AudioPlayer {
         }
 
         const resolvedPath = located.path
-        const resolvedKey = AudioPlayer.getKey(resolvedPath, options.playlistIndex)
-
-        // update active playlist file if it's located to a new path
-        if (located.path !== path && get(activePlaylist)?.active === path) {
-            activePlaylist.update((a) => {
-                if (a) {
-                    a.active = resolvedPath
-                    a.activeKey = resolvedKey
-                }
-                return a
-            })
-        }
+        const resolvedKey = AudioPlayer.getKey(resolvedPath)
 
         path = resolvedPath
-        if (!located.hasChanged && !isOnline) addToMediaFolder(path)
 
         // get type
         const duration = await this.getDuration(path)
@@ -134,7 +115,7 @@ export class AudioPlayer {
 
         const audioPlaying = Object.keys(get(playingAudio)).length
         if (options.crossfade) fadeOutAudio(options.crossfade)
-        else if (!options.playMultiple) clearAudio("", { playlistCrossfade: options.playlistCrossfade, isPlayingNew: true, clearMicrophones: false, clearPlaylist: !options.playlistId && !options.playlistCrossfade })
+        else if (!options.playMultiple) clearAudio("", { isPlayingNew: true, clearMicrophones: false })
 
         const audio = await this.createAudio(resolvedKey, path)
         if (!audio) {
@@ -159,9 +140,7 @@ export class AudioPlayer {
                 paused: !!options.startPaused,
                 isMic: false,
                 audio,
-                playlistId: options.playlistId,
-                path,
-                index: options.playlistIndex
+                path
             }
             return a
         })
@@ -356,8 +335,6 @@ export class AudioPlayer {
     }
 
     private static checkAudioTime() {
-        AudioPlaylist.checkCrossfade()
-
         const playing = AudioPlayer.getAllPlaying()
         playing.forEach((id) => {
             AudioPlayer.checkIfEnding(id)
@@ -448,11 +425,6 @@ export class AudioPlayer {
         ids.forEach((id) => {
             let newVolume = this.getVolume(id)
 
-            // check playlist volume
-            if (AudioPlaylist.getPlayingKey() === id) {
-                newVolume *= AudioPlaylist.getActivePlaylist()?.volume || 1
-            }
-
             const gainMultiplier = get(playingAudio)[id]?.replayGainMultiplier || 1
             newVolume *= gainMultiplier
 
@@ -498,12 +470,6 @@ export class AudioPlayer {
                 audioObj.currentTime = startTime
                 if (audioObj.paused) audioObj.play().catch(() => {})
             }
-            return
-        }
-
-        if (AudioPlaylist.getPlayingKey() === id) {
-            this.stop(id) // stop existing
-            AudioPlaylist.next(true)
             return
         }
 

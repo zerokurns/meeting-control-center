@@ -2,7 +2,6 @@
     import type { Show } from "../../../types/Show"
     import { getQuickExample } from "../../converters/txt"
     import { activePopup, textEditZoom } from "../../stores"
-    import { transposeText } from "../../utils/chordTranspose"
     import { newToast } from "../../utils/common"
     import { translateText } from "../../utils/language"
     import { getNormalizedKey } from "../../utils/shortcuts"
@@ -48,31 +47,12 @@
 
         if (ctrlKey === "f") activePopup.set("find_replace")
     }
-
-    // transpose chords
-    function transposeUp() {
-        formatText(transposeText(text, 1))
-    }
-    function transposeDown() {
-        formatText(transposeText(text, -1))
-    }
-
-    $: showHasChords = Object.values(currentShow?.slides || {}).some((a) => a?.items?.some((a) => a.lines?.some((a) => a.chords)))
 </script>
 
 <HighlightedNotes class="context #editbox_text" disabled={isLocked} style="padding: 30px;padding-bottom: 60px;scroll-padding-bottom: 60px;font-size: {$textEditZoom / 8}em;" placeholder={getQuickExample()} value={text} on:change={(e) => formatText(e.detail, "", itemIndex)} on:keydown={keydown} />
 
 <FloatingInputs side="left">
-    {#if showHasChords && itemIndex === 0}
-        <MaterialButton on:click={transposeUp} title="edit.transpose_up">
-            <Icon id="arrow_up" size={1.3} white />
-        </MaterialButton>
-        <MaterialButton on:click={transposeDown} title="edit.transpose_down">
-            <Icon id="arrow_down" size={1.3} white />
-        </MaterialButton>
-    {/if}
-
-    <MaterialZoom hidden={showHasChords && itemIndex === 0} columns={$textEditZoom / 10} min={0.5} max={2} defaultValue={1} addValue={-0.1} on:change={(e) => textEditZoom.set(e.detail * 10)} />
+    <MaterialZoom columns={$textEditZoom / 10} min={0.5} max={2} defaultValue={1} addValue={-0.1} on:change={(e) => textEditZoom.set(e.detail * 10)} />
 </FloatingInputs>
 
 {#if maxTextboxes > 1}

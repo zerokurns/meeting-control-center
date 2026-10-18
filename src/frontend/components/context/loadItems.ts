@@ -8,7 +8,6 @@ import { actionData } from "../actions/actionData"
 import { getActionName, getActionTriggerId } from "../actions/actions"
 import { getEditItems, getEditSlide } from "../edit/scripts/itemHelpers"
 import { getSlideText } from "../edit/scripts/textStyle"
-import { chordTypes, keys } from "../edit/values/chords"
 import { clone, keysToID, sortByName } from "../helpers/array"
 import { removeExtension } from "../helpers/media"
 import { isOutputBound } from "../helpers/output"
@@ -320,18 +319,6 @@ const loadActions = {
 
         if (mediaList.length) return mediaList
         return [{ label: "empty.general", disabled: true }]
-    },
-    keys: () => {
-        return keys.map((key) => ({ id: key, label: key, translate: false }))
-    },
-    chord_list: (items: ContextMenuItem[]) => {
-        keys.forEach((key) => {
-            chordTypes.forEach((adder) => {
-                items.push({ id: key + adder, label: key + adder, translate: false })
-            })
-        })
-
-        return items
     },
     bind_slide: (_items, isItem = false) => {
         const outputList: any[] = sortByName(keysToID(get(outputs)).filter((a) => !a.stageOutput))

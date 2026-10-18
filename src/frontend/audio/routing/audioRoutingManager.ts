@@ -428,7 +428,7 @@ export class AudioRoutingManager {
     }
 
     private indexActiveNodesAndConnections(connections: Connection[]) {
-        const activeNodeIds = new Set(["drawer_audio", "playlists_default", "output_window", "mic_default", ...this.inputNodes.keys(), ...this.gainNodes.keys(), ...AudioAnalyser.getActiveSourceIds()])
+        const activeNodeIds = new Set(["drawer_audio", "output_window", "mic_default", ...this.inputNodes.keys(), ...this.gainNodes.keys(), ...AudioAnalyser.getActiveSourceIds()])
         const activeSubDeviceIds = new Set<string>()
         const connectionsByFrom = new Map<string, Connection[]>()
 

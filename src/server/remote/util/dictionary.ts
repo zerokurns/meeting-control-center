@@ -12,7 +12,6 @@ export const DEFAULT_DICTIONARY = {
         search: "No match",
         backgrounds: "No backgrounds in show",
         groups: "No groups",
-        events: "No events",
         text: "Type something",
         timers: "No timers"
     },
@@ -25,8 +24,6 @@ export const DEFAULT_DICTIONARY = {
         media: "Media",
         audio: "Audio",
         overlays: "Overlays",
-        scripture: "Scriptures",
-        calendar: "Calendar",
         templates: "Templates",
         functions: "Functions",
         actions: "Actions",
@@ -41,7 +38,6 @@ export const DEFAULT_DICTIONARY = {
         all: "All",
         unlabeled: "Unlabeled",
         song: "Songs",
-        bible: "Bibles",
         image: "Images",
         video: "Videos",
         audio: "Audio",
@@ -54,8 +50,6 @@ export const DEFAULT_DICTIONARY = {
         notice: "Notice",
         visuals: "Visuals",
         info: "Info",
-        scripture: "Scripture",
-        events: "Events",
         pictures: "Pictures",
         videos: "Videos",
         music: "Music",
@@ -68,11 +62,6 @@ export const DEFAULT_DICTIONARY = {
     info: {
         modified: "Date Modified",
         created: "Date Created"
-    },
-    scripture: {
-        collections: "Collections",
-        bibles_section: "Bibles",
-        api_section: "API"
     },
     titlebar: {
         edit: "Edit"

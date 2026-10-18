@@ -49,7 +49,6 @@ export interface StageItem {
     filter?: any // not in use at the moment
 
     // textbox
-    chords?: { enabled?: boolean; color?: string; size?: number }
     auto?: boolean
     textFit?: AutosizeTypes // auto size text fix option (default: growToFit)
     button?: { press?: string; release?: string } // click actions
@@ -61,7 +60,7 @@ export interface StageItem {
     keepStyle?: boolean
     lineCount?: number // max lines to show in next slide preview
     itemNumber?: number // only show a certain item index (0 will show all items)
-    invertItems?: boolean // invert items if more than one (used for e.g. scripture refs)
+    invertItems?: boolean // invert items if more than one
 
     // textbox
     lines?: Line[]

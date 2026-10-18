@@ -107,7 +107,6 @@ export function focusArea(e: any) {
     if (!id) {
         if (e.target.closest(".timeline")) focusedArea.set("timeline")
         else if (e.target.closest(".editArea")) focusedArea.set("edit_items")
-        else if (e.target.closest(".scripture")) focusedArea.set("scripture")
     }
 }
 
@@ -127,7 +126,7 @@ export function startAutosave() {
 
     previousAutosave = Date.now()
     autosaveTimeout = setTimeout(() => {
-        const skip = get(activePopup) === "initialize" || get(activePopup) === "cloud_method"
+        const skip = get(activePopup) === "initialize"
         if (skip) startAutosave()
         else save(false, { autosave: true })
     }, saveInterval)

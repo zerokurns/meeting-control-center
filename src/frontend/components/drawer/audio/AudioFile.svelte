@@ -1,8 +1,7 @@
 <script lang="ts">
     import { AudioPlayer } from "../../../audio/audioPlayer"
-    import { AudioPlaylist } from "../../../audio/audioPlaylist"
     import { addProjectItem } from "../../../converters/project"
-    import { activePlaylist, activeShow, media, outLocked, playingAudio } from "../../../stores"
+    import { activeShow, media, outLocked, playingAudio } from "../../../stores"
     import Icon from "../../helpers/Icon.svelte"
     import { joinTime, secondsToTime } from "../../helpers/time"
     import Button from "../../inputs/Button.svelte"
@@ -12,17 +11,15 @@
     export let path: string
     export let name: string
     export let active: string | null = null
-    export let playlist = false
-    export let index = -1
     export let fileOver = false
 
-    $: audioKey = playlist && index > -1 ? AudioPlayer.getKey(path, index) : path
-    $: outline = !!$playingAudio[audioKey] && (!$activePlaylist || $activePlaylist?.index === index)
+    $: audioKey = path
+    $: outline = !!$playingAudio[audioKey]
 </script>
 
-<SelectElem id="audio" data={{ path, name, index }} {fileOver} borders={playlist ? "edges" : "all"} trigger={playlist ? "column" : null} draggable>
+<SelectElem id="audio" data={{ path, name, index: -1 }} {fileOver} borders="all" trigger={null} draggable>
     <Button
-        class="context #audio_button{playlist ? '_playlist' : ''}"
+        class="context #audio_button"
         {outline}
         active={$activeShow?.id === path}
         border
@@ -32,8 +29,7 @@
         on:click={(e) => {
             if ($outLocked || e.ctrlKey || e.metaKey || e.shiftKey) return
 
-            if (playlist) AudioPlaylist.start(active || "", path, index, { pauseIfPlaying: true })
-            else AudioPlayer.start(path, { name }, { playMultiple: e.altKey })
+            AudioPlayer.start(path, { name }, { playMultiple: e.altKey })
         }}
         on:dblclick={(e) => {
             if (e.ctrlKey || e.metaKey || e.shiftKey) return

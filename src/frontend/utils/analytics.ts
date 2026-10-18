@@ -59,11 +59,3 @@ function trackPageView(title: string) {
 function trackDrawerView(title: string) {
     trackEvent("drawer_view", { drawer_location: "https://freeshow.app/_app/" + title, drawer_title: title })
 }
-
-const previouslyTracked: { [key: string]: string } = {}
-export function trackScriptureUsage(translationName: string, apiId: string | null, verseRef: string) {
-    if (previouslyTracked[translationName] === verseRef) return
-    previouslyTracked[translationName] = verseRef
-
-    trackEvent("scripture_usage", { translation_name: translationName, api_id: apiId, verse_ref: verseRef })
-}

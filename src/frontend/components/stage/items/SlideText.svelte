@@ -13,7 +13,6 @@
 
     export let currentSlide: OutSlide
     export let slideOffset = 0
-    export let chords = false
     export let style = false
     export let textStyle = ""
     export let autoSize = false
@@ -122,7 +121,7 @@
                 <div class:loading={items1 && !firstActive}>
                     {#each items1 as item, i}
                         {#if !itemNumber || slide?.items?.length === 1 || itemNumber - 1 === i}
-                            <Textbox {item} customStyle={textStyle} {stageItem} {chords} {ref} maxLines={Number(slideOffset !== 0 && stageItem.lineCount)} maxLinesInvert={slideOffset < 0} stageAutoSize={(item.textFit !== "none" || item.auto) && autoSize} {fontSize} {clickRevealed} {revealed} isStage originalStyle />
+                            <Textbox {item} customStyle={textStyle} {stageItem} {ref} maxLines={Number(slideOffset !== 0 && stageItem.lineCount)} maxLinesInvert={slideOffset < 0} stageAutoSize={(item.textFit !== "none" || item.auto) && autoSize} {fontSize} {clickRevealed} {revealed} isStage originalStyle />
                         {/if}
                         <!-- (style ? item.auto && item.textFit === "growToFit" : item.auto) -->
                     {/each}
@@ -130,7 +129,7 @@
                 <div class:loading={items2 && firstActive}>
                     {#each items2 as item, i}
                         {#if !itemNumber || slide?.items?.length === 1 || itemNumber - 1 === i}
-                            <Textbox {item} customStyle={textStyle} {stageItem} {chords} {ref} maxLines={Number(slideOffset !== 0 && stageItem.lineCount)} maxLinesInvert={slideOffset < 0} stageAutoSize={(item.textFit !== "none" || item.auto) && autoSize} {fontSize} {clickRevealed} {revealed} isStage originalStyle />
+                            <Textbox {item} customStyle={textStyle} {stageItem} {ref} maxLines={Number(slideOffset !== 0 && stageItem.lineCount)} maxLinesInvert={slideOffset < 0} stageAutoSize={(item.textFit !== "none" || item.auto) && autoSize} {fontSize} {clickRevealed} {revealed} isStage originalStyle />
                         {/if}
                     {/each}
                     <!-- (style ? item.auto && (item.textFit || "shrinkToFit") === "growToFit" : item.auto) -->
@@ -141,12 +140,12 @@
 {:else}
     <div class:loading={items1 && !firstActive}>
         {#each items1 as item}
-            <Textbox {item} style={false} customStyle={textStyle} {stageItem} {chords} {ref} maxLines={Number(slideOffset !== 0 && stageItem.lineCount)} maxLinesInvert={slideOffset < 0} stageAutoSize={autoSize} {fontSize} {clickRevealed} {revealed} isStage {useOriginalTextColor} />
+            <Textbox {item} style={false} customStyle={textStyle} {stageItem} {ref} maxLines={Number(slideOffset !== 0 && stageItem.lineCount)} maxLinesInvert={slideOffset < 0} stageAutoSize={autoSize} {fontSize} {clickRevealed} {revealed} isStage {useOriginalTextColor} />
         {/each}
     </div>
     <div class:loading={items2 && firstActive}>
         {#each items2 as item}
-            <Textbox {item} style={false} customStyle={textStyle} {stageItem} {chords} {ref} maxLines={Number(slideOffset !== 0 && stageItem.lineCount)} maxLinesInvert={slideOffset < 0} stageAutoSize={autoSize} {fontSize} {clickRevealed} {revealed} isStage {useOriginalTextColor} />
+            <Textbox {item} style={false} customStyle={textStyle} {stageItem} {ref} maxLines={Number(slideOffset !== 0 && stageItem.lineCount)} maxLinesInvert={slideOffset < 0} stageAutoSize={autoSize} {fontSize} {clickRevealed} {revealed} isStage {useOriginalTextColor} />
         {/each}
     </div>
 {/if}

@@ -456,7 +456,7 @@
                     <!-- For slide_text items with autosize, don't pass fontSize from item style (which is MAX_FONT_SIZE=800) -->
                     <!-- When autosize is disabled (None), pass stage item's fontSize -->
                     {#key currentSlide?.id || currentSlide?.index}
-                        <SlideText {currentSlide} {slideOffset} stageItem={item} chords={typeof item.chords === "boolean" ? item.chords : item.chords?.enabled} ref={{ type: "stage", id }} autoSize={item.textFit !== "none" && item.auto !== false} fontSize={item.textFit !== "none" && item.auto !== false ? 0 : fontSize} {textStyle} style={item.type ? item.keepStyle : false} />
+                        <SlideText {currentSlide} {slideOffset} stageItem={item} ref={{ type: "stage", id }} autoSize={item.textFit !== "none" && item.auto !== false} fontSize={item.textFit !== "none" && item.auto !== false ? 0 : fontSize} {textStyle} style={item.type ? item.keepStyle : false} />
                     {/key}
                 {:else if item.type === "slide_notes" || id.includes("notes")}
                     <SlideNotes {currentSlide} {slideOffset} autoSize={item.auto !== false ? autoSize : fontSize} />

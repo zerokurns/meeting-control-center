@@ -67,24 +67,13 @@ export const defaultSettings: { [key in SaveListSettings]: any } = {
     },
     audioRouting: {},
     audioChannelsData: {},
-    cloudSyncData: {},
-    driveData: { mainFolderId: null, disabled: false, initializeMethod: null, disableUpload: false },
-    calendarAddShow: "",
-    metronome: {},
     audioEffects: {},
     audioEffectPresets: {},
     effectsLibrary: [],
     special: {},
     timeline: {},
     timecode: {},
-    contentProviderData: {
-        planningcenter: {
-            localAlways: false
-        },
-        churchApps: {
-            syncCategories: ["song"]
-        }
-    },
+    contentProviderData: {},
     obsData: {},
     ai: {}
 }
@@ -94,7 +83,6 @@ export const defaultSyncedSettings: { [key in SaveListSyncedSettings]: any } = {
         song: { name: "category.song", icon: "song", default: true },
         presentation: { name: "category.presentation", icon: "presentation", default: true }
     },
-    drawSettings: {},
     overlayCategories: {
         offers: { name: "category.offers", icon: "cash", default: true },
         notice: { name: "category.notice", icon: "info", default: true },
@@ -102,8 +90,7 @@ export const defaultSyncedSettings: { [key in SaveListSyncedSettings]: any } = {
     },
     templateCategories: {
         song: { name: "category.song", icon: "song", default: true },
-        presentation: { name: "category.presentation", icon: "presentation", default: true },
-        scripture: { name: "category.scripture", icon: "scripture", default: true }
+        presentation: { name: "category.presentation", icon: "presentation", default: true }
     },
     styles: {},
     profiles: {},
@@ -116,32 +103,6 @@ export const defaultSyncedSettings: { [key in SaveListSyncedSettings]: any } = {
     scenes: {},
     interactions: {},
     audioStreams: {},
-    audioPlaylists: {},
-    scriptures: {
-        kjv: {
-            name: "King James (Authorised) Version",
-            api: true,
-            id: "de4e12af7f28f599-02",
-            copyright: "PUBLIC DOMAIN except in the United Kingdom, where a Crown Copyright applies to printing the KJV. See http://www.cambridge.org/about-us/who-we-are/queens-printers-patent"
-        },
-        asv: { name: "The Holy Bible, American Standard Version", api: true, id: "06125adad2d5898a-01", copyright: "PUBLIC DOMAIN" },
-        web: { name: "World English Bible", api: true, id: "9879dbb7cfe39e4d-04", copyright: "PUBLIC DOMAIN" },
-        wmb: { name: "World Messianic Bible", api: true, id: "f72b840c855f362c-04", copyright: "PUBLIC DOMAIN" },
-        bsb: {
-            name: "Berean Study Bible",
-            api: true,
-            id: "bba9f40183526463-01",
-            copyright: "The Holy Bible, Berean Standard Bible, BSB is produced in cooperation with Bible Hub, Discovery Bible, OpenBible.com, and the Berean Bible Translation Committee. This text of God's Word has been dedicated to the public domain"
-        }
-    },
-    scriptureSettings: {
-        template: "scripture",
-        versesPerSlide: 3,
-        verseNumbers: true,
-        showVersion: false,
-        showVerse: true,
-        referenceDivider: ":"
-    },
     groups: defaultGroups,
     midiIn: {},
     emitters: {},
@@ -154,7 +115,6 @@ export const defaultSyncedSettings: { [key in SaveListSyncedSettings]: any } = {
         messiah: { name: "Messiah", type: "vimeo", id: "144160599" }
     },
     videoMarkers: {},
-    calendars: {},
     mediaTags: {},
     playerTags: {},
     actionTags: {},

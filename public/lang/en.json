@@ -1,6 +1,5 @@
 {
     "main": {
-        "welcome": "Welcome",
         "quit": "Quit",
         "docs": "Documentation",
         "about": "About",
@@ -58,8 +57,6 @@
         "mail": "Contact via email",
         "support": "If you are grateful for this project, please consider supporting it",
         "assets": "Assets used",
-        "libraries": "Libraries used",
-        "thanks": "Thanks to",
         "new_update": "New update available",
         "download_latest": "Download the latest version",
         "download_auto": "You have auto update enabled, please wait a few minutes for the update to be downloaded and installed automatically, then restart the application.",
@@ -68,16 +65,8 @@
     "tooltip": {
         "project": "Create a new project where you can add and arrange shows.",
         "show": "Create a new show where you can add song lyrics, presentations and media.",
-        "groups": "All the groups in the current show and all the global groups. Click or drag them to add them to the current arrangement.",
-        "media": "All media in current show. Show them, or drag them to current arrangement.",
-        "metadata": "Edit metadata for current show.",
         "notes": "Write notes.",
-        "text": "Edit the content of all selected items.",
-        "item": "Edit all selected items.",
-        "slide": "Edit current slide.",
-        "filters": "Change the look of the selected element.",
         "options": "More options.",
-        "scripture": "Hold Ctrl/Cmd or Shift to select multiple verses.",
         "context_cut_in_half": "Split the first textbox into two slides.",
         "context_merge": "Merge selected slides into one.",
         "context_capitalize": "Make first letter of each line uppercase.",
@@ -111,7 +100,6 @@
         "recording": "Recording",
         "clock": "Clock",
         "rounded": "Rounded",
-        "call": "Video call",
         "header": "Header",
         "text": "Text",
         "big": "Big",
@@ -120,20 +108,11 @@
         "bold": "Bold"
     },
     "create_show": {
-        "web": "Web search",
-        "search_web": "Search for song on the web",
-        "search_results": "Search results",
-        "block": "Block",
         "more_options": "More options",
-        "auto_groups": "Auto assign groups",
         "format_new_show": "Format text",
-        "format_new_show_tip": "Improve text format with auto capitalize, trim/split text & more.",
         "split_lines": "Max lines per slide",
-        "split_lines_tip": "Numbers of lines allowed per slide before auto splitting",
-        "quick_lyrics": "Quick lyrics",
-        "quick_lyrics_tip": "Paste text or enter manually",
-        "quick_lyrics_example_tip": "Enter lyrics or any text here",
-        "quick_lyrics_example_text": "Line",
+        "quick_text": "Quick text",
+        "quick_text_tip": "Paste text or enter manually",
         "empty": "Empty show",
         "exists": "Found an existing show with the same name",
         "slideshow": "Slideshow"
@@ -321,7 +300,6 @@
         "layouts": "No layouts",
         "player": "No videos",
         "groups": "No groups",
-        "events": "No events",
         "text": "Type something",
         "timers": "No timers",
         "input": "Missing value in input",
@@ -333,10 +311,8 @@
         "shows": "Shows",
         "show": "Show",
         "slide": "Slide",
-        "lyrics": "Lyrics",
         "end": "End",
         "no_output": "No output",
-        "remember": "Remember me",
         "loading": "Loading...",
         "submit": "Submit",
         "password": "Password",
@@ -347,14 +323,11 @@
         "no_show": "Could not find show",
         "load": "Could not load",
         "media": "Could not find media",
-        "bible": "Could not find local scripture",
         "import": "Could not import",
-        "bible_api": "Could not load API scripture. Make sure you have an internet connection.",
         "not_found": "Not found",
         "display": "Could not show output window on current display",
         "video_unavailable": "Getting video unavailable? The creator has disabled embeds on the video.",
         "folder_exists": "This folder does already exist",
-        "uri": "Could not parse the audio name, please rename the file",
         "ip": "Could not get the IP-address of your device, go to the computer Wi-Fi settings to find your local IPv4 address."
     },
     "meta": {
@@ -477,6 +450,8 @@
         "outro": "Outro"
     },
     "popup": {
+        "import_local_file": "Import local file",
+        "supported_formats": "Supported formats:",
         "show": "New show",
         "select_show": "Select show",
         "select_template": "Select template",
@@ -592,26 +567,15 @@
         "autosize_disabled": "Auto size disabled",
         "error_media": "Could not get media.",
         "empty_styles": "No styles",
-        "chapter_undefined": "Chapter {} does not exist in this book.",
-        "verse_undefined": "Verse {} does not exist in this chapter.",
         "recording_started": "Recording started!",
         "recording_stopped": "Recording stopped!",
         "starting_action": "Starting action",
-        "less_than_minute": "in less than a minute.",
-        "less_than_seconds": "in less than {} seconds.",
-        "now": "now!",
         "template_applied_globally": "This template is already applied to the show globally.",
         "unsupported_video": "Unsupported video!",
-        "no_video_id": "No video ID",
         "no_name": "No name",
-        "reverting_setting": "Reverting this change in {} seconds, enable again to make the change stay!",
-        "reverted": "Setting reverted! Only enable again if you did not have any problems.",
         "media_replaced": "Missing media file replaced with match.",
-        "lyrics_undefined": "Could not find any lyrics!",
-        "lyrics_copied": "Lyrics copied from ",
         "one_output": "You have to have at least one active output!",
         "canva_exporting": "Exporting Canva presentation. This can take some time...",
-        "no_songswords_easyworship": "Missing SongsWords.db file.",
         "delete_shows_empty": "No shows to delete.",
         "reached_end": "Reached the end!",
         "output_capture_enabled": "Output screen capture enabled, this may cause performance issues. Only use if needed!",
@@ -632,9 +596,7 @@
         "profile": "New profile",
         "timer": "New timer",
         "variable": "New variable",
-        "trigger": "New trigger",
         "audio_stream": "New audio stream",
-        "playlist": "New playlist",
         "category": "New category",
         "private": "New private show",
         "folder": "New folder",
@@ -642,12 +604,7 @@
         "slide": "New slide",
         "overlay": "New overlay",
         "template": "New template",
-        "scripture": "New scripture",
-        "collection": "New collection",
         "action": "New action",
-        "event": "New event",
-        "event_action": "New scheduled action",
-        "calendar": "New calendar",
         "effect": "New effect",
         "scene": "New scene",
         "interaction": "New interaction"
@@ -880,9 +837,6 @@
         "toggle_playing_media": "Toggle playing media",
         "change_volume": "Change volume",
         "start_audio_stream": "Start audio stream",
-        "start_playlist": "Start playlist",
-        "playlist_next": "Next track in playlist",
-        "start_metronome": "Start metronome",
         "start_audio_effect": "Start audio effect",
         "id_start_timer": "Start timer",
         "start_slide_timers": "Start timers on active slide",
@@ -892,7 +846,6 @@
         "change_transition": "Change transition",
         "change_variable": "Change variable",
         "start_trigger": "Start trigger",
-        "change_draw_zoom": "Change draw zoom",
         "run_action": "Run action",
         "toggle_action": "Toggle action",
         "emit_data": "Emit data",
@@ -942,35 +895,10 @@
         "toggle_curve_editor": "Toggle curve editor"
     },
     "animate": {
-        "change": "Change",
-        "set": "Set",
-        "wait": "Wait",
-        "background": "background",
-        "text": "text",
-        "item": "item",
-        "to": "to",
-        "for": "for",
-        "seconds": "seconds"
+        "wait": "Wait"
     },
     "cloud": {
-        "info": "Sync files to the cloud for backups or to access between multiple computers.",
-        "enable": "Automatic sync on startup and close",
-        "read_only": "Read-only",
-        "reconnect": "Reconnect",
-        "enable_sync": "Enable sync",
-        "sync": "Sync now",
-        "change_team": "Change team",
-        "choose_method_tip": "There is existing data in the cloud. What would you like to do?",
-        "merge_tip": "Keep the latest changes from both local and cloud data.",
-        "readonly_tip": "Merge cloud data with local data, but never upload local changes.",
-        "upload": "Upload",
-        "upload_tip": "Replace cloud data with local data initially, merge normally afterwards.",
-        "replace": "Download",
-        "replace_tip": "Replace local data with cloud data initially, merge normally afterwards.",
-        "local": "Local",
-        "syncing": "Syncing to cloud",
-        "sync_complete": "Sync completed",
-        "restore_weekly_backup": "Restore sync state from a week ago"
+        "replace": "Download"
     },
     "export": {
         "export": "Export",
@@ -998,8 +926,7 @@
         "text": "Plain text",
         "slides": "Slides",
         "rows": "Rows",
-        "columns": "Columns",
-        "margin": "Margin"
+        "columns": "Columns"
     },
     "context": {
         "to_dictionary": "Add to dictionary",
@@ -1009,7 +936,6 @@
         "setTag": "Set tag",
         "filterByTags": "Filter by tags",
         "addToProject": "Add to project",
-        "add_to_show": "Add to show",
         "lockForChanges": "Lock for editing",
         "use_as_archive": "Mark as archive",
         "newCategory": "New category",
@@ -1031,8 +957,6 @@
     },
     "tools": {
         "notes": "Notes",
-        "--schedule": "Schedule",
-        "--actions": "Actions",
         "groups": "Groups",
         "metadata": "Metadata",
         "media": "Media",
@@ -1251,15 +1175,9 @@
         "flash": "Flash",
         "preview": "Preview",
         "clock": "Clock",
-        "event": "Event",
-        "no_events": "There are no upcomming events",
-        "edit": "Edit",
         "create": "Create",
         "line": "Line",
-        "mask": "Mask",
-        "end_on_time": "End item on time",
-        "full_length": "Full item length",
-        "end_service": "End service on time"
+        "mask": "Mask"
     },
     "clock": {
         "type": "Type",
@@ -1298,9 +1216,7 @@
         "start_action": "Start action",
         "use_default_values": "Use default values",
         "auto_values": "Update values when receiving a MIDI input",
-        "tip_velocity": "Set velocity to -1 to disable.",
-        "tip_action": "To activate specific slides, right click any slide and choose the midi in action.",
-        "tip_index_by_velocity": "Index is determined by the received velocity, starting at 0."
+        "tip_velocity": "Set velocity to -1 to disable."
     },
     "emitters": {
         "emitter": "Emitter",
@@ -1312,21 +1228,7 @@
         "data": "Data"
     },
     "draw": {
-        "focus": "Focus",
-        "pointer": "Pointer",
-        "zoom": "Zoom",
-        "fill": "Fill",
-        "paint": "Paint",
-        "particles": "Particles",
-        "radius": "Radius",
-        "glow": "Glow",
-        "hollow": "Hollow",
-        "hold": "Hold",
-        "straight": "Straight",
-        "rainbow": "Rainbow",
-        "threed": "3D",
-        "dots": "Dots",
-        "link_to_slide": "Link to slide"
+        "glow": "Glow"
     },
     "stage": {
         "stage_layout": "Stage layout",
@@ -1536,7 +1438,6 @@
         "name": "Name",
         "name_des": "Name Descending",
         "date": "Date",
-        "size": "Size",
         "type": "Type",
         "custom": "Custom"
     },
@@ -1572,29 +1473,6 @@
         "add_slides_from_show": "Include slides from show",
         "calendars": "Calendars",
         "delete_confirmation": "Are you sure you want to delete all events from this calendar?"
-    },
-    "scripture": {
-        "collections": "Collections",
-        "translations": "Translations",
-        "bibles_section": "Bibles",
-        "local": "Import local file",
-        "supported_formats": "Supported formats:",
-        "max_verses": "Max verses per slide",
-        "verse_numbers": "Verse numbers",
-        "verses_on_individual_lines": "Verses on individual lines",
-        "divide_long_verses": "Split long verses",
-        "split_long_verses_suffix": "Show letter suffix",
-        "smart_split": "Smart split",
-        "tolerance": "Tolerance",
-        "version": "Show version",
-        "reference": "Show reference",
-        "split_reference": "Split reference",
-        "combine_with_text": "Combine with text",
-        "first_slide_reference": "Reference on first slide",
-        "reference_at_bottom": "Move to bottom",
-        "red_jesus": "Jesus words in red",
-        "show_all": "Show all",
-        "search": "Search in the Bible"
     },
     "filter": {
         "blur": "Blur",
@@ -1648,10 +1526,6 @@
     },
     "easings": {
         "linear": "Linear",
-        "ease": "Ease",
-        "ease-in": "Ease in",
-        "ease-out": "Ease out",
-        "ease-in-out": "Ease in & out",
         "elastic": "Elastic",
         "bounce": "Bounce",
         "back": "Jump",
@@ -1828,7 +1702,6 @@
         "end": "Feel free to look on the web if you need help with other features."
     },
     "chat": {
-        "chat": "Chat",
         "send": "Send",
         "ask": "Ask anything...",
         "type_message": "Type a message..."
@@ -1844,10 +1717,6 @@
         "waiting": "Waiting...",
         "processing": "Processing...",
         "transcription": "Transcription",
-        "auto_present": "Auto present",
-        "confidence_ask": "Always ask",
-        "confidence_highest": "If confident",
-        "confidence_high": "If high confidence",
-        "confidence_medium": "If medium confidence"
+        "auto_present": "Auto present"
     }
 }

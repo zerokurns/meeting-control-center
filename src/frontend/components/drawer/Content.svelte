@@ -3,8 +3,6 @@
     import T from "../helpers/T.svelte"
     import MaterialButton from "../inputs/MaterialButton.svelte"
     import Audio from "./audio/Audio.svelte"
-    import Scripture from "./bible/Scripture.svelte"
-    import Calendar from "./calendar/Calendar.svelte"
     import Media from "./media/Media.svelte"
     import Actions from "./pages/Actions.svelte"
     import Interactions from "./pages/Interactions.svelte"
@@ -42,7 +40,7 @@
 </script>
 
 <div class="main">
-    {#if searchValue && active !== "all" && searchTab !== id + active && id !== "scripture"}
+    {#if searchValue && active !== "all" && searchTab !== id + active}
         <div class="warning">
             <p style="padding: 6px 8px;"><T id="main.search_active" />: <span style="color: var(--secondary);font-weight: bold;">{searchValue}</span></p>
             <MaterialButton icon="close" style="padding: 6px 16px;" on:click={() => (searchValue = "")}>
@@ -61,10 +59,6 @@
         <Overlays {active} {searchValue} />
     {:else if id === "templates"}
         <Templates {active} {searchValue} />
-    {:else if id === "scripture"}
-        <Scripture {active} bind:searchValue />
-    {:else if id === "calendar"}
-        <Calendar {active} {searchValue} />
     {:else if id === "functions"}
         {#if active === "actions"}
             <Actions {searchValue} />

@@ -1,16 +1,8 @@
-export type ContentProviderId = "planningcenter" | "churchApps" | "amazinglife" | "onstage" | "canva"
+export type ContentProviderId = "canva"
 
 /**
  * Common types and interfaces for content providers
  */
-
-export interface ContentProviderSongData {
-    freeShowId: string
-    title: string
-    artist: string
-    lyrics: string
-    ccliNumber?: string
-}
 
 export interface ContentProviderServicePlan {
     id: string
@@ -68,12 +60,6 @@ export interface LoadServicesOptions {
     limit?: number
     fromDate?: Date
     toDate?: Date
-}
-
-export interface ExportDataOptions {
-    songs?: ContentProviderSongData[]
-    overwrite?: boolean
-    validateBeforeExport?: boolean
 }
 
 /**

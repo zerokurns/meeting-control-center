@@ -9,7 +9,7 @@ import { deleteFile, deleteFolder, doesPathExist, getDataFolderPath, getFileStat
 import { _store, setStore, storeFilesData } from "./store"
 import { compressToZip, decompressZip } from "./zip"
 
-export async function startBackup({ customTriggers, isCloudSync }: { customTriggers?: SaveActions; isCloudSync?: boolean } = {}): Promise<{ entries?: { name: string; content?: string | Buffer; filePath?: string }[]; path?: string } | void> {
+export async function startBackup({ customTriggers }: { customTriggers?: SaveActions } = {}): Promise<{ path?: string } | void> {
     // no need to backup shows on auto backup (as that just takes a lot of space)
     const isAutoBackup = !!customTriggers?.isAutoBackup
 
@@ -25,19 +25,11 @@ export async function startBackup({ customTriggers, isCloudSync }: { customTrigg
         })
     )
 
-    // bibles are not backed up because they are located in the Bibles folder
-    if (isCloudSync) {
-        await syncStores("MEDIA") // sync media data
-        await syncBibles()
-    } else {
-        // "SYNCED_SETTINGS" and "STAGE" has to be before "SETTINGS" and "SHOWS" (can't remember why)
-        await syncStores("SETTINGS")
-    }
+    // "SYNCED_SETTINGS" and "STAGE" has to be before "SETTINGS" and "SHOWS" (can't remember why)
+    await syncStores("SETTINGS")
 
     // SHOWS
     await syncAllShows()
-
-    if (isCloudSync) return { entries }
 
     const zipPath = backupFolder + ".zip"
     try {
@@ -59,19 +51,6 @@ export async function startBackup({ customTriggers, isCloudSync }: { customTrigg
     function syncStores(id: keyof typeof _store) {
         const store = _store[id]
         if (store) entries.push({ name: id + ".json", filePath: store.path })
-    }
-
-    async function syncBibles() {
-        const biblesPath = getDataFolderPath("scriptures")
-        if (!fs.existsSync(biblesPath)) return
-
-        const bibleFiles = readFolder(biblesPath)
-
-        bibleFiles.forEach((fileName) => {
-            const sourcePath = path.join(biblesPath, fileName)
-            const destPath = `BIBLE_${fileName}`
-            entries.push({ name: destPath, filePath: sourcePath })
-        })
     }
 
     async function syncAllShows() {

@@ -18,7 +18,7 @@ export interface Project {
     sectionsCollapsed?: boolean // should all project sections be collapsed when not active?
     sectionsLocked?: boolean // if true, sections cannot be edited or removed
     sourcePath?: string // used to save directly to file import location
-    origin?: string // provider origin e.g. "pco" | "churchApps"
+    origin?: string // provider origin e.g. "canva"
 }
 
 export interface ProjectShowRef extends ShowRef {
@@ -31,7 +31,7 @@ export interface ProjectShowRef extends ShowRef {
     color?: string // section color
     icon?: string // focus mode
     data?: any // section settings
-    scheduleLength?: number // currently only from PCO import
+    scheduleLength?: number // scheduled length (seconds)
     played?: boolean
 }
 

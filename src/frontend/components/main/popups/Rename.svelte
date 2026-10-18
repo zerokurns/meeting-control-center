@@ -1,8 +1,7 @@
 <script lang="ts">
-    import type { Line, SlideData } from "../../../../types/Show"
-    import { activePopup, activeShow, audioRouting, calendars, customScriptureBooks, drawerTabsData, effectsLibrary, scripturesCache, selected, showsCache } from "../../../stores"
-    import { renameCalendar } from "../../drawer/calendar/calendars"
-    import { clone, removeDuplicates } from "../../helpers/array"
+    import type { SlideData } from "../../../../types/Show"
+    import { activePopup, activeShow, audioRouting, effectsLibrary, selected, showsCache } from "../../../stores"
+    import { removeDuplicates } from "../../helpers/array"
     import { history } from "../../helpers/history"
     import { getLayoutRef } from "../../helpers/show"
     import { _show } from "../../helpers/shows"
@@ -32,21 +31,10 @@
                 if (i === 0) groupName = name
             })
             list = removeDuplicates(list)
-        } else if ($selected.id === "chord") {
-            groupName = selectionData[0]?.chord?.key || ""
-        } else if ($selected.id === "bible_book") {
-            const scriptureId = $drawerTabsData.scripture?.activeSubTab || ""
-            const activeBible = $scripturesCache[scriptureId]
-            const bookIndex = selectionData[0]?.index - 1
-            const book = activeBible.books?.[bookIndex] || {}
-            groupName = (book as any).customName || book.name || ""
         } else if ($selected.id === "audio_channel") {
             const channelId = selectionData[0]?.id
             const channel = ($audioRouting?.channels || []).find((m) => m.id === channelId)
             groupName = channel?.name || ""
-        } else if ($selected.id === "calendar") {
-            const calId = selectionData[0]?.id
-            groupName = $calendars?.[calId]?.name || ""
         } else if (selectionData[0]?.name) {
             groupName = selectionData[0].name
         }
@@ -150,25 +138,6 @@
                 history({ id: "UPDATE", newData: { data: groupName, key: "slides", keys: [slideId], subkey: "group" }, oldData: { id: $activeShow?.id }, location: { page: "show", id: "show_key" } })
             })
         },
-        chord: () => {
-            let chord = $selected.data[0]
-            let lines: Line[] = _show().slides([chord.slideId]).items([chord.itemIndex]).get("lines")[0][0]
-
-            // create first
-            if (!chord.chord) return
-
-            let newLines = clone(lines)
-            let chords = newLines[chord.index].chords
-            if (!Array.isArray(chords)) chords = []
-            chords.forEach((a, i: number) => {
-                if (a.id === chord.chord.id) newLines[chord.index].chords![i].key = groupName
-            })
-
-            _show()
-                .slides([chord.slideId])
-                .items([chord.itemIndex])
-                .set({ key: "lines", values: [newLines] })
-        },
         audio_channel: () => {
             const channelId = $selected.data?.[0]?.id
             if (!channelId) return
@@ -189,29 +158,6 @@
                 if (index > -1) a[index].name = groupName
                 return a
             })
-        },
-        bible_book: () => {
-            const scriptureId = $drawerTabsData.scripture?.activeSubTab || ""
-            const bookIndex = $selected.data[0]?.index - 1
-            scripturesCache.update((a: any) => {
-                if (!a[scriptureId]?.books?.[bookIndex]) return a
-
-                a[scriptureId].books[bookIndex].customName = groupName
-                return a
-            })
-
-            // update in drawer real time
-            customScriptureBooks.update((a) => {
-                if (!a[scriptureId]) a[scriptureId] = []
-                a[scriptureId][bookIndex] = groupName
-                return a
-            })
-        },
-        calendar: () => {
-            const oldName = $selected.data?.[0]?.id
-            if (oldName && groupName && groupName.trim() && groupName.trim() !== oldName) {
-                renameCalendar(oldName, groupName.trim())
-            }
         }
     }
 

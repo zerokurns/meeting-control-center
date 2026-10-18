@@ -2,16 +2,12 @@
 
 import { get } from "svelte/store"
 import { customActionActivation } from "../components/actions/actions"
-import { stopMetronome } from "../components/drawer/audio/metronome"
-import { activePlaylist, audioPlaylists, isFadingOut, playingAudio, special } from "../stores"
+import { isFadingOut, playingAudio, special } from "../stores"
 import { AudioPlayer } from "./audioPlayer"
-import { AudioPlaylist } from "./audioPlaylist"
 import { AudioAnalyser } from "./audioAnalyser"
 
 type AudioClearOptions = {
-    clearPlaylist?: boolean
     clearMicrophones?: boolean
-    playlistCrossfade?: boolean
     commonClear?: boolean
     clearTime?: number // effects
     isPlayingNew?: boolean
@@ -20,12 +16,6 @@ type AudioClearOptions = {
 export const clearing: string[] = []
 let forceClear = false
 export function clearAudio(audioPath = "", options: AudioClearOptions = {}) {
-    // turn off any playlist
-    if (options.clearPlaylist && (!audioPath || AudioPlaylist.getPlayingKey() === audioPath || AudioPlaylist.getPlayingPath() === audioPath)) activePlaylist.set(null)
-
-    // stop playing metronome
-    if (!options.isPlayingNew && options.clearPlaylist !== false && !audioPath) stopMetronome()
-
     if (clearing.includes(audioPath)) {
         if (!options.commonClear) return
         // force stop audio files (bypass timeout if already active)
@@ -38,7 +28,7 @@ export function clearAudio(audioPath = "", options: AudioClearOptions = {}) {
         return
     }
 
-    const clearTime = options.playlistCrossfade ? 0 : (options.clearTime ?? get(special).audio_fade_duration ?? 1.5)
+    const clearTime = options.clearTime ?? get(special).audio_fade_duration ?? 1.5
     let clearIds = audioPath ? (get(playingAudio)[audioPath] ? [audioPath] : Object.keys(get(playingAudio)).filter((k) => k === audioPath || AudioPlayer.getPath(k) === audioPath)) : Object.keys(get(playingAudio))
     // don't clear microphones by default
     if (!audioPath && !options.clearMicrophones) {
@@ -215,11 +205,7 @@ export function fadeinAllPlayingAudio() {
     if (!isAllAudioFading) return
     isFadingOut.set(false)
 
-    let fadeToVolume = 1
-    if (get(activePlaylist)?.id) {
-        const playlist = get(audioPlaylists)[get(activePlaylist).id]
-        fadeToVolume = (playlist?.volume ?? 1) * fadeToVolume
-    }
+    const fadeToVolume = 1
 
     Object.entries(get(playingAudio)).forEach(([path, { audio, replayGainMultiplier }]) => {
         if (audio && !clearing.includes(path)) {

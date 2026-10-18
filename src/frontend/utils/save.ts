@@ -7,7 +7,7 @@ import { customActionActivation } from "../components/actions/actions"
 import { stopMediaRecorder } from "../components/drawer/live/recorder"
 import { stopAllInteractions } from "../components/drawer/pages/interactions"
 import { clone, keysToID, removeDeleted } from "../components/helpers/array"
-import { isOutCleared, updateSyncedOutputs } from "../components/helpers/output"
+import { updateSyncedOutputs } from "../components/helpers/output"
 import { sendMain } from "../IPC/main"
 import {
     actionTags,
@@ -22,15 +22,11 @@ import {
     audioEffectPresets,
     audioEffects,
     audioFolders,
-    audioPlaylists,
     audioRouting,
     audioStreams,
     autoOutput,
     autosave,
-    calendarAddShow,
-    calendars,
     categories,
-    cloudSyncData,
     contentProviderData,
     customFonts,
     customMetadata,
@@ -38,16 +34,12 @@ import {
     deletedDefaults,
     deletedShows,
     disabledServers,
-    drawSettings,
     drawer,
     drawerTabsData,
-    driveData,
-    driveKeys,
     effects,
     effectsLibrary,
     emitters,
     errorHasOccurred,
-    events,
     folders,
     formatNewShow,
     fullColors,
@@ -64,7 +56,6 @@ import {
     mediaFolders,
     mediaOptions,
     mediaTags,
-    metronome,
     obsData,
     openedFolders,
     outLocked,
@@ -77,15 +68,11 @@ import {
     profiles,
     projectTemplates,
     projects,
-    providerConnections,
     redoHistory,
     renamedShows,
     resized,
     saved,
     scenes,
-    scriptureSettings,
-    scriptures,
-    scripturesCache,
     serverData,
     shows,
     showsCache,
@@ -115,9 +102,7 @@ import {
     videoMarkers
 } from "../stores"
 import type { SaveActions, SaveData, SaveList, SaveListSettings, SaveListSyncedSettings } from "./../../types/Save"
-import { isSyncing, socketDisconnect, syncWithCloud } from "./cloudSync"
 import { newToast, setStatus, startAutosave } from "./common"
-import { syncDrive } from "./drive"
 import { autoDisableRemoteController, stopRemoteController } from "./remoteController"
 
 export function save(closeWhenFinished = false, customTriggers: SaveActions = {}) {
@@ -166,7 +151,6 @@ export function save(closeWhenFinished = false, customTriggers: SaveActions = {}
         serverData: get(serverData),
         autosave: get(autosave),
         timeFormat: get(timeFormat),
-        // events: get(events),
         lockedOverlays: get(lockedOverlays),
         activeScenes: get(activeScenes),
         drawer: get(drawer),
@@ -192,10 +176,6 @@ export function save(closeWhenFinished = false, customTriggers: SaveActions = {}
         // themes: get(themes),
         audioRouting: get(audioRouting),
         audioChannelsData: get(audioChannelsData),
-        cloudSyncData: get(cloudSyncData),
-        driveData: get(driveData),
-        calendarAddShow: get(calendarAddShow),
-        metronome: get(metronome),
         audioEffects: get(audioEffects),
         audioEffectPresets: get(audioEffectPresets),
         effectsLibrary: get(effectsLibrary),
@@ -223,13 +203,10 @@ export function save(closeWhenFinished = false, customTriggers: SaveActions = {}
         PROJECTS: { projects: get(projects), folders: get(folders), projectTemplates: get(projectTemplates) },
         OVERLAYS: get(overlays),
         TEMPLATES: get(templates),
-        EVENTS: get(events),
         MEDIA: get(media),
         THEMES: get(themes),
-        DRIVE_API_KEY: get(driveKeys),
         // CACHES SAVED TO MULTIPLE FILES
         showsCache: get(showsCache),
-        scripturesCache: get(scripturesCache),
         deletedShows: get(deletedShows),
         renamedShows: get(renamedShows),
         // CACHES
@@ -254,11 +231,8 @@ export function save(closeWhenFinished = false, customTriggers: SaveActions = {}
 export function getSyncedSettings(): { [key in SaveListSyncedSettings]: any } {
     return {
         categories,
-        drawSettings,
         groups,
         overlayCategories,
-        scriptures,
-        scriptureSettings,
         templateCategories,
         styles,
         profiles,
@@ -267,12 +241,10 @@ export function getSyncedSettings(): { [key in SaveListSyncedSettings]: any } {
         scenes,
         interactions,
         audioStreams,
-        audioPlaylists,
         midiIn: actions,
         emitters,
         playerVideos,
         videoMarkers,
-        calendars,
         mediaTags,
         playerTags,
         actionTags,
@@ -297,39 +269,9 @@ export async function saveComplete({ closeWhenFinished, customTriggers }: { clos
         console.info("SAVED!")
     }
 
-    // cloud sync (only when autosaving or closing)
-    if ((customTriggers?.autosave || closeWhenFinished) && (get(providerConnections).churchApps || !get(driveData)?.mainFolderId)) {
-        if (closeWhenFinished) {
-            alertMessage.set("actions.closing")
-            activePopup.set("alert")
-        }
-
-        let shouldSync = true
-        if (customTriggers?.autosave) {
-            // don't sync if already saved or if a slide is currently outputted or if cloud sync is in progress
-            if (alreadySaved || !isOutCleared("slide") || isSyncing) shouldSync = false
-        }
-
-        if (shouldSync) await syncWithCloud(false, closeWhenFinished)
-
-        if (closeWhenFinished) {
-            await socketDisconnect()
-            closeApp()
-        }
-        return
-    }
-
     if (customTriggers?.backup || customTriggers?.reset) return
 
-    // DEPRECATED drive sync
-    const mainFolderId = get(driveData)?.mainFolderId
-    if (!mainFolderId || get(driveData)?.disabled === true || !Object.keys(get(driveKeys)).length) {
-        if (closeWhenFinished) closeApp()
-
-        return
-    }
-
-    syncDrive(false, closeWhenFinished)
+    if (closeWhenFinished) closeApp()
 }
 
 export function initializeClosing(skipPopup = false) {
@@ -448,12 +390,10 @@ const saveList: { [key in SaveList]: any } = {
     ports,
     disabledServers,
     serverData,
-    events,
     lockedOverlays: null,
     activeScenes: null,
     drawer: null,
     drawerTabsData: null,
-    drawSettings,
     groupNumbers,
     fullColors,
     formatNewShow,
@@ -473,8 +413,6 @@ const saveList: { [key in SaveList]: any } = {
     overlays,
     playerVideos,
     resized: null,
-    scriptures,
-    scriptureSettings,
     slidesOptions,
     splitLines,
     templateCategories,
@@ -484,7 +422,6 @@ const saveList: { [key in SaveList]: any } = {
     variables,
     interactions,
     audioStreams,
-    audioPlaylists,
     theme,
     themes,
     transitionData,
@@ -492,18 +429,12 @@ const saveList: { [key in SaveList]: any } = {
     midiIn: actions,
     emitters,
     videoMarkers,
-    calendars: null,
     mediaTags,
     playerTags,
     actionTags,
     variableTags,
     timerTags,
     customizedIcons,
-    driveKeys,
-    cloudSyncData,
-    driveData,
-    calendarAddShow: null,
-    metronome: null,
     audioEffects: null,
     audioEffectPresets: null,
     effectsLibrary: null,

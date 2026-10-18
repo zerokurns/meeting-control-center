@@ -1,5 +1,3 @@
-import type { Bible } from "json-bible/lib/Bible"
-import type { Event } from "./Calendar"
 import type { History, HistoryNew } from "./History"
 import type { Media } from "./Main"
 import type { Folders, Projects } from "./Projects"
@@ -7,41 +5,9 @@ import type { Themes } from "./Settings"
 import type { Overlays, Shows, Templates, TrimmedShows } from "./Show"
 import type { StageLayouts } from "./Stage"
 
-export type SaveList = SaveListSettings | SaveListSyncedSettings | "themes" | "events" | "templates" | "overlays" | "driveKeys"
+export type SaveList = SaveListSettings | SaveListSyncedSettings | "themes" | "templates" | "overlays"
 
-export type SaveListSyncedSettings =
-    | "categories"
-    | "drawSettings"
-    | "overlayCategories"
-    | "templateCategories"
-    | "styles"
-    | "profiles"
-    | "timers"
-    | "variables"
-    | "scenes"
-    | "interactions"
-    | "audioStreams"
-    | "audioPlaylists"
-    | "scriptures"
-    | "scriptureSettings"
-    | "groups"
-    | "midiIn"
-    | "emitters"
-    | "playerVideos"
-    | "videoMarkers"
-    | "calendars"
-    | "mediaTags"
-    | "playerTags"
-    | "actionTags"
-    | "variableTags"
-    | "timerTags"
-    | "customizedIcons"
-    | "globalTags"
-    | "globalRegexes"
-    | "customMetadata"
-    | "effects"
-    | "deletedDefaults"
-    | "syncedOutputs"
+export type SaveListSyncedSettings = "categories" | "overlayCategories" | "templateCategories" | "styles" | "profiles" | "timers" | "variables" | "scenes" | "interactions" | "audioStreams" | "groups" | "midiIn" | "emitters" | "playerVideos" | "videoMarkers" | "mediaTags" | "playerTags" | "actionTags" | "variableTags" | "timerTags" | "customizedIcons" | "globalTags" | "globalRegexes" | "customMetadata" | "effects" | "deletedDefaults" | "syncedOutputs"
 
 export type SaveListSettings =
     | "initialized"
@@ -78,10 +44,6 @@ export type SaveListSettings =
     | "transitionData"
     | "audioRouting"
     | "audioChannelsData"
-    | "cloudSyncData"
-    | "driveData"
-    | "calendarAddShow"
-    | "metronome"
     | "audioEffects"
     | "audioEffectPresets"
     | "effectsLibrary"
@@ -103,13 +65,10 @@ export interface SaveData {
     PROJECTS: { projects: Projects; folders: Folders; projectTemplates: Projects }
     OVERLAYS: Overlays
     TEMPLATES: Templates
-    EVENTS: { [key: string]: Event }
     MEDIA: Media
     THEMES: { [key: string]: Themes }
-    DRIVE_API_KEY: any
     // CACHES SAVED TO MULTIPLE FILES
     showsCache?: Shows
-    scripturesCache?: { [key: string]: Bible }
     deletedShows?: { name: string; id: string }[]
     renamedShows?: { id: string; name: string; oldName: string }[]
     // CACHES

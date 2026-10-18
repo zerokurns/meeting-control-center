@@ -23,24 +23,18 @@ import {
     audioEffectPresets,
     audioEffects,
     audioFolders,
-    audioPlaylists,
     audioStreams,
     autoOutput,
     autosave,
-    calendarAddShow,
-    calendars,
     categories,
-    cloudSyncData,
     contentProviderData,
     customFonts,
     customMetadata,
     customizedIcons,
     deletedDefaults,
     disabledServers,
-    drawSettings,
     drawer,
     drawerTabsData,
-    driveData,
     effects,
     effectsLibrary,
     emitters,
@@ -61,7 +55,6 @@ import {
     mediaFolders,
     mediaOptions,
     mediaTags,
-    metronome,
     obsData,
     openedFolders,
     os,
@@ -76,8 +69,6 @@ import {
     projectView,
     resized,
     scenes,
-    scriptureSettings,
-    scriptures,
     serverData,
     showRecentlyUsedProjects,
     slidesOptions,
@@ -367,7 +358,6 @@ const updateList: { [key in SaveListSettings | SaveListSyncedSettings]: any } = 
     categories: (v: any) => categories.set(v),
     drawer: (v: any) => drawer.set(v),
     drawerTabsData: (v: any) => drawerTabsData.set(v),
-    drawSettings: (v: any) => drawSettings.set(v),
     groupNumbers: (v: any) => groupNumbers.set(v),
     fullColors: (v: any) => fullColors.set(v),
     formatNewShow: (v: any) => formatNewShow.set(v),
@@ -380,8 +370,6 @@ const updateList: { [key in SaveListSettings | SaveListSyncedSettings]: any } = 
     overlayCategories: (v: any) => overlayCategories.set(v),
     playerVideos: (v: any) => playerVideos.set(v),
     resized: (v: any) => resized.set(v),
-    scriptures: (v: any) => scriptures.set(v),
-    scriptureSettings: (v: any) => scriptureSettings.set(v),
     slidesOptions: (v: any) => slidesOptions.set(v),
     splitLines: (v: any) => splitLines.set(v),
     templateCategories: (v: any) => templateCategories.set(v),
@@ -390,24 +378,18 @@ const updateList: { [key in SaveListSettings | SaveListSyncedSettings]: any } = 
     scenes: (v: any) => scenes.set(v),
     interactions: (v: any) => interactions.set(v),
     audioStreams: (v: any) => audioStreams.set(v),
-    audioPlaylists: (v: any) => audioPlaylists.set(v),
     theme: (v: any) => theme.set(v),
     transitionData: (v: any) => transitionData.set(v),
     audioChannelsData: (v: any) => audioChannelsData.set(v),
     emitters: (v: any) => emitters.set(v),
     midiIn: (v: any) => actions.set(v),
     videoMarkers: (v: any) => videoMarkers.set(v),
-    calendars: (v: any) => calendars.set(v),
     mediaTags: (v: any) => mediaTags.set(v),
     playerTags: (v: any) => playerTags.set(v),
     actionTags: (v: any) => actionTags.set(v),
     variableTags: (v: any) => variableTags.set(v),
     timerTags: (v: any) => timerTags.set(v),
     customizedIcons: (v: any) => customizedIcons.set(v),
-    cloudSyncData: (v: any) => cloudSyncData.set(v),
-    driveData: (v: any) => driveData.set(v),
-    calendarAddShow: (v: any) => calendarAddShow.set(v),
-    metronome: (v: any) => metronome.set(v),
     audioEffects: (v: any) => audioEffects.set(v),
     audioEffectPresets: (v: any) => audioEffectPresets.set(v),
     effectsLibrary: (v: any) => effectsLibrary.set(v),
@@ -430,12 +412,6 @@ const updateList: { [key in SaveListSettings | SaveListSyncedSettings]: any } = 
         }
 
         // DEPRECATED (migrate)
-        if (v.pcoLocalAlways) {
-            contentProviderData.update((a) => ({ ...a, planningcenter: { localAlways: true } }))
-            delete v.pcoLocalAlways
-        }
-
-        // DEPRECATED (migrate)
         v.customUserDataLocation = true
 
         // DEPRECATED (migrate)
@@ -454,20 +430,10 @@ const updateList: { [key in SaveListSettings | SaveListSyncedSettings]: any } = 
         }
         if (Object.keys(deletedDefaultsValue).length) deletedDefaults.set(deletedDefaultsValue)
 
-        // DEPRECATED (migrate) - only in 1.6.5-beta
-        if (v.calendars && !Object.keys(get(calendars)).length) {
-            calendars.set(v.calendars)
-            delete v.calendars
-        }
-
         special.set(v)
     },
     timeline: (v: any) => timeline.set(v),
     timecode: (v: any) => timecode.set(v),
-    // @ts-ignore - DEPERACTED (migrate)
-    chumsSyncCategories: (v: any) => {
-        if (v?.length > 1) contentProviderData.set({ ...get(contentProviderData), churchApps: { syncCategories: v } })
-    },
     contentProviderData: (v: any) => contentProviderData.set(v),
     obsData: (v: any) => obsData.set(v),
     effects: (a: any) => effects.set(a),

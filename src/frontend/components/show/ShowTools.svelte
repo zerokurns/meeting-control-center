@@ -37,28 +37,22 @@
         // could change page back, but could be useful to keep it open in some cases
         // if (disableMedia && active === "media") active = Object.keys(tabs)[0]
     }
-
-    $: reference = currentShow?.reference?.type
 </script>
 
 <div class="main border" class:labels={!$labelsDisabled}>
-    {#if reference === "lessons"}
-        <!-- nothing needed -->
-    {:else}
-        <Tabs {tabs} bind:active />
+    <Tabs {tabs} bind:active />
 
-        {#if currentShow}
-            {#if active === "groups"}
-                <SlideGroups />
-            {:else if active === "media"}
-                <div class="content">
-                    <Media />
-                </div>
-            {:else if active === "metadata"}
-                <div class="content">
-                    <Metadata />
-                </div>
-            {/if}
+    {#if currentShow}
+        {#if active === "groups"}
+            <SlideGroups />
+        {:else if active === "media"}
+            <div class="content">
+                <Media />
+            </div>
+        {:else if active === "metadata"}
+            <div class="content">
+                <Metadata />
+            </div>
         {/if}
     {/if}
 </div>

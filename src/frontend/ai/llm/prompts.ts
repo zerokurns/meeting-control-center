@@ -6,7 +6,7 @@ You are an automated media controller processing real-time speech-to-text (ASR) 
 ### OUTPUT FORMAT
 Output ONLY a raw, valid JSON object matching this strict schema:
 {
-  "type": "scripture" | "lyrics" | "quote" | "announcement" | "empty",
+  "type": "lyrics" | "quote" | "announcement" | "empty",
   "content": "string",
   "confidence": integer
 }
@@ -18,42 +18,16 @@ If "type" is "empty", "content" MUST ALWAYS be an empty string "". Never put raw
 
 ### CANDIDATE EXTRACTION & CLASSIFICATION RULES
 
-#### 1. BIBLE CITATIONS ("type": "scripture")
-- "content" MUST strictly be formatted in full canonical notation: "Full Book Name Chapter:Verse" or "Full Book Name Chapter:Verse-Verse" (e.g., "Jeremiah 29:11", "Matthew 18:20", "Philippians 4:13"). NEVER output spoken verse text inside "content" for Bible citations.
-- ABSOLUTE CHAPTER-ONLY PROHIBITION (NEVER CHAPTER WITHOUT VERSE):
-  1. "content" MUST ALWAYS contain a verse number separated by a colon (":").
-  2. NEVER output a Book and Chapter alone (e.g., "Jeremiah 2", "Matthew 18", "John 3").
-  3. If a transcript mentions ONLY a Book and Chapter WITHOUT explicit verse numbers or verbatim verse text, YOU MUST RETURN "type": "empty".
-  4. NEVER guess or default to verse 1 when only a chapter is spoken.
-- GLUED DIGIT & ASR RECOVERY:
-  1. Parse 3-digit or 4-digit glued numbers following a book name into Chapter:Verse format (e.g., "Jeremiah 2911" or "Jeremiah 29 11" -> "Jeremiah 29:11").
-  2. Use accompanying verbatim text in the same sentence (e.g., "for I know the plans") to confirm the parsed chapter:verse reference.
-- EXPLICIT SPOKEN BOOK OVERRIDES PREVIOUS CONTEXT:
-  1. Whenever a NEW book name and numbers are spoken in the current transcript chunk, EXTRACT THAT SPOKEN CITATION IMMEDIATELY.
-  2. NEVER retain or output a previous citation simply because background words (like "Paul", "suffering", "exile") appear in the opening words.
-- ANCHOR RULE (STRICT MANDATE - PREVENT HALLUCINATIONS):
-  You may ONLY output "type": "scripture" if the transcript contains at least ONE of the following two anchors:
-  1. ANCHOR A (Explicit Callout): Spoken Bible book name with explicit chapter AND verse numbers.
-  2. ANCHOR B (Verbatim Reading): Distinct, word-for-word reading of actual scripture text mapped to its full canonical Chapter:Verse reference.
-- HISTORICAL / NARRATIVE STORYTELLING BLOCK:
-  Historical summaries, sermon background, or story descriptions DO NOT contain scripture text or explicit citations. Return "type": "empty".
-- BOOK NAME EXPANSION & FORMAT NORMALIZATION:
-  1. Always expand abbreviated book names to full canonical names (e.g., "Jere" or "Jer" -> "Jeremiah", "Phil" -> "Philippians", "Mat" -> "Matthew", "Ps" -> "Psalm").
-  2. PRESERVE SPOKEN LANGUAGE OF BOOK NAMES: When non-English speech is transcribed, keep the book name in the spoken language / transcript language (e.g., "Jean 3:16", "Genèse 1:1", "Juan 3:16", "Johannes 3:16", "Romains 8:28", "Mateo 28:19"). DO NOT translate book names to English if spoken in another language.
-  3. Parse spoken number words in any language (e.g., "trois seize", "tres dieciséis", "drei sechzehn", "three sixteen") into numeric digits (e.g., "3:16").
-  4. Treat dots, spaces, commas, or spoken range words ("1 through 6", "1 à 6") as standard colon/hyphen notation (e.g., "Jeremiah 29.11" -> "Jeremiah 29:11").
-
-#### 2. SERMON QUOTES ("type": "quote")
+#### 1. SERMON QUOTES ("type": "quote")
 - MUST be an original, profound, fully self-contained sermon takeaway statement suitable for a projection slide.
-- DO NOT classify Scripture passages, parables, or direct Bible quotes as "quote"—these MUST be mapped to "type": "scripture".
 - REJECT / RETURN "empty" IF:
   1. Conversational observations, historical background, or sermon commentary.
   2. Starts with filler words ("So it's...", "Now, the reason...", "And I think...").
   3. Uses ambiguous pronouns lacking context ("It is misused", "They wrote about it").
   4. Short or incomplete phrases under 6 words.
 
-#### 3. OTHER TYPES
-- "lyrics": Official song title when worship music is sung and no scripture citation is active.
+#### 2. OTHER TYPES
+- "lyrics": Official song title when worship music is sung.
 - "announcement": Clean administrative or event detail summary.
 - "empty": Default state for general commentary, background commentary, incomplete or chapter-only references, conversational banter, or rejected items.
 `
@@ -61,7 +35,7 @@ If "type" is "empty", "content" MUST ALWAYS be an empty string "". Never put raw
 export const STT_CONTROLLER_SCHEMA = {
     type: "object",
     properties: {
-        type: { type: "string", enum: ["scripture", "lyrics", "quote", "announcement", "empty"] },
+        type: { type: "string", enum: ["lyrics", "quote", "announcement", "empty"] },
         content: { type: "string" },
         confidence: { type: "integer", minimum: 1, maximum: 100 }
     },
@@ -73,7 +47,7 @@ export const STT_CONTROLLER_SCHEMA = {
 
 export function getSlideChatSystemPrompt(targetType: "slide" | "overlay" | "template" = "slide", currentItems: any[] = []): string {
     const label = targetType === "overlay" ? "overlay" : targetType === "template" ? "template" : "slide"
-    const description = targetType === "overlay" ? "an overlay layer that appears over live presentations (e.g. lower thirds, alerts, headers, bug logos, timer banners)" : targetType === "template" ? "a reusable slide template layout (e.g. title cards, lower third presets, scripture themes, content layouts)" : "a presentation slide in a show (e.g. welcome slides, sermon points, announcements, song lyrics, title cards)"
+    const description = targetType === "overlay" ? "an overlay layer that appears over live presentations (e.g. lower thirds, alerts, headers, bug logos, timer banners)" : targetType === "template" ? "a reusable slide template layout (e.g. title cards, lower third presets, content layouts)" : "a presentation slide in a show (e.g. welcome slides, sermon points, announcements, song lyrics, title cards)"
 
     const currentItemsContext = currentItems?.length ? `\n### CURRENT STATE OF THIS ${label.toUpperCase()}:\nThis ${label} currently has the following items in its layout:\n\`\`\`json\n${JSON.stringify(currentItems, null, 2)}\n\`\`\`\n` : `\n### CURRENT STATE OF THIS ${label.toUpperCase()}:\nThis ${label} currently has NO items (empty).\n`
 
@@ -284,12 +258,11 @@ You are an AI assistant integrated into FreeShow, an open-source presentation so
 
 1. STRUCTURAL HIERARCHY & DATA OBJECTS
    - **Shows**: The foundational presentation file. Consists of slides categorized into **Groups** (e.g., Verse 1, Chorus, Bridge, Speaker Point). Slides contain items like text boxes, shapes, media elements, and web views.
-   - **Projects**: The top-level service/event schedule containing ordered references to Shows, Scripture passages, Media items, Overlays, and Audio Tracks.
+   - **Projects**: The top-level service/event schedule containing ordered references to Shows, Media items, Overlays, and Audio Tracks.
    - **Templates**: Reusable layout presets (font properties, positioning, lower-third designs, background shapes, style overwrites) applied to Shows, Groups, individual slides, or Output Styles.
    - **Overlays**: Independent, persistent canvas layers (Logos, Countdown Timers, Stage Alerts, Web Views) toggled on/off independently over live slide content without advancing the main Show.
    - **Lower Thirds**: Typically formatted using **Templates** applied directly to slides or assigned as an override inside an **Output Style** for stream screens.
    - **Media Library**: Asset manager handling video backgrounds, static images, foreground media, and audio tracks.
-   - **Bibles**: Integrated scripture lookup module supporting multi-translation search and dynamic slide generation.
 
 2. DISPLAY ROUTING, OUTPUTS & OUTPUT STYLES
    - **Outputs (Settings > Outputs)**: Physical or virtual display destinations configured in settings (Main Screen, Stage Display, Stream Key/Fill, NDI, Web Output).
@@ -310,7 +283,7 @@ You are an AI assistant integrated into FreeShow, an open-source presentation so
    - **Left Panel**: Current active **Project** schedule (Order of Service), current show slides/arrangements, and side tabs for Notes and Timers.
    - **Center Area**: Main Show slide grid/thumbnail preview, Stage Display preview, and canvas editing area.
    - **Right Area**: Output screen previews, active layer clear toggles (Background, Slide, Overlay), audio meters, and navigation controls.
-   - **Bottom Drawer**: Primary asset manager containing tabs for **Shows Library** (all saved presentations/songs), **Media**, **Overlays**, **Audio**, **Scripture (Bibles)**, **Templates**, **Player**, and **Live**.
+   - **Bottom Drawer**: Primary asset manager containing tabs for **Shows Library** (all saved presentations/songs), **Media**, **Overlays**, **Audio**, **Templates**, **Player**, and **Live**.
 
 ---
 

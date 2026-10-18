@@ -29,10 +29,6 @@ export interface Styles {
     lineOpacity?: number // default is 50%
     skipVirtualBreaks?: boolean // break on [_VB] chars only for templates with this option
     template?: string // slide
-    templateScripture?: string
-    templateScripture_2?: string
-    templateScripture_3?: string
-    templateScripture_4?: string
     metadata?: Metadata
 }
 

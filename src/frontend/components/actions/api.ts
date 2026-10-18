@@ -3,19 +3,16 @@ import type { MidiValues, TransitionType } from "../../../types/Show"
 import { clearAudio } from "../../audio/audioFading"
 import { AudioMicrophone } from "../../audio/audioMicrophone"
 import { AudioPlayer } from "../../audio/audioPlayer"
-import { AudioPlaylist } from "../../audio/audioPlaylist"
 import { markItemsAsPlayed } from "../../converters/project"
 import { convertText } from "../../converters/txt"
 import { sendMain } from "../../IPC/main"
 import { slideTimelineSpeedMultiplier } from "../../stores"
-import { transposeText } from "../../utils/chordTranspose"
 import { triggerFunction } from "../../utils/common"
 import { obsSetScene, obsStartLivestream, obsStartRecording, obsStopLivestream, obsStopRecording } from "../../utils/obsTalk"
 import { save } from "../../utils/save"
 import { togglePlayingMedia } from "../../utils/shortcuts"
 import { contentProviderSync } from "../../utils/startup"
 import { updateTransition } from "../../utils/transitions"
-import { startMetronome } from "../drawer/audio/metronome"
 import { getInteraction, startInteraction, stopInteraction } from "../drawer/pages/interactions"
 import { pauseAllTimers } from "../drawer/timers/timers"
 import { getSlideThumbnail, getThumbnail } from "../helpers/media"
@@ -23,18 +20,15 @@ import { changeStageOutputLayout, startCamera, startRtmpStreaming, startScene, s
 import { OutputHelper } from "../helpers/OutputHelper"
 import { changeOutputStyle, playSlideTimers, randomSlide, replaceDynamicValues, selectProjectShow, sendMidi, startShowSync } from "../helpers/showActions"
 import { startTimerById, startTimerByName, stopTimers } from "../helpers/timerTick"
-import { clearAll, clearBackground, clearDrawing, clearOverlay, clearOverlays, clearScene, clearSlide, clearTimers, restoreOutput } from "../output/clear"
-import { fadePause, skipNext, skipPrev, spotifyPause, spotifyPlay } from "../output/preview/SpotifyManager"
+import { clearAll, clearBackground, clearOverlay, clearOverlays, clearScene, clearSlide, clearTimers, restoreOutput } from "../output/clear"
 import { formatText } from "../show/formatTextEditor"
-import { getPlainEditorText } from "../show/getTextEditor"
 import { pauseTimeline, setTimelineTime, startTimeline, stopTimeline } from "../timeline/TimelinePlayback"
 import { runActionByName, runActionId, toggleAction } from "./actions"
-import { getActions, getOutput, getOutputGroupName, getOutputSlideText, getPlayingAudioData, getPlayingAudioDuration, getPlayingAudioTime, getPlayingPlaylist, getPlayingVideoDuration, getPlayingVideoState, getPlayingVideoTime, getPlaylists, getProject, getProjects, getShow, getShowLayout, getShows, getSlide, getVariable, getVariables } from "./apiGet"
+import { getActions, getOutput, getOutputGroupName, getOutputSlideText, getPlayingAudioData, getPlayingAudioDuration, getPlayingAudioTime, getPlayingVideoDuration, getPlayingVideoState, getPlayingVideoTime, getProject, getProjects, getShow, getShowLayout, getShows, getSlide, getVariable, getVariables } from "./apiGet"
 import {
     addGroup,
     addToProject,
     audioSeekTo,
-    changeDrawZoom,
     changeShowLayout,
     changeVariable,
     createProject,
@@ -72,9 +66,7 @@ import {
     setNextSlideTimer,
     setShowAPI,
     setTemplate,
-    startPlaylistByName,
     startProjectItemByName,
-    startScripture,
     stopAudio,
     stopTimerById,
     stopTimerByName,
@@ -140,7 +132,6 @@ export type API_layout = { showId: string; layoutId: string }
 export type API_slide_thumbnail = { showId?: string; layoutId?: string; index?: number }
 export type API_seek = { id?: string; seconds: number }
 export type API_media = { path: string; index?: number; data?: any }
-export type API_scripture = { id?: string; reference: string; play?: boolean }
 export type API_toggle = { id: string; value?: boolean }
 export type API_toggle_specific = { value?: boolean }
 export type API_toggle_id = { id?: string; value?: boolean }
@@ -151,7 +142,6 @@ export type API_camera = { name?: string; id: string; groupId?: string }
 export type API_screen = { name?: string; id: string }
 export type API_microphone = { name?: string; id: string }
 export type API_dynamic_value = { value: string; ref?: any }
-export type API_draw_zoom = { size?: number; x?: number; y?: number }
 export type API_edit_timer = { id: string; key: string; value: any }
 export type API_transition = {
     id?: "text" | "media" // default: "text"
@@ -175,11 +165,6 @@ export type API_variable = {
 export interface API_midi extends MidiValues {
     type: "noteon" | "noteoff" | "control"
     defaultValues?: boolean // only used by actions
-}
-export type API_metronome = {
-    metadataBPM?: boolean // only used by actions
-    tempo?: number
-    beats?: number
 }
 export type API_rest_command = {
     url: string
@@ -235,8 +220,6 @@ export const API_ACTIONS = {
     set_template: (data: API_id) => setTemplate(data.id),
     set_next_slide_timer: (data: API_numval) => setNextSlideTimer(data.value),
     change_slide_timeline_speed: (data: API_numval) => slideTimelineSpeedMultiplier.set(data.value ?? 1),
-    transpose_show_up: (data: API_id) => formatText(transposeText(getPlainEditorText(data.id), 1), data.id),
-    transpose_show_down: (data: API_id) => formatText(transposeText(getPlainEditorText(data.id), -1), data.id),
 
     // PRESENTATION
     next_slide: () => OutputHelper.advanceOutputs("next"), // BC
@@ -254,10 +237,9 @@ export const API_ACTIONS = {
     clear_slide: () => clearSlide(), // BC
     clear_overlays: () => clearOverlays(), // BC
     clear_overlay: (data: API_id) => clearOverlay(data.id),
-    clear_audio: () => clearAudio("", { clearPlaylist: true, commonClear: true }), // BC
+    clear_audio: () => clearAudio("", { commonClear: true }), // BC
     clear_next_timer: () => clearTimers(), // BC
     clear_scene: (data: API_id) => clearScene(data?.id),
-    clear_drawing: () => clearDrawing(),
 
     // MEDIA (Backgrounds)
     start_camera: (data: API_camera) => startCamera(data),
@@ -275,11 +257,6 @@ export const API_ACTIONS = {
     index_select_overlay: (data: API_index) => selectOverlayByIndex(data.index), // BC
     name_select_overlay: (data: API_strval) => selectOverlayByName(data.value), // BC
     id_select_overlay: (data: API_id) => selectOverlayById(data.id),
-
-    // SCRIPTURE
-    start_scripture: (data: API_scripture) => startScripture(data), // BC
-    scripture_next: () => triggerFunction("scripture_next"), // BC
-    scripture_previous: () => triggerFunction("scripture_previous"), // BC
 
     // OUTPUT
     start_scene: (data: API_id) => startScene(data.id),
@@ -310,10 +287,6 @@ export const API_ACTIONS = {
     start_audio_stream: (data: API_id) => AudioPlayer.start(data.id, { name: "" }),
     toggle_audio_recording: (data: API_toggle_id = {}) => toggleAudioRecording(data),
     toggle_icecast: (data: API_toggle_specific = {}) => toggleIcecast(data),
-    start_playlist: (data: API_id) => AudioPlaylist.start(data.id),
-    name_start_playlist: (data: API_strval) => startPlaylistByName(data.value), // BC
-    playlist_next: () => AudioPlaylist.next(), // BC
-    start_metronome: (data: API_metronome) => startMetronome(data),
     start_audio_effect: (data: API_media) => playAudio(data),
     start_microphone: (data: API_microphone) => AudioMicrophone.start(data.id, { name: data.name || "" }),
     stop_microphone: (data: API_microphone) => AudioMicrophone.stop(data.id),
@@ -342,12 +315,8 @@ export const API_ACTIONS = {
     // FUNCTIONS
     change_variable: (data: API_variable) => changeVariable(data), // BC
 
-    // DRAW
-    change_draw_zoom: (data: API_draw_zoom) => changeDrawZoom(data),
-
     // CONNECTION
     sync_content_provider: () => contentProviderSync(),
-    // sync_cloud_now
 
     // EMIT
     send_midi: (data: API_midi) => sendMidi(data), // DEPRECATED, use emit_action instead
@@ -366,13 +335,6 @@ export const API_ACTIONS = {
     obs_stop_livestream: () => obsStopLivestream(),
     obs_start_recording: () => obsStartRecording(),
     obs_stop_recording: () => obsStopRecording(),
-
-    // Spotify
-    spotify_play: () => spotifyPlay(),
-    spotify_pause: () => spotifyPause(),
-    spotify_fade_out: () => fadePause(),
-    spotify_next: () => skipNext(),
-    spotify_previous: () => skipPrev(),
 
     // Smart
     smart_toggle_stt: (data: API_toggle_specific = {}) => toggleSttListening(data),
@@ -430,8 +392,6 @@ export const API_ACTIONS = {
 
     get_actions: () => getActions(),
 
-    get_playlists: () => getPlaylists(),
-    get_playlist: (data: API_id_optional) => getPlayingPlaylist(data),
     get_slide: (data: API_slide) => getSlide(data),
 
     get_thumbnail: (data: API_media) => getThumbnail(data),

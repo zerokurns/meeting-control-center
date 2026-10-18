@@ -1,7 +1,6 @@
 <script lang="ts">
     import AiFloating from "./ai/components/floating/AiFloating.svelte"
     import { customActionActivation } from "./components/actions/actions"
-    import DrawTabs from "./components/draw/DrawTabs.svelte"
     import Navigation from "./components/edit/Navigation.svelte"
     import LazyLoad from "./components/helpers/LazyLoad.svelte"
     import ProfileChangerMenu from "./components/main/ProfileChangerMenu.svelte"
@@ -47,8 +46,6 @@
                     <Navigation />
                 {:else if page === "stage"}
                     <StageLayouts />
-                {:else if page === "draw"}
-                    <DrawTabs />
                 {:else if page === "settings"}
                     <SettingsTabs />
                 {/if}
@@ -64,8 +61,6 @@
                 {/if}
             {:else if page === "edit"}
                 <LazyLoad component={() => import("./components/edit/Editor.svelte")} show={page === "edit"} />
-            {:else if page === "draw"}
-                <LazyLoad component={() => import("./components/draw/Slide.svelte")} show={page === "draw"} />
             {:else if page === "settings"}
                 <LazyLoad component={() => import("./components/settings/Settings.svelte")} show={page === "settings"} />
             {:else if page === "stage"}
@@ -96,8 +91,6 @@
                             <LazyLoad component={() => import("./components/edit/EditTools.svelte")} show={!$focusMode} />
                         {/if}
                     {/if}
-                {:else if page === "draw"}
-                    <LazyLoad component={() => import("./components/draw/DrawSettings.svelte")} show={page === "draw"} />
                 {:else if page === "stage" && $activeStage.id}
                     <LazyLoad component={() => import("./components/stage/StageTools.svelte")} show={page === "stage" && !!$activeStage.id} />
                 {:else if page === "settings"}

@@ -1,4 +1,3 @@
-import type { Event } from "../../types/Calendar"
 import type { Effect } from "../../types/Effects"
 import type { Project, ProjectShowRef } from "../../types/Projects"
 import type { Layout, Overlay, Scene, Slide, Template } from "../../types/Show"
@@ -33,8 +32,6 @@ export const EMPTY_PROJECT: Project = { name: "", created: 0, parent: "/", shows
 export const EMPTY_PROJECT_FOLDER = { name: "", created: 0, parent: "/" }
 
 export const EMPTY_SECTION: ProjectShowRef = { id: "", type: "section", name: "", notes: "" }
-
-export const EMPTY_EVENT: Event = { name: "", color: null, type: "event", from: "", to: "", time: false, repeat: false }
 
 export const EMPTY_TAG = { name: "", color: "" }
 

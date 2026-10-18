@@ -61,7 +61,7 @@
         let names: { [key: string]: string[] } = {}
         Object.entries($shows).forEach(([id, show]) => {
             if (!show?.name) return
-            // remove any numbers (less than 4 chars) at the end of name (but not if "1-3"|"-5" in case of scripture)
+            // remove any numbers (less than 4 chars) at the end of name
             let trimmedName = show.name
                 .toLowerCase()
                 .replace(/(?<![-\d])\d{1,3}$/, "")

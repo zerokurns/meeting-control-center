@@ -73,12 +73,12 @@
 
     $: referenceType = currentShow?.reference?.type
     $: outputStyleId = getFirstActiveOutput($outputs)?.style || ""
-    $: outputStyleTemplate = allOutputsHasStyleTemplate(referenceType === "scripture") ? $styles[outputStyleId]?.[referenceType === "scripture" ? "templateScripture" : "template"] || "" : ""
+    $: outputStyleTemplate = allOutputsHasStyleTemplate() ? $styles[outputStyleId]?.template || "" : ""
     $: enableStylePreview = !!(outputStyleTemplate && $special.styleTemplatePreview !== false && $templates[outputStyleTemplate])
 
     $: showTemplateId = currentShow?.settings?.template || ""
     $: showTemplateIcon = !!(showTemplateId && $templates[showTemplateId])
-    $: enableShowTemplate = showTemplateIcon && (!referenceType || referenceType === "scripture" || open)
+    $: enableShowTemplate = showTemplateIcon && (!referenceType || open)
 </script>
 
 <svelte:window on:mousedown={mousedown} />

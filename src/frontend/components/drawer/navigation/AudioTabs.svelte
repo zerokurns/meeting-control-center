@@ -3,9 +3,8 @@
     import { uid } from "uid"
     import { Main } from "../../../../types/IPC/Main"
     import { ToMain } from "../../../../types/IPC/ToMain"
-    import { AudioPlaylist } from "../../../audio/audioPlaylist"
     import { destroyMain, receiveToMain, requestMain, sendMain } from "../../../IPC/main"
-    import { activeRename, audioFolders, audioPlaylists, drawerTabsData, effectsLibrary, labelsDisabled, media } from "../../../stores"
+    import { audioFolders, drawerTabsData, effectsLibrary, labelsDisabled, media } from "../../../stores"
     import { getAccess } from "../../../utils/profile"
     import { keysToID, sortObject } from "../../helpers/array"
     import { addDrawerFolder } from "../../helpers/dropActions"
@@ -42,33 +41,16 @@
         folderLengths = newFolderLengths
     }
 
-    $: playlists = !!Object.keys($audioPlaylists).length
-    // ...(playlists ? [getAudioPlaylists($audioPlaylists)] : []),
-
     let sections: any[] = []
     $: sections = [
         [
             { id: "all", label: "category.all", icon: "all", count: allCount },
             { id: "favourites", label: "category.favourites", icon: "star", count: favoritesListLength, hidden: !favoritesListLength && activeSubTab !== "favourites" }
         ],
-        [{ id: "inputs", label: "emitters.inputs", icon: "input" }, "SEPARATOR", { id: "metronome", label: "audio.metronome", icon: "metronome" }],
+        [{ id: "inputs", label: "emitters.inputs", icon: "input" }],
         [{ id: "effects_library", label: "category.sound_effects", icon: "effect", count: effectsLength, hidden: !effectsLength && activeSubTab !== "effects_library" }],
-        [{ id: "TITLE", label: "audio.playlists" }, ...getAudioPlaylists($audioPlaylists)],
         [{ id: "TITLE", label: "media.folders" }, ...convertToButton(foldersList, folderLengths)]
     ]
-
-    function getAudioPlaylists(playlistUpdater) {
-        if (!Object.keys(playlistUpdater).length) return []
-
-        let playlists = sortObject(keysToID(playlistUpdater), "name")
-        playlists = playlists.map((a) => {
-            const count = a.songs?.length
-            return { id: a.id, label: a.name, icon: "playlist", count, onDoubleClick: () => AudioPlaylist.start(a.id), boxedIcon: true }
-        })
-        if (!playlists.length) return []
-
-        return playlists
-    }
 
     function convertToButton(categories: any[], lengths: { [key: string]: number }) {
         return sortObject(categories, "name").map((a) => {
@@ -89,45 +71,16 @@
     function updateName(e: any) {
         const { id, value } = e.detail
 
-        if ($audioPlaylists[id]) {
-            audioPlaylists.update((a) => {
-                a[id].name = value
-                return a
-            })
-            return
-        }
-
         audioFolders.update((a) => {
             if (a[id].default) delete a[id].default
             a[id].name = value
             return a
         })
     }
-
-    function createPlaylist() {
-        let playlistId = uid()
-        audioPlaylists.update((a) => {
-            a[playlistId] = { name: "", songs: [] }
-            return a
-        })
-
-        drawerTabsData.update((a) => {
-            a.audio.activeSubTab = playlistId
-            return a
-        })
-
-        activeRename.set("category_audio_" + playlistId)
-    }
 </script>
 
 <NavigationSections {sections} active={activeSubTab} on:rename={updateName}>
-    <div slot="section_3" style="padding: 8px;{playlists ? 'padding-top: 12px;' : ''}">
-        <MaterialButton style="width: 100%;" title="new.playlist" variant="outlined" disabled={readOnly} on:click={createPlaylist} small>
-            <Icon id="add" size={$labelsDisabled ? 0.9 : 1} white={$labelsDisabled} />
-            {#if !$labelsDisabled}<T id="new.playlist" />{/if}
-        </MaterialButton>
-    </div>
-    <div slot="section_4" style="padding: 8px;{foldersList.length ? 'padding-top: 12px;' : ''}">
+    <div slot="section_3" style="padding: 8px;{foldersList.length ? 'padding-top: 12px;' : ''}">
         <MaterialButton style="width: 100%;" title="new.system_folder" variant="outlined" disabled={readOnly} on:click={addFolder} small>
             <Icon id="add" size={$labelsDisabled ? 0.9 : 1} white={$labelsDisabled} />
             {#if !$labelsDisabled}<T id="new.system_folder" />{/if}

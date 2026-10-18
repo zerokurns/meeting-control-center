@@ -9,7 +9,6 @@
     import { getDynamicValue, replaceDynamicValues } from "../helpers/show"
     import { getItemText } from "../helpers/textStyle"
     import Clock from "../items/Clock.svelte"
-    import MetronomeVisualizer from "../items/MetronomeVisualizer.svelte"
     import SlideNotes from "../items/SlideNotes.svelte"
     import SlideProgress from "../items/SlideProgress.svelte"
     import SlideText from "../items/SlideText.svelte"
@@ -199,13 +198,13 @@
                 {#if currentSlide}
                     {#key item || currentSlide}
                         <!-- autoStage={show.settings.autoStretch !== false} -->
-                        <SlideText {currentSlide} {slideOffset} stageItem={item} chords={typeof item.chords === "boolean" ? item.chords : item.chords?.enabled} autoSize={item.textFit !== "none" && item.auto !== false} {fontSize} autoStage {textStyle} style={item.type ? item.keepStyle : false} />
+                        <SlideText {currentSlide} {slideOffset} stageItem={item} autoSize={item.textFit !== "none" && item.auto !== false} {fontSize} autoStage {textStyle} style={item.type ? item.keepStyle : false} />
                     {/key}
                 {/if}
             {:else if item.type === "slide_notes" || id.includes("notes")}
                 <SlideNotes {currentSlide} {slideOffset} autoSize={item.auto !== false ? autoSize : fontSize} />
             {:else if item.type === "text"}
-                <Textbox {item} showId={id} autoSize={item.auto === true || (item.textFit && item.textFit !== "none")} {fontSize} />
+                <Textbox {item} autoSize={item.auto === true || (item.textFit && item.textFit !== "none")} {fontSize} />
                 <!-- STAGE VV -->
             {:else if item.type === "slide_tracker" || id.includes("slide_tracker")}
                 <SlideProgress tracker={item.tracker || {}} autoSize={item.auto !== false ? autoSize : fontSize} />
@@ -213,8 +212,6 @@
                 <Clock autoSize={item.auto !== false ? autoSize : fontSize} style={false} {...item.clock} />
             {:else if item.type === "timer"}
                 <Timer {item} id={item.timer?.id || item.timerId || firstTimerId || ""} {today} style={item.auto === false ? "" : `font-size: ${item.auto !== false ? autoSize : fontSize}px;`} />
-            {:else if item.type === "metronome" || id.includes("metronome")}
-                <MetronomeVisualizer isItem />
             {:else if item.type === "media"}
                 <MediaOutput path={item.src?.includes("NowPlayingCover") ? item.src : ($media[item.src] || item.src)} />
             {:else if item.type === "camera"}
@@ -223,7 +220,7 @@
                 </Center>
             {:else if item.type}
                 <!-- probably unused -->
-                <Textbox {item} showId={id} fontSize={item.auto !== false ? autoSize : fontSize} />
+                <Textbox {item} fontSize={item.auto !== false ? autoSize : fontSize} />
                 <!-- <SlideItems item={stageItemToItem(item)} ref={{ type: "stage", id }} fontSize={item.auto !== false ? autoSize : fontSize} /> -->
             {:else}
                 <!-- OLD CODE -->

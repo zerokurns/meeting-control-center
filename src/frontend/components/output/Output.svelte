@@ -1,4 +1,4 @@
-<!-- Used in output window, and currently in draw! -->
+<!-- Used in output window -->
 
 <script lang="ts">
     import { onDestroy } from "svelte"
@@ -6,10 +6,8 @@
     import type { OutData } from "../../../types/Output"
     import type { Styles } from "../../../types/Settings"
     import type { AnimationData, Item, LayoutRef, OutBackground, OutScene, OutSlide, Slide, SlideData, Template, Overlays as TOverlays, Transition } from "../../../types/Show"
-    import { allOutputs, colorbars, currentWindow, drawSettings, drawTool, effects, media, outputs, overlays, showsCache, styles, templates, transitionData } from "../../stores"
+    import { allOutputs, colorbars, currentWindow, effects, media, outputs, overlays, showsCache, styles, templates, transitionData } from "../../stores"
     import { wait } from "../../utils/common"
-    import { custom } from "../../utils/transitions"
-    import Draw from "../draw/Draw.svelte"
     import { clone } from "../helpers/array"
     import { defaultLayers, getCurrentStyle, getMetadata, getOutputLines, getOutputTransitions, getResolution, getSlideFilter, getStyleTemplate, setTemplateStyle } from "../helpers/output"
     import { _show } from "../helpers/shows"
@@ -207,7 +205,7 @@
         function formatSlide(currentSlide) {
             if (!currentSlide) return null
             let newSlide = clone(currentSlide)
-            newSlide.items = setTemplateStyle(slide, currentStyle, newSlide.items, outputId, newSlide.customDynamicValues)
+            newSlide.items = setTemplateStyle(slide, currentStyle, newSlide.items, outputId)
             return newSlide
         }
     }
@@ -220,12 +218,12 @@
 
     // custom template
     // WIP revert to old style when output style is reverted to no style (REFRESH OUTPUT)
-    // currentSlide is so the background updates when scripture is removed (if template background on both) - not changed in preview
+    // currentSlide is so the background updates when a temp slide is removed (if template background on both) - not changed in preview
     $: if (styleId && currentStyle && currentSlide !== undefined) {
         if (currentSlide) setTemplateItems()
         getStyleTemplateData()
     }
-    const setTemplateItems = () => (currentSlide!.items = setTemplateStyle(slide!, currentStyle, currentSlide!.items, outputId, currentSlide!.customDynamicValues))
+    const setTemplateItems = () => (currentSlide!.items = setTemplateStyle(slide!, currentStyle, currentSlide!.items, outputId))
     let styleTemplate: Template | null = null
     const getStyleTemplateData = () => (styleTemplate = getStyleTemplate(slide!, currentStyle))
     $: templateBackground = styleTemplate?.settings?.backgroundPath || ""
@@ -342,10 +340,6 @@
     $: overlaysActive = !!((scene === null ? layers.includes("overlays") : true) && clonedOverlays)
     // $: effectsActive = !!(layers.includes("overlays") && effectIds.length)
 
-    // draw zoom
-    $: zoomActive = currentOutput.active || (mirror && !preview)
-    $: drawZoom = $drawTool === "zoom" && zoomActive ? ($drawSettings.zoom?.size || 200) / 100 : 1
-
     // CLEARING
     $: if (slide !== undefined || styleId || layers || sceneHideLayers !== undefined) updateSlide()
     let actualSlide: OutSlide | null = null
@@ -386,7 +380,7 @@
     }
 </script>
 
-<Zoomed id={outputId} background={backgroundColor} checkered={(preview || mirror) && backgroundColor === "transparent"} backgroundDuration={transitions.media?.type === "none" ? 0 : (transitions.media?.duration ?? 800)} align={alignPosition} center {style} {resolution} styleIdOverride={styleId} {mirror} {drawZoom} {cropping} bind:ratio>
+<Zoomed id={outputId} background={backgroundColor} checkered={(preview || mirror) && backgroundColor === "transparent"} backgroundDuration={transitions.media?.type === "none" ? 0 : (transitions.media?.duration ?? 800)} align={alignPosition} center {style} {resolution} styleIdOverride={styleId} {mirror} {cropping} bind:ratio>
     <!-- always show style background (behind other backgrounds) -->
     {#if styleBackground && actualSlide?.type !== "pdf"}
         <Background data={styleBackgroundData} {outputId} transition={transitions.media} {currentStyle} {slideFilter} {ratio} animationStyle={animationData.style?.background || ""} mirror />
@@ -446,30 +440,4 @@
     {#if overlaysActive}
         <Overlays {outputId} overlays={clonedOverlays} activeOverlays={outOverlays} transition={transitions.overlay} {mirror} {preview} styleIdOverride={styleIdOverride || sceneStyleId} />
     {/if}
-
-    {#if actualSlide?.attributionString && layers.includes("slide")}
-        {#if mirror}
-            <p class="attributionString">{actualSlide.attributionString.slice(0, 135)}</p>
-        {:else}
-            <p class="attributionString" transition:custom={textTransition}>{actualSlide.attributionString.slice(0, 135)}</p>
-        {/if}
-    {/if}
-
-    <!-- draw -->
-    {#if zoomActive}
-        <Draw />
-    {/if}
 </Zoomed>
-
-<style>
-    .attributionString {
-        position: absolute;
-        bottom: 15px;
-        left: 50%;
-        transform: translateX(-50%);
-
-        font-size: 28px;
-        font-style: italic;
-        opacity: 0.7;
-    }
-</style>

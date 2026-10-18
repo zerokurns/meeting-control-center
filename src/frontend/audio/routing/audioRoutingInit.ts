@@ -44,16 +44,10 @@ export async function initAudioRouting(data: AudioRoutingConfig | null) {
 
     // connect main inputs
     connections.push({ from: "drawer_audio", to: "main" })
-    connections.push({ from: "playlists_default", to: "main" })
     connections.push({ from: "mic_default", to: "main" })
-
-    // create a custom Metronome channel
-    channels.push({ id: "channel_metronome", name: translateText("audio.metronome") })
-    connections.push({ from: "metronome", to: "channel_metronome" })
 
     // connect to outputs
     connections.push({ from: "main", to: "speaker_default" })
-    connections.push({ from: "channel_metronome", to: "speaker_default" })
 
     // connect outputs
     const outputsList = getAllOutputs()
@@ -110,7 +104,6 @@ function createOutputConnections(outputId: string) {
     const connections: AudioRoutingConnection[] = []
 
     connections.push({ from: "drawer_audio", to: channelId })
-    connections.push({ from: "playlists_default", to: channelId })
     connections.push({ from: `output_win_sub_${outputId}`, to: channelId })
     connections.push({ from: channelId, to: `network_sub_${outputId}` })
 

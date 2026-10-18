@@ -12,7 +12,6 @@ import {
     activeStyle,
     alertMessage,
     audioFolders,
-    audioPlaylists,
     categories,
     currentOutputSettings,
     disabledServers,
@@ -22,7 +21,6 @@ import {
     folders,
     groups,
     mediaFolders,
-    openScripture,
     openToolsTab,
     outputs,
     overlays,
@@ -75,7 +73,7 @@ interface QuickSearchValue {
 const MAX_RESULTS_NORMAL = 5
 const MAX_RESULTS_LARGE = 10
 
-export type SearchCategory = "show" | "settings" | "stage" | "overlays" | "projects" | "actions" | "navigation" | "faq" | "shows" | "media" | "audio" | "bible" | "items"
+export type SearchCategory = "show" | "settings" | "stage" | "overlays" | "projects" | "actions" | "navigation" | "faq" | "shows" | "media" | "audio" | "items"
 export const quickSearchCategoryNames: Record<SearchCategory, string> = {
     show: "formats.show",
     settings: "menu.settings",
@@ -88,7 +86,6 @@ export const quickSearchCategoryNames: Record<SearchCategory, string> = {
     shows: "tabs.shows",
     media: "tabs.media",
     audio: "tabs.audio",
-    bible: "tabs.scripture",
     items: "tools.items"
 }
 
@@ -234,21 +231,11 @@ export async function quicksearch(searchValue: string, categoryFilter: null | Se
 
     // --- AUDIO ---
     if (isVisible("audio")) {
-        // playlists
-        const playlists = trimValues(sort(keysToID(get(audioPlaylists))))
-        addValues(playlists, "audio_playlist", "playlist")
-
         // audio files
         const folderPaths = Object.values(get(audioFolders)).map((a) => a.path!)
         const audioMedia = trimValues(await getMediaResults(searchValue, folderPaths), MAX_RESULTS_LARGE)
         addValues(audioMedia, "media")
     }
-
-    // --- BIBLE ---
-    // if (isVisible("bible")) {
-    //     const bibleResults = trimValues(await getBibleResults(searchValue), MAX_RESULTS_LARGE)
-    //     addValues(bibleResults, "bible", "bible")
-    // }
 
     return values
 
@@ -488,19 +475,6 @@ const triggerActions = {
             }
         }
     },
-    bible: (_id: string, data: any) => {
-        openDrawer("scripture")
-
-        if (data?.reference) openScripture.set({ ...data.reference, play: data.play })
-    },
-    audio_playlist: (id: string) => {
-        openDrawer("audio")
-
-        drawerTabsData.update((a) => {
-            if (a.audio) a.audio.activeSubTab = id
-            return a
-        })
-    },
     media: (id: string, data: any) => {
         const path = id
         const type = data?.type
@@ -564,22 +538,19 @@ function enableConnection(id: string) {
 
 /// //
 
-const top = ["show", "edit", "stage", "draw", "settings"]
+const top = ["show", "edit", "stage", "settings"]
 const mainPages = [
     // top pages
     { id: "show", name: "menu.show", icon: "show", aliases: ["-Home"] },
     { id: "edit", name: "menu.edit", icon: "edit" },
     { id: "stage", name: "menu.stage", icon: "stage" },
-    { id: "draw", name: "menu.draw", icon: "draw" },
     { id: "settings", name: "menu.settings", icon: "settings" },
     // drawer tabs
     { id: "shows", name: "tabs.shows", icon: "shows", aliases: ["category.song", "category.presentation", "-Library", "-Preview"] },
     { id: "media", name: "tabs.media", icon: "media", aliases: ["category.pictures", "category.videos", "-Photos", "-Images", "-Films"] },
-    { id: "audio", name: "tabs.audio", icon: "audio", aliases: ["category.music", "media.volume", "audio.metronome", "audio.settings"] },
+    { id: "audio", name: "tabs.audio", icon: "audio", aliases: ["category.music", "media.volume", "audio.settings"] },
     { id: "overlays", name: "tabs.overlays", icon: "overlays", aliases: ["-Props", "-Alerts", "-Messages", "-Popups", "-Notices"] },
     { id: "templates", name: "tabs.templates", icon: "templates" },
-    { id: "scripture", name: "tabs.scripture", icon: "scripture", aliases: ["-Bibles"] },
-    { id: "calendar", name: "tabs.calendar", icon: "calendar", aliases: ["menu._title_calendar"] },
     { id: "functions", name: "tabs.functions", icon: "functions" },
     // other
     { id: "projects", name: "remote.projects", icon: "project", aliases: ["-Playlists", "-Schedules", "-Agendas", "-Services", "-Sermons", "-Events"] }
@@ -614,8 +585,6 @@ const drawerSubmenus = [
     { id: "audio_inputs", name: "emitters.inputs", icon: "input", aliases: ["live.microphones", "live.audio_streams"] },
     // overlays
     { id: "effects", name: "tabs.effects", icon: "effect" },
-    // calendar
-    { id: "action", name: "calendar.schedule_action", icon: "actions" },
     // functions
     { id: "actions", name: "tabs.actions", icon: "actions", aliases: ["-Macros"] },
     { id: "timer", name: "tabs.timers", icon: "timer" },
@@ -648,8 +617,6 @@ const popups = [
     { id: "output", name: "settings.new_output", icon: "add", data: { settingsTab: "display_settings" } },
     { id: "style", name: "new.style", icon: "add", data: { settingsTab: "styles" } },
     { id: "profile", name: "new.profile", icon: "add", data: { settingsTab: "profiles" } },
-    { id: "edit_event", name: "new.event", icon: "add", data: { drawerTab: "calendar" } },
-    { id: "edit_event", name: "new.event_action", icon: "add", data: { drawerTab: "action" } },
     // custom (no popup)
     { id: "category", name: "new.category", icon: "add", data: { drawerTab: "shows" } },
     { id: "project", name: "new.project", icon: "add", aliases: ["-New Playlist", "-New Schedule", "-New Agenda", "-New Service", "-New Sermon", "-New Event"] },
@@ -676,14 +643,14 @@ const settings = [
         id: "styles",
         name: "settings.styles",
         icon: "styles",
-        aliases: ["-Looks", "edit.background_color", "edit.background_media", "popup.transition", "edit.media_fit", "settings.aspect_ratio", "settings.active_layers", "settings.lines", "settings.override_with_template", "settings.override_scripture_with_template", "meta.display_metadata"]
+        aliases: ["-Looks", "edit.background_color", "edit.background_media", "popup.transition", "edit.media_fit", "settings.aspect_ratio", "settings.active_layers", "settings.lines", "settings.override_with_template", "meta.display_metadata"]
     },
-    { id: "connection", name: "settings.connection", icon: "connection", aliases: ["Planning Center", "ChurchApps", "-Network", "-LAN"] },
+    { id: "connection", name: "settings.connection", icon: "connection", aliases: ["-Network", "-LAN"] },
     {
         id: "files",
         name: "settings.files",
         icon: "files",
-        aliases: ["settings.autosave", "settings.auto_backup", "settings.data_location", "settings.cloud", "-Cloud sync", "-Sync", "settings.backup_all", "settings.restore"]
+        aliases: ["settings.autosave", "settings.auto_backup", "settings.data_location", "settings.backup_all", "settings.restore"]
     },
     { id: "profiles", name: "settings.profiles", icon: "profiles" },
     { id: "theme", name: "settings.theme", icon: "theme" }
@@ -701,9 +668,7 @@ const faq = [
     { id: "https://freeshow.app/docs/overlays", name: "About Overlays", icon: "help" },
     { id: "https://freeshow.app/docs/templates", name: "About Templates", icon: "help" },
     { id: "https://freeshow.app/docs/outputs", name: "Multiple Outputs", icon: "help", aliases: ["-Livestream", "-OBS"] },
-    { id: "https://freeshow.app/docs/cloud", name: "Cloud Sync", icon: "help" },
     // Docs Help
-    { id: "https://freeshow.app/docs/scripture#create-a-collection", name: "Multiple Scripture Versions", icon: "help", aliases: ["-Multilingual", "-Multiple translations", "-Multiple Bibles", "-Multiple languages"] },
     { id: "https://freeshow.app/docs/faq#multilingual-songs", name: "Multilingual Song Lyrics", icon: "help", aliases: ["-Multilingual", "-translations", "-lyrics", "-languages", "-translated"] },
     { id: "https://freeshow.app/docs/outputs#how-to-create-lower-third-display-for-a-live-stream", name: "Lower Third Display", icon: "help", aliases: ["-Lower thirds", "-Livestream"] },
     { id: "https://freeshow.app/docs/features#system-requirements", name: "System Requirements", icon: "help", aliases: ["-Specs"] },
@@ -711,8 +676,6 @@ const faq = [
     { id: "https://freeshow.app/docs/importing#powerpoint", name: "How to import PowerPoint as text", icon: "help", aliases: ["-PowerPoint", "-slides", "-presentation"] },
     { id: "https://freeshow.app/docs/importing#pdf", name: "How to import a PDF file", icon: "help", aliases: ["-PDF"] },
     { id: "https://freeshow.app/docs/faq#videos-are-muted", name: "Videos are muted", icon: "help", aliases: ["-No audio"] },
-    { id: "https://freeshow.app/docs/faq#ccli-integration", name: "CCLI Integration", icon: "help", aliases: ["-SongSelect"] },
-    { id: "https://freeshow.app/docs/faq#cloud-sync-between-two-computers", name: "Cloud Sync Between Multiple Computers", icon: "help" },
     { id: "https://freeshow.app/docs/faq#how-to-transfer-the-files-between-computers", name: "Transfer Files Between Computers", icon: "help" },
     { id: "https://freeshow.app/docs/faq#the-app-is-slow", name: "The App is Slow", icon: "help", aliases: ["-Lagging", "-Performance"] },
     { id: "https://freeshow.app/docs/faq#freeshow-keeps-freezing", name: "FreeShow Freezed Suddenly", icon: "help", aliases: ["-Freezing", "-Crash"] },
@@ -721,7 +684,6 @@ const faq = [
     { id: "https://freeshow.app/docs/editing#virtual-line-breaks-virtual-breaks", name: "Virtual breaks", icon: "help", aliases: ["-Line breaks"] },
     // GitHub
     { id: "https://github.com/ChurchApps/FreeShow/issues/693#issuecomment-2255167635", name: "Delete Slide vs Remove Group", icon: "help", aliases: ["-Delete group vs remove slide"] },
-    { id: "https://github.com/ChurchApps/FreeShow/issues/1175#issuecomment-2581935274", name: "Custom Bible Version", icon: "help", aliases: ["-Missing scripture", "-Missing Bible"] },
     { id: "https://github.com/ChurchApps/FreeShow/issues/178", name: "Video Loop Behaviour", icon: "help", aliases: ["-Video looping"] },
     { id: "https://github.com/ChurchApps/FreeShow/issues/1123", name: "Unsupported Video Codec", icon: "help", aliases: ["-Video dont play", "-Video not playing", "-MOV", "-MP4"] },
     { id: "https://github.com/ChurchApps/FreeShow/issues/251", name: "Embed PowerPoint/Google Slides", icon: "help", aliases: ["-PowerPoint online", "-Google Presentations"] },
@@ -745,12 +707,10 @@ const faq = [
     { id: "https://youtu.be/7xJAeexrtkA", name: "Stage & Timers", icon: "youtube" },
     { id: "https://youtu.be/ljbKz2uqHL4", name: "Setting Up Styles & Templates", icon: "youtube" },
     { id: "https://youtu.be/GgiLGc5fUNw", name: "Setting Up Shows & Outputs", icon: "youtube" },
-    { id: "https://youtu.be/EHlE8q_1jcY", name: "How to Import Files & Bibles", icon: "youtube" },
     { id: "https://youtu.be/sCyVzfwn6hg", name: "Expand Your Computer Displays for More Outputs", icon: "youtube" },
     { id: "https://youtu.be/FeQ70DDsDPw", name: "Understanding Conditions", icon: "youtube" },
     { id: "https://youtu.be/SsckYv_JD00", name: "Emergency Messages", icon: "youtube" },
     { id: "https://youtu.be/3UFsD3vlhqg", name: "Add Stage Display Notes for Your Pastor", icon: "youtube" },
-    { id: "https://youtu.be/MEmu5g_2fts", name: "Show 2 Verses on 1 Slide", icon: "youtube", aliases: ["-scripture", "-bible"] },
     { id: "https://youtu.be/uyyHESkdEwg", name: "Manage Pictures in Your Livestream", icon: "youtube" },
     { id: "https://youtu.be/89skyZYD4jo", name: "Livestream Lower Thirds w/OBS+FreeShow", icon: "youtube" },
     { id: "https://youtu.be/Xnh1ddZldBc", name: "Bullet Points", icon: "youtube" },
@@ -759,21 +719,17 @@ const faq = [
     { id: "https://youtu.be/ZLS5HgBsSaM", name: "Fireworks Effect", icon: "youtube" },
     { id: "https://youtu.be/2KnCfvXBabQ", name: "Countdown Timer Setup", icon: "youtube" },
     { id: "https://youtu.be/lxPHFwQEZWM", name: "How to Backup and Restore", icon: "youtube" },
-    { id: "https://youtu.be/h0nCm2D2dCg", name: "How to Use Chords", icon: "youtube" },
     { id: "https://youtu.be/vxMqvUrVMo4", name: "Pre Record Shows for Easy Playback", icon: "youtube" },
     { id: "https://youtu.be/YT5Dil_54Rw", name: "Get MIDI Signals Into FreeShow", icon: "youtube" },
     { id: "https://youtu.be/moCy2bjWpvo", name: "Gradients and SFX", icon: "youtube" },
     { id: "https://youtu.be/-Db08iXoYzI", name: "Cool Music Visualizer Affect", icon: "youtube" },
     { id: "https://youtu.be/rvrkaMbvGBs", name: "Start Your Video When You Want with Time Markers for Videos", icon: "youtube" },
-    { id: "https://youtu.be/hxPU8ZSoDhE", name: "Import Bibles, Templates, & Projects", icon: "youtube" },
     { id: "https://youtu.be/GLNMQRH-F1c", name: "Download and Create Custom Organic Templates", icon: "youtube" },
     { id: "https://youtu.be/XP3y8kW3c6k", name: "Create Gradient Backgrounds", icon: "youtube" },
     { id: "https://youtu.be/DEbn8XLrQJA", name: "Actions Are Your Best Friend", icon: "youtube" },
     { id: "https://youtu.be/Jm4forUHP9M", name: "Using MIDI Outputs", icon: "youtube" },
     { id: "https://youtu.be/r2R_TcvGCqQ", name: "Make Multiple Versions of the Same Song", icon: "youtube" },
-    { id: "https://youtu.be/H7iqWjXzlpw", name: "Autoplay Your Playlists", icon: "youtube" },
     { id: "https://youtu.be/b6Q5qe9Re44", name: "Schedule Shows to Start Automatically", icon: "youtube" },
-    { id: "https://youtu.be/CFPZVG_UY3s", name: "Customize Scriptures in Stage Display", icon: "youtube" },
     { id: "https://youtu.be/y3wUt--XFOs", name: "Loop Videos", icon: "youtube" },
     { id: "https://youtu.be/J5qM3xVv7yo", name: "Control the Show from Stage View", icon: "youtube" },
     { id: "https://youtu.be/LVKtNrP2y-Y", name: "Stage View Made Simple", icon: "youtube" },
@@ -784,8 +740,6 @@ const faq = [
     { id: "https://youtu.be/1FpO7DiA3bs", name: "The Secret Power of Variables", icon: "youtube" },
     { id: "https://youtu.be/aZI25Woh5s4", name: "Organize Your Content Better w/Categories", icon: "youtube" },
     { id: "https://youtu.be/nXAoQ3ADPyE", name: "Setting Up Your Outputs the Right Way", icon: "youtube" },
-    { id: "https://youtu.be/61WDOgihjqY", name: "Change the Look of Your Bible Collection Styles", icon: "youtube" },
-    { id: "https://youtu.be/HwvZZgncg2U", name: "Show Camera & Scriptures Side-by-Side", icon: "youtube" },
     { id: "https://youtu.be/Siv9jAxRIn4", name: "Best Practices for Using Videos", icon: "youtube" },
     { id: "https://youtu.be/qt52fpuW7Wo", name: "Create a ScoreBoard", icon: "youtube" },
     { id: "https://youtu.be/dsW4FWb4VRs", name: "Change the Look of Your Show", icon: "youtube" },
@@ -798,33 +752,22 @@ const faq = [
     { id: "https://youtu.be/7Ykl-E_DIsE", name: "Understanding Media", icon: "youtube" },
     { id: "https://youtu.be/_D7BdZczAwA", name: "Build an Entire Service Presentation", icon: "youtube" },
     { id: "https://youtu.be/c3tTdq3A2eM", name: "Understanding How to Create and Edit Shows", icon: "youtube" },
-    { id: "https://youtu.be/7tgpybjHaUg", name: "Customize Scripture Lower-Thirds for Livestream and Service", icon: "youtube" },
     { id: "https://youtu.be/8dnB4Zxuuv8", name: "Understand the Audio Tab", icon: "youtube" },
     { id: "https://youtu.be/nNBLCVvf7B4", name: "How to Use Your ATEM Mini with FreeShow", icon: "youtube" },
-    { id: "https://youtu.be/zQXpKic0qCU", name: "How to Make Bigger Scripture Text", icon: "youtube" },
-    { id: "https://youtu.be/ZgDWnVK2qGY", name: "How to Import Spanish Bibles", icon: "youtube" },
     { id: "https://youtu.be/Y6RewwgscWU", name: "Blended Screens - Multi-Projector/Monitor Presentation", icon: "youtube" },
-    { id: "https://youtu.be/aoILB9x92hA", name: "How to Change Scripture Color", icon: "youtube" },
     { id: "https://youtu.be/Hb60X-QdNrU", name: "Scrolling Text", icon: "youtube" },
     { id: "https://youtu.be/U0FE2ROEHLo", name: "Optimize Performance", icon: "youtube" },
-    { id: "https://youtu.be/k3wKUMw5zlY", name: "Scripture Search", icon: "youtube" },
     { id: "https://youtu.be/7VGm5tvq_7I", name: "Use Your Yolobox + FreeShow", icon: "youtube" },
     { id: "https://youtu.be/l-HyJIILaxw", name: "Fixing Glitchy Slide Transitions", icon: "youtube" },
     { id: "https://youtu.be/kN8hoez6bkQ", name: "Understanding OverLays", icon: "youtube" },
-    { id: "https://youtu.be/NJdPaHMc8FQ", name: "Download Bibles", icon: "youtube" },
     { id: "https://youtu.be/XUYjbzKHP7U", name: "Zoom with Lower Thirds with FreeShow", icon: "youtube" },
     { id: "https://youtu.be/DGnscG6qzgo", name: "Edit Slides Fast with Quick Timer", icon: "youtube" },
-    { id: "https://youtu.be/ikzQwB0r7rc", name: "Cloud Sync", icon: "youtube" },
     { id: "https://youtu.be/o6OFAT-uvpM", name: "Easy Action Shortcuts", icon: "youtube" },
     { id: "https://youtu.be/gukCeIWNBB8", name: "Loop Slides", icon: "youtube" },
     { id: "https://youtu.be/ArLVr_Bsoww", name: "Create and Edit Overlays", icon: "youtube" },
     { id: "https://youtu.be/OxqJ7Z-VvYs", name: "Virtual Outputs", icon: "youtube" },
-    { id: "https://youtu.be/Bo2TatjZJf0", name: "Display Multiple Bible Versions at Once", icon: "youtube" },
-    { id: "https://youtu.be/mzGclx6C9vY", name: "Multiple Ways to Show Scriptures", icon: "youtube" },
-    { id: "https://youtu.be/3hZ9GNUS10s", name: "How to Navigate Scriptures Fast", icon: "youtube" },
     { id: "https://youtu.be/RVqV1nNjqgY", name: "Learn Timer Settings", icon: "youtube" },
     { id: "https://youtu.be/Twh5RlMtXI8", name: "How to Adjust Background Video in Real-time", icon: "youtube" },
-    { id: "https://youtu.be/CmSXXyvtVpg", name: "How to Make a Music Playlist", icon: "youtube" },
     { id: "https://youtu.be/iSWum8-52k0", name: "Understanding Output Settings", icon: "youtube" },
     { id: "https://youtu.be/Mz-Vk-fvCqk", name: "Edit Photos", icon: "youtube" }
 ]
@@ -873,7 +816,7 @@ const editActions = [
 
     { id: "textedit", name: "show.text", icon: "text" }
 
-    // edit page specific: chords, dynamic values, conditions
+    // edit page specific: dynamic values, conditions
 ]
 
 function getEditActions() {

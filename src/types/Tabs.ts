@@ -22,21 +22,6 @@ export interface Category {
     openTrigger?: Function // trigger a custom function
 }
 
-export interface BibleCategories extends Category {
-    customName?: string
-    api?: boolean
-    metadata?: { [key: string]: string } // metadata information
-    copyright?: string // API copyright information (should move to metadata)
-    attributionRequired?: boolean // API needs attribution
-    attributionString?: string // API needs custom attribution
-    favorite?: boolean // marked as favorite
-    collection?: {
-        versions: string[]
-        previewIndex?: number
-        offsets?: { [key: string]: number }
-    }
-}
-
 export interface TabsObj {
     [key: string]: {
         name: string
@@ -59,7 +44,7 @@ export interface DrawerTabs {
     }
 }
 
-export type DrawerTabIds = "shows" | "media" | "overlays" | "audio" | "scripture" | "calendar" | "timers" | "templates" | "functions"
+export type DrawerTabIds = "shows" | "media" | "overlays" | "audio" | "timers" | "templates" | "functions"
 export type SettingsTabs = "general" | "files" | "display_settings" | "audio" | "styles" | "connection" | "profiles" | "theme" | "ai" | "other" // "calendar"
-export type TopViews = "show" | "edit" | "reflow" | "draw" | "stage" | "calendar" | "settings"
-export type EditMode = "default" | "chords" | "text_edit"
+export type TopViews = "show" | "edit" | "reflow" | "stage" | "settings"
+export type EditMode = "default" | "text_edit"

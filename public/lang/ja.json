@@ -1,6 +1,5 @@
 {
     "main": {
-        "welcome": "ようこそ",
         "quit": "終了する",
         "docs": "ドキュメント",
         "about": "FreeShowについて",
@@ -55,8 +54,6 @@
         "mail": "メールにてお問い合わせください",
         "support": "本プロジェクトを気に入っていただけましたら、ご支援をご検討ください",
         "assets": "使用アセット",
-        "libraries": "使用ライブラリ",
-        "thanks": "謝辞",
         "new_update": "新しいアップデートが利用可能です",
         "download": "アップデートするにはアプリケーションを再起動するか、freeshow.appから手動でダウンロードしてください",
         "changes": "新着情報"
@@ -64,18 +61,10 @@
     "tooltip": {
         "project": "ショーを追加・配置できる新しいプロジェクトを作成します。",
         "show": "歌詞・プレゼンテーション・メディアを追加できる新しいショーを作成します。",
-        "groups": "現在のショー内のすべてのグループと、すべてのグローバルグループ。クリックまたはドラッグして現在のレイアウトに追加します。",
         "layout": "現在のレイアウトのスライドにトランジションと次スライドタイマーを追加します。",
-        "media": "現在のショー内のすべてのメディア。表示するか、現在のレイアウトへドラッグします。",
-        "metadata": "現在のショーのメタデータを編集します。",
         "notes": "ノートを記入します。",
-        "text": "選択したすべての項目の内容を編集します。",
-        "item": "選択したすべての項目を編集します。",
         "items": "項目を追加して配置します。",
-        "slide": "現在のスライドを編集します。",
-        "filters": "選択した要素の見た目を変更します。",
-        "options": "その他のオプション。",
-        "scripture": "複数の節を選択するには、Ctrl/Cmd または Shift を押しながら操作してください。"
+        "options": "その他のオプション。"
     },
     "tips": {
         "trigger": "トリガーは、カメラのプリセットを変更するためのHTTPリクエストを送信する用途でよく使用されます。",
@@ -98,7 +87,6 @@
         "recording": "録画",
         "clock": "時計",
         "rounded": "角丸",
-        "call": "ビデオ通話",
         "header": "ヘッダー",
         "text": "テキスト",
         "big": "大",
@@ -107,20 +95,11 @@
         "bold": "太字"
     },
     "create_show": {
-        "web": "ウェブ検索",
-        "search_web": "ウェブで曲を検索",
-        "search_results": "検索結果",
-        "block": "ブロック",
         "more_options": "その他のオプション",
-        "auto_groups": "グループを自動割り当て",
         "format_new_show": "テキストを整形",
-        "format_new_show_tip": "自動大文字化やトリム／分割などで、テキストの書式を改善します。",
         "split_lines": "スライドあたりの最大行数",
-        "split_lines_tip": "自動分割前にスライドで許可する行数",
         "quick_lyrics": "クイック歌詞",
         "quick_lyrics_tip": "テキストを貼り付けるか、手動で入力します。",
-        "quick_lyrics_example_tip": "歌詞または任意のテキストをここに入力",
-        "quick_lyrics_example_text": "行",
         "empty": "空のショー",
         "exists": "同名のショーが見つかりました",
         "slideshow": "スライドショー"
@@ -264,7 +243,6 @@
         "layouts": "レイアウトがありません",
         "player": "動画がありません",
         "groups": "グループがありません",
-        "events": "イベントがありません",
         "text": "何か入力してください",
         "timers": "タイマーがありません",
         "input": "入力値が不足しています",
@@ -276,10 +254,8 @@
         "shows": "ショー",
         "show": "ショー",
         "slide": "スライド",
-        "lyrics": "歌詞",
         "end": "終了",
         "no_output": "出力がありません",
-        "remember": "ログイン状態を保持",
         "loading": "読み込み中...",
         "submit": "送信",
         "password": "パスワード",
@@ -291,15 +267,12 @@
         "no_layouts": "レイアウトが見つかりませんでした",
         "load": "読み込めませんでした",
         "media": "メディアが見つかりませんでした",
-        "bible": "ローカル聖書が見つかりませんでした",
         "import": "インポートできませんでした",
-        "bible_api": "API.Bible から聖書を読み込めません。インターネットに接続していますか？",
         "not_found": "見つかりません",
         "display": "現在のディスプレイに出力ウィンドウを表示できませんでした",
         "keep_one_layout": "少なくとも1つのレイアウトが必要です",
         "video_unavailable": "「動画を再生できません」と表示されますか？制作者が埋め込みを無効にしています。",
         "folder_exists": "このフォルダーはすでに存在します",
-        "uri": "オーディオ名を解析できません。ファイル名を変更してください。",
         "ip": "デバイスのIPアドレスを取得できません。コンピューターのWi‑Fi設定でローカルIPv4アドレスを確認してください。"
     },
     "meta": {
@@ -507,27 +480,16 @@
         "saved": "保存しました",
         "error_media": "メディアを取得できませんでした。",
         "empty_styles": "スタイルがありません",
-        "chapter_undefined": "この書には{}章が存在しません。",
-        "verse_undefined": "この章に{}節は存在しません。",
         "recording_started": "録画を開始しました！",
         "recording_stopped": "録画を停止しました！",
         "starting_action": "開始アクション",
-        "less_than_minute": "1分未満です。",
-        "less_than_seconds": "{}秒未満です。",
-        "now": "今すぐ！",
         "template_applied_globally": "このテンプレートはすでにグローバル設定でショーに適用されています。",
         "unsupported_video": "非対応の動画です！",
-        "no_video_id": "動画IDがありません",
         "no_name": "名前がありません",
-        "reverting_setting": "{}秒後にこの変更を元に戻します。変更を維持するには、再度有効にしてください！",
-        "reverted": "設定を元に戻しました！問題がなかった場合のみ再度有効にしてください。",
         "media_replaced": "欠落したメディアファイルを一致するものに置き換えました。",
-        "lyrics_undefined": "歌詞が見つかりませんでした！",
-        "lyrics_copied": "歌詞のコピー元：",
         "one_output": "有効な出力が少なくとも1つ必要です！",
         "empty_cache": "キャッシュは空です。",
         "deleted_cache": "メディアのサムネイルキャッシュを削除しました。",
-        "no_songswords_easyworship": "SongsWords.db ファイルが見つかりません。",
         "delete_shows_empty": "削除するショーがありません。",
         "reached_end": "末尾に到達しました！",
         "output_capture_enabled": "出力画面のキャプチャを有効にしました。パフォーマンスに影響する可能性があります。必要な場合のみご使用ください！",
@@ -547,9 +509,7 @@
         "profile": "新しいプロファイル",
         "timer": "新しいタイマー",
         "variable": "新しい変数",
-        "trigger": "新しいトリガー",
         "audio_stream": "新しいオーディオストリーム",
-        "playlist": "新しいプレイリスト",
         "category": "新しいカテゴリ",
         "private": "新しい非公開ショー",
         "folder": "新しいフォルダー",
@@ -557,11 +517,7 @@
         "slide": "新しいスライド",
         "overlay": "新しいオーバーレイ",
         "template": "新しいテンプレート",
-        "scripture": "新しい聖書",
-        "collection": "新しいコレクション",
         "action": "新しいアクション",
-        "event": "新しいイベント",
-        "event_action": "新しいスケジュールアクション",
         "effect": "新しい効果"
     },
     "show": {
@@ -761,9 +717,6 @@
         "toggle_playing_media": "再生中のメディアを切り替え",
         "change_volume": "音量を変更",
         "start_audio_stream": "オーディオストリームを開始",
-        "start_playlist": "プレイリストを開始",
-        "playlist_next": "再生リストの次のトラック",
-        "start_metronome": "メトロノームを開始",
         "id_start_timer": "タイマーを開始",
         "start_slide_timers": "アクティブなスライドでタイマーを開始",
         "id_select_output_style": "出力スタイルを選択",
@@ -772,7 +725,6 @@
         "change_transition": "トランジションを変更",
         "change_variable": "変数を変更",
         "start_trigger": "トリガーを開始",
-        "change_draw_zoom": "描画のズームを変更",
         "run_action": "アクションを実行",
         "toggle_action": "アクションを切り替え",
         "emit_data": "データを送出",
@@ -824,22 +776,12 @@
         "use_duration_tip": "タイムスタンプの代わりに継続時間を使用します"
     },
     "animate": {
-        "change": "変更",
-        "set": "設定",
-        "wait": "待機",
-        "background": "背景の",
-        "text": "文字の",
-        "item": "項目の",
-        "to": "を",
-        "for": "を",
-        "seconds": "秒間"
+        "wait": "待機"
     },
     "cloud": {
-        "info": "バックアップや複数PCで作業する際に、Google Driveとファイルを同期します。",
         "tip_api": "Google Driveに自動アップロードするには、ご自身の無料のGoogle APIキーが必要です。",
         "tip_how": "取得方法がわかりませんか？",
         "tip_guide": "ガイドはこちらをクリック",
-        "enable": "起動時と終了時に自動同期",
         "disable_upload": "データのアップロードを無効化",
         "media_id": "メディアパスID",
         "google_drive_api": "Google API サービスアカウントキー",
@@ -847,13 +789,7 @@
         "update_key": "キーファイルを更新",
         "enable_custom_folder_id": "カスタムフォルダーIDを使用",
         "main_folder": "メインフォルダーを手動で設定",
-        "media_folder": "クラウドメディアフォルダー",
-        "reconnect": "再接続",
-        "sync": "今すぐ同期",
-        "choose_method_tip": "クラウドに既存データがあります。ローカルからのアップロードか、クラウドからのダウンロードを選択してください。もう一方は上書きされます。",
-        "local": "ローカル",
-        "syncing": "クラウドに同期中",
-        "sync_complete": "同期が完了しました"
+        "media_folder": "クラウドメディアフォルダー"
     },
     "export": {
         "export": "エクスポート",
@@ -880,8 +816,7 @@
         "text": "プレーンテキスト",
         "slides": "スライド",
         "rows": "行",
-        "columns": "列",
-        "margin": "余白"
+        "columns": "列"
     },
     "context": {
         "to_dictionary": "辞書に追加",
@@ -890,7 +825,6 @@
         "setTag": "タグを設定",
         "filterByTags": "タグでフィルター",
         "addToProject": "プロジェクトに追加",
-        "add_to_show": "ショーに追加",
         "lockForChanges": "編集のためロック",
         "use_as_archive": "アーカイブとしてマーク",
         "newCategory": "新しいカテゴリ",
@@ -912,8 +846,6 @@
     },
     "tools": {
         "notes": "ノート",
-        "--schedule": "スケジュール",
-        "--actions": "アクション",
         "groups": "グループ",
         "metadata": "メタデータ",
         "media": "メディア",
@@ -1121,9 +1053,6 @@
         "overflow_blink_offset": "早めに点滅を開始",
         "preview": "プレビュー",
         "clock": "時計",
-        "event": "イベント",
-        "no_events": "今後のイベントはありません",
-        "edit": "編集",
         "create": "作成",
         "line": "線",
         "mask": "マスク"
@@ -1165,9 +1094,7 @@
         "start_action": "開始アクション",
         "use_default_values": "既定値を使用",
         "auto_values": "MIDI入力を受信したときに値を更新",
-        "tip_velocity": "無効化するにはベロシティを -1 に設定してください。",
-        "tip_action": "特定のスライドを有効化するには、スライドを右クリックしてMIDI入力アクションを選択してください。",
-        "tip_index_by_velocity": "インデックスは受信したベロシティで決まり、0から始まります。"
+        "tip_velocity": "無効化するにはベロシティを -1 に設定してください。"
     },
     "emitters": {
         "emitter": "エミッター",
@@ -1179,21 +1106,7 @@
         "data": "データ"
     },
     "draw": {
-        "focus": "フォーカス",
-        "pointer": "ポインター",
-        "zoom": "ズーム",
-        "fill": "塗りつぶし",
-        "paint": "ペイント",
-        "particles": "パーティクル",
-        "radius": "半径",
-        "glow": "グロー",
-        "hollow": "中抜き",
-        "hold": "押下している間",
-        "straight": "直線",
-        "rainbow": "レインボー",
-        "threed": "3D",
-        "dots": "ドット",
-        "link_to_slide": "スライドにリンク"
+        "glow": "グロー"
     },
     "stage": {
         "stage_layout": "ステージレイアウト",
@@ -1371,7 +1284,6 @@
         "name": "名前（昇順）",
         "name_des": "名前（降順）",
         "date": "日付",
-        "size": "サイズ",
         "type": "種類",
         "custom": "カスタム"
     },
@@ -1406,23 +1318,7 @@
         "add_slides_from_show": "ショーのスライドを含める"
     },
     "scripture": {
-        "collections": "コレクション",
-        "bibles_section": "聖書",
-        "bibles": "API.Bible の聖書",
-        "local": "ローカルファイルをインポート",
-        "supported_formats": "対応形式：",
-        "max_verses": "スライドあたりの最大節数",
-        "verse_numbers": "節番号",
-        "verses_on_individual_lines": "各節を個別行に",
-        "divide_long_verses": "長い節を分割",
-        "version": "版を表示",
-        "reference": "参照を表示",
-        "split_reference": "参照を分割",
-        "combine_with_text": "テキストと結合",
-        "first_slide_reference": "最初のスライドに参照を表示",
-        "reference_at_bottom": "下部へ移動",
-        "red_jesus": "イエスの言葉を赤字で",
-        "search": "聖書を検索"
+        "bibles": "API.Bible の聖書"
     },
     "filter": {
         "blur": "ぼかし",
@@ -1475,10 +1371,6 @@
     },
     "easings": {
         "linear": "リニア",
-        "ease": "イーズ",
-        "ease-in": "イーズイン",
-        "ease-out": "イーズアウト",
-        "ease-in-out": "イーズイン・アウト",
         "elastic": "弾性",
         "bounce": "バウンス",
         "back": "ジャンプ",

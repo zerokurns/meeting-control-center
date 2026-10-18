@@ -36,7 +36,6 @@ import {
     audioChannelsData,
     audioFolders,
     categories,
-    cloudSyncData,
     colorbars,
     currentOutputSettings,
     drawer,
@@ -45,8 +44,6 @@ import {
     editMode,
     effects,
     effectsLibrary,
-    eventEdit,
-    events,
     focusMode,
     forceClock,
     guideActive,
@@ -56,7 +53,6 @@ import {
     mediaFolders,
     mediaOptions,
     openedInteractionId,
-    openScripture,
     outLocked,
     outputs,
     overlayCategories,
@@ -71,7 +67,6 @@ import {
     quickSearchActive,
     refreshEditSlide,
     scenes,
-    scriptures,
     selected,
     settingsTab,
     showRecentlyUsedProjects,
@@ -99,11 +94,8 @@ import { updateThemeValues } from "../../utils/updateSettings"
 import { getActionTriggerId } from "../actions/actions"
 import { moveStageConnection } from "../actions/apiHelper"
 import { midiInListen } from "../actions/midi"
-import { createScriptureShow, openActiveInRouteBible } from "../drawer/bible/scripture"
-import { deleteCalendarEvents } from "../drawer/calendar/calendars"
 import { startOutputRecording, stopMediaRecorder } from "../drawer/live/recorder"
 import { playPauseGlobal } from "../drawer/timers/timers"
-import { addChords } from "../edit/scripts/chords"
 import { rearrangeItems, rearrangeStageItems } from "../edit/scripts/itemHelpers"
 import { getItemText, getSelectionRange } from "../edit/scripts/textStyle"
 import { clone, removeDuplicates, sortObjectNumbers } from "../helpers/array"
@@ -132,7 +124,7 @@ interface ObjData {
 export function menuClick(id: string, enabled = true, menu: ContextMenuItem | null = null, contextElem: HTMLElement | null = null, actionItem: HTMLElement | null = null, sel: Selected | null = null) {
     if (!clickActions[id]) return console.error("MISSING CONTEXT: ", id)
 
-    if (sel?.id) sel.id = sel.id.split("___")[0] as SelectIds // different selection ID, same action (currently used to seperate scripture navigation buttons)
+    if (sel?.id) sel.id = sel.id.split("___")[0] as SelectIds // different selection ID, same action
 
     const obj = { sel, actionItem, enabled, contextElem, menu }
     console.info("MENU CLICK: " + id, obj)
@@ -173,10 +165,6 @@ const clickActions = {
 
         activePage.set("show")
         focusMode.set(!get(focusMode))
-
-        if (!get(focusMode) && get(cloudSyncData).enabled) {
-            showsCache.set({})
-        }
     },
     fullscreen: () => sendMain(Main.FULLSCREEN),
     // edit
@@ -270,12 +258,6 @@ const clickActions = {
         else if (obj.contextElem?.classList?.contains("#audio_channel") || obj.contextElem?.classList?.contains("#audio_channel_main")) {
             selected.set({ id: "audio_channel", data: [{ id: obj.contextElem?.id }] })
             activePopup.set("rename")
-        } else if (obj.contextElem?.classList?.contains("#bible_book_local")) {
-            selected.set({ id: "bible_book", data: [{ index: Number(obj.contextElem?.id) }] })
-            activePopup.set("rename")
-        } else if (obj.contextElem?.classList?.contains("#calendar_item")) {
-            selected.set({ id: "calendar", data: [{ id: obj.contextElem?.id }] })
-            activePopup.set("rename")
         } else if (id === "show") activeRename.set("show_" + data.id + "#" + data.index)
         else if (obj.contextElem?.classList?.contains("#project_template")) activeRename.set("project_" + id)
         else if (obj.contextElem?.classList?.contains("#video_subtitle")) activeRename.set("subtitle_" + id)
@@ -322,10 +304,6 @@ const clickActions = {
     recolor: (obj: ObjData) => {
         if (obj.contextElem?.classList?.contains("#audio_channel") || obj.contextElem?.classList?.contains("#audio_channel_main")) {
             selected.set({ id: "audio_channel", data: [{ id: obj.contextElem?.id }] })
-        } else if (obj.contextElem?.classList?.contains("#calendar_item")) {
-            const calendarName = obj.contextElem.id
-            const calColor = Object.values(get(events)).find((e) => e.origin === calendarName)?.color || "#FF5733"
-            selected.set({ id: "calendar", data: [{ id: calendarName, color: calColor }] })
         }
 
         // "slide" || "group" || "overlay" || "template" || "output" || "effect"
@@ -381,14 +359,6 @@ const clickActions = {
             deleteAction({ id: "video_marker", data: { index: obj.contextElem.id } })
             return
         }
-        if (obj.contextElem?.classList.value.includes("#event")) {
-            deleteAction({ id: "event", data: { id: obj.contextElem.id } })
-            return
-        }
-        if (obj.contextElem?.classList.value.includes("#calendar_item")) {
-            deleteCalendarEvents(obj.contextElem.id)
-            return
-        }
         if (obj.contextElem?.classList.value.includes("#interaction_input")) {
             deleteAction({ id: "interaction_input", data: { index: Number(obj.contextElem.id?.slice(1)) } })
             return
@@ -410,19 +380,6 @@ const clickActions = {
         console.error("COULD NOT DELETE", obj)
     },
     delete_remove: (obj: ObjData) => clickActions.delete(obj),
-    delete_all: (obj: ObjData) => {
-        if (obj.contextElem?.classList.value.includes("#event")) {
-            const group = get(events)[obj.contextElem.id].group
-            if (!group) return
-
-            const eventIds: string[] = []
-            Object.entries(get(events)).forEach(([id, event]) => {
-                if (event.group === group) eventIds.push(id)
-            })
-
-            history({ id: "UPDATE", newData: { id: "keys" }, oldData: { keys: eventIds }, location: { page: "drawer", id: "event" } })
-        }
-    },
     delete_row: () => window.dispatchEvent(new CustomEvent("delete-row")),
     delete_col: () => window.dispatchEvent(new CustomEvent("delete-col")),
     duplicate: (obj: ObjData) => {
@@ -438,11 +395,6 @@ const clickActions = {
         }
 
         if (updateEffectItem(obj, (items, index) => items.splice(index + 1, 0, clone(items[index])))) return
-
-        if (obj.contextElem?.classList.value.includes("#event")) {
-            duplicate({ id: "event", data: { id: obj.contextElem.id } })
-            return
-        }
 
         if (obj.contextElem?.classList.value.includes("#interaction_input")) {
             const index = parseInt(obj.contextElem.id.slice(1))
@@ -952,21 +904,6 @@ const clickActions = {
         id = id.split("__")[1] || id
         history({ id: "UPDATE", location: { page: "drawer", id } })
     },
-    newScripture: () => activePopup.set("import_scripture"),
-
-    open_reference: (obj: ObjData) => {
-        if (obj.contextElem?.classList.contains("#scripture_search_result")) {
-            const book = Number(obj.contextElem.dataset.book)
-            const chapter = Number(obj.contextElem.dataset.chapter)
-            const verse = Number(obj.contextElem.dataset.verse)
-
-            if (book && chapter && verse) openScripture.set({ book, chapter, verses: [[verse]], play: false })
-        }
-    },
-    route_bible: () => openActiveInRouteBible(),
-    createCollection: () => {
-        activePopup.set("create_collection")
-    },
     create_show: (obj: ObjData) => {
         if (obj.contextElem?.classList.contains("#media_preview")) {
             const path = obj.contextElem.id
@@ -993,11 +930,6 @@ const clickActions = {
             show.layouts[layoutId].slides = layoutSlides
 
             history({ id: "UPDATE", newData: { data: show, remember: { project: get(activeProject) } }, location: { page: "show", id: "show" } })
-        } else if (obj.contextElem?.classList.contains("chapters")) {
-            triggerFunction("scripture_selectAll")
-            setTimeout(createScriptureShow)
-        } else if (obj.sel?.id === "scripture") {
-            createScriptureShow()
         }
     },
 
@@ -1117,23 +1049,6 @@ const clickActions = {
                 if (!a[b.id]) return
                 if (a[b.id].private) delete a[b.id].private
                 else a[b.id].private = true
-            })
-            return a
-        })
-    },
-    unlink_pco: (obj: ObjData) => {
-        if (!obj.sel) return
-
-        showsCache.update((a) => {
-            obj.sel!.data.forEach((b) => {
-                if (!a[b.id]) return
-                delete a[b.id].quickAccess.pcoLink
-            })
-            return a
-        })
-        shows.update((a) => {
-            obj.sel!.data.forEach((b) => {
-                delete a[b.id].quickAccess.pcoLink
             })
             return a
         })
@@ -1366,9 +1281,6 @@ const clickActions = {
             activeProject.set(null)
             editingProjectTemplate.set(obj.contextElem.id)
             projectView.set(false)
-        } else if (obj.contextElem?.classList.value.includes("#event")) {
-            eventEdit.set(obj.contextElem.id)
-            activePopup.set("edit_event")
         } else if (obj.contextElem?.classList.value.includes("output_button")) {
             currentOutputSettings.set(obj.contextElem.id)
             settingsTab.set("display_settings")
@@ -1438,46 +1350,6 @@ const clickActions = {
     },
     manage_metadata: () => {
         activePopup.set("manage_metadata")
-    },
-
-    // chords
-    chord_list: (obj: ObjData) => clickActions.keys(obj),
-    keys: (obj: ObjData) => {
-        if (get(selected).id !== "chord") return
-        const data = get(selected).data[0]
-
-        const item: Item = _show().slides([data.slideId]).items([data.itemIndex]).get()[0][0]
-        if (!item) return
-
-        const newLines = clone(item.lines)
-        if (!newLines?.[data.index].chords) return
-
-        if (data.chord) {
-            const currentChordIndex = newLines[data.index].chords!.findIndex((a) => a.id === data.chord.id)
-            if (currentChordIndex > -1) newLines[data.index].chords![currentChordIndex].key = obj.menu.id || ""
-        } else {
-            if (!newLines[0].chords) newLines[0].chords = []
-            newLines[0].chords.push({ id: uid(5), pos: 0, key: obj.menu.id || "" })
-        }
-
-        _show()
-            .slides([data.slideId])
-            .items([data.itemIndex])
-            .set({ key: "lines", values: [newLines] })
-    },
-    custom_key: (obj: ObjData) => {
-        if (!obj.sel) return
-
-        const data = obj.sel.data[0]
-        selected.set(obj.sel)
-
-        if (!data.chord) {
-            // create chord
-            const item = _show().slides([data.slideId]).items([data.itemIndex]).get()[0][0]
-            addChords(item, { showId: get(activeShow)?.id, id: data.slideId }, data.itemIndex)
-        }
-
-        activePopup.set("rename")
     },
 
     // change slide group
@@ -1716,17 +1588,6 @@ const clickActions = {
     },
     favourite: (obj: ObjData) => {
         if (!obj.sel) return
-
-        if (obj.sel.id === "category_scripture") {
-            const isFavourite = get(scriptures)[obj.sel.data[0]]?.favorite !== true
-            scriptures.update((a) => {
-                obj.sel!.data.forEach((id) => {
-                    a[id].favorite = isFavourite
-                })
-                return a
-            })
-            return
-        }
 
         const favourite: boolean = get(media)[obj.sel.data[0]?.path || obj.sel.data[0]?.id]?.favourite !== true
         media.update((a) => {

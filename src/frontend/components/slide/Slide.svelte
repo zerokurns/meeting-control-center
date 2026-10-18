@@ -45,9 +45,7 @@
     export let disableThumbnails = false
     export let centerPreview = false
 
-    $: isLessons = show?.reference?.type === "lessons"
-
-    $: viewMode = isLessons ? "grid" : $slidesOptions.mode || "grid"
+    $: viewMode = $slidesOptions.mode || "grid"
     $: background = layoutSlide.background ? show.media[layoutSlide.background] : slide?.settings?.backgroundImage ? { path: slide.settings.backgroundImage } : null
 
     let ghostBackground: Media | null = null
@@ -98,9 +96,6 @@
                 return
             }
         }
-
-        // make sure it's downloaded
-        if (isLessons) await wait(1000)
 
         // first ghost creates image (if not created) - as it's a different resolution
         if (ghostBackground) {
@@ -229,9 +224,8 @@
     $: if ($special.styleTemplatePreview !== false) updateItemsList(slide)
     else itemsList = clone(slide.items) || []
     function updateItemsList(_updater: any = null) {
-        // WIP show scripture style preview as well
-        if (!allOutputsHasStyleTemplate(show?.reference?.type === "scripture")) return
-        itemsList = setTemplateStyle({ id: showId, index }, currentStyle, itemsList, outputId, slide?.customDynamicValues)
+        if (!allOutputsHasStyleTemplate()) return
+        itemsList = setTemplateStyle({ id: showId, index }, currentStyle, itemsList, outputId)
     }
 
     // $: styleTemplate = getStyleTemplate(null, currentStyle)
@@ -372,7 +366,6 @@
                                     clickRevealed={!!output?.clickRevealed}
                                     {centerPreview}
                                     preview
-                                    chords={item.chords?.enabled}
                                 />
                             {/if}
                         {/each}

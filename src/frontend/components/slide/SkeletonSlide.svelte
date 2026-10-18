@@ -8,7 +8,6 @@
     export let columns = 1
     export let active: boolean = false
 
-    // $: isLessons = show?.reference?.type === "lessons"
     $: viewMode = $slidesOptions.mode || "grid"
 
     $: name = slide?.group

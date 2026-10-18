@@ -22,7 +22,7 @@ describe("repeated tail", () => {
     })
 
     it("ignores a repeat the speaker has moved on from", () => {
-        expect(loops(`${times("amen", 10)} and now let us turn to the scripture together`)).toBe(false)
+        expect(loops(`${times("amen", 10)} and now let us turn to the next part together`)).toBe(false)
     })
 })
 

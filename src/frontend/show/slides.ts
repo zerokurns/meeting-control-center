@@ -454,8 +454,6 @@ export function removeItemValues(items: Item[]) {
         item.lines = [item.lines[0]]
         item.lines[0].text = [{ style: item.lines[0].text[0]?.style || "", value: "" }]
 
-        delete item.lines[0].chords
-
         return item
     })
 }
@@ -543,7 +541,7 @@ export function splitItemInTwo(slideRef: LayoutRef, itemIndex: number | number[]
         let lines: Line[] = clone(_show().slides([slideRef.id]).items([idx]).get("lines")[0]?.[0] || [])
         lines = lines.filter((a) => a.text?.[0]?.value?.length)
 
-        // if only one line (like scriptures, split by text)
+        // if only one line, split by text
         if (cutIndex === -1 && lines.length === 1 && lines[0]?.text?.length > 1) {
             const newLines: Line[] = []
             let centerTextIndex = Math.ceil(lines[0]?.text?.length / 2)
@@ -643,13 +641,6 @@ export function splitItemInTwo(slideRef: LayoutRef, itemIndex: number | number[]
         if (!firstLines.length || !firstLines[0].text.length) firstLines = defaultLine
         if (!secondLines.length) secondLines = defaultLine
 
-        // add chords
-        const chordLines = clone(lines.map((a) => a.chords || []))
-        ;[...firstLines, ...secondLines].forEach((line) => {
-            const oldLineChords = chordLines.shift()
-            if (oldLineChords?.length) line.chords = oldLineChords
-        })
-
         newSlide.items[idx].lines = secondLines
         slides[slideRef.id].items[idx].lines = firstLines
     }
@@ -663,13 +654,6 @@ export function splitItemInTwo(slideRef: LayoutRef, itemIndex: number | number[]
     const slideId = uid()
     slides[slideId] = newSlide
 
-    // update scripture dynamic values
-    const split = splitCustomDynamicValues(slides[slideRef.id].customDynamicValues, slides[slideRef.id].items, newSlide.items)
-    if (split) {
-        slides[slideRef.id].customDynamicValues = split.firstDV
-        slides[slideId].customDynamicValues = split.secondDV
-    }
-
     // set child
     const parentId = slideRef.type === "child" ? slideRef.parent!.id : slideRef.id
     let children = _show().slides([parentId]).get("children")[0] || []
@@ -681,64 +665,6 @@ export function splitItemInTwo(slideRef: LayoutRef, itemIndex: number | number[]
     history({ id: "UPDATE", newData: { key: "slides", data: clone(slides) }, oldData: { id: showId }, location: { page: "show", id: "show_key", override: "show_slides_" + showId } })
 
     refreshEditSlide.set(true)
-}
-
-export function splitCustomDynamicValues(originalDV: any, firstItems?: Item[], secondItems?: Item[]): { firstDV: any; secondDV: any } | null {
-    if (!originalDV) return null
-    const firstDV = clone(originalDV)
-    const secondDV = clone(originalDV)
-
-    if (firstItems?.length || secondItems?.length) {
-        const extractVerses = (items: Item[] = [], isFirst: boolean) => {
-            const result: Record<string, [string, string][]> = {}
-            items.forEach((item, itemIdx) => {
-                const key = itemIdx === 0 ? "scripture_text" : `scripture${itemIdx + 1}_text`
-                let verseNum = isFirst ? originalDV[key]?.[0]?.[0] || "0" : "0"
-                let currentText = ""
-                const verses: [string, string][] = []
-
-                item.lines?.forEach((line) => {
-                    line.text?.forEach((t) => {
-                        if (t.customType?.includes("disableTemplate")) {
-                            if (currentText.trim()) verses.push([verseNum, currentText.trim()])
-                            verseNum = (t.value || "").trim() || "0"
-                            currentText = ""
-                        } else if (t.value) {
-                            currentText += t.value
-                        }
-                    })
-                })
-                if (currentText.trim()) verses.push([verseNum, currentText.trim()])
-                if (verses.length) result[key] = verses
-            })
-            if (result.scripture_text) result.scripture1_text = result.scripture_text
-            return result
-        }
-
-        const firstVerses = extractVerses(firstItems, true)
-        const secondVerses = extractVerses(secondItems, false)
-
-        Object.keys(originalDV).forEach((key) => {
-            if (Array.isArray(originalDV[key])) {
-                if (firstVerses[key]) firstDV[key] = firstVerses[key]
-                if (secondVerses[key]) secondDV[key] = secondVerses[key]
-            }
-        })
-
-        firstDV.scripture_reference_last = ""
-        secondDV.scripture_reference_last = originalDV.scripture_reference_last || ""
-        return { firstDV, secondDV }
-    }
-
-    Object.keys(originalDV).forEach((key) => {
-        const val = originalDV[key]
-        if (Array.isArray(val)) {
-            const center = Math.ceil(val.length / 2)
-            firstDV[key] = val.slice(0, center)
-            secondDV[key] = val.slice(center)
-        }
-    })
-    return { firstDV, secondDV }
 }
 
 export function splitTextContentInHalf(text: string) {

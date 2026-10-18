@@ -18,13 +18,13 @@ export interface CustomFont {
 export interface Show {
     name: string
     id?: string // this id should not be stored (but often used in the program as a temporary value)
-    origin?: string // "pco" | "churchApps" | "hymnary", etc.
+    origin?: string // provider origin, e.g. "canva"
     private?: boolean // hide from drawer
     locked?: boolean // disable edits
     category: null | ID
     quickAccess?: any
     reference?: {
-        type: "calendar" | "scripture" | "lessons" | "canva" | "interaction"
+        type: "canva" | "interaction"
         data: any
     }
     settings: {
@@ -53,7 +53,6 @@ export interface Show {
         composer?: string
         publisher?: string
         copyright?: string
-        CCLI?: string
         year?: string
         key?: string
     }
@@ -103,8 +102,6 @@ export interface Slide {
     notes: string
     items: Item[]
     timeline?: Timeline
-
-    customDynamicValues?: { [key: string]: string | [string, string][] } // used for scripture slides
 }
 
 export interface Item {
@@ -124,9 +121,8 @@ export interface Item {
     timer?: { id: string; [key: string]: any }
     timerId?: string // pre 1.5.0
     clock?: Clock
-    events?: DynamicEvent
     type?: ItemType
-    decoration?: boolean // ppt imported shapes & scripture items (no selection directly)
+    decoration?: boolean // ppt imported shapes (no selection directly)
 
     src?: string // media item path
     customSvg?: string
@@ -150,7 +146,6 @@ export interface Item {
     actions?: any // showTime | hideTime | transition
     clickReveal?: boolean
     lineReveal?: boolean
-    chords?: { enabled?: boolean; color?: string; size?: number; offsetY?: number }
     scrolling?: Scrolling
     button?: { press?: string; release?: string } // click actions
     weather?: Weather
@@ -210,7 +205,7 @@ export interface ShowGroup {
 export interface Timer {
     id?: string
     name: string
-    type: "counter" | "clock" | "event" | "pco_live"
+    type: "counter" | "clock"
     viewType?: "time" | "line" | "circle"
     circleMask?: boolean
     showHours?: boolean // use just minutes or minutes and hours
@@ -218,15 +213,7 @@ export interface Timer {
     end?: number
     startDynamic?: string
     endDynamic?: string
-    event?: string
     time?: string
-
-    // PCO Live
-    pco?: {
-        serviceTypeId: string
-        planId: string
-        countdownType: "end_on_time" | "full_length" | "end_service"
-    }
 
     warn?: boolean
     warnOffset?: number
@@ -252,17 +239,6 @@ export interface Clock {
     // custom:
     customFormat?: string
     offsetDays?: number
-}
-
-export interface DynamicEvent {
-    maxEvents: number
-    startDaysFromToday: number
-    justOneDay: boolean
-    enableStartDate: boolean
-    startDate?: string
-    startTime?: string
-    fromTime?: string
-    toTime?: string
 }
 
 export interface Scrolling {
@@ -297,9 +273,8 @@ export interface Line {
         value: string
         style: string
         customType?: string // "disableTemplate"
-        sourceDynamicKey?: string // used for scripture slides to link back to the dynamic value key (only scripture_text currently)
+        sourceDynamicKey?: string // link back to the dynamic value key
     }[]
-    chords?: Chords[]
 }
 
 export interface List {
@@ -311,12 +286,6 @@ export interface List {
 export interface ListItem {
     text: string
     icon?: string
-}
-
-export interface Chords {
-    id: string
-    pos: number
-    key: string
 }
 
 export interface Layout {
@@ -463,7 +432,6 @@ export interface Media {
     loop?: boolean
     filters?: string
     base64?: string // saving media data
-    cloud?: { [key: string]: string }
 }
 
 export interface Action {
@@ -565,7 +533,7 @@ export interface TemplateStyleOverride {
     templateId?: string
 }
 export interface TemplateSettings {
-    mode?: "default" | "scripture" | "item" | "text"
+    mode?: "default" | "item" | "text"
     resolution?: Resolution
     backgroundColor?: string
     backgroundPath?: string
@@ -629,7 +597,7 @@ export interface OutSlide {
     projectIndex?: number // only used to reference back to the project item index
     tempItems?: Item[]
     previousSlides?: Item[][]
-    settings?: any // settings for temp (e.g. scripture background color)
+    settings?: any // settings for temp
     nextSlides?: Item[][]
     line?: number // styles limit lines
     revealCount?: number // reveal one by one line
@@ -640,10 +608,6 @@ export interface OutSlide {
     page?: number // PDF
     pages?: number // PDF
     screen?: { id: string; name?: string } // PPT
-
-    translations?: number // scripture translations count (for style template)
-    attributionString?: string // scripture custom attributionString
-    customDynamicValues?: { [key: string]: string | [string, string][] } // used for scripture slides
 }
 
 export interface OutTransition {
@@ -678,7 +642,7 @@ export interface Tag {
 // types
 
 export type ID = string
-export type ItemType = "text" | "media" | "camera" | "timer" | "clock" | "button" | "events" | "weather" | "variable" | "web" | "qr_code" | "icon" | "slide_tracker" | "visualizer" | "captions" | "metronome" | "current_output" | "chart" | "table" // "shape" | "video"
+export type ItemType = "text" | "media" | "camera" | "timer" | "clock" | "button" | "weather" | "variable" | "web" | "qr_code" | "icon" | "slide_tracker" | "visualizer" | "captions" | "current_output" | "chart" | "table" // "shape" | "video"
 export type ShowType = "DIVIDER" | "show" | "image" | "video" | "audio" | "player" | "section" | "overlay" | "effect" | "pdf" | "ppt" | "screen" | "ndi" | "camera" | "folder" | "show_placeholder" // "private"
 export type TransitionType = "none" | "blur" | "fade" | "crossfade" | "fly" | "scale" | "slide" | "spin"
 export type MediaType = "media" | "video" | "image" | "effect" | "screen" | "ndi" | "omt" | "camera" | "player" | "audio"

@@ -72,17 +72,6 @@ function getItems(items: Item[], itemIndex = 0) {
                 tempText += txt.value
             })
 
-            // Chords: Sort right-to-left. For equal positions, higher array indexes come first
-            // to prevent reverse-ordering nested/adjacent insertions (e.g., "[C][D]").
-            const sortedChords = clone(line.chords || [])
-                .map((chord, originalIndex) => ({ chord, originalIndex }))
-                .sort((a, b) => b.chord.pos - a.chord.pos || b.originalIndex - a.originalIndex)
-
-            sortedChords.forEach(({ chord }) => {
-                while (!tempText[chord.pos]) tempText += " "
-                tempText = tempText.slice(0, chord.pos) + `[${chord.key}]` + tempText.slice(chord.pos)
-            })
-
             if (tempText.length) {
                 text += tempText + "\n"
                 plainText += tempText + (lineIndex < filteredLines.length - 1 ? "\n" : "")

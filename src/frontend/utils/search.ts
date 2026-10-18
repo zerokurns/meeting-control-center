@@ -103,7 +103,7 @@ export function showSearch(searchValue: string, shows: ShowList[]): ShowList[] {
 }
 
 // Scoring model (absolute confidence, 0-100 — the value shown by the match bar):
-//   100    exact song number / CCLI / title, or title starts-with
+//   100    exact song number / title, or title starts-with
 //   80-94  every word in the title (adjacent words score highest)
 //   65-85  strong fuzzy title match (typo tolerance)
 //   55-78  words split between title and content
@@ -134,9 +134,6 @@ export function showSearchFilter(searchValue: string, show: ShowList, ctx?: Sear
 
     // Priority 0: song number exact match (supports alphanumeric like "MP133")
     if (songNumber && formattedSongNumber === q.despaced) return 100
-    // Priority 0.5: CCLI exact match
-    const songId = show.quickAccess?.metadata?.CCLI || ""
-    if (songId && songId.toString() === searchValue.trim()) return 100
 
     const showNameWithNumber = formattedSongNumber + showName
 

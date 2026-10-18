@@ -29,7 +29,6 @@
 
     // duration = quickaccess only
     // number = quickaccess & metadata
-    // CCLI = quickaccess (metadata) & metadata
     // others = metadata only
     const changeValue = (value: string, key: string) => {
         if (key === "duration") {
@@ -41,7 +40,6 @@
         updateData(values, "meta")
 
         if (key === "number") setQuickAccess(key, value)
-        else if (key === "CCLI") setQuickAccess(key, value, true)
     }
 
     function setQuickAccess(key: string, value: string | number, asMetadata = false) {

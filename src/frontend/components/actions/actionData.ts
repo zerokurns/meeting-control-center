@@ -16,8 +16,6 @@ export const actionData = {
     set_template: { name: "actions.set_template_active", icon: "templates", input: "id" },
     set_next_slide_timer: { name: "preview.nextTimer", icon: "timer", input: "numval" },
     change_slide_timeline_speed: { name: "actions.change_slide_timeline_speed", icon: "timeline", input: "percentage" },
-    transpose_show_up: { name: "edit.transpose_up", icon: "up" },
-    transpose_show_down: { name: "edit.transpose_down", icon: "down" },
 
     // PRESENTATION
     next_slide: { SECTION: "preview.slide", name: "preview._next_slide", icon: "slide", incompatible: ["previous_slide", "random_slide", "index_select_slide", "name_select_slide", "id_select_group"] }, // common: true,
@@ -38,7 +36,6 @@ export const actionData = {
     clear_audio: { slideId: "clearAudio", common: true, name: "clear.audio", icon: "audio", red: true, incompatible: ["restore_output", "clear_all"] },
     clear_next_timer: { name: "clear.nextTimer", icon: "timer", red: true, incompatible: ["restore_output", "clear_all"] },
     clear_scene: { name: "clear.scene", icon: "scene", red: true },
-    clear_drawing: { name: "clear.drawing", icon: "paint", red: true },
 
     // MEDIA
     start_camera: { SECTION: "tabs.media", common: true, name: "actions.start_camera", icon: "camera", input: "camera" },
@@ -76,9 +73,6 @@ export const actionData = {
     start_audio_stream: { slideId: "audioStream", common: true, name: "actions.start_audio_stream", icon: "audio_stream", input: "id" },
     toggle_audio_recording: { canAddMultiple: true, name: "actions.toggle_audio_recording", icon: "record", input: "toggle_channel_recording" },
     toggle_icecast: { name: "actions.toggle_specific", replace: ["Icecast"], icon: "cloud", input: "toggle" },
-    start_playlist: { common: true, name: "actions.start_playlist", icon: "playlist", input: "id", incompatible: ["playlist_next"] },
-    playlist_next: { name: "actions.playlist_next", icon: "playlist", incompatible: ["start_playlist"] },
-    start_metronome: { name: "actions.start_metronome", icon: "metronome", input: "metronome" },
     start_audio_effect: { common: true, canAddMultiple: true, name: "actions.start_audio_effect", icon: "effect", input: "audio_effects" },
     start_microphone: { common: true, name: "actions.start_microphone", icon: "mic", input: "microphone" },
     stop_microphone: { common: true, name: "actions.stop_microphone", icon: "mic", input: "microphone", red: true },
@@ -101,8 +95,6 @@ export const actionData = {
     // FUNCTIONS
     change_variable: { SECTION: "tabs.functions", common: true, canAddMultiple: true, name: "actions.change_variable", icon: "variable", input: "variable" },
 
-    change_draw_zoom: { SECTION: "menu.draw", name: "actions.change_draw_zoom", icon: "zoom", input: "draw_zoom" },
-
     // EMIT
     // send_midi: { SECTION: "actions.emit_data", canAddMultiple: true, slideId: "sendMidi", name: "actions.send_midi", icon: "music", input: "midi" },
     // send_rest_command: { canAddMultiple: true, name: "actions.send_rest_command", icon: "trigger", input: "rest" },
@@ -120,13 +112,6 @@ export const actionData = {
     obs_stop_livestream: { name: "OBS Studio: Stop livestream", icon: "camera", red: true },
     obs_start_recording: { name: "OBS Studio: Start recording", icon: "record" },
     obs_stop_recording: { name: "OBS Studio: Stop recording", icon: "record", red: true },
-
-    // SPOTIFY
-    spotify_play: { SECTION: "Spotify", name: "Spotify: media.play", icon: "play" },
-    spotify_pause: { name: "Spotify: media.pause", icon: "pause" },
-    spotify_fade_out: { name: "Spotify: media.fade_out", icon: "clear" },
-    spotify_next: { name: "Spotify: media.next", icon: "nextFull" },
-    spotify_previous: { name: "Spotify: media.previous", icon: "previousFull" },
 
     // Smart
     smart_toggle_stt: { SECTION: "settings.ai", name: "actions.toggle_specific", replace: ["STT"], icon: "mic", input: "toggle" },

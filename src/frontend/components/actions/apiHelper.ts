@@ -6,19 +6,16 @@ import type { DropData, Selected, Variable } from "../../../types/Main"
 import { isChannelRecording, startChannelRecording, stopAllChannelRecordings, stopChannelRecording, toggleChannelRecording } from "../../audio/audioChannelRecorder"
 import { clearAudio } from "../../audio/audioFading"
 import { AudioPlayer } from "../../audio/audioPlayer"
-import { AudioPlaylist } from "../../audio/audioPlaylist"
 import { dbToGain } from "../../audio/dBUtils"
-import { activeDrawerTab, activeEdit, activePage, activeProject, activeRecording, activeShow, activeTimers, audioChannelsData, audioPlaylists, audioRouting, draw, drawSettings, drawTool, folders, groupNumbers, groups, media, openScripture, outLocked, outputs, overlays, pdfImports, playingAudio, playingMetronome, projects, refreshEditSlide, selected, shows, showsCache, sortedShowsList, special, styles, timers, variables } from "../../stores"
+import { activeEdit, activePage, activeProject, activeRecording, activeShow, activeTimers, audioChannelsData, audioRouting, folders, groupNumbers, groups, media, outLocked, outputs, overlays, pdfImports, playingAudio, projects, refreshEditSlide, selected, shows, showsCache, sortedShowsList, special, styles, timers, variables } from "../../stores"
 import { newToast, triggerFunction } from "../../utils/common"
 import { send } from "../../utils/request"
-import { parseEngScriptureRefToNumbers, resolveScriptureReference } from "../drawer/bible/scripture"
 import { startOutputRecording, stopMediaRecorder } from "../drawer/live/recorder"
 import { getDynamicValue } from "../edit/scripts/itemHelpers"
 import { keysToID, removeDeleted, sortByName } from "../helpers/array"
 import { ondrop } from "../helpers/drop"
 import { dropActions } from "../helpers/dropActions"
 import { history } from "../helpers/history"
-import { setDrawerTabData } from "../helpers/historyHelpers"
 import { encodeFilePath, getExtension, getFileName, getMediaLayerType, getMediaStyle, getMediaType, removeExtension } from "../helpers/media"
 import { getActiveOutputs, getAllEnabledOutputs, getCurrentStyle, getFirstActiveOutput, getFirstOutput, isOutCleared, setOutput } from "../helpers/output"
 import { setRandomValue } from "../helpers/randomValue"
@@ -30,7 +27,7 @@ import { VideoPlayer } from "../media/video/videoPlayer"
 import { clearBackground, clearSlide } from "../output/clear"
 import { getPlainEditorText } from "../show/getTextEditor"
 import { getSlideGroups } from "../show/tools/groups"
-import type { API_add_to_project, API_create_project, API_disable_slide, API_draw_zoom, API_edit_timer, API_group, API_id_index, API_id_value, API_layout, API_media, API_output_lock, API_rearrange, API_scripture, API_seek, API_slide_index, API_toggle_id, API_toggle_specific, API_variable, API_volume } from "./api"
+import type { API_add_to_project, API_create_project, API_disable_slide, API_edit_timer, API_group, API_id_index, API_id_value, API_layout, API_media, API_output_lock, API_rearrange, API_seek, API_slide_index, API_toggle_id, API_toggle_specific, API_variable, API_volume } from "./api"
 
 export function selectShowById(id: string) {
     if (typeof id !== "string" || !id) return
@@ -382,19 +379,6 @@ export function toggleOutputRecording(data: API_toggle_id = {}) {
     }
 }
 
-// AUDIO
-
-export function startPlaylistByName(name: string) {
-    if (get(outLocked)) return
-
-    if (name.includes("{")) name = getDynamicValue(name)
-    const sortedPlaylists = sortByClosestMatch(keysToID(get(audioPlaylists)), name)
-    const playlistId = sortedPlaylists[0]?.id
-    if (!playlistId) return
-
-    AudioPlaylist.start(playlistId)
-}
-
 /// EDIT
 
 export function editTimer(data: API_edit_timer) {
@@ -683,7 +667,7 @@ export function setTemplate(templateId: string) {
 export function getClearedState() {
     const o = get(outputs)
 
-    const audio = !Object.keys(get(playingAudio)).length && !get(playingMetronome)
+    const audio = !Object.keys(get(playingAudio)).length
     const background = isOutCleared("background", o)
     const slide = isOutCleared("slide", o)
     const overlaysCleared = isOutCleared("overlays", o, true)
@@ -692,41 +676,6 @@ export function getClearedState() {
     const all = isOutCleared(null, o) && audio
 
     return { all, background, slide, overlays: overlaysCleared, audio, slideTimers }
-}
-
-// "1.1.1,2,3" = "Gen 1:1-3"
-// or "John 3:16" / "1 John 1:4-6"
-export async function startScripture(data: API_scripture) {
-    const split = data.reference.split(".")
-    const book = Number(split[0])
-    const chapter = Number(split[1])
-
-    let ref: { book: number; chapter: number; verses: (string | number)[][] }
-
-    if (split.length > 1 && !isNaN(book) && !isNaN(chapter)) {
-        const rawVerses = (split[2] ?? "").trim()
-        // Support multiple verses encoded as comma-separated values, e.g. "43.3.16,17,18".
-        const verseItems = rawVerses
-            .split(",")
-            .map((v) => v.trim())
-            .filter(Boolean)
-        ref = { book, chapter, verses: [verseItems.length ? verseItems : [rawVerses]] }
-    } else {
-        // convert text reference to actual reference
-        let resolved = await resolveScriptureReference(data.reference, data.id)
-        if (!resolved) {
-            resolved = parseEngScriptureRefToNumbers(data.reference)
-            if (!resolved) return
-        }
-
-        ref = { book: resolved.book, chapter: resolved.chapter, verses: [resolved.verses] }
-    }
-
-    if (get(activePage) !== "edit") activePage.set("show")
-    if (data.id) setDrawerTabData("scripture", data.id) // use active if no ID
-    activeDrawerTab.set("scripture")
-
-    openScripture.set({ ...ref, play: data.play !== false })
 }
 
 // MEDIA
@@ -819,7 +768,7 @@ export function pauseAudio(data: API_media) {
 }
 export function stopAudio(data: API_media) {
     if (get(outLocked)) return
-    clearAudio(data.path, { clearPlaylist: true, commonClear: true })
+    clearAudio(data.path, { commonClear: true })
 }
 export function audioSeekTo(data: API_seek) {
     if (get(outLocked)) return
@@ -1166,27 +1115,6 @@ export async function getPDFThumbnails({ path, data }: API_media) {
     } finally {
         loadingTask.destroy()
     }
-}
-
-// DRAW
-
-export function changeDrawZoom(data: API_draw_zoom) {
-    const size = data.size || 100
-    drawSettings.update((a) => {
-        if (!a.zoom) a.zoom = {}
-        a.zoom.size = size
-        return a
-    })
-
-    if (size === 100) {
-        draw.set(null)
-        drawTool.set("focus")
-        return
-    }
-
-    // 0-100 %
-    draw.set({ x: 1920 * ((data.x ?? 50) / 100), y: 1080 * ((data.y ?? 50) / 100) })
-    drawTool.set("zoom")
 }
 
 // ADD

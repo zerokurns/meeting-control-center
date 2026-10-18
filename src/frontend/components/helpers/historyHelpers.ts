@@ -2,11 +2,10 @@ import { get } from "svelte/store"
 import { uid } from "uid"
 import { REMOTE } from "../../../types/Channels"
 import { ShowObj } from "../../classes/Show"
-import { actions, activeDrawerTab, activeEdit, activeProject, activeRename, activeShow, activeStage, activeTagFilter, audioPlaylists, currentOutputSettings, dictionary, drawerTabsData, editingProjectTemplate, effects, events, focusMode, folders, globalTags, groups, interactions, notFound, openedFolders, overlays, playerVideos, profiles, projects, projectTemplates, projectView, scenes, shows, showsCache, special, stageShows, styles, theme, themes } from "../../stores"
+import { actions, activeDrawerTab, activeEdit, activeProject, activeRename, activeShow, activeStage, activeTagFilter, currentOutputSettings, dictionary, drawerTabsData, editingProjectTemplate, effects, focusMode, folders, globalTags, groups, interactions, notFound, openedFolders, overlays, playerVideos, profiles, projects, projectTemplates, projectView, scenes, shows, showsCache, special, stageShows, styles, theme, themes } from "../../stores"
 import { translateText } from "../../utils/language"
 import { updateThemeValues } from "../../utils/updateSettings"
-import { EMPTY_CATEGORY, EMPTY_EFFECT, EMPTY_EVENT, EMPTY_LAYOUT, EMPTY_PLAYER_VIDEO, EMPTY_PROJECT, EMPTY_PROJECT_FOLDER, EMPTY_SCENE, EMPTY_SECTION, EMPTY_SLIDE, EMPTY_STAGE, EMPTY_TAG } from "../../values/empty"
-import { getWeekNumber } from "../drawer/calendar/calendar"
+import { EMPTY_CATEGORY, EMPTY_EFFECT, EMPTY_LAYOUT, EMPTY_PLAYER_VIDEO, EMPTY_PROJECT, EMPTY_PROJECT_FOLDER, EMPTY_SCENE, EMPTY_SECTION, EMPTY_SLIDE, EMPTY_STAGE, EMPTY_TAG } from "../../values/empty"
 import { audioFolders, categories, mediaFolders, outputs, overlayCategories, templateCategories, templates } from "./../../stores"
 import { clone, keysToID, sortByName } from "./array"
 import { addToPos } from "./mover"
@@ -260,8 +259,6 @@ export const _updaters = {
     },
     category_media: { store: mediaFolders, ...getDefaultCategoryUpdater("media") },
     category_audio: { store: audioFolders, ...getDefaultCategoryUpdater("audio") },
-    audio_playlists: { store: audioPlaylists, ...getDefaultCategoryUpdater("audio"), empty: { name: "", songs: [] } },
-    audio_playlist_key: { store: audioPlaylists },
 
     effect: {
         store: effects,
@@ -328,18 +325,6 @@ export const _updaters = {
     template_settings: { store: templates, empty: {}, timestamp: true },
 
     player_video: { store: playerVideos, empty: EMPTY_PLAYER_VIDEO },
-
-    event: {
-        store: events,
-        empty: EMPTY_EVENT,
-        deselect: (id: string, data: any) => {
-            const event = get(events)[id]
-            if (!event) return
-            if (data.data?.repeat === true && data.previousData?.repeat === false) {
-                // TODO: delete repeated...
-            }
-        }
-    },
 
     stage_item_style: { store: stageShows, empty: "", timestamp: true },
     stage_item_position: { store: stageShows, empty: "", timestamp: true },
@@ -669,6 +654,17 @@ function getNextWeekdayDate(currentDate: Date, targetWeekday: number): Date {
     if (daysToAdd < 0) daysToAdd += 7
     result.setDate(result.getDate() + daysToAdd)
     return result
+}
+
+// https://stackoverflow.com/a/6117889
+function getWeekNumber(d: Date) {
+    d = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+    // ISO 8601 states that week 1 is the week with the first Thursday of that year
+    d.setDate(d.getDate() + 4 - (d.getDay() || 7))
+
+    const firstDayInYear = new Date(d.getFullYear(), 0, 1)
+    const daysPassedCurrentYear = (d.getTime() - firstDayInYear.getTime()) / 86400000 + 1
+    return Math.ceil(daysPassedCurrentYear / 7)
 }
 
 export const projectReplacers = [

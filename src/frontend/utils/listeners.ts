@@ -10,7 +10,6 @@ import {
     actions,
     actionTags,
     activeProject,
-    activeScripture,
     activeShow,
     activeTimers,
     audioChannelsData,
@@ -21,19 +20,12 @@ import {
     colorbars,
     customMessageCredits,
     customMetadata,
-    draw,
-    drawSettings,
-    drawTool,
-    driveKeys,
     effects,
-    events,
     folders,
     globalRegexes,
     groups,
     livePrepare,
     media,
-    metronome,
-    metronomeTimer,
     openedFolders,
     outputs,
     outputSlideCache,
@@ -45,7 +37,6 @@ import {
     projects,
     refreshSlideThumbnails,
     runningActions,
-    scriptures,
     shows,
     showsCache,
     slideTimelineSpeedMultiplier,
@@ -65,7 +56,6 @@ import {
     variableTags
 } from "../stores"
 import { hasNewerUpdate } from "./common"
-import { driveConnect } from "./drive"
 import { convertBackgrounds, getFilteredAudioChannels } from "./remoteTalk"
 import { send } from "./request"
 import { arrayToObject, eachConnection, filterObjectArray, sendData, timedout } from "./sendData"
@@ -168,27 +158,6 @@ export function storeSubscriber() {
         send(REMOTE, ["OVERLAY_CATEGORIES"], data)
     })
 
-    events.subscribe((data) => {
-        send(OUTPUT, ["EVENTS"], data)
-
-        // STAGE
-        // WIP all stage listeners should not send to all stages, just the connected ids
-        send(STAGE, ["EVENTS"], data)
-    })
-    scriptures.subscribe((data) => {
-        send(REMOTE, ["SCRIPTURE"], data)
-    })
-    activeScripture.subscribe(async (data) => {
-        // Debounce and filter ACTIVE_SCRIPTURE to avoid sending partial states (book-only/chapter-only)
-        if (await hasNewerUpdate("LISTENER_ACTIVE_SCRIPTURE", 120)) return
-
-        const source: any = (data && ((data as any).api || (data as any).bible)) || data || {}
-        const hasBook = source.bookId !== undefined && source.bookId !== null
-        const hasChapter = source.chapterId !== undefined && source.chapterId !== null
-        const hasVerses = Array.isArray(source.activeVerses) && source.activeVerses.length > 0
-        if (hasBook && hasChapter && hasVerses) send(REMOTE, ["ACTIVE_SCRIPTURE"], data)
-    })
-
     outputs.subscribe(async (data) => {
         // wait in case multiple slide layers get activated right after each other - to reduce the amount of updates
         if (await hasNewerUpdate("LISTENER_OUTPUTS", 1)) return
@@ -240,34 +209,6 @@ export function storeSubscriber() {
                 return currentData
             })
         )
-    })
-
-    draw.subscribe((data) => {
-        // if (await hasNewerUpdate("LISTENER_DRAW")) return
-
-        const activeOutputIds = getAllActiveOutputIds()
-        getAllNormalOutputs().forEach(({ id }) => {
-            if (activeOutputIds.includes(id)) send(OUTPUT, ["DRAW"], { id, data })
-            else send(OUTPUT, ["DRAW"], { id, data: null })
-        })
-    })
-    drawTool.subscribe((data) => {
-        // WIP changing tool while output is not active, will not update tool in output if set to active before changing tool again
-        const activeOutputIds = getAllActiveOutputIds()
-        getAllNormalOutputs().forEach(({ id }) => {
-            if (activeOutputIds.includes(id)) send(OUTPUT, ["DRAW_TOOL"], { id, data })
-            else send(OUTPUT, ["DRAW_TOOL"], { id, data: "focus" })
-        })
-    })
-    drawSettings.subscribe((data) => {
-        const activeOutputIds = getAllActiveOutputIds()
-        getAllNormalOutputs().forEach(({ id }) => {
-            if (activeOutputIds.includes(id)) send(OUTPUT, ["DRAW_SETTINGS"], data)
-            else {
-                send(OUTPUT, ["DRAW_TOOL"], { id, data: "focus" })
-                send(OUTPUT, ["DRAW"], { id, data: null })
-            }
-        })
     })
 
     transitionData.subscribe((data) => {
@@ -352,15 +293,6 @@ export function storeSubscriber() {
 
     playingVideoState.subscribe((data) => {
         send(OUTPUT, ["PLAYING_VIDEO_STATE"], data)
-    })
-
-    metronome.subscribe((data) => {
-        send(OUTPUT, ["METRONOME"], data)
-        send(STAGE, ["METRONOME"], data)
-    })
-    metronomeTimer.subscribe((data) => {
-        send(OUTPUT, ["METRONOME_TIMER"], data)
-        send(STAGE, ["METRONOME_TIMER"], data)
     })
 
     timeFormat.subscribe((a) => {
@@ -453,8 +385,6 @@ export function storeSubscriber() {
         updateCachedShows(get(showsCache))
     })
 
-    driveKeys.subscribe(driveConnect)
-
     refreshSlideThumbnails.subscribe(() => {
         setTimeout(() => {
             refreshSlideThumbnails.set(false)
@@ -472,12 +402,7 @@ const initalOutputData = {
 
     TEMPLATES: "templates",
     OVERLAYS: "overlays",
-    EVENTS: "events",
     GROUPS: "groups",
-
-    DRAW: { data: "draw" },
-    DRAW_TOOL: { data: "drawTool" },
-    DRAW_SETTINGS: "drawSettings",
 
     VISUALIZER_DATA: "visualizerData",
     MEDIA: "media",

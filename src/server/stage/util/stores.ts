@@ -11,8 +11,6 @@ export let dictionary: Writable<Dictionary> = writable(clone(DEFAULT_DICTIONARY)
 
 export let errors: Writable<string[]> = writable([])
 
-export let updateTransposed: Writable<number> = writable(1)
-
 export let isConnected = writable(false)
 export let layouts: Writable<{ id: string; name: string; password: boolean }[] | null> = writable(null)
 export let selectedLayout = writable("")
@@ -43,14 +41,11 @@ export let playingAudioTime: Writable<number> = writable(0)
 
 ///
 
-export let events: Writable<any> = writable({})
 export let timers: Writable<any> = writable({})
 export let variables: Writable<any> = writable({})
 export let activeTimers: Writable<any[]> = writable([])
 export let timeFormat: Writable<"12" | "24"> = writable("24")
 export let progressData: Writable<any> = writable({})
-export let metronome: Writable<any> = writable({})
-export let metronomeTimer: Writable<{ beat: number; timeToNext: number }> = writable({ beat: 0, timeToNext: 0 })
 
 /////
 
@@ -78,9 +73,7 @@ export const _ = {
     layout,
     mediaCache,
     playingAudioData,
-    playingAudioTime,
-    metronome,
-    metronomeTimer
+    playingAudioTime
 }
 
 /////

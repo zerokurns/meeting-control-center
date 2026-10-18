@@ -3,9 +3,7 @@ import { uid } from "uid"
 import type { Project, ProjectShowRef } from "../../../types/Projects"
 import { similarity } from "../../converters/txt"
 import { activeEdit, activeProject, activeShow, projects, projectView, saved, showRecentlyUsedProjects, shows, showsCache } from "../../stores"
-import { generateScriptureShowFromReference } from "../drawer/bible/scripture"
 import { keysToID, sortByTimeNew } from "../helpers/array"
-import { history } from "../helpers/history"
 
 export function openProject(id: string, openFirstItem: boolean = true) {
     projectView.set(false)
@@ -135,15 +133,7 @@ async function textToProjectItems(text: string) {
         if (mostSimilar.id) {
             items.push({ id: mostSimilar.id, type: "show", name })
         } else {
-            const scriptureShow = await generateScriptureShowFromReference(name)
-            if (scriptureShow) {
-                const showId = scriptureShow.id || uid()
-                scriptureShow.id = showId
-                history({ id: "SHOWS", newData: { data: [{ id: showId, show: scriptureShow }] } })
-                items.push({ id: showId, type: "show", name })
-            } else {
-                items.push({ id: uid(5), type: "section", name })
-            }
+            items.push({ id: uid(5), type: "section", name })
         }
     }
 
@@ -154,17 +144,7 @@ async function textToProjectItems(text: string) {
     return items
 }
 
-export function isProjectLinked(project?: Project | null, projectId?: string, contentProviderDataVal?: any): boolean {
+export function isProjectLinked(project?: Project | null, projectId?: string): boolean {
     if (!project && !projectId) return false
-    if (project?.origin) return true
-
-    // pre 1.6.6 backwards compatibility for projects without "origin"
-    const id = projectId || project?.id
-    if (id) {
-        if (id.startsWith("onstage_")) return true
-        const pcoPlans = contentProviderDataVal?.planningcenter?.availablePlans as { planId: string }[] | undefined
-        if (pcoPlans?.some((p) => p.planId === id)) return true
-    }
-
-    return false
+    return !!project?.origin
 }

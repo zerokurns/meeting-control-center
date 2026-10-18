@@ -230,13 +230,11 @@ export class AudioAnalyser {
         const currentVideos = get(playingVideos)
         const playingKeys = Object.keys(currentAudio)
         let stillPlayingDrawer = false
-        let stillPlayingPlaylist = false
 
         for (let i = 0; i < playingKeys.length; i++) {
             const k = playingKeys[i]
             if (k !== id && currentAudio[k]?.isMic !== true) {
-                if (currentAudio[k]?.playlistId) stillPlayingPlaylist = true
-                else stillPlayingDrawer = true
+                stillPlayingDrawer = true
             }
         }
 
@@ -251,7 +249,6 @@ export class AudioAnalyser {
         for (let i = 0; i < nodeIds.length; i++) {
             const nodeId = nodeIds[i]
             if (nodeId === "drawer_audio" && stillPlayingDrawer) continue
-            if (nodeId === "playlists_default" && stillPlayingPlaylist) continue
             if (nodeId === "output_window" && stillPlayingVideo) continue
 
             AudioInputCapture.getInstance().removeInput(nodeId)
@@ -402,7 +399,6 @@ export class AudioAnalyser {
 
     static getInputNodeIds(id?: string, outputId?: string): string[] {
         if (!id) return ["drawer_audio"]
-        if (id === "metronome") return ["metronome"]
 
         const audioPlaying = get(playingAudio)[id]
         const videoPlaying = get(playingVideos).some((v) => v.path === id)
@@ -412,11 +408,6 @@ export class AudioAnalyser {
         if (isMic) return [id, "mic_default"]
         if (isVideo) {
             return outputId ? ["output_window", `output_win_sub_${outputId}`] : ["output_window"]
-        }
-
-        const playlistId = audioPlaying?.playlistId
-        if (playlistId) {
-            return [`playlist_sub_${playlistId}`, "playlists_default"]
         }
 
         return ["drawer_audio"]

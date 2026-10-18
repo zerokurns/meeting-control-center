@@ -1,6 +1,5 @@
 {
     "main": {
-        "welcome": "Vitajte",
         "quit": "Ukončiť",
         "docs": "Dokumentácia",
         "about": "O FreeShow",
@@ -52,8 +51,6 @@
         "mail": "Kontaktovať emailom",
         "support": "Ak ste vďační za tento projekt, prosím zvážte jeho podporu",
         "assets": "Použité materiály",
-        "libraries": "Použité knižnice",
-        "thanks": "Ďakujeme",
         "new_update": "Aktualizácia je k dispozícii",
         "download": "Aplikáciu aktualizujete reštartovaní, alebo prejdite na freeshow.app a stiahnite ručne",
         "changes": "Čo je nové"
@@ -61,18 +58,10 @@
     "tooltip": {
         "project": "Vytvorí projekt, kde môžete pridávať a upravovať prezentácie.",
         "show": "Vytvorí novú prezentáciu kde môžete pridávať texty piesní, snímky a médiá.",
-        "groups": "Všetky skupiny v aktuálnej prezentácii a všetkých globálnych skupinách. Kliknutím alebo presunutím ich pridáte do aktuálneho rozloženia.",
         "layout": "Pridá prechody a časovače do snímkov v aktuálnom rozložení.",
-        "media": "Všetky médiá v aktuálnej prezentácii. Môžete ich zobraziť alebo presunúť do aktuálneho rozloženia.",
-        "metadata": "Upraví metadáta aktuálnej prezentácie.",
         "notes": "Píšte poznámky.",
-        "text": "Upraví obsah všetkých vybratých položiek.",
-        "item": "Upraví všetky vybraté položky.",
         "items": "Pridá a zoradí položky.",
-        "slide": "Upraví aktuálny snímok.",
-        "filters": "Zmení vzhľad označeného prvku.",
-        "options": "Viac možností.",
-        "scripture": "Držaním Ctrl/Cmd alebo Shift označíte viac veršov."
+        "options": "Viac možností."
     },
     "tips": {
         "trigger": "Spúšťače sa zvyknú používať na odoslanie HTTP požiadavky na zmenu nastavení kamier.",
@@ -93,7 +82,6 @@
         "recording": "Nahrávanie",
         "clock": "Hodiny",
         "rounded": "Zaoblené",
-        "call": "Videohovor",
         "header": "Hlavička",
         "text": "Text",
         "big": "Veľké",
@@ -102,20 +90,11 @@
         "bold": "Tučné"
     },
     "create_show": {
-        "web": "Hľadať na webe",
-        "search_web": "Hľadať pieseň na webe",
-        "search_results": "Výsledky hľadania",
-        "block": "Blokovať",
         "more_options": "Viac možností",
-        "auto_groups": "Automaticky priradené skupiny",
         "format_new_show": "Formátovať text",
-        "format_new_show_tip": "Vylepší formát textu automatickými kapitálkami, oreže/spojí text a iné.",
         "split_lines": "Max počet riadkov na snímok",
-        "split_lines_tip": "Počet riadkov povolený na snímok pre automatickým rozdelením",
         "quick_lyrics": "Rýchle texty",
         "quick_lyrics_tip": "Vložte alebo napíšte text",
-        "quick_lyrics_example_tip": "Sem zadajte text",
-        "quick_lyrics_example_text": "Riadok",
         "empty": "Prázdna prezentácia",
         "exists": "Našla sa existujúca prezentácia s rovnakým názvom",
         "slideshow": "Prezentácia"
@@ -248,7 +227,6 @@
         "stage_shows": "Žiadne pódiové prezentácie",
         "player": "Žiadne videá",
         "groups": "Žiadne skupiny",
-        "events": "Žiadne udalosti",
         "text": "Niečo napíšte",
         "timers": "Žiadne časovače",
         "input": "V poli chýba hodnota",
@@ -260,10 +238,8 @@
         "shows": "Prezentácie",
         "show": "Prezentácia",
         "slide": "Snímok",
-        "lyrics": "Texty piesní",
         "end": "Koniec",
         "no_output": "Žiadny výstup",
-        "remember": "Zapamätať si",
         "loading": "Načítanie...",
         "submit": "Poslať",
         "password": "Heslo",
@@ -274,15 +250,12 @@
         "no_show": "Nenašla sa prezentácia",
         "no_layouts": "Nenašli sa rozloženia",
         "load": "Nepodarilo sa načítať",
-        "bible": "Nenašla sa lokálna biblia",
         "import": "Nebolo možné naimportovať",
-        "bible_api": "Nepodarilo sa načítať bibliu z API.Bible, ste pripojený na internet?",
         "not_found": "Nenašlo sa",
         "display": "Nepodarilo sa zobraziť výstupné okno na aktuálnej obrazovke",
         "keep_one_layout": "Musíte mať aspoň jedno rozloženie",
         "video_unavailable": "Video nie je dostupné? Tvorca zakázal vkladanie videa.",
         "folder_exists": "Tento priečinok už existuje",
-        "uri": "Nepodarilo sa rozparsovať názov audia, prosím premenujte súbor",
         "ip": "Nepodarilo sa zistiť IP adresu vášho zariadenia, prosím prejdite do nastavení Wi-Fi a nájdite vašu IPv4 adresu."
     },
     "meta": {
@@ -473,27 +446,16 @@
         "saved": "Uložené",
         "error_media": "Nepodarilo sa získať médium.",
         "empty_styles": "Žiadne štýly",
-        "chapter_undefined": "Kapitola {} v tejto knihe neexistuje.",
-        "verse_undefined": "Verš {} neexistuje v tejto kapitole.",
         "recording_started": "Nahrávanie začalo!",
         "recording_stopped": "Nahrávanie skončilo!",
         "starting_action": "Akcia pri štarte",
-        "less_than_minute": "o menej než minútu.",
-        "less_than_seconds": "o menej než {} sekúnd.",
-        "now": "teraz!",
         "template_applied_globally": "Táto šablóna sa už používa pre prezentácie globálne.",
         "unsupported_video": "Nepodporovan video!",
-        "no_video_id": "Žiadne video ID",
         "no_name": "Žiadny názov",
-        "reverting_setting": "Táto zmena sa vráti o {} sekúnd, zapnite znova aby zmena ostala!",
-        "reverted": "Nastavenie vrátené! Zapnite len ak ste nemali žiadne problémy.",
         "media_replaced": "Chýbajúci media súbor nahradený iným.",
-        "lyrics_undefined": "Nenašli sa žiadne texty!",
-        "lyrics_copied": "Texty skopírované z",
         "one_output": "Musíte mať aspoň jeden aktívny výstup!",
         "empty_cache": "Cache je prázdna.",
         "deleted_cache": "Cache náhľadov zmazaných médií.",
-        "no_songswords_easyworship": "Chýba súbor SongsWords.db.",
         "delete_shows_empty": "Žiadne prezentácie na zmazanie.",
         "reached_end": "Sme na konci!",
         "output_capture_enabled": "Je zapnuté nahrávanie obrazovky, čo môže spôsobovať problémy s výkonom. Používajte iba ak je nutné!",
@@ -511,19 +473,14 @@
         "section": "Nová sekcia",
         "timer": "Nový časovač",
         "variable": "Nová premenná",
-        "trigger": "Nový spúšťač",
         "audio_stream": "Nový audio stream",
-        "playlist": "Nový playlist",
         "category": "Nová kategória",
         "private": "Nová súkromná prezentácia",
         "folder": "Nový priečinok",
         "slide": "Nový snímok",
         "overlay": "Nový prvok",
         "template": "Nová šablóna",
-        "scripture": "Nové písmo",
-        "collection": "Nová kolekcia",
-        "action": "Nová akcia",
-        "event": "Nová udalosť"
+        "action": "Nová akcia"
     },
     "show": {
         "name": "Názov",
@@ -704,9 +661,6 @@
         "id_select_overlay": "Spustiť prekrytie",
         "change_volume": "Zmeniť hlasitosť",
         "start_audio_stream": "Spustiť audio stream",
-        "start_playlist": "Spustiť playlist",
-        "playlist_next": "Ďalšia položka v playliste",
-        "start_metronome": "Spustiť metronóm",
         "id_start_timer": "Spustiť časovač",
         "start_slide_timers": "Spustiť časovače na aktívnom snímku",
         "id_select_output_style": "Vybrať štýl výstupu",
@@ -761,22 +715,12 @@
         "use_duration_tip": "Použije čas trvania namiesto času timestamp"
     },
     "animate": {
-        "change": "Zmeniť",
-        "set": "Mastaviť",
-        "wait": "Čakať",
-        "background": "pozadie",
-        "text": "text",
-        "item": "prvo",
-        "to": "to",
-        "for": "for",
-        "seconds": "sekúnd"
+        "wait": "Čakať"
     },
     "cloud": {
-        "info": "Synchronizuje súbory na Google Drive ako zálohu, alebo ak pracujete na viacerých počítačoch.",
         "tip_api": "Musíte nastaviť svoj Google API kľúč, aby program mohol automaticky nahrávať súbory na váš Google Drive.",
         "tip_how": "Neviete ako ho získať?",
         "tip_guide": "Tu nájdete návod.",
-        "enable": "Automaticky synchronizuje spustenie a zavretie",
         "disable_upload": "Vypnuť nahrávanie dát",
         "media_id": "Media path ID",
         "google_drive_api": "Google API service account key",
@@ -784,13 +728,7 @@
         "update_key": "Update keys file",
         "enable_custom_folder_id": "Použiť vlastné ID priečinka",
         "main_folder": "Nastaviť ručne hlavný priečinok",
-        "media_folder": "Cloud media priečinok",
-        "reconnect": "Pripojiť znova",
-        "sync": "Sync teraz",
-        "choose_method_tip": "Na cloude sú existujúce údaje. Prosím zvoľte buď nahratie z lokálu alebo stiahnutie z cloudu. Druhá strana sa prepíše.",
-        "local": "Lokálne",
-        "syncing": "Synchronizácia na cloud",
-        "sync_complete": "Synchronizácia hotová"
+        "media_folder": "Cloud media priečinok"
     },
     "export": {
         "export": "Export",
@@ -826,7 +764,6 @@
         "setTag": "Nastaviť značku",
         "filterByTags": "Filter značiek",
         "addToProject": "Pridať do projektu",
-        "add_to_show": "Pridať do prezentácie",
         "lockForChanges": "Zamknúť pre zmeny",
         "use_as_archive": "Označiť ako archivované",
         "newCategory": "Nová kategória",
@@ -848,8 +785,6 @@
     },
     "tools": {
         "notes": "Poznámky",
-        "--schedule": "Rozvrh",
-        "--actions": "Akcie",
         "groups": "Skupiny",
         "metadata": "Metadata",
         "media": "Media",
@@ -1033,9 +968,6 @@
         "overflow_color": "Farba po skončení",
         "preview": "Náhľad",
         "clock": "Hodiny",
-        "event": "Nová udalosť",
-        "no_events": "Nie sú žiadne nadchádzajúce udalosti",
-        "edit": "Upraviť",
         "create": "Vytvoriť",
         "line": "Line",
         "mask": "Maska"
@@ -1075,9 +1007,7 @@
         "start_action": "Spustiť akciu",
         "use_default_values": "Použiť predvolené hodnoty",
         "auto_values": "Zmeniť hodnoty po prijatí MIDI vstupu",
-        "tip_velocity": "Vypnete nastavenie rýchlosti na -1.",
-        "tip_action": "Na aktiváciu konkrétnych snímkov, kliknite pravým na snímok a vyberte midi v akciách.",
-        "tip_index_by_velocity": "Pozícia je určená prijatou velocity začínajúc nulou."
+        "tip_velocity": "Vypnete nastavenie rýchlosti na -1."
     },
     "emitters": {
         "emitter": "Emiter",
@@ -1089,23 +1019,10 @@
         "data": "Dáta"
     },
     "draw": {
-        "focus": "Focus",
-        "pointer": "Kurzor",
-        "zoom": "Priblíženie",
-        "fill": "Výplň",
-        "paint": "Maľba",
-        "particles": "Častice",
         "color": "Farba",
         "opacity": "Priehľadnosť",
         "size": "Veľkosť",
-        "radius": "Polomer",
-        "glow": "Žiara",
-        "hollow": "Duté",
-        "hold": "Hold",
-        "straight": "Priamo",
-        "rainbow": "Dúha",
-        "threed": "3D",
-        "dots": "Bodky"
+        "glow": "Žiara"
     },
     "stage": {
         "stage_layout": "Rozloženie stage",
@@ -1259,7 +1176,6 @@
         "name": "Názov",
         "name_des": "Zostupne podľa názvu",
         "date": "Dátum",
-        "size": "Veľkosť",
         "type": "Typ",
         "custom": "Vlastné"
     },
@@ -1292,21 +1208,7 @@
         "add_slides_from_show": "Zahrnúť snímky z prezentácie"
     },
     "scripture": {
-        "bibles": "Biblie z API.Bible",
-        "local": "Importovať lokálny súbor",
-        "supported_formats": "Podporované formáty:",
-        "max_verses": "Maximum veršov na snímok",
-        "verse_numbers": "Čísla veršov",
-        "verses_on_individual_lines": "Verše na jednotlivých riadkoch",
-        "divide_long_verses": "Zalomiť dlhé verše",
-        "version": "Zobraziť preklad",
-        "reference": "Zobraziť odkazy",
-        "split_reference": "Rozdeliť adresy",
-        "combine_with_text": "Kombinovať s textom",
-        "first_slide_reference": "Adresy na prvom snímku",
-        "reference_at_bottom": "Presunúť na spodok",
-        "red_jesus": "Ježišove slová červeným",
-        "search": "Hľadať v Biblii"
+        "bibles": "Biblie z API.Bible"
     },
     "filter": {
         "blur": "Rozostrenie",
@@ -1359,10 +1261,6 @@
     },
     "easings": {
         "linear": "Lineárne",
-        "ease": "Ease",
-        "ease-in": "Ease in",
-        "ease-out": "Ease out",
-        "ease-in-out": "Ease in & out",
         "elastic": "Elastické",
         "bounce": "Odraz",
         "back": "Skok",

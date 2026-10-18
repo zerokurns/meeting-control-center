@@ -57,11 +57,11 @@
 
     function getTextSelection(e: any = null) {
         if (e) {
-            if (e.target.closest(".menus") || e.target.closest(".popup") || e.target.closest(".drawer") || e.target.closest(".chords") || e.target.closest(".contextMenu") || e.target.closest(".editTools")) return
+            if (e.target.closest(".menus") || e.target.closest(".popup") || e.target.closest(".drawer") || e.target.closest(".contextMenu") || e.target.closest(".editTools")) return
         }
 
         const activeEl = document.activeElement as HTMLElement | null
-        if (activeEl?.closest(".tools") || activeEl?.closest(".menus") || activeEl?.closest(".popup") || activeEl?.closest(".drawer") || activeEl?.closest(".chords") || activeEl?.closest(".contextMenu") || activeEl?.closest(".editTools") || document.querySelector(".editTools:hover")) return
+        if (activeEl?.closest(".tools") || activeEl?.closest(".menus") || activeEl?.closest(".popup") || activeEl?.closest(".drawer") || activeEl?.closest(".contextMenu") || activeEl?.closest(".editTools") || document.querySelector(".editTools:hover")) return
 
         let sel = window.getSelection()
 
@@ -90,7 +90,7 @@
 
     function mousedown(e: any) {
         // store if going to a text input in the tools
-        if (e.target.closest(".tools") || e.target.closest(".menus") || e.target.closest(".popup") || e.target.closest(".drawer") || e.target.closest(".chords") || e.target.closest(".contextMenu") || e.target.closest(".editTools")) getTextSelection(e)
+        if (e.target.closest(".tools") || e.target.closest(".menus") || e.target.closest(".popup") || e.target.closest(".drawer") || e.target.closest(".contextMenu") || e.target.closest(".editTools")) getTextSelection(e)
     }
 
     function keyup(e: KeyboardEvent) {
@@ -228,7 +228,7 @@
 
     // -----
 
-    const setItemStyle = ["timer", "clock", "icon", "events", "camera", "variable", "web", "slide_tracker", "table"]
+    const setItemStyle = ["timer", "clock", "icon", "camera", "variable", "web", "slide_tracker", "table"]
 
     const setBox = () => clone(itemBoxes[id])!
     let box = setBox()
@@ -248,11 +248,6 @@
     }
 
     /// SET INPUT VALUES ///
-
-    // remove chord options
-    $: if ($activeEdit.type === "overlay" && box?.sections?.chords) {
-        delete box.sections.chords
-    }
 
     $: if (box?.sections?.CSS && id !== "captions") {
         setBoxInputValue(box, "CSS", "CSS_text", "value", style)
@@ -363,13 +358,6 @@
         setBoxInputValue(box, "default", "tracker.childProgress", "hidden", item.tracker?.type !== "group")
         setBoxInputValue(box, "default", "tracker.oneLetter", "hidden", item.tracker?.type !== "group")
         setBoxInputValue(box, "default", "tracker.projectMetadata", "hidden", item.tracker?.type !== "project")
-    }
-    $: if (id === "events" && item) {
-        setBoxInputValue(box, "default", "events.startDaysFromToday", "disabled", !!item.events?.enableStartDate)
-        setBoxInputValue(box, "default", "events.startDate", "hidden", !item.events?.enableStartDate)
-        setBoxInputValue(box, "default", "events.startTime", "hidden", !item.events?.enableStartDate)
-        setBoxInputValue(box, "default", "events.fromTime", "hidden", !item.events?.justOneDay)
-        setBoxInputValue(box, "default", "events.toTime", "hidden", !item.events?.justOneDay)
     }
     $: if (id === "chart" && item) {
         setBoxInputValue(box, "default", "chart.holeSize", "hidden", item.chart?.type !== "pie")
@@ -546,8 +534,7 @@
         allItems = allItems.filter((index) => (allSlideItems[index]?.type || "text") === currentType)
 
         // font size on a partial selection is invisible while auto size is enabled, so disable auto size first
-        const hasScriptureNumber = item?.lines?.some((line) => line.text?.some((t) => /scripture(?:\d+)?_number/.test(t.value || "")))
-        if (id === "text" && input.id === "style" && input.key === "font-size" && input.name !== "font_size" && (item?.auto || (item?.textFit || "none") !== "none") && isPartialTextSelection() && !hasScriptureNumber) {
+        if (id === "text" && input.id === "style" && input.key === "font-size" && input.name !== "font_size" && (item?.auto || (item?.textFit || "none") !== "none") && isPartialTextSelection()) {
             disableAutoSize(allItems)
             newToast("toast.autosize_disabled")
         }

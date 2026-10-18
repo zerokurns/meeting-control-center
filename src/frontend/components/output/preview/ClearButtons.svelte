@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte"
     import { clearAudio } from "../../../audio/audioFading"
-    import { activeTimers, dictionary, isFadingOut, isTimelinePlaying, labelsDisabled, media, outLocked, outputCache, outputs, overlayTimers, playingAudio, playingMetronome, styles, timelineRecordingAction } from "../../../stores"
+    import { activeTimers, dictionary, isFadingOut, isTimelinePlaying, labelsDisabled, media, outLocked, outputCache, outputs, overlayTimers, playingAudio, styles, timelineRecordingAction } from "../../../stores"
     import { translateText } from "../../../utils/language"
     import { presentationControllersKeysDisabled } from "../../../utils/shortcuts"
     import Icon from "../../helpers/Icon.svelte"
@@ -14,8 +14,8 @@
     export let autoChange: any
     export let activeClear: any
 
-    $: audioCleared = !Object.keys($playingAudio).length && !$playingMetronome
-    $: audioClearedWithoutMics = !Object.values($playingAudio).filter((a) => !a.isMic).length && !$playingMetronome
+    $: audioCleared = !Object.keys($playingAudio).length
+    $: audioClearedWithoutMics = !Object.values($playingAudio).filter((a) => !a.isMic).length
     $: allCleared = isOutCleared(null, $outputs) && audioClearedWithoutMics
     $: if (allCleared) autoChange = true
 
@@ -37,7 +37,7 @@
         background: () => clearBackground(),
         slide: () => clearSlide(),
         overlays: () => clearOverlays(),
-        audio: () => clearAudio("", { clearPlaylist: true, clearMicrophones: true, commonClear: true }),
+        audio: () => clearAudio("", { clearMicrophones: true, commonClear: true }),
         nextTimer: () => clearTimers(),
         scene: () => clearScene()
     }
@@ -74,8 +74,6 @@
     $: outBackground = output.out?.background || {}
     $: backgroundData = $media[outBackground.path || ""] || {}
 
-    $: isScripture = outputContent?.id === "temp"
-    $: isMetronome = $playingMetronome && !Object.keys($playingAudio).length
     $: isTimer = !output.out?.transition && !Object.values($overlayTimers).find((a) => a.outputId === outputId) && Object.keys($activeTimers).length
 
     $: slideCleared = isOutCleared("slide", $outputs)
@@ -91,7 +89,7 @@
     // audio fade out
     let audioIcon = "audio"
     $: if ($isFadingOut) startAudioIcon()
-    else audioIcon = isMetronome ? "metronome" : "audio"
+    else audioIcon = "audio"
     function startAudioIcon() {
         audioIcon = "volume"
         setTimeout(() => {
@@ -159,7 +157,7 @@
                 <MaterialButton style="padding: 0.3em 0.6em;" disabled={$outLocked || slideCleared} title="clear.slide  [F2]" on:click={() => clear("slide")} red>
                     <!-- PDFs are visually the background layer as it is toggled by the style "Background" layer, but it behaves as a slide in the code -->
                     <!-- display recording icon here if a slide recoring is playing -->
-                    <Icon id={isScripture ? "scripture" : outputContent?.type === "pdf" ? "image" : "slide"} size={1.2} white />
+                    <Icon id={outputContent?.type === "pdf" ? "image" : "slide"} size={1.2} white />
                 </MaterialButton>
                 {#if !allCleared}
                     <MaterialButton style="padding: {activeClear === 'slide' ? 0 : 2}px !important;min-height: 15px;" isActive={activeClear === "slide"} disabled={slideCleared} on:click={() => openPreview("slide")} title="preview.slide">
