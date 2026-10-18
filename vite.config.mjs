@@ -23,7 +23,7 @@ export default defineConfig({
         ? {
               lib: {
                   entry: "src/frontend/main.ts",
-                  name: "freeshow",
+                  name: "mcc",
                   formats: ["iife"],
                   fileName: () => "bundle.js"
               },

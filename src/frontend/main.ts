@@ -1,4 +1,4 @@
-// ----- FreeShow -----
+// ----- Meeting Control Center -----
 // Svelte app entry point
 
 import "svelte"

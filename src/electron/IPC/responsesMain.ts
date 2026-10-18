@@ -331,7 +331,7 @@ function getScreens(type: "window" | "screen" = "screen"): Promise<{ name: strin
             .then((sources) => {
                 let screens: { name: string; id: string }[] = []
                 sources.map((source) => screens.push({ name: source.name, id: source.id }))
-                if (type === "window") screens = addFreeShowWindows(screens, sources)
+                if (type === "window") screens = addAppWindows(screens, sources)
 
                 resolve(screens)
             })
@@ -341,7 +341,7 @@ function getScreens(type: "window" | "screen" = "screen"): Promise<{ name: strin
             })
     })
 
-    function addFreeShowWindows(screens: { name: string; id: string }[], sources: DesktopCapturerSource[]) {
+    function addAppWindows(screens: { name: string; id: string }[], sources: DesktopCapturerSource[]) {
         const windows: BrowserWindow[] = []
         OutputHelper.getAllOutputs().forEach((output) => {
             if (output.window) windows.push(output.window)
