@@ -21,13 +21,14 @@ import { getActiveOutputs, getAllEnabledOutputs, getCurrentStyle, getFirstActive
 import { setRandomValue } from "../helpers/randomValue"
 import { loadShows, setShow } from "../helpers/setShow"
 import { getLabelId, getLayoutRef } from "../helpers/show"
-import { playNextGroup, selectProjectShow, updateOut } from "../helpers/showActions"
+import { playDocument, playNextGroup, selectProjectShow, updateOut } from "../helpers/showActions"
 import { _show } from "../helpers/shows"
 import { VideoPlayer } from "../media/video/videoPlayer"
 import { clearBackground, clearSlide } from "../output/clear"
+import { documentKindOf } from "../../viewers/registry"
 import { getPlainEditorText } from "../show/getTextEditor"
 import { getSlideGroups } from "../show/tools/groups"
-import type { API_add_to_project, API_create_project, API_disable_slide, API_edit_timer, API_group, API_id_index, API_id_value, API_layout, API_media, API_output_lock, API_rearrange, API_seek, API_slide_index, API_toggle_id, API_toggle_specific, API_variable, API_volume } from "./api"
+import type { API_add_to_project, API_create_project, API_disable_slide, API_document_view, API_edit_timer, API_group, API_id_index, API_id_value, API_layout, API_media, API_output_lock, API_rearrange, API_seek, API_slide_index, API_toggle_id, API_toggle_specific, API_variable, API_volume } from "./api"
 
 export function selectShowById(id: string) {
     if (typeof id !== "string" || !id) return
@@ -176,22 +177,21 @@ export async function startProjectItemByName(name: string) {
         if (videoType === "foreground" || (videoType !== "background" && (item.type === "image" || !shouldLoop))) clearSlide()
 
         setOutput("background", out)
-    } else if (item.type === "pdf") {
-        // get PDF data
-        GlobalWorkerOptions.workerSrc = "./assets/pdf.worker.min.mjs"
-        const loadingTask = getDocument(encodeFilePath(item.id))
-        const pdfDoc = await loadingTask.promise
-        const pages = pdfDoc.numPages
-
-        let name = item.name || removeExtension(getFileName(item.id))
-        setOutput("slide", { type: "pdf", id: item.id, page: 0, pages, name })
-        clearBackground()
+    } else if (item.type === "pdf" || item.type === "document") {
+        await playDocument({ id: item.id, type: item.type, name: item.name }, false, false, 0)
     } else if (item.type === "audio") AudioPlayer.start(item.id, { name: item.name || "" })
     else if (item.type === "overlay") setOutput("overlays", item.id, false, "", true)
     else if (item.type === "player") setOutput("background", { id: item.id, type: "player" })
 }
 
 export async function selectSlideByIndex(data: API_slide_index) {
+    // a document item (pdf, docx, xlsx) has units instead of slides
+    const activeItem = get(activeShow)
+    if (!data.showId && (activeItem?.type === "document" || activeItem?.type === "pdf")) {
+        if (get(outLocked)) return
+        return playDocument({ id: activeItem.id, type: activeItem.type, name: activeItem.name }, true, false, data.index)
+    }
+
     if (data.showId) await loadShows([data.showId])
 
     const showRef = _show(data.showId || "active")
@@ -204,6 +204,37 @@ export async function selectSlideByIndex(data: API_slide_index) {
 
     outputSlide(showRef, data)
 }
+/** Change unit, zoom, fit or scroll of the document that is currently on the output. Unset fields stay as they are. */
+export function setDocumentView(data: API_document_view) {
+    if (get(outLocked)) return
+
+    const slide = getFirstActiveOutput()?.out?.slide
+    if (!slide?.id || (slide.type !== "document" && slide.type !== "pdf")) return
+
+    const units = slide.units ?? slide.pages
+    const num = (value: unknown): number | undefined => (typeof value === "number" && Number.isFinite(value) ? value : undefined)
+    const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max)
+
+    const currentUnit = slide.unit ?? slide.page ?? 0
+    const requestedUnit = num(data?.unit)
+    const unit = requestedUnit === undefined ? currentUnit : clamp(Math.round(requestedUnit), 0, units ? units - 1 : Infinity)
+    const zoom = num(data?.zoom)
+    const scrollY = num(data?.scrollY)
+    const fit = data?.fit === "page" || data?.fit === "width" ? data.fit : slide.fit
+
+    setOutput("slide", {
+        ...slide,
+        type: "document",
+        kind: slide.kind || documentKindOf(slide.id) || "pdf",
+        unit,
+        units,
+        zoom: zoom === undefined ? (slide.zoom ?? 1) : clamp(zoom, 0.25, 8),
+        // a new unit starts at the top unless a scroll position is given
+        scrollY: scrollY === undefined ? (unit === currentUnit ? (slide.scrollY ?? 0) : 0) : clamp(scrollY, 0, 1),
+        fit: fit ?? "page"
+    })
+}
+
 export function selectSlideByName(name: string) {
     if (typeof name !== "string") return
 

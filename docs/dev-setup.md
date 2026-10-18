@@ -33,10 +33,11 @@ clearly separated folders (see `docs/decisions.md`) so `git merge upstream/main`
 4. **Linux native-addon headers**, the same set upstream CI installs:
 
    ```sh
-   sudo apt-get install -y libfontconfig1-dev uuid-dev libltc-dev
+   sudo apt-get install -y libfontconfig1-dev uuid-dev libltc-dev libegl1-mesa-dev libgles2-mesa-dev
    ```
 
-   (`libegl1-mesa-dev libgles2-mesa-dev` are additionally needed only for `npm run release`.)
+   (`osr-capture` links against `libEGL.so.1` and `libGLESv2.so.2`; on a desktop they are usually present
+   already, on a bare CI runner they are not.)
 5. **Git access to GitHub over HTTPS.** Seven dependencies are pinned to GitHub commits
    (`grandiose`, `libltc-wrapper`, `macadam`, `openmediatransport`, `osr-capture`, `slideshow`,
    `svelte-inspector`, plus transitive `open-in-editor`). npm resolves them to `git+ssh://` URLs, which
@@ -98,6 +99,7 @@ setup popup (language, data folder) and onboarding guide.
 | `npm run test:svelte`  | `svelte-check` type checking of the front end                                 |
 | `npm run test:format`  | Prettier check (`config/formatting/.prettierrc.yaml`)                         |
 | `npm run test:playwright` | Electron smoke test (`config/testing/start.test.ts`) against the last `npm run build`; needs a display (`xvfb-run` headless) and a one-time `npx playwright install chromium` |
+| `npm run test:playwright` (agenda) | `config/testing/agenda.test.ts` also runs under this command: imports the fixture PDF/XLSX/DOCX/PPTX, opens each viewer, adds a timer, saves and relaunches; the PPTX step needs LibreOffice (`soffice` on PATH, `libreoffice-impress`) and is skipped without it |
 | `npm run lint`         | ESLint + stylelint with `--fix`                                               |
 | `npm run pack`         | Unpacked distributable via electron-builder (`dist/`)                        |
 

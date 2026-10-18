@@ -1,5 +1,6 @@
 import type { ICommonTagsResult } from "music-metadata"
 import type { ContentProviderId } from "../../electron/contentProviders/base/types"
+import type { DocumentItemData } from "../../frontend/agenda/agenda"
 import type { RtmpStatus } from "../Output"
 import type { TrimmedShows } from "../Show"
 
@@ -30,6 +31,7 @@ export enum ToMain {
     GET_DYNAMIC_VALUES = "GET_DYNAMIC_VALUES",
     // Main
     IMPORT2 = "IMPORT2",
+    DOCUMENTS_IMPORTED = "DOCUMENTS_IMPORTED",
     SHOW2 = "SHOW2",
     SAVE2 = "SAVE2",
     REFRESH_SHOWS2 = "REFRESH_SHOWS2",
@@ -62,6 +64,7 @@ export interface ToMainSendPayloads {
     [ToMain.AUDIO_METADATA]: { filePath: string; metadata: ICommonTagsResult }
     [ToMain.GET_DYNAMIC_VALUES]: string[]
     ///
+    [ToMain.DOCUMENTS_IMPORTED]: { items: { id: string; name: string; type: "document"; data: DocumentItemData }[]; failed: { path: string; reason: string }[] }
     [ToMain.IMPORT2]: { channel: string; data: ({ content: Buffer | string | object; name?: string; extension?: string } | string)[] }
     [ToMain.SHOW2]: { error?: string; err?: NodeJS.ErrnoException; id: string }
     [ToMain.SAVE2]: { closeWhenFinished: boolean; customTriggers: any }

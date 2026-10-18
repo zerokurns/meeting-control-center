@@ -7,7 +7,7 @@
     import MediaPreview from "../media/MediaPreview.svelte"
     import OverlayPreview from "../overlay/OverlayPreview.svelte"
     import EffectPreview from "../effect/EffectPreview.svelte"
-    import PdfPreview from "../pdf/PdfPreview.svelte"
+    import DocumentPreview from "../document/DocumentPreview.svelte"
     import Slides from "../Slides.svelte"
 
     export let show: ProjectShowRef
@@ -35,8 +35,8 @@
     <div class="outline" style="height: 250px;" class:active={currentOutput?.out?.effects?.includes(show.id)}>
         <EffectPreview {show} />
     </div>
-{:else if type === "pdf"}
-    <PdfPreview {show} index={show.index || 0} />
+{:else if type === "pdf" || type === "document"}
+    <DocumentPreview {show} index={show.index || 0} />
     <!-- ppt, screen, ndi -->
 {:else if type === "folder"}
     <FolderShow path={show.id} index={show.index || 0} />

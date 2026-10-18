@@ -18,7 +18,7 @@
     import Background from "./layers/Background.svelte"
     import Overlay from "./layers/Overlay.svelte"
     import Overlays from "./layers/Overlays.svelte"
-    import PdfOutput from "./layers/PdfOutput.svelte"
+    import DocumentOutput from "./layers/DocumentOutput.svelte"
     import SceneMedia from "./layers/SceneMedia.svelte"
     import SlideContent from "./layers/SlideContent.svelte"
     import Window from "./Window.svelte"
@@ -343,6 +343,7 @@
     // CLEARING
     $: if (slide !== undefined || styleId || layers || sceneHideLayers !== undefined) updateSlide()
     let actualSlide: OutSlide | null = null
+    $: isDocumentOut = actualSlide?.type === "pdf" || actualSlide?.type === "document"
     let actualSlideData: SlideData | null = null
     let actualCurrentSlide: Slide | null = null
     let actualCurrentLineId: string | undefined = undefined
@@ -382,7 +383,7 @@
 
 <Zoomed id={outputId} background={backgroundColor} checkered={(preview || mirror) && backgroundColor === "transparent"} backgroundDuration={transitions.media?.type === "none" ? 0 : (transitions.media?.duration ?? 800)} align={alignPosition} center {style} {resolution} styleIdOverride={styleId} {mirror} {cropping} bind:ratio>
     <!-- always show style background (behind other backgrounds) -->
-    {#if styleBackground && actualSlide?.type !== "pdf"}
+    {#if styleBackground && !isDocumentOut}
         <Background data={styleBackgroundData} {outputId} transition={transitions.media} {currentStyle} {slideFilter} {ratio} animationStyle={animationData.style?.background || ""} mirror />
     {/if}
 
@@ -413,9 +414,9 @@
     {/if}
 
     <!-- slide -->
-    {#if actualSlide?.type === "pdf" && layers.includes("background")}
+    {#if isDocumentOut && actualSlide && layers.includes("background")}
         <span style="zoom: {1 / ratio};">
-            <PdfOutput slide={actualSlide} {currentStyle} transition={slideMediaTransition} />
+            <DocumentOutput slide={actualSlide} transition={slideMediaTransition} />
         </span>
     {:else if actualSlide?.type === "ppt" && layers.includes("slide")}
         <span style="zoom: {1 / ratio};">
@@ -423,7 +424,7 @@
                 <Window id={actualSlide?.screen?.id} class="media" style="width: 100%;height: 100%;" />
             {/if}
         </span>
-    {:else if actualSlide && actualSlide?.type !== "pdf"}
+    {:else if actualSlide && !isDocumentOut}
         <SlideContent {outputId} outSlide={actualSlide} isClearing={isSlideClearing} slideData={actualSlideData} currentSlide={actualCurrentSlide} {currentStyle} {animationData} currentLineId={actualCurrentLineId} {lines} {ratio} {mirror} {preview} transition={textTransition} transitionEnabled={!mirror || preview} styleIdOverride={styleIdOverride || sceneStyleId} refreshCounter={slideRemountCounter} />
 
         <!-- metadata -->

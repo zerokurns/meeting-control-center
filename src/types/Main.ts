@@ -343,6 +343,7 @@ export type Popups =
     | "conditions"
     | "translate"
     | "next_timer"
+    | "timer_item"
     | "display_duration"
     | "manage_tags"
     | "about"

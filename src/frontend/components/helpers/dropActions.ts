@@ -11,7 +11,8 @@ import { changeLayout, changeSlideGroups } from "../../show/slides"
 import { activeDrawerTab, activeEdit, activePage, activePopup, activeProject, activeShow, alertMessage, audioFolders, audioStreams, drawerTabsData, editingProjectTemplate, effectsLibrary, media, mediaFolders, overlays, playerVideos, projects, projectTemplates, scenes, shows, showsCache, slidesOptions, templates, timers } from "../../stores"
 import { newToast } from "../../utils/common"
 import { getAccess } from "../../utils/profile"
-import { audioExtensions, imageExtensions, mediaExtensions, presentationExtensions, videoExtensions } from "../../values/extensions"
+import { audioExtensions, imageExtensions, mediaExtensions, videoExtensions } from "../../values/extensions"
+import { acceptedDocumentExtensions } from "../../viewers/registry"
 import { actionData } from "../actions/actionData"
 import { addSlideAction, getActionTriggerId, isMatchingSlideAction } from "../actions/actions"
 import { getVimeoData, getYouTubeData, trimPlayerId } from "../drawer/player/playerHelper"
@@ -145,7 +146,7 @@ export const dropActions = {
         let data = drag.data
         if (drag.id === "media" || drag.id === "files") {
             const extraFiles: string[] = []
-            const pptFiles: string[] = []
+            const documentFiles: string[] = []
             const projectFiles: string[] = []
 
             data = data
@@ -164,6 +165,12 @@ export const dropActions = {
                         return
                     }
 
+                    // documents (pdf, word, excel, powerpoint, …) are copied into the data folder
+                    if (acceptedDocumentExtensions().includes(extension)) {
+                        documentFiles.push(path)
+                        return null
+                    }
+
                     if (drag.id === "files" && !files[drop.id].includes(extension)) {
                         extraFiles.push(path)
                         return null
@@ -176,11 +183,6 @@ export const dropActions = {
 
                     const type: string = getMediaType(extension)
 
-                    if (type === "ppt") {
-                        pptFiles.push(path)
-                        return null
-                    }
-
                     const name: string = a.name || getFileName(path)
                     return { name: removeExtension(name), id: path, type }
                 })
@@ -188,8 +190,8 @@ export const dropActions = {
 
             // add folders
             if (extraFiles.length) projectDropFolders(extraFiles, drop.index)
-            // auto convert PPT to slides
-            if (pptFiles.length) sendMain(Main.IMPORT_FILES, { id: "powerpoint", paths: pptFiles })
+            // copy documents into the data folder (converted to PDF with LibreOffice when needed)
+            if (documentFiles.length) sendMain(Main.IMPORT_DOCUMENTS, { paths: documentFiles, extensions: acceptedDocumentExtensions() })
             // iport projects
             if (projectFiles.length) sendMain(Main.IMPORT_FILES, { id: "freeshow_project", paths: projectFiles })
         } else if (drag.id === "urls") {
@@ -562,11 +564,10 @@ export function addDrawerFolder(file: any, type: "media" | "audio") {
 }
 
 // "show", "project"
-const projectExtra = ["pdf", ...presentationExtensions]
 const fileDropExtensions = [...imageExtensions, ...videoExtensions, ...audioExtensions]
 
 const files = {
-    project: [...fileDropExtensions, ...projectExtra],
+    project: fileDropExtensions,
     slides: fileDropExtensions,
     slide: fileDropExtensions,
     templates: mediaExtensions

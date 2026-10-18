@@ -62,6 +62,7 @@ import {
     selectShowByName,
     selectSlideByIndex,
     selectSlideByName,
+    setDocumentView,
     setNextSlideTimer,
     setShowAPI,
     setTemplate,
@@ -118,6 +119,7 @@ export type API_volume = { volume?: number; channelId?: string; useDB?: boolean 
 export type API_id_index = { id: string; index: number }
 export type API_slide = { showId?: string | "active"; slideId?: string }
 export type API_slide_index = { showId?: string; layoutId?: string; index: number }
+export type API_document_view = { unit?: number; zoom?: number; fit?: "page" | "width"; scrollY?: number }
 export type API_disable_slide = {
     showId?: string
     layoutId?: string
@@ -218,6 +220,7 @@ export const API_ACTIONS = {
     add_group: (data: API_group) => addGroup(data),
     set_template: (data: API_id) => setTemplate(data.id),
     set_next_slide_timer: (data: API_numval) => setNextSlideTimer(data.value),
+    set_document_view: (data: API_document_view) => setDocumentView(data),
     change_slide_timeline_speed: (data: API_numval) => slideTimelineSpeedMultiplier.set(data.value ?? 1),
 
     // PRESENTATION

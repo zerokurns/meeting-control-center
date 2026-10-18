@@ -23,6 +23,7 @@ import { importShow } from "../data/import"
 import { save } from "../data/save"
 import { _store, appDataPath, config, createStores, getStore, getStoreValue, setStoreValue } from "../data/store"
 import { captureSlide, doesMediaExist, getThumbnail, getThumbnailFolderPath, pdfToImage, saveImage } from "../data/thumbnails"
+import { importDocuments } from "../document/importDocument"
 import { OutputHelper } from "../output/OutputHelper"
 import { pptToPdf } from "../output/ppt/pptToPdf"
 import { getPresentationApplications, presentationControl, startSlideshow } from "../output/ppt/presentation"
@@ -77,6 +78,7 @@ export const mainResponses: MainResponses = {
     [Main.DELETE_BACKUP]: (data) => deleteBackup(data),
     [Main.IMPORT]: (data) => startImport(data),
     [Main.IMPORT_FILES]: (data) => importFiles(data),
+    [Main.IMPORT_DOCUMENTS]: (data) => importDocuments(data),
     [Main.SHOW]: (data) => loadShow(data),
     // MAIN
     [Main.SHOWS]: (() => loadShowsAsync()) as any,

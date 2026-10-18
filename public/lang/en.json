@@ -575,6 +575,13 @@
         "midi_no_slide": "Received trigger to start slide, but no slide found at index:",
         "midi_no_velocity": "Received MIDI signal, but no velocity, defaults to first index."
     },
+    "agenda": {
+        "document": "Document",
+        "spreadsheet": "Spreadsheet",
+        "timer": "Timer",
+        "import_failed": "Could not import document",
+        "converting": "Converting to PDF"
+    },
     "new": {
         "create": "Create new",
         "show": "New show",
@@ -586,6 +593,8 @@
         "style": "New style",
         "profile": "New profile",
         "timer": "New timer",
+        "document": "Document",
+        "timer_item": "Timer",
         "variable": "New variable",
         "audio_stream": "New audio stream",
         "category": "New category",

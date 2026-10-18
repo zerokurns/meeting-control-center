@@ -74,6 +74,7 @@ import TemplateStyleOverrides from "../components/main/popups/TemplateStyleOverr
 import Timecode from "../components/main/popups/Timecode.svelte"
 import TimelineSettings from "../components/main/popups/TimelineSettings.svelte"
 import Timer from "../components/main/popups/Timer.svelte"
+import TimerItemPicker from "../components/main/popups/TimerItemPicker.svelte"
 import Transition from "../components/main/popups/Transition.svelte"
 import Unsaved from "../components/main/popups/Unsaved.svelte"
 import Variable from "../components/main/popups/Variable.svelte"
@@ -132,6 +133,7 @@ export const popups: { [key in Popups]: ComponentType } = {
     conditions: Conditions,
     translate: Translate,
     next_timer: NextTimer,
+    timer_item: TimerItemPicker,
     display_duration: DisplayDuration,
     manage_tags: ManageTags,
     about: About,

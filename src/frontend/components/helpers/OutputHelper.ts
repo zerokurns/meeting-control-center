@@ -10,7 +10,7 @@ import { playFolder, togglePlayingMedia } from "../../utils/shortcuts"
 import { openProjectItem } from "../show/project"
 import { clone } from "./array"
 import { getAllActiveOutputIds, isOutputBound, setOutput } from "./output"
-import { checkActionTrigger, getFewestOutputLines, getItemWithMostLines, playPdf, updateOut } from "./showActions"
+import { checkActionTrigger, getFewestOutputLines, getItemWithMostLines, playDocument, updateOut } from "./showActions"
 import { _show } from "./shows"
 import { runActionId } from "../actions/actions"
 
@@ -293,11 +293,14 @@ export class OutputHelper {
 
         const outSlide = out.slide || null
 
-        if (item.type === "pdf") {
+        if (item.type === "pdf" || item.type === "document") {
             if (outSlide?.id !== item.id) return false
-            if (!outSlide?.pages || typeof outSlide.page !== "number") return false
+            // legacy outputs use page/pages instead of unit/units
+            const unit = outSlide?.unit ?? outSlide?.page
+            const units = outSlide?.units ?? outSlide?.pages
+            if (!units || typeof unit !== "number") return false
             if (options.playNext) return false // auto timer (might loop)
-            return next ? outSlide.page + 1 >= outSlide.pages : outSlide.page <= 0
+            return next ? unit + 1 >= units : unit <= 0
         }
 
         // if (item.type === "folder") return false
@@ -534,9 +537,9 @@ export class OutputHelper {
         let outSlide = out.slide || null
 
         // PDF
-        if (item.type === "pdf") {
+        if (item.type === "pdf" || item.type === "document") {
             if (!options.playNext && outSlide?.id !== item.id) outSlide = item
-            playPdf(outSlide, next, options.playNext)
+            playDocument(outSlide, next, options.playNext)
             return
         }
 
