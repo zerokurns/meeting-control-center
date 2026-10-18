@@ -1,9 +1,9 @@
 [Desktop Entry]
-Name=FreeShow
-Exec=freeshow %U
+Name=Meeting Control Center
+Exec=meeting-control-center %U
 Terminal=false
 Type=Application
 Icon=${SNAP}/meta/gui/icon.png
-StartupWMClass=FreeShow
+StartupWMClass=Meeting Control Center
 Comment=Show song lyrics and more for free!
 Categories=AudioVideo;

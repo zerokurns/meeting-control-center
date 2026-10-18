@@ -1,7 +1,7 @@
 {
     "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-    "name": "RemoteShow",
-    "short_name": "RemoteShow",
+    "name": "MCC Remote",
+    "short_name": "MCC Remote",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#242832",

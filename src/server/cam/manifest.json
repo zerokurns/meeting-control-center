@@ -1,7 +1,7 @@
 {
     "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-    "name": "CamShow",
-    "short_name": "CamShow",
+    "name": "MCC Camera",
+    "short_name": "MCC Camera",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#242832",

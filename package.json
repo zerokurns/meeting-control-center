@@ -1,11 +1,13 @@
 {
-    "name": "freeshow",
+    "name": "meeting-control-center",
+    "productName": "Meeting Control Center",
     "version": "1.6.7-beta.2",
     "private": true,
     "main": "build/electron/index.js",
-    "description": "Show song lyrics and more for free!",
-    "repository": "git@github.com:ChurchApps/FreeShow.git",
-    "author": "ChurchApps <support@livecs.org>",
+    "description": "Meeting Control Center: a presenter for virtual and hybrid meetings (FreeShow fork)",
+    "repository": "https://github.com/zerokurns/meeting-control-center",
+    "homepage": "https://github.com/zerokurns/meeting-control-center",
+    "author": "Eric Kearns",
     "license": "GPL-3.0",
     "engines": {
         "node": ">=22.12.0"
