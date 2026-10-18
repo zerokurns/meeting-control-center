@@ -1,6 +1,5 @@
 {
     "main": {
-        "welcome": "Welcome",
         "quit": "Išeiti",
         "docs": "Dokumentacija",
         "about": "Apie",
@@ -27,7 +26,6 @@
         "skip": "Praleisti"
     },
     "titlebar": {
-        "file": "Failas",
         "edit": "Taisa",
         "view": "Rodinys",
         "help": "Pagalba"
@@ -53,8 +51,6 @@
         "mail": "Contact via email",
         "support": "Jei esate dėkingi už šį projektą, apsvarstykite galimybę jį paremti",
         "assets": "Naudotos pagalbinės priemonės",
-        "libraries": "Naudotos bibliotekos",
-        "thanks": "Dėkojame",
         "new_update": "Yra prieinamas naujas atnaujinimas",
         "download": "Norėdami atnaujinti programą paleiskite ją iš naujo arba apsilankykite freeshow.app, kad atsisiųstumėte rankiniu būdu",
         "changes": "Kas naujo"
@@ -62,18 +58,10 @@
     "tooltip": {
         "project": "Create a new project where you can add and arrange shows.",
         "show": "Create a new show where you can add song lyrics, presentations and media.",
-        "groups": "All the groups in the current show and all the global groups. Click or drag them to add them to the current layout.",
         "layout": "Add transitions and next timers to slides in current layout.",
-        "media": "All media in current show. Show them, or drag them to current layout.",
-        "metadata": "Edit metadata for current show.",
         "notes": "Rašykite pastabas.",
-        "text": "Taisyti visų pažymėtų elementų turinį.",
-        "item": "Taisyti visus pažymėtus elementus.",
         "items": "Pridėti ir išdėstyti elementus.",
-        "slide": "Taisyti dabartinę skaidrę.",
-        "filters": "Keisti pasirinkto elemento išvaizdą.",
-        "options": "Daugiau parinkčių.",
-        "scripture": "Laikykite nuspaudę Ctrl/Cmd arba Shift norėdami pasirinkti kelias eilutes."
+        "options": "Daugiau parinkčių."
     },
     "tips": {
         "trigger": "Paleidikliai dažnai yra naudojami HTTP užklausų siuntimui siekiant keisti išankstines kameros parinktis.",
@@ -96,7 +84,6 @@
         "recording": "Įrašinėjimas",
         "clock": "Laikrodis",
         "rounded": "Apvalus",
-        "call": "Vaizdo skambutis",
         "header": "Antraštė",
         "text": "Tekstas",
         "big": "Didelis",
@@ -105,33 +92,22 @@
         "bold": "Pusjuodis"
     },
     "create_show": {
-        "web": "Paieška internete",
-        "search_web": "Ieškoti giesmės internete",
-        "search_results": "Paieškos rezultatai",
-        "block": "Užblokuoti",
         "more_options": "Daugiau parinkčių",
-        "auto_groups": "Automatiškai priskirti grupes",
         "format_new_show": "Formatuoti tekstą",
-        "format_new_show_tip": "Tobulinti teksto formatą naudojant automatinį rašymą iš didžiųjų raidžių, priekinių ir galinių tarpų šalinimą, skaidymą ir kt.",
         "split_lines": "Daugiausiai eilučių vienoje skaidrėje",
-        "split_lines_tip": "Numbers of lines allowed per slide before auto splitting",
         "quick_lyrics": "Greiti giesmės žodžiai",
         "quick_lyrics_tip": "Įdėkite tekstą arba rašykite rankiniu būdu",
-        "quick_lyrics_example_tip": "Rašykite čia giesmės žodžius arba kokį nors tekstą",
-        "quick_lyrics_example_text": "Eilutė",
         "empty": "Empty show",
         "exists": "Found an existing show with the same name",
         "slideshow": "Skaidrių rodymas"
     },
     "preview": {
-        "_previous_show": "Previous show",
         "_previous_slide": "Ankstesnė skaidrė",
         "_lock": "Užrakinti išvestį",
         "_unlock": "Atrakinti išvestį",
         "_start": "Start show",
         "_update": "Atnaujinti išvestį",
         "_next_slide": "Kita skaidrė",
-        "_next_show": "Next show",
         "_hide_preview": "Slėpti peržiūrą",
         "show_preview": "Rodyti peržiūrą",
         "restore_output": "Atkurti išvestį",
@@ -144,7 +120,6 @@
         "to_start": "Eiti į pradžią",
         "nextTimer": "Perjungimo į kitą skaidrę laikmatis",
         "lock": "Užrakinti",
-        "unlock": "Atrakinti",
         "test_pattern": "Bandomasis šablonas"
     },
     "clear": {
@@ -173,8 +148,6 @@
     "media": {
         "_loop": "Atkurti cikliškai",
         "play": "Atkurti",
-        "play_multiple": "Play multiple",
-        "toggle_shuffle": "Toggle shuffle",
         "next": "Kitas",
         "previous": "Ankstesnis",
         "play_no_audio": "Atkurti be garso",
@@ -187,7 +160,6 @@
         "back10": "Atsukti 10 sekundžių atgal",
         "forward10": "Persukti 10 sekundžių pirmyn",
         "volume": "Garsis",
-        "gain": "Stiprinimas",
         "speed": "Greitis",
         "flip": "Veidrodinis atspindys",
         "flip_horizontally": "Apversti horizontaliai",
@@ -208,24 +180,13 @@
     },
     "audio": {
         "settings": "Garso nuostatos",
-        "playlist_settings": "Grojaraščio nuostatos",
         "custom_output": "Tinkinta garso išvestis",
         "mute_when_video_plays": "Nutildyti, kai atkuriamas vaizdo įrašas",
         "allow_gaining": "Leisti stiprinimą",
-        "allow_gaining_tip": "Leisti pagarsinti daugiau kaip 100% (Gali sukelti iškraipymus)",
         "pre_fader_volume_meter": "Pre fader volume meter",
-        "mixer": "Maišiklis",
-        "metronome": "Metronomas",
-        "toggle_metronome": "Perjungti metronomą",
-        "use_metadata_bpm": "Use BPM from metadata",
         "tempo": "Tempas",
-        "bpm": "BPM",
-        "beats": "Beats",
         "type_music": "Music",
-        "type_effect": "Effect",
-        "unknown_artist": "Nežinomas atlikėjas",
-        "unknown_title": "Nežinomas pavadinimas",
-        "unknown_album": "Nežinomas albumas"
+        "type_effect": "Effect"
     },
     "menu": {
         "show": "Show",
@@ -258,7 +219,6 @@
         "layouts": "No layouts",
         "player": "No videos",
         "groups": "No groups",
-        "events": "No events",
         "text": "Parašykite ką nors",
         "timers": "No timers",
         "input": "Missing value in input",
@@ -270,10 +230,8 @@
         "shows": "Shows",
         "show": "Show",
         "slide": "Slide",
-        "lyrics": "Lyrics",
         "end": "Pabaiga",
         "no_output": "No output",
-        "remember": "Prisiminti mane",
         "loading": "Įkeliama...",
         "submit": "Pateikti",
         "password": "Slaptažodis",
@@ -284,15 +242,12 @@
         "no_show": "Could not find show",
         "no_layouts": "Nepavyko rasti jokių išdėstymų",
         "load": "Nepavyko įkelti",
-        "bible": "Nepavyko rasti vietinio Šventojo Rašto",
         "import": "Nepavyko importuoti",
-        "bible_api": "Nepavyko įkelti Šventojo Rašto iš „API.Bible“, ar esate prisijungę prie interneto?",
         "not_found": "Nerasta",
         "display": "Nepavyko dabartiniame ekrane atvaizduoti išvesties lango",
         "keep_one_layout": "Privalote turėti bent vieną išdėstymą",
         "video_unavailable": "Gaunate pranešimą, kad vaizdo įrašas neprieinamas? Vaizdo įrašo autorius išjungė galimybę įterpti vaizdo įrašus.",
         "folder_exists": "Šis aplankas jau yra",
-        "uri": "Nepavyko išnagrinėti garso įrašo pavadinimo, pervadinkite failą",
         "ip": "Nepavyko gauti jūsų įrenginio IP adreso, eikite į kompiuterio belaidžio tinklo (Wi-Fi) nuostatas, kad rastumėte savo vietinį IPv4 adresą."
     },
     "meta": {
@@ -489,27 +444,16 @@
         "saved": "Įrašyta",
         "error_media": "Nepavyko gauti medijos.",
         "empty_styles": "No styles",
-        "chapter_undefined": "Šioje knygoje nėra {} skyriaus.",
-        "verse_undefined": "Šiame skyriuje nėra {} eilutės.",
         "recording_started": "Recording started!",
         "recording_stopped": "Recording stopped!",
         "starting_action": "Pradedamas veiksmas",
-        "less_than_minute": "po mažiau nei minutės.",
-        "less_than_seconds": "po mažiau nei {} sek.",
-        "now": "dabar!",
         "template_applied_globally": "This template is already applied to the show globally.",
         "unsupported_video": "Nepalaikomas vaizdo įrašas!",
-        "no_video_id": "Nėra vaizdo įrašo ID",
         "no_name": "No name",
-        "reverting_setting": "Reverting this change in {} seconds, enable again to make the change stay!",
-        "reverted": "Setting reverted! Only enable again if you did not have any problems.",
         "media_replaced": "Missing media file replaced with match.",
-        "lyrics_undefined": "Nepavyko rasti giesmės žodžių!",
-        "lyrics_copied": "Giesmės žodžiai nukopijuoti iš ",
         "one_output": "Privalote turėti bent vieną aktyvią išvestį!",
         "empty_cache": "Podėlis yra tuščias.",
         "deleted_cache": "Ištrintas medijos miniatiūrų podėlis.",
-        "no_songswords_easyworship": "Trūksta SongsWords.db failo.",
         "delete_shows_empty": "No shows to delete.",
         "reached_end": "Pasiekta pabaiga!",
         "output_capture_enabled": "Output screen capture enabled, this may cause performance issues. Only use if needed!",
@@ -527,20 +471,14 @@
         "section": "New section",
         "timer": "Naujas laikmatis",
         "variable": "Naujas kintamasis",
-        "trigger": "Naujas paleidiklis",
         "audio_stream": "Naujas garso srautas",
-        "playlist": "Naujas grojaraštis",
         "category": "Nauja kategorija",
         "private": "New private show",
         "folder": "Naujas aplankas",
         "slide": "Nauja skaidrė",
         "overlay": "Nauja perdanga",
         "template": "Naujas šablonas",
-        "scripture": "Naujas Šventasis Raštas",
-        "collection": "Naujas rinkinys",
         "action": "Naujas veiksmas",
-        "event": "Naujas įvykis",
-        "event_action": "Naujas suplanuotas veiksmas",
         "effect": "Naujas efektas"
     },
     "show": {
@@ -558,8 +496,6 @@
         "locked_info": "This show has been locked for editing. Unlock it again in the shows drawer.",
         "slide_template": "Skaidrės šablonas",
         "source": "Šaltinis",
-        "artist": "Atlikėjas",
-        "song": "Giesmė",
         "delete_manual": "Manual check",
         "delete_match": "Delete if exact match",
         "delete_keep_last_modified": "Delete all except last modified",
@@ -727,9 +663,6 @@
         "id_select_overlay": "Start overlay",
         "change_volume": "Keisti garsį",
         "start_audio_stream": "Start audio stream",
-        "start_playlist": "Start playlist",
-        "playlist_next": "Kitas takelis grojaraštyje",
-        "start_metronome": "Start metronome",
         "id_start_timer": "Paleisti laikmatį",
         "start_slide_timers": "Paleisti aktyvioje skaidrėje laikmačius",
         "id_select_output_style": "Pasirinkti išvesties stilių",
@@ -787,22 +720,12 @@
         "use_duration_tip": "Naudoti trukmės laiką, o ne laiko žymų laiką"
     },
     "animate": {
-        "change": "Keisti",
-        "set": "Set",
-        "wait": "Laukti",
-        "background": "fono",
-        "text": "teksto",
-        "item": "elemento",
-        "to": "į",
-        "for": "laikotarpiui",
-        "seconds": "sek."
+        "wait": "Laukti"
     },
     "cloud": {
-        "info": "Sync files with Google Drive for backups, or if you work on multiple computers.",
         "tip_api": "Jūs turite pateikti savo nuosavą nemokamą „Google“ API raktą, kad programa galėtų automatiškai išsiųsti failus į jūsų „Google“ diską.",
         "tip_how": "Nežinote, kaip jį gauti?",
         "tip_guide": "Spustelėkite čia norėdami skaityti vadovą.",
-        "enable": "Automatic sync on startup and close",
         "disable_upload": "Išjungti duomenų išsiuntimą",
         "media_id": "Media path ID",
         "google_drive_api": "„Google“ API paslaugos paskyros raktas",
@@ -810,13 +733,7 @@
         "update_key": "Atnaujinti raktų failą",
         "enable_custom_folder_id": "Use custom folder ID",
         "main_folder": "Set main folder manually",
-        "media_folder": "Cloud media folder",
-        "reconnect": "Prisijungti iš naujo",
-        "sync": "Sinchronizuoti dabar",
-        "choose_method_tip": "There is existing data in the cloud. Please choose to either upload from local or download from cloud. The other location will be overwritten.",
-        "local": "Local",
-        "syncing": "Syncing to cloud",
-        "sync_complete": "Sync completed"
+        "media_folder": "Cloud media folder"
     },
     "export": {
         "export": "Eksportuoti",
@@ -852,7 +769,6 @@
         "setTag": "Set tag",
         "filterByTags": "Filter by tags",
         "addToProject": "Add to project",
-        "add_to_show": "Add to show",
         "lockForChanges": "Lock for editing",
         "use_as_archive": "Mark as archive",
         "newCategory": "Nauja kategorija",
@@ -874,8 +790,6 @@
     },
     "tools": {
         "notes": "Pastabos",
-        "--schedule": "Schedule",
-        "--actions": "Veiksmai",
         "groups": "Grupės",
         "metadata": "Metaduomenys",
         "media": "Medija",
@@ -1071,9 +985,6 @@
         "overflow_blink": "Mirkčioti, kai viršijama",
         "preview": "Preview",
         "clock": "Laikas",
-        "event": "Event",
-        "no_events": "There are no upcomming events",
-        "edit": "Edit",
         "create": "Create",
         "line": "Linija",
         "mask": "Kaukė"
@@ -1114,9 +1025,7 @@
         "start_action": "Pradėti veiksmą",
         "use_default_values": "Naudoti numatytąsias reikšmes",
         "auto_values": "Atnaujinti reikšmes, kai gaunama MIDI įvestis",
-        "tip_velocity": "Norėdami išjungti nustatykite greitį „-1“.",
-        "tip_action": "To activate specific slides, right click any slide and choose the midi in action.",
-        "tip_index_by_velocity": "Index is determined by the received velocity, starting at 0."
+        "tip_velocity": "Norėdami išjungti nustatykite greitį „-1“."
     },
     "emitters": {
         "emitter": "Emitter",
@@ -1128,24 +1037,10 @@
         "data": "Data"
     },
     "draw": {
-        "focus": "Focus",
-        "pointer": "Rodomoji lazdelė",
-        "zoom": "Mastelio keitimas",
-        "fill": "Užpildymas",
-        "paint": "Piešimas",
-        "particles": "Dalelės",
         "color": "Spalva",
         "opacity": "Nepermatomumas",
         "size": "Dydis",
-        "radius": "Kampo spindulys",
-        "glow": "Glow",
-        "hollow": "Hollow",
-        "hold": "Rodyti paspaudus",
-        "straight": "Tiesus",
-        "rainbow": "Rainbow",
-        "threed": "3D",
-        "dots": "Taškai",
-        "link_to_slide": "Link to slide"
+        "glow": "Glow"
     },
     "stage": {
         "stage_layout": "Stage layout",
@@ -1301,7 +1196,6 @@
         "name": "Name",
         "name_des": "Name Descending",
         "date": "Date",
-        "size": "Size",
         "type": "Type",
         "custom": "Custom"
     },
@@ -1334,21 +1228,7 @@
         "add_slides_from_show": "Include slides from show"
     },
     "scripture": {
-        "bibles": "Biblijos iš „API.Bible“",
-        "local": "Importuoti vietinį failą",
-        "supported_formats": "Palaikomi formatai:",
-        "max_verses": "Max verses per slide",
-        "verse_numbers": "Eilučių numeriai",
-        "verses_on_individual_lines": "Kiekviena Biblijos eilutė atskiroje eilutėje",
-        "divide_long_verses": "Padalyti ilgas eilutes",
-        "version": "Rodyti vertimo pavadinimą",
-        "reference": "Rodyti nuorodą",
-        "split_reference": "Split reference",
-        "combine_with_text": "Combine with text",
-        "first_slide_reference": "Reference on first slide",
-        "reference_at_bottom": "Move to bottom",
-        "red_jesus": "Jėzaus Kristaus žodžiai raudona spalva",
-        "search": "Ieškoti Biblijoje"
+        "bibles": "Biblijos iš „API.Bible“"
     },
     "filter": {
         "blur": "Suliejimas",
@@ -1382,8 +1262,6 @@
         "current_slide": "for current slide",
         "text": "Teksto perėjimas",
         "media": "Medijos perėjimas",
-        "slide_transition": "Skaidrės perėjimas",
-        "background_transition": "Fono perėjimas",
         "specific": "Įjungti konkretesnius perėjimus",
         "between": "Between",
         "in": "In",
@@ -1401,10 +1279,6 @@
     },
     "easings": {
         "linear": "Linear",
-        "ease": "Ease",
-        "ease-in": "Ease in",
-        "ease-out": "Ease out",
-        "ease-in-out": "Ease in & out",
         "elastic": "Elastic",
         "bounce": "Bounce",
         "back": "Jump",

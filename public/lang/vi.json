@@ -1,6 +1,5 @@
 {
     "main": {
-        "welcome": "Chào mừng",
         "quit": "Thoát",
         "docs": "Tài liệu",
         "about": "Giới thiệu",
@@ -12,7 +11,6 @@
         "system_open": "Mở trong hệ thống"
     },
     "titlebar": {
-        "file": "Tệp",
         "edit": "Chỉnh sửa",
         "view": "Xem",
         "help": "Trợ giúp"
@@ -33,8 +31,6 @@
         "help": "Bạn muốn giúp dịch thuật hoặc yêu cầu tính năng? Gửi email tới",
         "support": "Ủng hộ dự án?",
         "assets": "Tài nguyên đã sử dụng",
-        "libraries": "Thư viện đã sử dụng",
-        "thanks": "Cảm ơn tới",
         "new_update": "Đã có bản cập nhật mới",
         "download": "Khởi động lại ứng dụng để cập nhật, hoặc truy cập freeshow.app để tải xuống thủ công",
         "changes": "Có gì mới"
@@ -42,18 +38,10 @@
     "tooltip": {
         "project": "Tạo một dự án mới nơi bạn có thể thêm và sắp xếp các bản trình chiếu.",
         "show": "Tạo một bản trình chiếu mới nơi bạn có thể thêm lời bài hát, bài thuyết trình và phương tiện. Giữ Ctrl/Cmd để tạo bản trống.",
-        "groups": "Tất cả các nhóm trong bản trình chiếu hiện tại và tất cả các nhóm chung. Nhấp hoặc kéo để thêm chúng vào bố cục hiện tại.",
         "layout": "Thêm hiệu ứng chuyển tiếp và hẹn giờ tiếp theo cho các slide trong bố cục hiện tại.",
-        "media": "Tất cả phương tiện trong bản trình chiếu hiện tại. Hiển thị hoặc kéo chúng vào bố cục hiện tại.",
-        "metadata": "Chỉnh sửa siêu dữ liệu cho bản trình chiếu hiện tại.",
         "notes": "Viết ghi chú.",
-        "text": "Chỉnh sửa nội dung của tất cả các mục đã chọn.",
-        "item": "Chỉnh sửa tất cả các mục đã chọn.",
         "items": "Thêm và sắp xếp các mục.",
-        "slide": "Chỉnh sửa slide hiện tại.",
-        "filters": "Thay đổi giao diện của phần tử đã chọn.",
-        "options": "Thêm tùy chọn.",
-        "scripture": "Giữ Ctrl/Cmd hoặc Shift để chọn nhiều câu kinh thánh."
+        "options": "Thêm tùy chọn."
     },
     "tips": {
         "trigger": "Bộ kích hoạt thường được sử dụng để gửi yêu cầu HTTP nhằm thay đổi cài đặt sẵn của camera."
@@ -73,7 +61,6 @@
         "recording": "Ghi hình",
         "clock": "Đồng hồ",
         "rounded": "Bo tròn",
-        "call": "Cuộc gọi video",
         "header": "Tiêu đề",
         "text": "Văn bản",
         "big": "Lớn",
@@ -82,21 +69,17 @@
         "bold": "In đậm"
     },
     "create_show": {
-        "search_web": "Tìm kiếm bài hát trên web",
         "more_options": "Thêm tùy chọn",
         "format_new_show": "Định dạng văn bản",
-        "split_lines": "Số dòng",
-        "quick_lyrics_example_text": "Dòng"
+        "split_lines": "Số dòng"
     },
     "preview": {
-        "_previous_show": "Bản trình chiếu trước",
         "_previous_slide": "Slide trước",
         "_lock": "Khóa đầu ra",
         "_unlock": "Mở khóa đầu ra",
         "_start": "Bắt đầu trình chiếu",
         "_update": "Cập nhật đầu ra",
         "_next_slide": "Slide tiếp theo",
-        "_next_show": "Bản trình chiếu tiếp theo",
         "_hide_preview": "Ẩn xem trước",
         "show_preview": "Hiện xem trước",
         "restore_output": "Khôi phục đầu ra",
@@ -108,8 +91,7 @@
         "audio": "Âm thanh",
         "to_start": "Về đầu",
         "nextTimer": "Hẹn giờ slide tiếp theo",
-        "lock": "Khóa",
-        "unlock": "Mở khóa"
+        "lock": "Khóa"
     },
     "clear": {
         "all": "Xóa tất cả",
@@ -131,8 +113,6 @@
     "media": {
         "_loop": "Lặp lại",
         "play": "Phát",
-        "play_multiple": "Phát nhiều",
-        "toggle_shuffle": "Bật/Tắt phát ngẫu nhiên",
         "next": "Tiếp theo",
         "previous": "Trước đó",
         "play_no_filters": "Phát không có bộ lọc",
@@ -142,7 +122,6 @@
         "back10": "Lùi lại 10 giây",
         "forward10": "Tiến tới 10 giây",
         "volume": "Âm lượng",
-        "gain": "Khuếch đại",
         "speed": "Tốc độ",
         "show": "Hiển thị",
         "flip": "Lật",
@@ -189,7 +168,6 @@
         "stage_shows": "Không có bản trình chiếu sân khấu nào",
         "player": "Không có video",
         "groups": "Không có nhóm",
-        "events": "Không có sự kiện",
         "text": "Nhập nội dung nào đó",
         "timers": "Không có bộ hẹn giờ",
         "input": "Thiếu giá trị đầu vào",
@@ -201,10 +179,8 @@
         "shows": "Bản trình chiếu",
         "show": "Bản trình chiếu",
         "slide": "Slide",
-        "lyrics": "Lời bài hát",
         "end": "Kết thúc",
         "no_output": "Không có đầu ra",
-        "remember": "Ghi nhớ",
         "loading": "Đang tải...",
         "submit": "Gửi",
         "password": "Mật khẩu",
@@ -214,8 +190,6 @@
         "no_show": "Không thể tìm thấy bản trình chiếu",
         "no_layouts": "Không thể tìm thấy bất kỳ bố cục nào",
         "load": "Không thể tải",
-        "bible": "Không thể tìm thấy kinh thánh cục bộ",
-        "bible_api": "Không thể tải kinh thánh từ API.Bible, bạn có kết nối internet không?",
         "not_found": "Không tìm thấy",
         "display": "Không thể hiển thị cửa sổ đầu ra trên màn hình hiện tại",
         "keep_one_layout": "Bạn phải có ít nhất một bố cục",
@@ -375,24 +349,15 @@
         "saved": "Đã lưu",
         "error_media": "Không thể lấy phương tiện.",
         "empty_styles": "Không có kiểu dáng",
-        "chapter_undefined": "Chương {} không tồn tại trong sách này.",
-        "verse_undefined": "Câu {} không tồn tại trong chương này.",
         "recording_started": "Đã bắt đầu ghi hình!",
         "recording_stopped": "Đã dừng ghi hình!",
         "starting_show": "Đang bắt đầu trình chiếu",
-        "less_than_minute": "trong vòng chưa đầy một phút.",
-        "less_than_seconds": "trong vòng chưa đầy {} giây.",
-        "now": "ngay bây giờ!",
-        "no_video_id": "Không có ID video",
         "no_name": "Không có tên",
         "media_replaced": "Tệp phương tiện bị thiếu đã được thay thế bằng kết quả khớp.",
-        "lyrics_undefined": "Không thể tìm thấy lời bài hát nào!",
-        "lyrics_copied": "Đã sao chép lời bài hát từ Genius!",
         "no_pdf_linux": "Không thể xuất dưới dạng PDF trên Linux.",
         "one_output": "Bạn phải có ít nhất một đầu ra đang hoạt động!",
         "empty_cache": "Bộ nhớ cache trống.",
         "deleted_cache": "Đã xóa bộ nhớ cache hình thu nhỏ phương tiện.",
-        "no_songswords_easyworship": "Thiếu tệp SongsWords.db.",
         "delete_shows_empty": "Không có bản trình chiếu nào để xóa.",
         "midi_no_project": "Đã nhận lệnh thay đổi dự án, nhưng không tìm thấy dự án tại vị trí chỉ mục:",
         "midi_no_show": "Đã nhận lệnh bắt đầu slide, nhưng không có bản trình chiếu nào đang hoạt động.",
@@ -406,19 +371,14 @@
         "section": "Phần mới",
         "timer": "Hẹn giờ mới",
         "variable": "Biến số mới",
-        "trigger": "Bộ kích hoạt mới",
         "audio_stream": "Luồng âm thanh mới",
-        "playlist": "Danh sách phát mới",
         "category": "Danh mục mới",
         "private": "Bản trình chiếu riêng tư mới",
         "folder": "Thư mục mới",
         "slide": "Slide mới",
         "overlay": "Lớp phủ mới",
         "template": "Mẫu mới",
-        "scripture": "Kinh thánh mới",
-        "collection": "Bộ sưu tập mới",
-        "action": "Hành động mới",
-        "event": "Sự kiện mới"
+        "action": "Hành động mới"
     },
     "show": {
         "name": "Tên",
@@ -548,7 +508,6 @@
         "name_select_overlay": "Chọn lớp phủ theo tên",
         "change_volume": "Thay đổi âm lượng",
         "start_audio_stream": "Bắt đầu luồng âm thanh",
-        "start_playlist": "Bắt đầu danh sách phát",
         "start_slide_timers": "Bắt đầu hẹn giờ trên slide hiện tại",
         "id_select_output_style": "Chọn kiểu đầu ra theo ID",
         "change_output_style": "Đổi kiểu đầu ra",
@@ -558,35 +517,19 @@
         "run_action": "Chạy hành động"
     },
     "animate": {
-        "change": "Thay đổi",
-        "set": "Thiết lập",
-        "wait": "Chờ",
-        "background": "nền",
-        "text": "văn bản",
-        "item": "mục",
-        "to": "thành",
-        "for": "trong",
-        "seconds": "giây"
+        "wait": "Chờ"
     },
     "cloud": {
-        "info": "Đồng bộ hóa tệp với Google Drive để sao lưu, hoặc nếu bạn làm việc trên nhiều máy tính.",
         "tip_api": "Bạn phải cung cấp khóa API Google miễn phí của riêng mình để chương trình có thể tự động tải tệp lên Google Drive của bạn.",
         "tip_how": "Không biết cách lấy khóa?",
         "tip_guide": "Nhấp vào đây để xem hướng dẫn.",
-        "enable": "Đồng bộ tự động khi khởi động và khi đóng",
         "disable_upload": "Vô hiệu hóa tải dữ liệu lên",
         "media_id": "ID đường dẫn phương tiện",
         "google_drive_api": "Khóa tài khoản dịch vụ API của Google",
         "select_key": "Nhập tệp chứa khóa",
         "update_key": "Cập nhật tệp chứa khóa",
         "main_folder": "Thiết lập thư mục chính thủ công",
-        "media_folder": "Thư mục phương tiện trên đám mây",
-        "reconnect": "Kết nối lại",
-        "sync": "Đồng bộ ngay",
-        "choose_method_tip": "Đã có dữ liệu tồn tại trên đám mây. Vui lòng chọn tải lên từ máy tính cục bộ hoặc tải xuống từ đám mây. Vị trí còn lại sẽ bị ghi đè.",
-        "local": "Cục bộ",
-        "syncing": "Đang đồng bộ với đám mây",
-        "sync_complete": "Đồng bộ hoàn tất"
+        "media_folder": "Thư mục phương tiện trên đám mây"
     },
     "export": {
         "export": "Xuất",
@@ -630,8 +573,6 @@
     },
     "tools": {
         "notes": "Ghi chú",
-        "--schedule": "Lịch trình",
-        "--actions": "Hành động",
         "groups": "Nhóm",
         "metadata": "Siêu dữ liệu",
         "media": "Phương tiện",
@@ -780,9 +721,6 @@
         "overflow_color": "Màu khi bị tràn",
         "preview": "Xem trước",
         "clock": "Đồng hồ",
-        "event": "Sự kiện",
-        "no_events": "Không có sự kiện nào sắp tới",
-        "edit": "Chỉnh sửa",
         "create": "Tạo",
         "line": "Đường kẻ",
         "mask": "Mặt nạ"
@@ -806,26 +744,13 @@
         "start_action": "Hành động bắt đầu",
         "use_default_values": "Sử dụng giá trị mặc định",
         "auto_values": "Cập nhật giá trị khi nhận tín hiệu đầu vào MIDI",
-        "tip_velocity": "Thiết lập cường độ (velocity) thành -1 để vô hiệu hóa.",
-        "tip_action": "Để kích hoạt các slide cụ thể, nhấp chuột phải vào bất kỳ slide nào và chọn đầu vào midi trong hành động.",
-        "tip_index_by_velocity": "Chỉ mục được xác định bởi cường độ nhận được, bắt đầu từ 0."
+        "tip_velocity": "Thiết lập cường độ (velocity) thành -1 để vô hiệu hóa."
     },
     "draw": {
-        "focus": "Tiêu điểm",
-        "pointer": "Con trỏ",
-        "fill": "Lấp đầy",
-        "paint": "Sơn",
-        "particles": "Hạt (Particles)",
         "color": "Màu sắc",
         "opacity": "Độ mờ",
         "size": "Kích thước",
-        "radius": "Bán kính",
-        "glow": "Phát sáng",
-        "hollow": "Rỗng",
-        "hold": "Giữ",
-        "rainbow": "Cầu vồng",
-        "threed": "3D",
-        "dots": "Dấu chấm"
+        "glow": "Phát sáng"
     },
     "stage": {
         "slide": "Slide",
@@ -949,7 +874,6 @@
         "sort_by": "Sắp xếp theo",
         "name": "Tên",
         "date": "Ngày",
-        "size": "Kích thước",
         "type": "Loại",
         "custom": "Tùy chỉnh"
     },
@@ -983,15 +907,7 @@
     },
     "scripture": {
         "bibles": "Kinh thánh từ API.Bible",
-        "custom": "Hoặc tự nhập của bạn",
-        "max_verses": "Số câu tối đa mỗi slide",
-        "verse_numbers": "Số câu",
-        "version": "Hiển thị phiên bản",
-        "reference": "Hiển thị câu tham chiếu",
-        "combine_with_text": "Kết hợp với văn bản",
-        "reference_at_bottom": "Chuyển xuống dưới cùng",
-        "red_jesus": "Lời Chúa Giê-su màu đỏ",
-        "search": "Tìm kiếm trong Kinh thánh"
+        "custom": "Hoặc tự nhập của bạn"
     },
     "filter": {
         "blur": "Làm mờ",
@@ -1027,10 +943,6 @@
     },
     "easings": {
         "linear": "Đồng đều (Linear)",
-        "ease": "Êm ái (Ease)",
-        "ease-in": "Chậm dần vào (Ease in)",
-        "ease-out": "Chậm dần ra (Ease out)",
-        "ease-in-out": "Chậm dần vào & ra",
         "elastic": "Đàn hồi",
         "bounce": "Nảy",
         "back": "Nảy ngược",
