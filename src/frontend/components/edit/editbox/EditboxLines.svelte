@@ -16,7 +16,6 @@
     import { calculateShapeVerticalOffset, getShapeFloatSide } from "../scripts/shapeOutside"
     import autosize from "../scripts/autosize"
     import { getItemText, getLineText, getSelectionRange, setCaret } from "../scripts/textStyle"
-    import EditboxChords from "./EditboxChords.svelte"
     import { EditboxHelper } from "./EditboxHelper"
     import { EditboxPaste } from "./EditboxPaste"
 
@@ -30,8 +29,6 @@
     export let index: number
     export let editIndex = -1
     export let plain = false
-    export let chordsMode = false
-    export let chordsAction = ""
     export let isLocked = false
 
     let textElem: HTMLElement | undefined
@@ -71,7 +68,7 @@
         let s = ""
         clone(item?.lines)?.forEach((line) => {
             let align = (typeof line.align === "string" ? line.align : "").replaceAll(lineStyleBg, "").replaceAll(lineStyleRadius, "") + ";"
-            s += align + lineStyleBg + lineStyleRadius // + line.chords?.map((a) => a.key)
+            s += align + lineStyleBg + lineStyleRadius
             if (!line?.text) return
             if (!Array.isArray(line.text)) line.text = []
             line.text.forEach((a) => {
@@ -82,16 +79,6 @@
         // dont replace while typing
         // && (window.getSelection() === null || window.getSelection()!.type === "None")
         if (currentStyle.replaceAll(";", "") !== s.replaceAll(";", "") && !composing) getStyle()
-    }
-
-    let previousChords = ""
-    $: {
-        // chords updated! (needed to save chords so they don't get reset when changing the lines)
-        let newChords = JSON.stringify(item?.lines?.map((a) => a.chords?.map((a) => a.key)))
-        if (previousChords !== newChords) {
-            previousChords = newChords
-            getStyle()
-        }
     }
 
     $: lineGap = item?.specialStyle?.lineGap
@@ -405,8 +392,7 @@
             return
         }
 
-        // chords rebuild one span per character whenever the size changes, so never run those per frame
-        if (chordsMode || lastMeasureDuration > SLOW_MEASURE_MS || $special.optimizedMode) {
+        if (lastMeasureDuration > SLOW_MEASURE_MS || $special.optimizedMode) {
             if (autosizeTimeout) clearTimeout(autosizeTimeout)
             autosizeTimeout = setTimeout(() => {
                 autosizeTimeout = null
@@ -477,7 +463,6 @@
             currentStyle += align + lineStyleBg + lineStyleRadius
 
             let newLine = { align, text: [] as any[] }
-            let lineChords: any[] = []
 
             newLines.push(newLine)
 
@@ -537,33 +522,7 @@
                 newLines[pos].text.push(text)
 
                 currentStyle += style
-
-                // GET CHORDS
-                let storedChords = child.getAttribute("data-chords")
-                if (storedChords) {
-                    try {
-                        storedChords = JSON.parse(storedChords)
-                        lineChords.push(...storedChords)
-                    } catch (err) {
-                        return
-                    }
-                }
             })
-
-            // ADD BACK CHORDS
-            if (lineChords?.length) {
-                newLines[pos].chords = lineChords
-
-                // UPDATE/FIX CHORDS ON LINE BREAK (the browser clones the data-chords attributes when splitting a line)
-                const previousChordIds = newLines[pos - 1]?.chords?.map((a) => a.id) || []
-                const shared = (a) => previousChordIds.includes(a.id)
-                if (pos > 0 && newLines[pos].chords!.some(shared)) {
-                    let breakPoint = newLines[pos - 1].text.reduce((textLength, text) => (textLength += text.value.length), 0)
-
-                    newLines[pos - 1].chords = newLines[pos - 1].chords!.filter((a) => !shared(a) || a.pos < breakPoint)
-                    newLines[pos].chords = newLines[pos].chords!.filter((a) => !shared(a) || a.pos >= breakPoint).map((a) => (shared(a) && a.pos >= breakPoint ? { ...a, pos: a.pos - breakPoint } : a))
-                }
-            }
         })
 
         if (pasting) return newLines
@@ -736,29 +695,21 @@
 <svelte:window on:keydown={keydown} />
 
 {#if item?.lines}
-    <div bind:this={alignElem} class="align" class:chords={chordsMode} class:plain style={plain ? null : item.align || null}>
+    <div bind:this={alignElem} class="align" class:plain style={plain ? null : item.align || null}>
         {#if item.lines?.length < 2 && !getItemText(item).length}
             <span class="placeholder">
                 <p>
-                    {#if chordsMode}
-                        <T id="edit.chords" />
-                    {:else}
-                        <T id="empty.text" />
-                    {/if}
+                    <T id="empty.text" />
                 </p>
             </span>
         {/if}
         {#if isLocked}
             <div class="edit" class:hasShapeOutside={!!shapeOutside} style="{shapeOutside ? `--shape-outside: ${shapeOutside};--shape-float: ${shapeFloatSide};--shape-offset-top: ${shapeOffsetTop}px;` : ''}{plain ? '' : typeof item.align === 'string' ? item.align.replace('align-items', 'justify-content') : ''}">{@html html}</div>
         {:else}
-            {#if chordsMode && textElem}
-                <EditboxChords {item} {autoSize} {index} {ref} {chordsMode} {chordsAction} />
-            {/if}
             <div
                 bind:this={textElem}
                 on:mouseup={() => storeCurrentCaretPos()}
                 class="edit context {plain ? '#editbox_text' : '#edit_box__editbox_text'}"
-                class:hidden={chordsMode}
                 class:hasShapeOutside={!!shapeOutside}
                 class:autoSize={isAuto && autoSize && !plain}
                 contenteditable
@@ -775,7 +726,6 @@
                 bind:innerHTML={html}
                 style="{shapeOutside ? `--shape-outside: ${shapeOutside};--shape-float: ${shapeFloatSide};--shape-offset-top: ${shapeOffsetTop}px;` : ''}{isAuto && autoSize && !plain ? `--auto-size: ${autoSize}px;` : ''}{!plain ? lineStyleBox : ''}{plain ? '' : typeof item.align === 'string' ? item.align.replace('align-items', 'justify-content') : ''}"
                 class:height={item.lines?.length < 2 && !item.lines?.[0]?.text[0]?.value.length}
-                class:tallLines={chordsMode}
             />
             <!-- this did not work on mac: -->
             <!-- on:paste|preventDefault={paste} -->
@@ -794,9 +744,6 @@
 
         line-height: 1.5em;
         text-shadow: none;
-    }
-    .align.chords {
-        overflow: visible !important;
     }
 
     .edit:global(.invisible) {
@@ -843,9 +790,6 @@
         justify-content: center;
         /* align-items: center; */
     }
-    .edit.hidden {
-        visibility: hidden;
-    }
 
     /* Cutout Shape */
     .edit.hasShapeOutside {
@@ -876,10 +820,6 @@
     .edit :global(.break.normalWrap) {
         text-wrap: unset;
     }
-
-    /* .edit.tallLines {
-  line-height: 200px;
-} */
 
     .plain .edit {
         font-size: 1.5em;

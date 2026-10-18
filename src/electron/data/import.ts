@@ -1,15 +1,11 @@
-import Database from "better-sqlite3"
-import path, { join } from "path"
-import protobufjs from "protobufjs"
+import path from "path"
 import upath from "upath"
-// @ts-ignore (strange Rollup TS build problem, suddenly not realizing that the decleration exists)
-import MDBReader from "mdb-reader"
 // @ts-ignore
 import WordExtractor from "word-extractor"
 import { ToMain } from "../../types/IPC/ToMain"
 import { sendToMain } from "../IPC/main"
 import { pptToShow } from "../output/ppt/pptToShow"
-import { asyncPool, doesPathExist, getDataFolderPath, getExtension, readFileAsync, readFileBufferAsync } from "../utils/files"
+import { asyncPool, doesPathExist, getDataFolderPath, getExtension, readFileAsync } from "../utils/files"
 import { detectFileType } from "./bibleDetecter"
 import { filePathHashCode } from "./thumbnails"
 import { decompressZip, decompressZipStream, isZip } from "./zip"
@@ -41,52 +37,7 @@ const specialImports = {
         return data
     },
     pdf: (files: string[]) => files,
-    powerkey: (files: string[]) => files,
-    sqlite: async (files: string[]) => {
-        const data: FileData[] = []
-
-        for (const filePath of files) {
-            try {
-                const db = new Database(filePath, { readonly: true })
-                const tables: { [key: string]: any[] } = {}
-
-                // Get all table names
-                const tableNames = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").all() as { name: string }[]
-
-                // Get all data from each table
-                for (const { name } of tableNames) {
-                    tables[name] = db.prepare(`SELECT * FROM \`${name}\``).all()
-                }
-
-                db.close()
-                data.push({ content: tables })
-            } catch (err) {
-                console.error(err)
-            }
-        }
-
-        return data
-    },
-    mdb: async (files: string[]) => {
-        const data: FileData[] = []
-
-        await asyncPool(50, files, async (filePath) => await mdbToFile(filePath))
-
-        async function mdbToFile(filePath: string) {
-            const buffer = await readFileBufferAsync(filePath)
-            const reader = new MDBReader(buffer)
-            const tableNames = reader.getTableNames()
-
-            const dbData: any = {}
-            for (const tableName of tableNames) {
-                dbData[tableName] = reader.getTable(tableName).getData()
-            }
-
-            data.push({ content: dbData })
-        }
-
-        return data
-    }
+    powerkey: (files: string[]) => files
 }
 
 export async function importShow(id: string, files: string[] | null) {
@@ -94,13 +45,6 @@ export async function importShow(id: string, files: string[] | null) {
 
     let importId = id
     let data: (FileData | string)[] = []
-
-    const sqliteFile = id === "openlp" && files.find((a) => a.endsWith(".sqlite"))
-    if (sqliteFile) files = files.filter((a) => a.endsWith(".sqlite"))
-    if (id === "easyworship" || id === "softprojector" || sqliteFile) importId = "sqlite"
-    const mdbFile = id === "mediashout" && files.find((a) => a.endsWith(".mdb"))
-    if (mdbFile) files = files.filter((a) => a.endsWith(".mdb"))
-    if (mdbFile) importId = "mdb"
 
     if (id === "freeshow_project") {
         await importProject(files)
@@ -120,10 +64,6 @@ export async function importShow(id: string, files: string[] | null) {
     if (zipFiles.length) {
         data = await decompressZip(zipFiles)
         if (data.length) {
-            for (const fileData of data) {
-                const customContent = await checkSpecial(fileData as FileData)
-                if (customContent) (fileData as FileData).content = customContent
-            }
             sendToMain(ToMain.IMPORT2, { channel: id, data })
         }
         return
@@ -131,9 +71,9 @@ export async function importShow(id: string, files: string[] | null) {
 
     if (importId in specialImports) data = await specialImports[importId as keyof typeof specialImports](files)
     else {
-        // TXT | FreeShow | ProPresenter | VidoePsalm | OpenLP | OpenSong | XML Bible
+        // TXT | FreeShow | XML Bible
         await asyncPool(20, files, async (file) => {
-            const batchData = await readFile(file, "utf8", id)
+            const batchData = await readFile(file, "utf8")
             data.push(batchData)
         })
     }
@@ -148,15 +88,14 @@ export async function importShow(id: string, files: string[] | null) {
     sendToMain(ToMain.IMPORT2, { channel: id, data })
 }
 
-async function readFile(filePath: string, encoding: BufferEncoding = "utf8", id?: string) {
+async function readFile(filePath: string, encoding: BufferEncoding = "utf8") {
     let content = ""
 
     const name: string = getFileName(filePath) || ""
     const extension: string = getExtension(filePath)
 
     try {
-        if (id === "propresenter" && extension === "pro") content = await decodeProto(filePath)
-        else content = await readFileAsync(filePath, encoding)
+        content = await readFileAsync(filePath, encoding)
     } catch (err) {
         console.error("Error reading file:", (err as Error).stack)
     }
@@ -323,26 +262,4 @@ async function extractZipDataAndMedia(filePath: string, importFolder: string) {
 
     dataFile.content = content
     return dataFile
-}
-
-// PROTO
-// https://greyshirtguy.com/blog/propresenter-7-file-format-part-2/
-// https://github.com/greyshirtguy/ProPresenter7-Proto
-// https://www.npmjs.com/package/protobufjs
-
-async function decodeProto(filePath: string, fileContent: Buffer | null = null) {
-    const dir = join(__dirname, "..", "..", "..", "public", "proto", "presentation.proto")
-    const root = await protobufjs.load(dir)
-
-    const Presentation = root.lookupType("Presentation")
-
-    const buffer = fileContent || (await readFileBufferAsync(filePath))
-    const message = Presentation.decode(buffer)
-
-    return JSON.stringify(message)
-}
-
-async function checkSpecial(file: FileData) {
-    if (file.extension === "pro" && Buffer.isBuffer(file.content)) return await decodeProto("", file.content)
-    return
 }

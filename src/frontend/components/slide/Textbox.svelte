@@ -50,7 +50,6 @@
     export let style = true
     export let customStyle = ""
     export let stageItem: any = {}
-    export let chords = false
     export let linesStart: null | number = null
     export let linesEnd: null | number = null
     export let clickRevealed = false
@@ -321,7 +320,7 @@
         }
     }
     let prevAutosizeSignature = ""
-    $: autosizeSignature = `${isStage ? stageItem?.style || "" : item?.style || ""}_${resolvedTemplateId}_${chordLines ? 1 : 0}_${stageAutoSize ? 1 : 0}_${item?.textFit || ""}_${stageItem?.textFit || ""}_${JSON.stringify(item?.lines || stageItem?.lines || "")}_${ratio}`
+    $: autosizeSignature = `${isStage ? stageItem?.style || "" : item?.style || ""}_${resolvedTemplateId}_${stageAutoSize ? 1 : 0}_${item?.textFit || ""}_${stageItem?.textFit || ""}_${JSON.stringify(item?.lines || stageItem?.lines || "")}_${ratio}`
 
     let debounceTimer: NodeJS.Timeout | null = null
     function debouncedCalculateAutosize(delay = 50) {
@@ -401,10 +400,10 @@
 
         // Immediate cache check: if we already have a cached size for the current element dimensions, return it immediately without waiting!
         const cacheKey = buildAutoSizeCacheKey()
-        const cacheSignature = buildAutoSizeSignature(undefined, undefined, chords)
+        const cacheSignature = buildAutoSizeSignature()
         const cachedResult = cacheKey ? readAutoSizeCache(cacheKey) : undefined
 
-        if (!isDynamic && !chords && !Number(outputStyle?.lines || 0) && cachedResult && cachedResult.signature === cacheSignature) {
+        if (!isDynamic && !Number(outputStyle?.lines || 0) && cachedResult && cachedResult.signature === cacheSignature) {
             fontSize = cachedResult.fontSize
             if (item.type === "slide_tracker") {
                 markAutoSizeReady()
@@ -489,10 +488,10 @@
 
         // short-circuit expensive DOM work when we already measured identical content
         const finalCacheKey = buildAutoSizeCacheKey()
-        const finalCacheSignature = buildAutoSizeSignature(undefined, undefined, chords)
+        const finalCacheSignature = buildAutoSizeSignature()
         const finalCachedResult = finalCacheKey ? readAutoSizeCache(finalCacheKey) : undefined
 
-        if (!isDynamic && !chords && !Number(outputStyle?.lines || 0) && finalCachedResult && finalCachedResult.signature === finalCacheSignature) {
+        if (!isDynamic && !Number(outputStyle?.lines || 0) && finalCachedResult && finalCachedResult.signature === finalCacheSignature) {
             fontSize = finalCachedResult.fontSize
             if (item.type === "slide_tracker") {
                 markAutoSizeReady()
@@ -555,7 +554,7 @@
     }
 
     // capture the bits of state that influence autosize outcomes for cache invalidation
-    function buildAutoSizeSignature(measuredWidth?: number, measuredHeight?: number, customChords?: boolean) {
+    function buildAutoSizeSignature(measuredWidth?: number, measuredHeight?: number) {
         // Extract key dimensional properties from style to ensure cache invalidation
         const activeStyle = (isStage && stageItem?.style ? stageItem.style : item?.style) || ""
         const styles = activeStyle ? getStyles(activeStyle) : {}
@@ -590,7 +589,6 @@
             boxDimensions, // Add explicit dimensions for better cache invalidation
             textFit: item?.textFit || "none",
             list: item?.list || null,
-            chords: !!(customChords !== undefined ? customChords : chords),
             stageAutoSize: !!stageAutoSize,
             stageItem: stageItem || null,
             fontSizeOverride: customFontSize || null,
@@ -626,7 +624,7 @@
         // CHECK CACHE
         const cacheKey = buildAutoSizeCacheKey()
         if (!cacheKey) return true
-        const cacheSignature = buildAutoSizeSignature(itemElem?.clientWidth, itemElem?.clientHeight, chords)
+        const cacheSignature = buildAutoSizeSignature(itemElem?.clientWidth, itemElem?.clientHeight)
         const cachedResult = readAutoSizeCache(cacheKey)
 
         return !(cachedResult && cachedResult.signature === cacheSignature)
@@ -690,20 +688,6 @@
                 return a
             })
         }
-    }
-
-    // CHORDS
-
-    let chordLines: any[] = []
-    $: if (chords && (item.lines || fontSize)) createChordLines()
-    function createChordLines() {
-        chordLines = []
-        if (!Array.isArray(item?.lines)) return
-
-        item.lines.forEach((line) => {
-            if (!line.chords?.length || !line.text) return
-            chordLines.push(line.chords)
-        })
     }
 
     function getPaddingCorrection(stageItem: any) {
@@ -808,7 +792,6 @@
     class:stageNoAuto={isStage && !stageAutoSize}
     class:isDisabledVariable
     class:noTransition
-    class:chords={chordLines.length}
     class:clickable={$currentWindow === "output" && (item?.button?.press || item?.button?.release)}
     class:reveal={(centerPreview || isStage) && item?.clickReveal && !clickRevealed}
     class:hidden
@@ -831,7 +814,6 @@
             {style}
             {customStyle}
             {stageItem}
-            {chords}
             {linesStart}
             {linesEnd}
             fontSize={smallFontSize ? 20 : fontSize}
@@ -909,10 +891,5 @@
 
     .item.isDisabledVariable {
         display: none;
-    }
-
-    .item.chords,
-    .item.chords :global(.align) {
-        overflow: visible;
     }
 </style>

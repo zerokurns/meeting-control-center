@@ -14,7 +14,6 @@ import AudioStream from "../components/main/popups/AudioStream.svelte"
 import CategoryAction from "../components/main/popups/CategoryAction.svelte"
 import ChangeIcon from "../components/main/popups/ChangeIcon.svelte"
 import ChangeOutputValues from "../components/main/popups/ChangeOutputValues.svelte"
-import ChooseChord from "../components/main/popups/ChooseChord.svelte"
 import ChooseMediaInput from "../components/main/popups/ChooseMediaInput.svelte"
 import ChooseOutput from "../components/main/popups/ChooseOutput.svelte"
 import ChooseScreen from "../components/main/popups/ChooseScreen.svelte"
@@ -114,7 +113,6 @@ export const popups: { [key in Popups]: ComponentType } = {
     manage_dynamic_values: ManageDynamicValues,
     template_style_overrides: TemplateStyleOverrides,
     regex_manager: RegexManager,
-    choose_chord: ChooseChord,
     choose_media_input: ChooseMediaInput,
     player: CreatePlayer,
     rename: Rename,

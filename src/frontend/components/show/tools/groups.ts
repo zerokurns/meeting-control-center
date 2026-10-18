@@ -34,8 +34,7 @@ function getSlideContent(slide: Slide | undefined) {
         items: (slide.items || []).map((item) => {
             const lines = item.lines?.map((line) => ({
                 align: line.align,
-                text: line.text?.map((t) => ({ ...t, value: t.value?.trim() || "" })),
-                chords: line.chords?.map(({ pos, key }) => ({ pos, key }))
+                text: line.text?.map((t) => ({ ...t, value: t.value?.trim() || "" }))
             }))
             const { id: _, ...rest } = item
             return { ...rest, lines }

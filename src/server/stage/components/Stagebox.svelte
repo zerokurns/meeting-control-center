@@ -198,13 +198,13 @@
                 {#if currentSlide}
                     {#key item || currentSlide}
                         <!-- autoStage={show.settings.autoStretch !== false} -->
-                        <SlideText {currentSlide} {slideOffset} stageItem={item} chords={typeof item.chords === "boolean" ? item.chords : item.chords?.enabled} autoSize={item.textFit !== "none" && item.auto !== false} {fontSize} autoStage {textStyle} style={item.type ? item.keepStyle : false} />
+                        <SlideText {currentSlide} {slideOffset} stageItem={item} autoSize={item.textFit !== "none" && item.auto !== false} {fontSize} autoStage {textStyle} style={item.type ? item.keepStyle : false} />
                     {/key}
                 {/if}
             {:else if item.type === "slide_notes" || id.includes("notes")}
                 <SlideNotes {currentSlide} {slideOffset} autoSize={item.auto !== false ? autoSize : fontSize} />
             {:else if item.type === "text"}
-                <Textbox {item} showId={id} autoSize={item.auto === true || (item.textFit && item.textFit !== "none")} {fontSize} />
+                <Textbox {item} autoSize={item.auto === true || (item.textFit && item.textFit !== "none")} {fontSize} />
                 <!-- STAGE VV -->
             {:else if item.type === "slide_tracker" || id.includes("slide_tracker")}
                 <SlideProgress tracker={item.tracker || {}} autoSize={item.auto !== false ? autoSize : fontSize} />
@@ -220,7 +220,7 @@
                 </Center>
             {:else if item.type}
                 <!-- probably unused -->
-                <Textbox {item} showId={id} fontSize={item.auto !== false ? autoSize : fontSize} />
+                <Textbox {item} fontSize={item.auto !== false ? autoSize : fontSize} />
                 <!-- <SlideItems item={stageItemToItem(item)} ref={{ type: "stage", id }} fontSize={item.auto !== false ? autoSize : fontSize} /> -->
             {:else}
                 <!-- OLD CODE -->

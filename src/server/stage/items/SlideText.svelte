@@ -14,7 +14,6 @@
     export let stageItem: any
 
     // export let parent: any
-    export let chords: boolean = false
     export let autoSize: boolean = false
     export let autoStage: boolean = true
     export let fontSize: number = 0
@@ -98,14 +97,14 @@
             <Zoomed show={{ settings: { resolution: slideResolution } }} dynamicResolution={false} style={getStyleResolution(slideResolution, width, height, "fit")} center>
                 {#each items as item, i}
                     {#if !itemNumber || itemNumber - 1 === i}
-                        <Textbox showId={currentSlide.id} {item} originalStyle customStyle={textStyle} {chords} {stageItem} maxLines={Number(slideOffset !== 0 && stageItem.lineCount)} autoSize={(item.textFit !== "none" || item.auto) && autoSize} fontSize={0} {autoStage} {clickRevealed} {revealed} />
+                        <Textbox {item} originalStyle customStyle={textStyle} {stageItem} maxLines={Number(slideOffset !== 0 && stageItem.lineCount)} autoSize={(item.textFit !== "none" || item.auto) && autoSize} fontSize={0} {autoStage} {clickRevealed} {revealed} />
                     {/if}
                 {/each}
             </Zoomed>
         </Main>
     {:else}
         {#each items as item}
-            <Textbox showId={currentSlide.id} {item} style={false} customStyle={textStyle} {chords} {stageItem} maxLines={Number(slideOffset !== 0 && stageItem.lineCount)} {autoSize} {fontSize} {autoStage} {clickRevealed} {revealed} />
+            <Textbox {item} style={false} customStyle={textStyle} {stageItem} maxLines={Number(slideOffset !== 0 && stageItem.lineCount)} {autoSize} {fontSize} {autoStage} {clickRevealed} {revealed} />
         {/each}
     {/if}
 {/if}

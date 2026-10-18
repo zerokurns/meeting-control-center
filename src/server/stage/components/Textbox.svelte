@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte"
     import type { Item } from "../../../types/Show"
-    import Button from "../../common/components/Button.svelte"
     import Icon from "../../common/components/Icon.svelte"
     import autosize from "../../common/util/autosize"
     import { createVirtualBreaks } from "../../common/util/show"
@@ -9,17 +8,15 @@
     import { getDynamicValue, replaceDynamicValues } from "../helpers/show"
     import Clock from "../items/Clock.svelte"
     import { send } from "../util/socket"
-    import { dictionary, updateTransposed, variables } from "../util/stores"
+    import { variables } from "../util/stores"
     import { _getDynamicValue } from "../util/itemHelpers"
     import { getItemText } from "../helpers/textStyle"
 
-    export let showId: string
     export let item: Item
     export let stageItem: any = {}
     export let style: boolean = true
     export let originalStyle: boolean = false // keep the slide item's own box/position/text styles ("Keep Style")
     export let autoStage: boolean = true
-    export let chords: boolean = false
     export let fontSize: number = 0
     export let autoSize: boolean = true
     export let ratio: number = 1
@@ -88,114 +85,6 @@
         fontSize = autosize(alignElem, { type, textQuery, defaultFontSize, maxFontSize })
     }
 
-    // CHORDS
-
-    let chordLines: string[] = []
-    let chordOnlyLines: boolean[] = []
-    $: if (chords && (item?.lines || fontSize)) setTimeout(createChordLines)
-    function createChordLines() {
-        chordLines = []
-        chordOnlyLines = []
-        if (!Array.isArray(item?.lines)) return
-
-        item.lines.forEach((line, i) => {
-            if (!line.chords?.length || !line.text) return
-
-            let chords = JSON.parse(JSON.stringify(line.chords || [])).sort((a: any, b: any) => (a.pos || 0) - (b.pos || 0))
-            const lineText = getLineText(line)
-            const autosizeRatio = getChordSizeRatio()
-
-            if (!lineText.trim().length) {
-                chordLines[i] = getChordOnlyHtml(chords)
-                chordOnlyLines[i] = true
-                return
-            }
-
-            let html = ""
-            let index = 0
-            let prevChordEnd = -1
-
-            line.text.forEach((text: any) => {
-                let value = text.value.trim().replaceAll("\n", "") || ""
-
-                for (const letter of value) {
-                    let chordIndex = chords.findIndex((a: any) => a.pos === index)
-                    if (chordIndex >= 0) {
-                        let chord = chords.splice(chordIndex, 1)[0]
-                        let shift = Math.max(0, prevChordEnd - index)
-                        prevChordEnd = index + shift + chord.key.length * autosizeRatio * 1.1 + 0.6
-
-                        const marginStyle = shift ? `margin-left: ${(shift * 0.65).toFixed(2)}em;` : ""
-                        html += `<span class="chord" data-autosize-ratio="${autosizeRatio}" style="${marginStyle}">${chord.key}</span>`
-                    }
-
-                    let size = fontSize || 0
-                    html += `<span class="invisible" style="${size ? `font-size: ${size}px;` : ""}">${letter}</span>`
-                    index++
-                }
-            })
-
-            // Add leading offset before the first end chord to separate it from the last lyric character
-            if (chords.length > 0) {
-                const leadWidthEm = (0.8 * autosizeRatio).toFixed(2)
-                html += `<span class="invisible trailing-lead-space" style="display: inline-block; width: ${leadWidthEm}em; white-space: nowrap;"></span>`
-
-                chords.forEach((chord: any) => {
-                    html += `<span class="chord end" data-autosize-ratio="${autosizeRatio}">${chord.key}</span>`
-                    const widthEm = Math.max(1.5, chord.key.length * 0.65 * autosizeRatio + 0.8).toFixed(2)
-                    html += `<span class="invisible trailing-space" style="display: inline-block; width: ${widthEm}em; white-space: nowrap;"></span>`
-                })
-            }
-
-            if (!html) return
-            chordLines[i] = html
-            chordOnlyLines[i] = false
-        })
-    }
-
-    function getLineText(line: any) {
-        return line.text?.reduce((value: string, text: any) => (value += text.value || ""), "") || ""
-    }
-
-    function getChordOnlyHtml(chords: any[]) {
-        const autosizeRatio = getChordSizeRatio()
-        return chords
-            .sort((a, b) => a.pos - b.pos)
-            .map((chord, i, sorted) => {
-                const previousPos = sorted[i - 1]?.pos ?? 0
-                const gap = i === 0 ? Math.max(0, chord.pos) : Math.max(1, chord.pos - previousPos)
-
-                return `<span class="chord" data-autosize-ratio="${autosizeRatio}" style="${gap ? `margin-left: ${gap * 0.65}em;` : ""}">${chord.key}</span>`
-            })
-            .join("")
-    }
-
-    function getChordSizeRatio() {
-        return (stageItem?.chords?.size || stageItem?.chordsData?.size || item?.chords?.size || 50) / 100
-    }
-
-    let thisElem: HTMLElement | undefined
-    let actionButtons: boolean = false
-    function toggleActions(e: any) {
-        if (e.target.closest("button")) return
-
-        if (actionButtons) {
-            setTimeout(() => {
-                actionButtons = false
-            }, 20)
-        } else {
-            actionButtons = true
-        }
-    }
-
-    function closeActions(e: any) {
-        if (e.target.closest("button") || e.target.closest(".item") === thisElem) return
-
-        setTimeout(() => {
-            actionButtons = false
-        }, 20)
-    }
-
     function getCustomStyle(style: string) {
         if (!style) return
 
@@ -203,70 +92,6 @@
         if (!originalStyle) style += "display: contents;"
 
         return style
-    }
-
-    // CHORDS TRANSPOSE
-
-    let defaultChords: any = {}
-    let amountTransposed: number = 0
-    $: if (showId && chordLines.length && $updateTransposed) getTransposed()
-    function getTransposed() {
-        const transposed = JSON.parse(localStorage.transposed || "{}")
-        if (typeof transposed[showId] === "number") transpose(transposed[showId])
-    }
-    function transpose(action: "up" | "down" | "reset" | number) {
-        if (action === "reset") amountTransposed = 0
-        else if (action === "up") amountTransposed++
-        else if (action === "down") amountTransposed--
-        else if (typeof action === "number") amountTransposed = action
-
-        if (typeof action !== "number") updateTransposed.set($updateTransposed + 1)
-
-        // save
-        const transposed = JSON.parse(localStorage.transposed || "{}")
-        transposed[showId] = amountTransposed
-        localStorage.transposed = JSON.stringify(transposed)
-
-        item.lines?.forEach((line) => {
-            if (!line.chords?.length || !line.text) return
-
-            let chords = JSON.parse(JSON.stringify(line.chords || []))
-            chords?.forEach((chord: any) => {
-                if (!defaultChords[chord.id]) defaultChords[chord.id] = chord.key
-
-                let rootNote = defaultChords[chord.id]
-
-                if (action === "reset") {
-                    chord.key = rootNote
-                    return
-                }
-
-                chord.key = transposeChord(rootNote, amountTransposed)
-            })
-
-            line.chords = chords
-        })
-
-        createChordLines()
-    }
-
-    const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-    function transposeChord(chord: string, semitones: number) {
-        // split the chord into root note, bass note, and chord quality
-        let [rootNote, bassNote, chordQuality] = chord.match(/([A-G]#?)(\/[A-G]#?)?(.*)/)?.slice(1) || []
-
-        const transposedRootNote = transposeNote(rootNote)
-        if (bassNote) bassNote = "/" + transposeNote(bassNote.slice(1))
-
-        function transposeNote(note: string) {
-            let index = notes.indexOf(note.toUpperCase())
-            let transposedIndex = (index + semitones) % 12
-            if (transposedIndex < 0) transposedIndex += 12
-
-            return notes[transposedIndex]
-        }
-
-        return transposedRootNote + (bassNote || "") + chordQuality
     }
 
     // UPDATE DYNAMIC VALUES e.g. {time_} EVERY SECOND
@@ -300,9 +125,6 @@
         if (blockTimeout) clearTimeout(blockTimeout)
         clearInterval(cssInterval)
     })
-
-    $: chordFontSize = chordLines.length ? stageItem?.chords?.size || stageItem?.chordsData?.size || item?.chords?.size || 50 : 0
-    $: chordsStyle = `--chord-size: ${chordLines.length ? fontSize * (chordFontSize / 100) : "undefined"}px;--chord-color: ${stageItem?.chords?.color || stageItem?.chordsData?.color || item?.chords?.color || "#FF851B"};`
 
     function press() {
         if (!item.button?.press) return
@@ -476,18 +298,13 @@
     $: cssVariables = createCSSVariables($variables, updateTrigger)
 </script>
 
-<svelte:window on:click={closeActions} />
-
 <!-- bind:offsetHeight={height} -->
 <div
-    bind:this={thisElem}
     class="item"
     class:clicked={item.button?.press || item.button?.release}
     style={style ? (getCustomStyle(itemStyle) || "") + cssVariables : null}
-    class:chords={chordLines.length}
     class:clickable={item.button?.press || item.button?.release}
     class:reveal={item.clickReveal && !clickRevealed}
-    on:click={toggleActions}
     on:keydown={handleKeyDown}
     on:keyup={handleKeyUp}
     on:pointerdown={handlePointerDown}
@@ -499,45 +316,23 @@
     role="button"
     tabindex={item.button?.press || item.button?.release ? 0 : -1}
 >
-    <!-- can have more actions here if needed -->
-    {#if actionButtons && (chordLines.length || false)}
-        <div class="actions">
-            {#if chordLines.length}
-                <div class="flex">
-                    <p style="margin-inline-end: 8px;">Transpose</p>
-                    <Button on:click={() => transpose("down")} title={$dictionary?.edit?.transpose_down} dark>{"-1"}</Button>
-                    <Button on:click={() => transpose("reset")} title={$dictionary?.actions?.reset} dark>{"0"}</Button>
-                    <Button on:click={() => transpose("up")} title={$dictionary?.edit?.transpose_up} dark>{"+1"}</Button>
-                </div>
-            {/if}
-        </div>
-    {/if}
-
     {#if item.lines}
         <div class="align" style={style ? item.align : null} bind:this={alignElem}>
-            <div class="lines" data-chord-size-ratio={chordFontSize ? chordFontSize / 100 : null} style="{style ? lineStyleBox : ''}{chordsStyle}">
+            <div class="lines" style="{style ? lineStyleBox : ''}">
                 {#each createVirtualBreaks(item.lines) as line, i}
-                    {@const chordOnly = chords && chordOnlyLines[i]}
                     {#if !maxLines || i < maxLines}
-                        {#if chordLines[i]}
-                            <div class:first={i === 0} class="break chords" class:chordOnly style="--font-size: {fontSize}px;--offsetY: {stageItem?.chords?.offsetY || 0}px;">
-                                {@html chordLines[i]}
-                            </div>
-                        {/if}
-                        {#if !chordOnly}
-                            <div class="break" class:reveal={item?.lineReveal && revealed < i} style="{style ? lineStyle : ''}{style ? line.align : ''}">
-                                {#each line.text || [] as text}
-                                    {@const value = text.value?.replaceAll("\n", "<br>") || "<br>"}
-                                    {#key updateDynamic}
-                                        {#await replaceDynamicValues(value)}
-                                            <span style="{style ? text.style + (fontSize ? 'font-size: ' + fontSize + 'px;' : '') : 'font-size: ' + fontSize + 'px;'}{customStyle}">{@html getDynamicValue(value)}</span>
-                                        {:then newValue}
-                                            <span style="{style ? text.style + (fontSize ? 'font-size: ' + fontSize + 'px;' : '') : 'font-size: ' + fontSize + 'px;'}{customStyle}">{@html newValue}</span>
-                                        {/await}
-                                    {/key}
-                                {/each}
-                            </div>
-                        {/if}
+                        <div class="break" class:reveal={item?.lineReveal && revealed < i} style="{style ? lineStyle : ''}{style ? line.align : ''}">
+                            {#each line.text || [] as text}
+                                {@const value = text.value?.replaceAll("\n", "<br>") || "<br>"}
+                                {#key updateDynamic}
+                                    {#await replaceDynamicValues(value)}
+                                        <span style="{style ? text.style + (fontSize ? 'font-size: ' + fontSize + 'px;' : '') : 'font-size: ' + fontSize + 'px;'}{customStyle}">{@html getDynamicValue(value)}</span>
+                                    {:then newValue}
+                                        <span style="{style ? text.style + (fontSize ? 'font-size: ' + fontSize + 'px;' : '') : 'font-size: ' + fontSize + 'px;'}{customStyle}">{@html newValue}</span>
+                                    {/await}
+                                {/key}
+                            {/each}
+                        </div>
                     {/if}
                 {/each}
             </div>
@@ -622,39 +417,6 @@
         }
     }
 
-    .actions {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        /* transform: translate(-50%, 100%); */
-        transform: translateX(-50%);
-
-        /* background-color: rgb(0 0 0 / 0.5); */
-        background-color: var(--primary);
-        padding: 5px 10px;
-        border-radius: 4px;
-        z-index: 5;
-
-        /* reset */
-        font-size: 20px;
-        font-family: Arial;
-        color: var(--text);
-        font-weight: initial;
-        font-style: normal;
-        letter-spacing: normal;
-        text-shadow: none;
-        text-decoration: none;
-    }
-
-    .actions p {
-        margin: 0;
-    }
-
-    .flex {
-        display: flex;
-        align-items: center;
-    }
-
     .align {
         height: 100%;
         display: flex;
@@ -696,52 +458,6 @@
 
     .break :global(span) {
         font-size: 100px;
-    }
-
-    /* chords */
-    .break.chords :global(.invisible) {
-        opacity: 0;
-        font-size: var(--font-size);
-        line-height: 0;
-    }
-    .break.chords :global(.chord) {
-        position: absolute;
-        color: var(--chord-color);
-        font-size: var(--chord-size) !important;
-        font-weight: bold;
-
-        transform: translateY(calc(-1 * var(--offsetY)));
-        line-height: 1;
-        z-index: 2;
-    }
-    .break.chords {
-        height: calc(var(--chord-size) * 1.02);
-        line-height: 0;
-        max-height: none;
-        position: relative;
-        pointer-events: none;
-
-        /* reset */
-        font-weight: normal;
-        font-style: normal;
-    }
-    .break.chords.chordOnly {
-        line-height: 1.1;
-        max-height: unset;
-        overflow-wrap: normal;
-        text-wrap: unset;
-        white-space: nowrap;
-    }
-    .break.chords.chordOnly :global(.chord) {
-        display: inline-block;
-        line-height: 1.1;
-        position: static;
-        transform: none !important;
-    }
-
-    .item.chords,
-    .item.chords .align {
-        overflow: visible;
     }
 
     /* custom svg icon */

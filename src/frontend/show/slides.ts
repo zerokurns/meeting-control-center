@@ -454,8 +454,6 @@ export function removeItemValues(items: Item[]) {
         item.lines = [item.lines[0]]
         item.lines[0].text = [{ style: item.lines[0].text[0]?.style || "", value: "" }]
 
-        delete item.lines[0].chords
-
         return item
     })
 }
@@ -642,13 +640,6 @@ export function splitItemInTwo(slideRef: LayoutRef, itemIndex: number | number[]
         ]
         if (!firstLines.length || !firstLines[0].text.length) firstLines = defaultLine
         if (!secondLines.length) secondLines = defaultLine
-
-        // add chords
-        const chordLines = clone(lines.map((a) => a.chords || []))
-        ;[...firstLines, ...secondLines].forEach((line) => {
-            const oldLineChords = chordLines.shift()
-            if (oldLineChords?.length) line.chords = oldLineChords
-        })
 
         newSlide.items[idx].lines = secondLines
         slides[slideRef.id].items[idx].lines = firstLines

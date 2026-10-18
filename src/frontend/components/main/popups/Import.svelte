@@ -30,29 +30,7 @@
     const text_formats: { name: string; extensions: string[]; id: string; shortcut?: string; tutorial?: string }[] = [
         { name: "formats.text", extensions: ["txt"], id: "txt" },
         { name: "CSV", extensions: ["csv"], id: "csv" },
-        { name: "ChordPro", extensions: ["cho", "crd", "chopro", "chordpro", "chord", "pro", "txt", "onsong"], id: "chordpro" },
-        { name: "Word", extensions: ["doc", "docx"], id: "word" },
-        { name: "ProPresenter", extensions: ["pro4", "pro5", "pro6", "pro", "json", "proBundle"], id: "propresenter" },
-        {
-            name: "EasyWorship",
-            extensions: ["db"],
-            id: "easyworship",
-            tutorial: "Import the <b>SongsWords.db/SongWords.db</b> file from the Data folder!<br>Optionally select <b>Songs.db</b> at the same time to also import title/metadata.<br><br>Often located in the Documents folder:<br><i>Documents/Softouch/EasyWorship/Default/v6.1/Databases/Data/</i>"
-        },
-        {
-            name: "VideoPsalm",
-            extensions: ["json", "vpc"],
-            id: "videopsalm",
-            tutorial: "Find the .vpc or .json file(s) often located in Documents\\VideoPsalm\\Songbooks"
-        },
-        { name: "OpenLP/OpenLyrics", extensions: ["xml", "sqlite"], id: "openlp" },
-        { name: "OpenSong", extensions: [], id: "opensong" },
-        { name: "MediaShout", extensions: ["ssc", "xml", "mdb"], id: "mediashout" }, // SSC (Songs5.mdb)
-        { name: "Quelea", extensions: ["xml", "qsp"], id: "quelea" },
-        { name: "SoftProjector", extensions: ["sps"], id: "softprojector" },
-        { name: "Songbeamer", extensions: ["sng"], id: "songbeamer" },
-        { name: "Easyslides", extensions: ["xml"], id: "easyslides" },
-        { name: "VerseVIEW", extensions: ["xml"], id: "verseview" }
+        { name: "Word", extensions: ["doc", "docx"], id: "word" }
     ]
 
     const media_formats = [
@@ -190,7 +168,7 @@
     <HRule title="settings.text_import" />
 
     <div style="display: flex;gap: 5px;">
-        {#each text_formats.filter((a) => ["txt", "chordpro"].includes(a.id)) as format}
+        {#each text_formats.filter((a) => ["txt"].includes(a.id)) as format}
             <MaterialButton
                 variant="outlined"
                 style="justify-content: start;flex: 1;min-height: 50px;font-weight: normal;"

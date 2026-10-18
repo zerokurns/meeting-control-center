@@ -2,10 +2,9 @@
     import { uid } from "uid"
     import { ShowObj } from "../../../../classes/Show"
     import { convertText, getQuickExample, trimNameFromString } from "../../../../converters/txt"
-    import { activePopup, activeProject, activeShow, categories, drawerTabsData, formatNewShow, quickTextCache, shows, special, splitLines } from "../../../../stores"
+    import { activePopup, activeProject, activeShow, categories, drawerTabsData, formatNewShow, quickTextCache, shows, splitLines } from "../../../../stores"
     import { newToast } from "../../../../utils/common"
     import { translateText } from "../../../../utils/language"
-    import { getNormalizedKey } from "../../../../utils/shortcuts"
     import { customIconsColors } from "../../../../values/customIcons"
     import { clone, sortObject } from "../../../helpers/array"
     import { history } from "../../../helpers/history"
@@ -19,7 +18,6 @@
     import MaterialTextarea from "../../../inputs/MaterialTextarea.svelte"
     import MaterialTextInput from "../../../inputs/MaterialTextInput.svelte"
     import MaterialToggleSwitch from "../../../inputs/MaterialToggleSwitch.svelte"
-    import WebSearch from "./WebSearch.svelte"
 
     const changeValue = (e: any, key = "text") => {
         values[key] = e.target?.value || e.detail || ""
@@ -66,14 +64,12 @@
     // OPTIONS
 
     const createOptions = [
-        { id: "text", name: translateText("create_show.quick_lyrics"), title: translateText("create_show.quick_lyrics_tip [Enter]"), icon: "text" },
+        { id: "text", name: translateText("create_show.quick_text"), title: translateText("create_show.quick_text_tip [Enter]"), icon: "text" },
         // { id: "clipboard", name: "clipboard", icon: "clipboard" },
-        { id: "web", name: translateText("create_show.web"), title: translateText("create_show.search_web [Ctrl+F]"), icon: "search" },
         { id: "empty", name: translateText("create_show.empty"), title: translateText("new.empty_show [Ctrl+Enter]"), icon: "add" }
     ]
     $: resolvedCreateOptions = clone(createOptions).map((a: any) => {
         if (a.id === "text") a.colored = values.text.length
-        if (a.id === "web") a.disabled = !values.name?.trim()
 
         if (a.id === "empty") {
             if (values.text.length) {
@@ -104,31 +100,6 @@
                 if (exists) newToast("create_show.exists")
             }
         }
-    }
-
-    // WEB SEARCH
-
-    function updateLyrics(e: any) {
-        let data = e.detail || {}
-        if (!data.lyrics) {
-            selectedOption = ""
-            return
-        }
-
-        // if name is lowercase, replace it
-        if (data.title && values.name.toLowerCase() === values.name) {
-            values.name = data.title
-        }
-
-        values.text = data.lyrics
-
-        const metadata: string[] = []
-        if (data.title) metadata.push(`Title=${data.title}`)
-        if (data.artist) metadata.push(`Artist=${data.artist}`)
-        if (metadata.length) values.text = `${metadata.join("\n")}\n\n${values.text}`
-
-        if (data.source) values.origin = data.source.toLowerCase()
-        selectedOption = "text"
     }
 
     // CREATE
@@ -165,14 +136,6 @@
         if (e.shiftKey || e.altKey) return
 
         const ctrl = e.ctrlKey || e.metaKey
-
-        const ctrlKey = ctrl ? getNormalizedKey(e) : ""
-        if (ctrlKey === "f") {
-            e.preventDefault()
-            selectOption("web")
-
-            return
-        }
 
         if (e.key === "Enter") {
             if (!ctrl && e.target?.closest?.(".edit") && !document.activeElement?.closest?.("#name")) return
@@ -226,12 +189,11 @@
         {#if Number($splitLines)}<span class="state">{$splitLines}</span>{/if}
     </MaterialButton>
 
-    <MaterialTextarea label="create_show.quick_lyrics" placeholder={getQuickExample()} value={values.text} autofocus={!values.text} rows={showMore ? 6 : Math.max(6, Math.min(12, values.text.split("\n").length))} on:input={(e) => changeValue(e)} />
-    <!-- WIP buttons for paste / format(remove chords, remove empty lines), etc. -->
+    <MaterialTextarea label="create_show.quick_text" placeholder={getQuickExample()} value={values.text} autofocus={!values.text} rows={showMore ? 6 : Math.max(6, Math.min(12, values.text.split("\n").length))} on:input={(e) => changeValue(e)} />
+    <!-- WIP buttons for paste / format(remove empty lines), etc. -->
 
     {#if showMore}
         <List top={5}>
-            <MaterialToggleSwitch label="create_show.auto_groups" checked={$special.autoGroups !== false} defaultValue={true} on:change={(e) => special.set({ ...$special, autoGroups: e.detail })} />
             <MaterialToggleSwitch label="create_show.format_new_show" checked={$formatNewShow} defaultValue={false} on:change={(e) => formatNewShow.set(e.detail)} />
             <MaterialNumberInput label="create_show.split_lines" value={$splitLines} max={100} on:change={(e) => splitLines.set(e.detail)} hideWhenZero />
         </List>
@@ -240,6 +202,4 @@
     <MaterialButton on:click={textToShow} variant="contained" title="timer.create [Ctrl+Enter]" disabled={values.text.trim().length === 0} info={getName(values) || translateText("main.unnamed")} style="width: 100%;margin-top: 20px;" icon="add" data-testid="create.show.popup.new.show">
         <T id="timer.create" />
     </MaterialButton>
-{:else if selectedOption === "web"}
-    <WebSearch query={values.name} on:update={updateLyrics} />
 {/if}

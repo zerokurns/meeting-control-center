@@ -109,7 +109,6 @@ export type SelectIds =
     | "scene_overlay"
     | "interaction"
     | "audio_stream"
-    | "chord"
     | "midi"
     | "theme"
     | "style"
@@ -235,14 +234,6 @@ export interface MainFilePaths {
     pictures: string
     videos: string
     music: string
-}
-
-export type LyricSearchResult = {
-    source: "Genius" | "Hymnary" | "Letras" | "Ultimate Guitar"
-    key: string
-    artist: string
-    title: string
-    originalQuery?: string
 }
 
 export interface DriveData {
@@ -413,7 +404,6 @@ export type Popups =
     | "create_collection"
     | "edit_event"
     | "edit_chart"
-    | "choose_chord"
     | "choose_screen"
     | "choose_media_input"
     | "choose_output_input"

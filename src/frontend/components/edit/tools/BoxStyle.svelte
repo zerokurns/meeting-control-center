@@ -57,11 +57,11 @@
 
     function getTextSelection(e: any = null) {
         if (e) {
-            if (e.target.closest(".menus") || e.target.closest(".popup") || e.target.closest(".drawer") || e.target.closest(".chords") || e.target.closest(".contextMenu") || e.target.closest(".editTools")) return
+            if (e.target.closest(".menus") || e.target.closest(".popup") || e.target.closest(".drawer") || e.target.closest(".contextMenu") || e.target.closest(".editTools")) return
         }
 
         const activeEl = document.activeElement as HTMLElement | null
-        if (activeEl?.closest(".tools") || activeEl?.closest(".menus") || activeEl?.closest(".popup") || activeEl?.closest(".drawer") || activeEl?.closest(".chords") || activeEl?.closest(".contextMenu") || activeEl?.closest(".editTools") || document.querySelector(".editTools:hover")) return
+        if (activeEl?.closest(".tools") || activeEl?.closest(".menus") || activeEl?.closest(".popup") || activeEl?.closest(".drawer") || activeEl?.closest(".contextMenu") || activeEl?.closest(".editTools") || document.querySelector(".editTools:hover")) return
 
         let sel = window.getSelection()
 
@@ -90,7 +90,7 @@
 
     function mousedown(e: any) {
         // store if going to a text input in the tools
-        if (e.target.closest(".tools") || e.target.closest(".menus") || e.target.closest(".popup") || e.target.closest(".drawer") || e.target.closest(".chords") || e.target.closest(".contextMenu") || e.target.closest(".editTools")) getTextSelection(e)
+        if (e.target.closest(".tools") || e.target.closest(".menus") || e.target.closest(".popup") || e.target.closest(".drawer") || e.target.closest(".contextMenu") || e.target.closest(".editTools")) getTextSelection(e)
     }
 
     function keyup(e: KeyboardEvent) {
@@ -248,11 +248,6 @@
     }
 
     /// SET INPUT VALUES ///
-
-    // remove chord options
-    $: if ($activeEdit.type === "overlay" && box?.sections?.chords) {
-        delete box.sections.chords
-    }
 
     $: if (box?.sections?.CSS && id !== "captions") {
         setBoxInputValue(box, "CSS", "CSS_text", "value", style)

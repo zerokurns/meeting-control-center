@@ -5,10 +5,9 @@
     import { translate } from "../../util/helpers"
     import { GetLayout, getNextSlide, nextSlide } from "../../util/output"
     import { send } from "../../util/socket"
-    import { _set, dictionary, outLayout, outputMode, outShow, outSlide } from "../../util/stores"
+    import { _set, dictionary, outLayout, outShow, outSlide } from "../../util/stores"
     import Clear from "../show/Clear.svelte"
     import Slide from "../show/Slide.svelte"
-    import Lyrics from "./Lyrics.svelte"
 
     let transition: any = { type: "fade", duration: 500 }
 
@@ -33,18 +32,14 @@
     <div class="slide-container">
         <h2 class="header">{$outShow.name || ""}</h2>
 
-        {#if $outputMode === "lyrics"}
-            <Lyrics />
-        {:else}
-            <div on:click={click} class="outSlides">
-                <Slide outSlide={slideNum} {transition} />
-                {#if $outLayout && nextSlide(layout, slideNum) && getNextSlide($outShow, slideNum, $outLayout)}
-                    <Slide outSlide={nextSlide(layout, slideNum) || 0} {transition} />
-                {:else}
-                    <div style="display: flex;align-items: center;justify-content: center;flex: 1;opacity: 0.5;">{translate("remote.end", $dictionary)}</div>
-                {/if}
-            </div>
-        {/if}
+        <div on:click={click} class="outSlides">
+            <Slide outSlide={slideNum} {transition} />
+            {#if $outLayout && nextSlide(layout, slideNum) && getNextSlide($outShow, slideNum, $outLayout)}
+                <Slide outSlide={nextSlide(layout, slideNum) || 0} {transition} />
+            {:else}
+                <div style="display: flex;align-items: center;justify-content: center;flex: 1;opacity: 0.5;">{translate("remote.end", $dictionary)}</div>
+            {/if}
+        </div>
 
         <div class="slide-progress-text">{slideNum + 1}/{totalSlides}</div>
 
@@ -62,20 +57,6 @@
             <div class="buttons">
                 <Clear outSlide={slideNum} on:clear={() => _set("activeTab", "show")} />
             </div>
-
-            <div class="mode-toggle">
-                <Button on:click={() => _set("outputMode", $outputMode === "slide" ? "lyrics" : "slide")} style="width: 100%;" center dark>
-                    <Icon id={$outputMode} right />
-                    {translate(`remote.${$outputMode}`, $dictionary)}
-                </Button>
-            </div>
-        </div>
-
-        <div class="modes desktop-only">
-            <Button on:click={() => _set("outputMode", $outputMode === "slide" ? "lyrics" : "slide")} style="width: 100%;" center dark>
-                <Icon id={$outputMode} right />
-                {translate(`remote.${$outputMode}`, $dictionary)}
-            </Button>
         </div>
     </div>
 {:else}
@@ -128,17 +109,6 @@
         display: none;
     }
 
-    .mode-toggle {
-        padding: 4px;
-        background-color: var(--primary-darkest);
-        border-radius: 0;
-    }
-
-    .mode-toggle :global(button) {
-        width: 100%;
-        border-radius: 0 !important;
-    }
-
     .desktop-only {
         display: none;
     }
@@ -183,10 +153,6 @@
 
         .controls-section .buttons {
             border-radius: 0;
-        }
-
-        .mode-toggle {
-            display: none;
         }
 
         .desktop-only {

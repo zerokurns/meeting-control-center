@@ -1,8 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte"
     import type { MediaStyle } from "../../../../types/Main"
-    import { activeEdit, activePopup, activeShow, alertMessage, editMode, focusMode, media, outputs, overlays, playerVideos, resized, showsCache, slideNotesActive, special, styles } from "../../../stores"
-    import { transposeText } from "../../../utils/chordTranspose"
+    import { activeEdit, activeShow, focusMode, media, outputs, overlays, playerVideos, resized, showsCache, slideNotesActive, special, styles } from "../../../stores"
     import { DEFAULT_WIDTH } from "../../../utils/common"
     import { translateText } from "../../../utils/language"
     import { getAccess } from "../../../utils/profile"
@@ -19,8 +18,6 @@
     import FloatingInputs from "../../input/FloatingInputs.svelte"
     import MaterialButton from "../../inputs/MaterialButton.svelte"
     import MaterialZoom from "../../inputs/MaterialZoom.svelte"
-    import { formatText } from "../../show/formatTextEditor"
-    import { getPlainEditorText } from "../../show/getTextEditor"
     import Notes from "../../show/tools/Notes.svelte"
     import Textbox from "../../slide/Textbox.svelte"
     import Zoomed from "../../slide/Zoomed.svelte"
@@ -32,7 +29,6 @@
     import Timeline from "../../timeline/Timeline.svelte"
     import EditHeader from "../EditHeader.svelte"
     import Editbox from "../editbox/Editbox.svelte"
-    import { getShowChords, getUsedChords } from "../scripts/chords"
     import { addItem } from "../scripts/itemHelpers"
     import { setCaretAtEnd } from "../scripts/textStyle"
     import { centerZoom } from "../scripts/zoom"
@@ -221,33 +217,6 @@
         centerZoom(origin, scrollElem, ".droparea")
     }
 
-    // CHORDS
-    let usedChords: string[] = []
-    $: slideChords = Slide ? getUsedChords(Slide) : []
-    $: allChords = getShowChords(currentShow)
-    // combine and remove duplicates (current slide chords first, then all other show chords, both sorted alphabetically)
-    $: usedChords = slideChords.length + allChords.length ? [...new Set([...slideChords, ...allChords])] : []
-
-    let chordsAction = ""
-    function setDefaultChordsAction() {
-        if (chordsAction === "") {
-            alertMessage.set("actions.chord_info")
-            activePopup.set("alert")
-        } else {
-            chordsAction = ""
-        }
-    }
-
-    // transpose chords - same as TextEditor
-    function transposeUp() {
-        const text = getPlainEditorText("", false)
-        formatText(transposeText(text, 1), currentShowId)
-    }
-    function transposeDown() {
-        const text = getPlainEditorText("", false)
-        formatText(transposeText(text, -1), currentShowId)
-    }
-
     $: slideFilter = getSlideFilter(layoutSlide)
 
     onMount(() =>
@@ -297,7 +266,7 @@
     let bottomHeight = 40
 
     $: notes = Slide?.notes?.replaceAll("\n", "&nbsp;")
-    $: notesVisible = !!notes // && $editMode !== "chords"
+    $: notesVisible = !!notes
 
     $: widthOrHeight = getStyleResolution(resolution, width, height, "fit", { zoom })
 
@@ -382,7 +351,7 @@
                         {#each Slide.items as item, index}
                             <!-- filter={layoutSlide.filterEnabled?.includes("foreground") ? layoutSlide.filter : ""} -->
                             <!-- backdropFilter={layoutSlide.filterEnabled?.includes("foreground") ? layoutSlide["backdrop-filter"] : ""} -->
-                            <Editbox backdropFilter={layoutSlide["backdrop-filter"] || ""} {item} chordsMode={$editMode === "chords"} {chordsAction} ref={{ showId: currentShowId, id: Slide.id, origin: currentShow.origin }} {index} {ratio} bind:mouse />
+                            <Editbox backdropFilter={layoutSlide["backdrop-filter"] || ""} {item} ref={{ showId: currentShowId, id: Slide.id, origin: currentShow.origin }} {index} {ratio} bind:mouse />
                         {/each}
                     {/key}
                 </Zoomed>
@@ -412,34 +381,15 @@
     {/if}
 
     {#if !$focusMode && !isLocked && !$slideNotesActive && !$special.slideTimelineActive}
-        <FloatingInputs side="left" bottom={notesVisible ? bottomHeight : 10} onlyOne={$editMode !== "chords" && hasBackground}>
-            {#if $editMode === "chords"}
-                <MaterialButton on:click={transposeUp} title="edit.transpose_up">
-                    <Icon id="arrow_up" size={1.3} white />
-                </MaterialButton>
-                <MaterialButton on:click={transposeDown} title="edit.transpose_down">
-                    <Icon id="arrow_down" size={1.3} white />
-                </MaterialButton>
-
-                <div class="divider"></div>
-
-                <MaterialButton isActive={!chordsAction} on:click={setDefaultChordsAction}>
-                    <p><T id="popup.choose_chord" /></p>
-                </MaterialButton>
-
-                {#each usedChords as chord}
-                    <MaterialButton isActive={chordsAction === chord} on:click={() => (chordsAction = chord)}>
-                        {chord}
-                    </MaterialButton>
-                {/each}
-            {:else if hasBackground}
+        <FloatingInputs side="left" bottom={notesVisible ? bottomHeight : 10} onlyOne={hasBackground}>
+            {#if hasBackground}
                 <MaterialButton on:click={convertBackgroundToMedia}>
                     <Icon id="autofill" gradient />
                     <T id="edit.convert_to_media_item" />
                 </MaterialButton>
             {/if}
 
-            <MaterialZoom hidden={$editMode === "chords" || hasBackground} columns={zoom} min={0.2} max={4} defaultValue={1} addValue={0.1} on:change={updateZoom} on:origin={(e) => (zoomOrigin = e.detail)} />
+            <MaterialZoom hidden={hasBackground} columns={zoom} min={0.2} max={4} defaultValue={1} addValue={0.1} on:change={updateZoom} on:origin={(e) => (zoomOrigin = e.detail)} />
         </FloatingInputs>
     {/if}
 
@@ -482,17 +432,6 @@
     .parent.noOverflow :global(.droparea) {
         overflow: hidden;
     }
-
-    /* .chordsButton {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background-color: var(--focus);
-    }
-    .chordsButton :global(button) {
-        padding: 10px !important;
-        z-index: 3;
-    } */
 
     .dark :global(.paper) {
         background-color: var(--primary-darkest);

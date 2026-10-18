@@ -470,7 +470,6 @@
             <!-- Persistent item: unchanged content, render outside transition to avoid flicker -->
             <Textbox
                 backdropFilter={current.slideData?.["backdrop-filter"] || ""}
-                chords={item.chords?.enabled}
                 animationStyle={animationData.style || {}}
                 item={timelineItems.get(`${current.outSlide?.id}-${current.outSlide?.layout}-${current.outSlide?.index}`)?.[index] || item}
                 transition={null}
@@ -495,7 +494,6 @@
                     <SlideItemTransition {preview} {transitionEnabled} {transitioningBetween} {isClearing} {incomingNeedsAutoSize} globalTransition={transition} currentSlide={current.currentSlide} {item} outSlide={current.outSlide} lines={current.lines} currentStyle={current.currentStyle} let:customSlide let:customItem let:customLines let:customOut let:transition>
                         <Textbox
                             backdropFilter={current.slideData?.["backdrop-filter"] || ""}
-                            chords={customItem.chords?.enabled}
                             animationStyle={animationData.style || {}}
                             item={timelineItems.get(`${customOut?.id}-${customOut?.layout}-${customOut?.index}`)?.[index] || customItem}
                             {transition}

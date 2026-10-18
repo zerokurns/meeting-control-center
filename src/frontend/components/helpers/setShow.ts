@@ -33,12 +33,6 @@ export async function setShow(id: string, value: "delete" | Show): Promise<Show>
             if (!value.layouts) value.layouts = {}
             if (!value.media) value.media = {}
 
-            // set metadata (CCLI) in quickAccess
-            if (value.meta.CCLI && !value.quickAccess?.metadata?.CCLI) {
-                if (!value.quickAccess?.metadata) value.quickAccess.metadata = {}
-                value.quickAccess.metadata.CCLI = value.meta.CCLI
-            }
-
             value = await convertOldShowValues(value)
         }
     }
@@ -279,14 +273,4 @@ function getTextCacheString(show: Show) {
     // txt = Buffer.from(txt).toString("base64")
     // Buffer.from(encode, 'base64').toString('utf-8')
     // window.atob(encode)
-}
-
-export function setQuickAccessMetadata(show: Show | ShowObj, key: string, value: string) {
-    if (!value) return show
-
-    if (!show.quickAccess) show.quickAccess = {}
-    if (!show.quickAccess.metadata) show.quickAccess.metadata = {}
-    show.quickAccess.metadata[key] = value
-
-    return show
 }

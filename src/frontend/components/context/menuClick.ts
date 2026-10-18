@@ -103,7 +103,6 @@ import { createScriptureShow, openActiveInRouteBible } from "../drawer/bible/scr
 import { deleteCalendarEvents } from "../drawer/calendar/calendars"
 import { startOutputRecording, stopMediaRecorder } from "../drawer/live/recorder"
 import { playPauseGlobal } from "../drawer/timers/timers"
-import { addChords } from "../edit/scripts/chords"
 import { rearrangeItems, rearrangeStageItems } from "../edit/scripts/itemHelpers"
 import { getItemText, getSelectionRange } from "../edit/scripts/textStyle"
 import { clone, removeDuplicates, sortObjectNumbers } from "../helpers/array"
@@ -1421,46 +1420,6 @@ const clickActions = {
     },
     manage_metadata: () => {
         activePopup.set("manage_metadata")
-    },
-
-    // chords
-    chord_list: (obj: ObjData) => clickActions.keys(obj),
-    keys: (obj: ObjData) => {
-        if (get(selected).id !== "chord") return
-        const data = get(selected).data[0]
-
-        const item: Item = _show().slides([data.slideId]).items([data.itemIndex]).get()[0][0]
-        if (!item) return
-
-        const newLines = clone(item.lines)
-        if (!newLines?.[data.index].chords) return
-
-        if (data.chord) {
-            const currentChordIndex = newLines[data.index].chords!.findIndex((a) => a.id === data.chord.id)
-            if (currentChordIndex > -1) newLines[data.index].chords![currentChordIndex].key = obj.menu.id || ""
-        } else {
-            if (!newLines[0].chords) newLines[0].chords = []
-            newLines[0].chords.push({ id: uid(5), pos: 0, key: obj.menu.id || "" })
-        }
-
-        _show()
-            .slides([data.slideId])
-            .items([data.itemIndex])
-            .set({ key: "lines", values: [newLines] })
-    },
-    custom_key: (obj: ObjData) => {
-        if (!obj.sel) return
-
-        const data = obj.sel.data[0]
-        selected.set(obj.sel)
-
-        if (!data.chord) {
-            // create chord
-            const item = _show().slides([data.slideId]).items([data.itemIndex]).get()[0][0]
-            addChords(item, { showId: get(activeShow)?.id, id: data.slideId }, data.itemIndex)
-        }
-
-        activePopup.set("rename")
     },
 
     // change slide group

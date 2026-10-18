@@ -269,19 +269,6 @@ export const textSections: { [key: string]: EditBoxSection } = {
             ]
         ]
     },
-    chords: {
-        expandAutoValue: {
-            "chords.enabled": true
-        },
-        inputs: [
-            [{ id: "chords.enabled", type: "checkbox", value: false, values: { label: "edit.chords" } }],
-            [
-                { id: "chords.size", type: "number", value: 60, values: { label: "edit.size", style: "flex: 4;" } },
-                { id: "chords.color", type: "color", value: "#FF851B", values: { label: "edit.color", allowOpacity: true, noLabel: true, style: "flex: 1;" } }
-            ],
-            [{ id: "chords.offsetY", type: "number", value: 0, values: { label: "edit.vertical_offset", min: -1000 } }]
-        ]
-    },
     scrolling: {
         expandAutoValue: {
             "scrolling.type": "right_left"

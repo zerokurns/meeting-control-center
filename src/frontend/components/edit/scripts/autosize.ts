@@ -42,12 +42,6 @@ export default function autosize(elem: HTMLElement, { type, textQuery, defaultFo
 
         const rawTextChildren: HTMLElement[] = textQuery ? Array.from(boxElem.querySelectorAll(textQuery)) : boxElem.children.length ? (Array.from(boxElem.children) as HTMLElement[]) : [boxElem]
 
-        const chordNodes: { elem: HTMLElement; ratio: number }[] = []
-        boxElem.querySelectorAll<HTMLElement>("[data-chord-size-ratio]").forEach((el) => {
-            const ratio = Number(el.dataset.chordSizeRatio) || 0
-            if (ratio) chordNodes.push({ elem: el, ratio })
-        })
-
         const textNodes = rawTextChildren.map((el) => {
             const style = el.getAttribute("style") || ""
             const ratio = Number(el.dataset.autosizeRatio) || 1
@@ -91,11 +85,6 @@ export default function autosize(elem: HTMLElement, { type, textQuery, defaultFo
         }
 
         function addStyleToElemText(currentFontSize: number) {
-            for (let i = 0; i < chordNodes.length; i++) {
-                chordNodes[i].elem.style.setProperty("--font-size", `${currentFontSize}px`)
-                chordNodes[i].elem.style.setProperty("--chord-size", `${currentFontSize * chordNodes[i].ratio}px`)
-            }
-
             for (let i = 0; i < textNodes.length; i++) {
                 const node = textNodes[i]
                 const size = currentFontSize * node.ratio
@@ -144,7 +133,6 @@ export default function autosize(elem: HTMLElement, { type, textQuery, defaultFo
         if (editElem) editElem.style.justifyContent = "flex-start"
 
         cloned.querySelectorAll<HTMLElement>(".hideFromAutosize").forEach((el) => (el.style.display = "none"))
-        cloned.querySelectorAll<HTMLElement>(".chords").forEach((el) => (el.style.maxHeight = "65px"))
 
         // scrolling text should not include repeated text in measurement
         const scrollWrapper = cloned.querySelector<HTMLElement>(".scrollWrapper")

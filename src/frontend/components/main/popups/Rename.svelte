@@ -1,8 +1,8 @@
 <script lang="ts">
-    import type { Line, SlideData } from "../../../../types/Show"
+    import type { SlideData } from "../../../../types/Show"
     import { activePopup, activeShow, audioRouting, calendars, customScriptureBooks, drawerTabsData, effectsLibrary, scripturesCache, selected, showsCache } from "../../../stores"
     import { renameCalendar } from "../../drawer/calendar/calendars"
-    import { clone, removeDuplicates } from "../../helpers/array"
+    import { removeDuplicates } from "../../helpers/array"
     import { history } from "../../helpers/history"
     import { getLayoutRef } from "../../helpers/show"
     import { _show } from "../../helpers/shows"
@@ -32,8 +32,6 @@
                 if (i === 0) groupName = name
             })
             list = removeDuplicates(list)
-        } else if ($selected.id === "chord") {
-            groupName = selectionData[0]?.chord?.key || ""
         } else if ($selected.id === "bible_book") {
             const scriptureId = $drawerTabsData.scripture?.activeSubTab || ""
             const activeBible = $scripturesCache[scriptureId]
@@ -149,25 +147,6 @@
 
                 history({ id: "UPDATE", newData: { data: groupName, key: "slides", keys: [slideId], subkey: "group" }, oldData: { id: $activeShow?.id }, location: { page: "show", id: "show_key" } })
             })
-        },
-        chord: () => {
-            let chord = $selected.data[0]
-            let lines: Line[] = _show().slides([chord.slideId]).items([chord.itemIndex]).get("lines")[0][0]
-
-            // create first
-            if (!chord.chord) return
-
-            let newLines = clone(lines)
-            let chords = newLines[chord.index].chords
-            if (!Array.isArray(chords)) chords = []
-            chords.forEach((a, i: number) => {
-                if (a.id === chord.chord.id) newLines[chord.index].chords![i].key = groupName
-            })
-
-            _show()
-                .slides([chord.slideId])
-                .items([chord.itemIndex])
-                .set({ key: "lines", values: [newLines] })
         },
         audio_channel: () => {
             const channelId = $selected.data?.[0]?.id

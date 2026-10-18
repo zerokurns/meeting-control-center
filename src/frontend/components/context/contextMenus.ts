@@ -147,9 +147,6 @@ export const contextMenuItems: { [key: string]: ContextMenuItem } = {
     actions: { label: "actions.slide_actions", icon: "actions", iconColor: "#d497ff", items: ["LOAD_actions"] },
     bind_to: { label: "actions.bind_to", icon: "bind", iconColor: "#d497ff", items: ["LOAD_bind_slide"] },
     remove_layers: { label: "actions.remove_layers", icon: "remove_layers", iconColor: "#ff5454", items: ["LOAD_remove_layers"] },
-    set_key: { label: "actions.set_key", icon: "chords", items: ["LOAD_keys"] },
-    chord_list: { label: "edit.chords", icon: "chords", items: ["LOAD_chord_list"] },
-    custom_key: { label: "actions.custom_key", icon: "edit", iconColor: "#97c7ff" },
     // ITEM
     item_actions: { label: "actions.item_actions", icon: "actions", iconColor: "#d497ff", items: ["LOAD_item_actions"] },
     transition: { label: "popup.transition", icon: "transition", iconColor: "#ffd5bb" },
@@ -387,7 +384,6 @@ export const contextMenuLayouts: { [key: string]: string[] } = {
     slideViews: ["view_grid", "view_list", "view_lyrics", "SEPARATOR", "view_simple", "view_groups"],
     show_template: ["remove_template"],
     tag: ["GROUP_rename_recolor", "delete"],
-    chord: ["set_key", "chord_list", "custom_key", "SEPARATOR", "delete"],
     edit_custom_action: ["edit"],
 
     // MEDIA

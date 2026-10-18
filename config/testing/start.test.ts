@@ -104,8 +104,8 @@ test("Launch electron app", async () => {
         // await window.getByText("—").click()
         // await window.locator("#id_categorysong").click()
 
-        // Put lyrics
-        await window.getByText("Quick Lyrics").click({ timeout: timeoutMs })
+        // Put text
+        await window.getByText("Quick text").click({ timeout: timeoutMs })
         let lyricsBox = window.getByPlaceholder("[Verse]")
         await lyricsBox.focus()
         await lyricsBox.fill(`[Verse]\ntest line 1\ntest line 2\n\n[Chorus]\ntest line 3\ntest line 4`, { timeout: timeoutMs })

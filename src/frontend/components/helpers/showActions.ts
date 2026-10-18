@@ -1093,7 +1093,6 @@ export function replaceDynamicValues(text: string, { showId, layoutId, slideInde
             const key = dynamicId.slice(5).replaceAll("_", " ")
             if (!show || !Object.keys(show)) return ""
             let customKey = get(customMetadata).custom.find((a) => a.toLowerCase() === key) || key
-            if (customKey === "ccli") customKey = "CCLI"
             return show.meta?.[customKey] || ""
         }
 

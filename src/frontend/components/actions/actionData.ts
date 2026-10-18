@@ -16,8 +16,6 @@ export const actionData = {
     set_template: { name: "actions.set_template_active", icon: "templates", input: "id" },
     set_next_slide_timer: { name: "preview.nextTimer", icon: "timer", input: "numval" },
     change_slide_timeline_speed: { name: "actions.change_slide_timeline_speed", icon: "timeline", input: "percentage" },
-    transpose_show_up: { name: "edit.transpose_up", icon: "up" },
-    transpose_show_down: { name: "edit.transpose_down", icon: "down" },
 
     // PRESENTATION
     next_slide: { SECTION: "preview.slide", name: "preview._next_slide", icon: "slide", incompatible: ["previous_slide", "random_slide", "index_select_slide", "name_select_slide", "id_select_group"] }, // common: true,

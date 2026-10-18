@@ -710,7 +710,6 @@ const faq = [
     { id: "https://freeshow.app/docs/importing#powerpoint", name: "How to import PowerPoint as text", icon: "help", aliases: ["-PowerPoint", "-slides", "-presentation"] },
     { id: "https://freeshow.app/docs/importing#pdf", name: "How to import a PDF file", icon: "help", aliases: ["-PDF"] },
     { id: "https://freeshow.app/docs/faq#videos-are-muted", name: "Videos are muted", icon: "help", aliases: ["-No audio"] },
-    { id: "https://freeshow.app/docs/faq#ccli-integration", name: "CCLI Integration", icon: "help", aliases: ["-SongSelect"] },
     { id: "https://freeshow.app/docs/faq#cloud-sync-between-two-computers", name: "Cloud Sync Between Multiple Computers", icon: "help" },
     { id: "https://freeshow.app/docs/faq#how-to-transfer-the-files-between-computers", name: "Transfer Files Between Computers", icon: "help" },
     { id: "https://freeshow.app/docs/faq#the-app-is-slow", name: "The App is Slow", icon: "help", aliases: ["-Lagging", "-Performance"] },
@@ -758,7 +757,6 @@ const faq = [
     { id: "https://youtu.be/ZLS5HgBsSaM", name: "Fireworks Effect", icon: "youtube" },
     { id: "https://youtu.be/2KnCfvXBabQ", name: "Countdown Timer Setup", icon: "youtube" },
     { id: "https://youtu.be/lxPHFwQEZWM", name: "How to Backup and Restore", icon: "youtube" },
-    { id: "https://youtu.be/h0nCm2D2dCg", name: "How to Use Chords", icon: "youtube" },
     { id: "https://youtu.be/vxMqvUrVMo4", name: "Pre Record Shows for Easy Playback", icon: "youtube" },
     { id: "https://youtu.be/YT5Dil_54Rw", name: "Get MIDI Signals Into FreeShow", icon: "youtube" },
     { id: "https://youtu.be/moCy2bjWpvo", name: "Gradients and SFX", icon: "youtube" },
@@ -872,7 +870,7 @@ const editActions = [
 
     { id: "textedit", name: "show.text", icon: "text" }
 
-    // edit page specific: chords, dynamic values, conditions
+    // edit page specific: dynamic values, conditions
 ]
 
 function getEditActions() {

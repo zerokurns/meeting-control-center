@@ -11,7 +11,6 @@ export const exportFormats: Option[] = [
     { name: "PDF", id: "pdf" },
     { name: "items.image", id: "image" }
     // {name: "CSV", id: "csv"} // probably not needed
-    // {name: "ChordPro", id: "chordpro"}
 ]
 
 export const exportTypes: Option[] = [

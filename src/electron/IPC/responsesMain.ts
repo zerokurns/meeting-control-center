@@ -7,7 +7,7 @@ import { getMainWindow, isProd, mainWindow, maximizeMain, setGlobalMenu } from "
 import type { MainResponses } from "../../types/IPC/Main"
 import { Main } from "../../types/IPC/Main"
 import { ToMain } from "../../types/IPC/ToMain"
-import type { ErrorLog, LyricSearchResult, OS } from "../../types/Main"
+import type { ErrorLog, OS } from "../../types/Main"
 import { completeLLM, fetchProviderModels } from "../ai/llm/llmProviders"
 import { setAiKey } from "../ai/setup/aiKeys"
 import { aiHandleLocalSetup, LocalModelManager } from "../ai/setup/LocalModelManager"
@@ -37,7 +37,6 @@ import { closeMain } from "../utils/close"
 import { addToMediaFolder, bundleMediaFiles, createFolder, getDataFolderPath, getDataFolderRoot, getFileInfo, getMediaCodec, getMediaSyncFolderPath, getMediaTracks, getPaths, getSimularPaths, loadFile, loadShowsAsync, locateMediaFile, openInSystem, readExifData, readFile, readFolder, readFolderContent, selectFiles, selectFilesDialog, selectFolder, setMediaSyncFolderPath, writeFile } from "../utils/files"
 import { listGraphicsDevices } from "../utils/gpu"
 import { getMachineId } from "../utils/helpers"
-import { LyricSearch } from "../utils/LyricSearch"
 import { closeMidiInPorts, getMidiInputs, getMidiOutputs, receiveMidi, sendMidi } from "../utils/midi"
 import { deleteShows, deleteShowsNotIndexed, getAllShows, getEmptyShows, refreshAllShows } from "../utils/shows"
 import { correctSpelling } from "../utils/spellcheck"
@@ -158,9 +157,6 @@ export const mainResponses: MainResponses = {
     },
     [Main.RECEIVE_MIDI]: (data) => receiveMidi(data),
     [Main.CLOSE_MIDI]: (data) => closeMidiInPorts(data.id),
-    // LYRICS
-    [Main.GET_LYRICS]: (data) => getLyrics(data),
-    [Main.SEARCH_LYRICS]: (data) => searchLyrics(data),
     // FILES
     [Main.RESTORE]: (data) => restoreFiles(data),
     [Main.RECORDER]: (data) => saveRecording(data),
@@ -389,16 +385,6 @@ function checkRamUsage() {
 export const openURL = (url: string) => {
     shell.openExternal(url)
     return
-}
-
-async function searchLyrics({ artist, title }: { artist: string; title: string }) {
-    const songs = await LyricSearch.search(artist, title)
-    return songs
-}
-
-async function getLyrics({ song }: { song: LyricSearchResult }) {
-    const lyrics = await LyricSearch.get(song)
-    return { lyrics, source: song.source, title: song.title, artist: song.artist }
 }
 
 // GET DEVICE MEDIA PERMISSION

@@ -49,7 +49,6 @@ export interface StageItem {
     filter?: any // not in use at the moment
 
     // textbox
-    chords?: { enabled?: boolean; color?: string; size?: number }
     auto?: boolean
     textFit?: AutosizeTypes // auto size text fix option (default: growToFit)
     button?: { press?: string; release?: string } // click actions

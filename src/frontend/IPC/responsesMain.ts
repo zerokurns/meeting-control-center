@@ -18,24 +18,12 @@ import { defaultThemes } from "../components/settings/tabs/defaultThemes"
 import { processTimecodeFrame, updateTimelineStatus, updateTimelineTime } from "../components/timeline/timecode"
 import { importBibles } from "../converters/bible"
 import { convertCalendar } from "../converters/calendar"
-import { convertChordPro } from "../converters/chordpro"
 import { convertCSV } from "../converters/csv"
-import { convertEasyslides } from "../converters/easyslides"
-import { convertEasyWorship } from "../converters/easyworship"
 import { createImageShow } from "../converters/imageShow"
 import { importAction, importOverlay, importShow, importSpecific, importStage, importTemplate } from "../converters/importHelpers"
-import { convertMediaShout } from "../converters/mediashout"
-import { convertOpenLP } from "../converters/openlp"
-import { convertOpenSong } from "../converters/opensong"
 import { convertPowerpoint } from "../converters/powerpoint/powerpointImporter"
 import { addToProject, importProject, updateRecentlyAddedFiles } from "../converters/project"
-import { convertProPresenter } from "../converters/propresenter"
-import { convertQuelea } from "../converters/quelea"
-import { convertSoftProjector } from "../converters/softprojector"
-import { convertSongbeamerFiles } from "../converters/songbeamer"
 import { convertTexts } from "../converters/txt"
-import { convertVerseVIEW } from "../converters/verseview"
-import { convertVideopsalm } from "../converters/videopsalm"
 import {
     activeEdit,
     activePage,
@@ -385,22 +373,9 @@ export const mainResponses: MainResponses = {
             freeshow_stage: () => importStage(data),
             // Text
             txt: () => convertTexts(data),
-            chordpro: () => convertChordPro(data),
             csv: () => convertCSV(data),
             powerpoint: () => convertPowerpoint(data),
             word: () => convertTexts(data),
-            // Other programs
-            propresenter: () => convertProPresenter(data as { content: any; name: string; extension: string }[]),
-            easyworship: () => convertEasyWorship(data),
-            videopsalm: () => convertVideopsalm(data),
-            openlp: () => convertOpenLP(data),
-            opensong: () => convertOpenSong(data),
-            mediashout: () => convertMediaShout(data),
-            quelea: () => convertQuelea(data),
-            softprojector: () => convertSoftProjector(data),
-            songbeamer: () => convertSongbeamerFiles(data),
-            easyslides: () => convertEasyslides(data),
-            verseview: () => convertVerseVIEW(data),
             // Media
             // Other
             calendar: () => convertCalendar(data),

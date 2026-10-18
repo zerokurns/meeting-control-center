@@ -10,7 +10,6 @@ export const sectionColors = {
     border: "#d8d8d8",
     shadow: "#9e9e9e",
     shape_outside: "#d8d8d8",
-    chords: "#ffbe86",
     scrolling: "#ceffbe",
     special: "#e9e495",
     position: "#f079b4",

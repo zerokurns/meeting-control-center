@@ -13,7 +13,6 @@
     import { _set, active, activeProject, activeShow, activeTab, createShow, dictionary, isCleared, outShow, projects, projectsOpened, scriptures, shows } from "../util/stores"
 
     // Phone mode components (always loaded - small footprint)
-    import Lyrics from "./pages/Lyrics.svelte"
     import Project from "./pages/Project.svelte"
     import Scripture from "./pages/Scripture.svelte"
     import Show from "./pages/Show.svelte"
@@ -34,15 +33,13 @@
         project: { name: translate("remote.project", $dictionary), icon: "project" },
         show: { name: translate("remote.show", $dictionary), icon: "show" },
         slide: { name: translate("remote.slide", $dictionary), icon: "display_settings" } // slide
-        // lyrics: { name: translate("remote.lyrics", $dictionary), icon: "lyrics" },
     }
     $: tabsDisabled = {
         shows: $shows.length,
         scripture: Object.keys($scriptures).length,
         project: $projects.length || $activeProject,
         show: $activeShow || ($active?.type || "show") !== "show",
-        slide: $outShow,
-        lyrics: $outShow
+        slide: $outShow
     }
 
     // keyboard shortcuts
@@ -153,8 +150,6 @@
                 {/if}
             {:else if tab === "slide"}
                 <Slide />
-            {:else if tab === "lyrics"}
-                <Lyrics />
             {/if}
         </div>
 

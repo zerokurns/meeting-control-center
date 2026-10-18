@@ -30,7 +30,6 @@ export let activeTab = writable("shows")
 export let activeDrawerTab = writable("shows")
 export let activeCategory = writable("all")
 export let drawer: Writable<{ height: number; stored: number | null; autoclosed: boolean }> = writable({ height: 300, stored: null, autoclosed: false })
-export let outputMode: Writable<"slide" | "lyrics"> = writable("slide")
 
 export let active: Writable<ProjectShowRef> = writable({ id: "", type: "show" })
 export let activeShow: Writable<Show | null> = writable(null)
@@ -131,7 +130,6 @@ export const _ = {
     activeDrawerTab,
     activeCategory,
     drawer,
-    outputMode,
     active,
     activeShow,
     shows,

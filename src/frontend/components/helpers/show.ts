@@ -171,8 +171,8 @@ function getSortedLayoutSlides(show: Show) {
 }
 
 // meta
-export function initializeMetadata({ number = "", title = "", artist = "", author = "", composer = "", publisher = "", copyright = "", CCLI = "", year = "", key = "" }) {
-    return { number, title, artist, author, composer, publisher, copyright, CCLI, year, key }
+export function initializeMetadata({ number = "", title = "", artist = "", author = "", composer = "", publisher = "", copyright = "", year = "", key = "" }) {
+    return { number, title, artist, author, composer, publisher, copyright, year, key }
 }
 export function getCustomMetadata() {
     const defaultKeys = Object.keys(initializeMetadata({}))

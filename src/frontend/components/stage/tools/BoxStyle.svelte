@@ -31,7 +31,6 @@
     $: stageSections = item ? clone(isSlideText ? slideTextSections : itemBoxes[item.type || ""]?.sections) || {} : {}
 
     $: if (item?.type === "text" && stageSections) {
-        delete stageSections.chords
         delete stageSections.scrolling
 
         // item background flash
@@ -51,7 +50,7 @@
         }
     }
     $: if (isSlideText) {
-        stageSections = clone(item?.keepStyle ? { default: slideTextSections.default, chords: slideTextSections.chords, special: slideTextSections.special } : slideTextSections)
+        stageSections = clone(item?.keepStyle ? { default: slideTextSections.default, special: slideTextSections.special } : slideTextSections)
 
         // line height
         if (stageSections.text) stageSections.text = { inputs: [...stageSections.text.inputs, [{ id: "style", key: "line-height", type: "number", value: 1.1, multiplier: 10, extension: "em", values: { label: "edit.line_height", max: 50 } }]] }
@@ -112,7 +111,6 @@
             composer: "meta.composer",
             publisher: "meta.publisher",
             copyright: "meta.copyright",
-            CCLI: "meta.CCLI",
             year: "meta.year",
             key: "meta.key"
         }

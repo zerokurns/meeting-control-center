@@ -238,15 +238,6 @@ function getSlidesText(show: Show) {
                     tempText += txt.value
                 })
 
-                if (Array.isArray(line.chords) && line.chords.length) {
-                    const sortedChords = [...line.chords].map((chord, originalIndex) => ({ chord, originalIndex })).sort((a, b) => b.chord.pos - a.chord.pos || b.originalIndex - a.originalIndex)
-
-                    sortedChords.forEach(({ chord }) => {
-                        while (!tempText[chord.pos]) tempText += " "
-                        tempText = tempText.slice(0, chord.pos) + `[${chord.key}]` + tempText.slice(chord.pos)
-                    })
-                }
-
                 text += tempText + "\n"
             })
 

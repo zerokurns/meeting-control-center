@@ -1,9 +1,7 @@
 import { get } from "svelte/store"
 import { uid } from "uid"
-import type { Chords, Item, Line, Show, Slide, SlideData } from "../../../types/Show"
-import { VIRTUAL_BREAK_CHAR } from "../../show/slides"
+import type { Item, Line, Show, Slide, SlideData } from "../../../types/Show"
 import { activeShow } from "../../stores"
-import { createChord } from "../edit/scripts/chords"
 import { getItemText, getSlideText } from "../edit/scripts/textStyle"
 import { clone, keysToID, removeDuplicates } from "../helpers/array"
 import { history } from "../helpers/history"
@@ -29,7 +27,7 @@ export function formatText(text: string, showId = "", itemIndex = 0) {
         if (slide.children) {
             // add "missing" text content to parent slide with children text content
             if (!getSlideText(oldSlides[oldSlides.length - 1]).length && slide.children.find((id) => getSlideText(show.slides?.[id]))) {
-                oldSlides[oldSlides.length - 1].items.push({ ...clone(defaultItem), lines: [getLine(" ", [])] })
+                oldSlides[oldSlides.length - 1].items.push({ ...clone(defaultItem), lines: [getLine(" ")] })
                 newSlides[slide.id!] = clone(oldSlides[oldSlides.length - 1])
             }
 
@@ -226,7 +224,7 @@ export function formatText(text: string, showId = "", itemIndex = 0) {
                 })
 
                 // add auto size etc.
-                const textboxKeys = ["auto", "actions", "autoFontSize", "bindings", "chords", "textFit"]
+                const textboxKeys = ["auto", "actions", "autoFontSize", "bindings", "textFit"]
                 textboxKeys.forEach((key) => {
                     if (b[key]) item[key] = b[key]
                 })
@@ -371,50 +369,14 @@ export function linesToTextboxes(slideLines: string[]) {
 
         if (!items[currentItemIndex]) items[currentItemIndex] = clone(defaultItem)
 
-        const lineData = getChords(line)
-        items[currentItemIndex].lines!.push(getLine(lineData.text, lineData.chords))
+        items[currentItemIndex].lines!.push(getLine(line))
     })
 
     return items.filter(Boolean).reverse()
 }
 
-function getChords(line: string) {
-    let text = ""
-    const chords: Chords[] = []
-
-    let currentlyInChord = false
-    let currentChord = ""
-
-    line.split("").forEach((char) => {
-        if (char === "[") {
-            currentlyInChord = true
-            currentChord = ""
-            return
-        }
-
-        if (!currentlyInChord) {
-            text += char
-            return
-        }
-
-        if (char === "]") {
-            currentlyInChord = false
-            if (currentChord.length > 12 || `[${currentChord}]` === VIRTUAL_BREAK_CHAR)
-                text += `[${currentChord}]` // probably not a chord
-            else chords.push(createChord(text.length, currentChord))
-            return
-        }
-
-        currentChord += char
-    })
-
-    return { text, chords }
-}
-
-export function getLine(text: string, chords: Chords[]): Line {
-    const line: Line = { align: "", text: [{ value: text, style: "font-size: 100px;" }] }
-    if (chords.length) line.chords = chords
-    return line
+export function getLine(text: string): Line {
+    return { align: "", text: [{ value: text, style: "font-size: 100px;" }] }
 }
 
 function groupSlides(slides: Slide[], itemIndex = 0) {
@@ -445,17 +407,7 @@ function groupSlides(slides: Slide[], itemIndex = 0) {
         }
         if (!textItems.length) return
 
-        // Create chord-position-agnostic fingerprint for slide matching when chords are moved
-        const textContent = textItems.reduce((value, item) => (value += getItemText(item)), "")
-        const chords = new Set<string>()
-        textItems.forEach((item) => {
-            item.lines?.forEach((line) => {
-                line.chords?.forEach((chord) => {
-                    chords.add(chord.key)
-                })
-            })
-        })
-        const fullOldSlideText = textContent + Array.from(chords).sort().join("")
+        const fullOldSlideText = textItems.reduce((value, item) => (value += getItemText(item)), "")
 
         if (!fullOldSlideText) return
 

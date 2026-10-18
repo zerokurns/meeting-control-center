@@ -1094,22 +1094,6 @@ const deleteActions = {
         const tagId = data[0]?.id || ""
         history({ id: "UPDATE", newData: { id: tagId }, location: { page: "show", id: "tag" } })
     },
-    chord: (data: any) => {
-        data = data[0]
-
-        const item: Item = _show().slides([data.slideId]).items([data.itemIndex]).get()[0][0]
-
-        const newLines = clone(item.lines || [])
-        const currentChordIndex = newLines[data.index].chords?.findIndex((a) => a.id === data.chord.id) ?? -1
-        if (currentChordIndex < 0) return
-
-        newLines[data.index].chords!.splice(currentChordIndex, 1)
-
-        _show()
-            .slides([data.slideId])
-            .items([data.itemIndex])
-            .set({ key: "lines", values: [newLines] })
-    },
     stage_item: (data: any) => {
         const activeItems = get(activeStage).items || []
         if (!data.id || !activeItems.length) return

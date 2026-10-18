@@ -2,10 +2,8 @@
     import type { Show } from "../../../../../types/Show"
     import { translateText } from "../../../../utils/language"
     import Pdf from "../../../export/Pdf.svelte"
-    import T from "../../../helpers/T.svelte"
     import MaterialButton from "../../../inputs/MaterialButton.svelte"
     import MaterialCheckbox from "../../../inputs/MaterialCheckbox.svelte"
-    import MaterialColorInput from "../../../inputs/MaterialColorInput.svelte"
     import MaterialDropdown from "../../../inputs/MaterialDropdown.svelte"
     import MaterialNumberInput from "../../../inputs/MaterialNumberInput.svelte"
 
@@ -31,19 +29,7 @@
             grid: [3, 6],
             oneFile: exportType === "project",
             originalTextSize: true,
-            textSize: 80,
-
-            // Chord sheet specific options
-            artist: true,
-            key: true,
-            showChords: false,
-            showNotes: true,
-            fontSize: 15,
-            chordFontSize: 15,
-            chordColor: "#0066cc",
-            margin: 20,
-            spacing: 2,
-            columnsPerPage: 2
+            textSize: 80
         }
     }
 
@@ -51,13 +37,7 @@
     $: pdfOptions.oneFile = exportType === "project"
     console.log("Shows:", showCount)
 
-    $: pdfTypeOptions = [{ value: "default", label: translateText("example.default") }, { value: "text", label: translateText("export.text") }, { value: "slides", label: translateText("export.slides") }, { value: "media", label: translateText("items.media") }, ...(showHasChords(previewShow) ? [{ value: "chordSheet", label: "Chord Sheet" }] : [])]
-
-    function showHasChords(show: Show | null): boolean {
-        if (!show) return false
-
-        return Object.values(show.slides || {}).some((slide) => slide.items?.some((item) => item.lines?.some((line) => line.chords && line.chords.length > 0)))
-    }
+    $: pdfTypeOptions = [{ value: "default", label: translateText("example.default") }, { value: "text", label: translateText("export.text") }, { value: "slides", label: translateText("export.slides") }, { value: "media", label: translateText("items.media") }]
 
     function updatePdfOptions(e: any, key: string) {
         pdfOptions[key] = e.detail
@@ -77,7 +57,7 @@
 
         {#if pdfOptions.type === "media"}
             <!-- no options needed -->
-        {:else if pdfOptions.type !== "chordSheet"}
+        {:else}
             <MaterialCheckbox label="export.metadata" checked={pdfOptions.metadata} on:change={(e) => updatePdfOptions(e, "metadata")} />
             <MaterialCheckbox label="export.page_numbers" checked={pdfOptions.pageNumbers} on:change={(e) => updatePdfOptions(e, "pageNumbers")} />
             <MaterialCheckbox label="export.groups" checked={pdfOptions.groups} on:change={(e) => updatePdfOptions(e, "groups")} />
@@ -94,17 +74,6 @@
                 <MaterialNumberInput label="export.rows" style="margin-top: 10px;" value={pdfOptions.grid[1]} min={1} max={7} on:change={(e) => (pdfOptions.grid[1] = e.detail)} />
                 <MaterialNumberInput label="export.columns" disabled={pdfOptions.type !== "slides"} value={pdfOptions.grid[0]} min={1} max={6} on:change={(e) => (pdfOptions.grid[0] = e.detail)} />
             {/if}
-        {:else}
-            <MaterialNumberInput label="settings.font_size" value={pdfOptions.fontSize} min={8} max={24} on:change={(e) => (pdfOptions.fontSize = e.detail)} />
-            <MaterialNumberInput label="export.margin (mm)" value={pdfOptions.margin} min={5} max={50} on:change={(e) => (pdfOptions.margin = e.detail)} />
-            <MaterialNumberInput label="edit.line_spacing" value={pdfOptions.spacing * 10} min={1} max={30} on:change={(e) => (pdfOptions.spacing = e.detail / 10)} />
-
-            <MaterialNumberInput label="export.columns" style="margin-top: 10px;" value={pdfOptions.columnsPerPage} min={1} max={3} on:change={(e) => (pdfOptions.columnsPerPage = e.detail)} />
-
-            <h5 style="margin: 10px 0;text-align: center;color: var(--text);"><T id="edit.chords" /></h5>
-
-            <MaterialNumberInput label="edit.font_size" value={pdfOptions.chordFontSize} min={6} max={20} on:change={(e) => (pdfOptions.chordFontSize = e.detail)} />
-            <MaterialColorInput label="edit.color" value={pdfOptions.chordColor || "#0066cc"} defaultValue="#0066cc" on:change={(e) => (pdfOptions.chordColor = e.detail)} on:input={(e) => (pdfOptions.chordColor = e.detail)} />
         {/if}
     </div>
 

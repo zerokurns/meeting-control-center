@@ -367,7 +367,6 @@
                                     clickRevealed={!!output?.clickRevealed}
                                     {centerPreview}
                                     preview
-                                    chords={item.chords?.enabled}
                                 />
                             {/if}
                         {/each}

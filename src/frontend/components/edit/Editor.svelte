@@ -20,8 +20,6 @@
     import SlideEditor from "./editors/SlideEditor.svelte"
     import TemplateEditor from "./editors/TemplateEditor.svelte"
     import ItemAddMenu from "./ItemAddMenu.svelte"
-    import { getSlideChords } from "./scripts/chords"
-    import { getSlideText } from "./scripts/textStyle"
 
     $: currentShowId = $activeShow?.id || $activeEdit.showId || ""
     $: currentShow = $showsCache[currentShowId]
@@ -31,14 +29,6 @@
     $: profile = getAccess("shows")
     $: isLocked = currentShow?.locked || Slide?.locked || profile.global === "read" || profile[currentShow?.category || ""] === "read"
 
-    $: chordCount = Slide ? getSlideChords(Slide).length : 0
-
-    // no need to add chords on scripture/events
-    $: chordsHidden = !!currentShow?.reference?.type
-    $: chordsDisabled = !Slide || isLocked || (chordCount < 1 && !getSlideText(Slide))
-
-    $: if ($editMode === "chords" && (chordsHidden || chordsDisabled)) editMode.set("default")
-
     $: if ($refreshEditSlide) {
         setTimeout(() => refreshEditSlide.set(false), 100)
     }
@@ -46,7 +36,6 @@
     // TODO: could add more tabs, like to edit slide layers (like background media)
     $: editTabs = {
         default: { name: "tools.slide", icon: "slide" }, // example.default
-        ...(!chordsHidden && { chords: { name: "edit.chords", icon: "chords", data: chordCount > 0 ? chordCount : undefined, disabled: chordsDisabled } }),
         text_edit: { name: "show.text", tooltip: "show.text [Ctrl+Shift+T]", icon: "text_edit" }
     } as TabsObj
 

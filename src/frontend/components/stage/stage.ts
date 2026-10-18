@@ -122,7 +122,7 @@ function dynamicValueString(text: string) {
     text = text.replace("meta_", "").replace("time_", "")
     if (!text.length) return ""
 
-    if (text === "bpm" || text === "ccli") return text.toUpperCase()
+    if (text === "bpm") return text.toUpperCase()
 
     // return text.split("_").map((a) => `${a[0].toUpperCase()}${a.slice(1)}`).join(" ")
     return text[0].toUpperCase() + text.slice(1).replaceAll("_", " ")
@@ -139,7 +139,6 @@ export function stageItemToItem(item: StageItem) {
     if (!item) return newItem
 
     // type, align, auto, src, timer, clock, tracker, variable, etc.
-    if (item.chords) newItem.chords = typeof item.chords === "boolean" ? { enabled: item.chords, ...((item as any).chordsData || {}) } : item.chords
     // if (item.clock) newItem.clock = { seconds: true, ...item.clock }
 
     return { ...item, ...newItem } as Item

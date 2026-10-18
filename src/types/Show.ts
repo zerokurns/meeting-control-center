@@ -150,7 +150,6 @@ export interface Item {
     actions?: any // showTime | hideTime | transition
     clickReveal?: boolean
     lineReveal?: boolean
-    chords?: { enabled?: boolean; color?: string; size?: number; offsetY?: number }
     scrolling?: Scrolling
     button?: { press?: string; release?: string } // click actions
     weather?: Weather
