@@ -1,7 +1,7 @@
 import { execFileSync } from "child_process"
 import fs from "fs"
 import path from "path"
-import { _electron as electron, type ElectronApplication, type Page } from "playwright"
+import { _electron as electron, type ElectronApplication, type Locator, type Page } from "playwright"
 import { expect, test } from "@playwright/test"
 import tmp from "tmp"
 
@@ -80,8 +80,13 @@ async function save(window: Page) {
 
 async function openAddMenu(window: Page) {
     // the "+" button toggles the menu; only click when the menu is closed
-    if ((await window.locator(".addMenu").count()) === 0) await window.locator(".addButton").first().click()
-    await expect(window.locator(".addMenu")).toBeVisible()
+    if ((await window.locator(".addMenu").count()) === 0) {
+        const button = window.locator(".addButton").first()
+        await expect(button).toBeVisible({ timeout: 20_000 })
+        await expect(button).toBeEnabled({ timeout: 20_000 })
+        await button.click()
+    }
+    await expect(window.locator(".addMenu")).toBeVisible({ timeout: 20_000 })
 }
 
 function findFile(dir: string, name: string): string | undefined {
@@ -192,47 +197,59 @@ test("Agenda documents and timers: import, present, save, reopen", async () => {
         await dismissNotices(window)
         await window.locator("[data-testid=document-preview] .viewer [tabindex='0']").first().focus()
         await window.keyboard.press("ArrowRight")
-        // KNOWN APPLICATION DEFECT (see report): the viewer steps to page 2 and the global ArrowRight shortcut then
-        // snaps it back to page 1. Record it as a fixme annotation, then cover page navigation through the toolbar.
+        // the global shortcut drives the output and the preview follows it
+        // (the first press starts the not-yet-presented document on the output at the previewed unit, page 1)
         const indicator = window.getByTestId("document-unit-indicator")
-        await delay(1_500)
-        if ((await indicator.textContent())?.trim() !== "2 / 5") {
-            test.info().annotations.push({ type: "fixme", description: "ArrowRight in the PDF preview does not stay on page 2 (indicator reverts to 1 / 5); toolbar next used instead" })
-            console.log("FIXME: ArrowRight did not advance the PDF preview, using the toolbar next button")
-            await window.getByTestId("document-preview").locator(".toolbar button").nth(1).click()
-        }
-        await expect(window.getByTestId("document-unit-indicator")).toHaveText("2 / 5")
+        await expect(window.locator("[data-testid=document-thumbnails] .thumb.out")).toHaveCount(1, { timeout: 10_000 })
+        await window.keyboard.press("ArrowRight")
+        await expect(indicator).toHaveText("2 / 5")
+        await window.keyboard.press("ArrowRight")
+        await expect(indicator).toHaveText("3 / 5")
 
         await rowOf(window, "budget").click()
         await expect(window.getByTestId("xlsx-viewer")).toBeVisible({ timeout: 20_000 })
         await expect(window.getByTestId("xlsx-viewer").getByText("Line item").first()).toBeVisible()
         await dismissNotices(window)
-        await window.keyboard.press("ArrowRight")
-        await expect(window.getByTestId("xlsx-viewer").getByText("Meeting").first()).toBeVisible()
+        // the first press starts the not-yet-presented sheet on the output at the previewed sheet; the next one advances
+        await expect(async () => {
+            await window.keyboard.press("ArrowRight")
+            await expect(window.getByTestId("xlsx-viewer").getByText("Meeting").first()).toBeVisible({ timeout: 2_000 })
+        }).toPass({ timeout: 20_000 })
 
         await rowOf(window, "minutes").click()
         await expect(window.getByTestId("docx-viewer")).toBeVisible({ timeout: 20_000 })
         await expect(window.getByTestId("docx-viewer").getByText("Minutes").first()).toBeAttached({ timeout: 20_000 })
 
         // f. timer item: create a timer in the timer popup, then pick it
+        // every step waits for its target explicitly (generous timeout) so a busy CPU cannot make a click time out
+        const ready = async (locator: Locator) => {
+            await expect(locator).toBeVisible({ timeout: 20_000 })
+            await expect(locator).toBeEnabled({ timeout: 20_000 })
+            return locator
+        }
+        const timerMenuItem = () => window.locator(".addMenu").getByText("Timer", { exact: true })
         await openAddMenu(window)
-        await window.locator(".addMenu").getByText("Timer", { exact: true }).click()
-        await window.locator(".popup").getByText("New timer").first().click()
-        await window
-            .locator(".popup")
-            .getByText(/From.*to/i)
-            .first()
-            .click()
-        const nameInput = window.locator(".popup input").first()
+        await (await ready(timerMenuItem())).click()
+        await (await ready(window.locator(".popup").getByText("New timer").first())).click()
+        await (
+            await ready(
+                window
+                    .locator(".popup")
+                    .getByText(/From.*to/i)
+                    .first()
+            )
+        ).click()
+        const nameInput = await ready(window.locator(".popup input").first())
         await nameInput.fill("Smoke timer")
         await nameInput.press("Enter")
         await delay(500)
         await window.keyboard.press("Escape")
+        await expect(window.locator(".popup input").first()).toBeHidden({ timeout: 20_000 })
         await openAddMenu(window)
-        await window.locator(".addMenu").getByText("Timer", { exact: true }).click()
-        await window.locator(".popup").getByText("Smoke timer").first().click()
-        await expect(rowOf(window, "Smoke timer")).toBeVisible()
-        await rowOf(window, "Smoke timer").click()
+        await (await ready(timerMenuItem())).click()
+        await (await ready(window.locator(".popup").getByText("Smoke timer").first())).click()
+        await expect(rowOf(window, "Smoke timer")).toBeVisible({ timeout: 20_000 })
+        await (await ready(rowOf(window, "Smoke timer"))).click()
         await expect(window.getByTestId("timer-item-view")).toBeVisible()
         await expect(window.getByTestId("timer-item-time")).toHaveText(/\d+:\d\d/)
 

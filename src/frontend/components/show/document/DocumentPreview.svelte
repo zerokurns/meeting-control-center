@@ -2,7 +2,7 @@
     import { onDestroy } from "svelte"
     import type { DocumentItemData } from "../../../agenda/agenda"
     import { activeProject, outLocked, outputs, projects } from "../../../stores"
-    import { getViewer } from "../../../viewers"
+    import { documentPreviewState, getViewer } from "../../../viewers"
     import type { DocumentFit, DocumentInfo, DocumentKind, DocumentViewState } from "../../../viewers/types"
     import { documentKindOf } from "../../../viewers/registry"
     import { getFileName, removeExtension } from "../../helpers/media"
@@ -51,6 +51,10 @@
             if (key === loadedKey) error = err instanceof Error ? err.message : String(err)
         }
     }
+
+    // publish the previewed unit so the global shortcut can start this document at it
+    $: if (path && info) documentPreviewState.set({ path, unit: view.unit })
+    onDestroy(() => documentPreviewState.set(null))
 
     // OUTPUT STATE
 
@@ -188,7 +192,7 @@
         <div class="viewer">
             {#if viewer && info}
                 {#key kind + path}
-                    <svelte:component this={viewer.Component} {path} unit={view.unit} zoom={view.zoom} scrollY={view.scrollY} fit={view.fit} interactive on:state={onState} on:error={(e) => (error = e.detail)} />
+                    <svelte:component this={viewer.Component} {path} unit={view.unit} zoom={view.zoom} scrollY={view.scrollY} fit={view.fit} interactive keyboard={false} on:state={onState} on:error={(e) => (error = e.detail)} />
                 {/key}
             {/if}
 

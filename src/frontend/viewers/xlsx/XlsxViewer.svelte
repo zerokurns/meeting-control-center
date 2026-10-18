@@ -13,6 +13,7 @@
     export let scrollY = 0
     export let fit: DocumentFit = "page"
     export let interactive = false
+    export let keyboard = true
     export let background = ""
 
     const dispatch = createEventDispatcher()
@@ -99,7 +100,7 @@
     }
 
     function onKeydown(e: KeyboardEvent) {
-        if (!interactive || !sheetCount) return
+        if (!interactive || !keyboard || !sheetCount) return
         const target = e.target as HTMLElement | null
         if (target && (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))) return
         if (e.key === "ArrowRight" && sheetIndex < sheetCount - 1) dispatch("state", { unit: sheetIndex + 1, scrollY: 0 })

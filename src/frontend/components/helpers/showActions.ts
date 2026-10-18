@@ -14,7 +14,7 @@ import { isMainWindow, isOutputWindow } from "../../utils/common"
 import { convertTXTToString, getTXT } from "../../utils/dynamicTXT"
 import { send } from "../../utils/request"
 import { convertRSSToString, getRSS } from "../../utils/rss"
-import { getViewer } from "../../viewers"
+import { documentPreviewState, getViewer } from "../../viewers"
 import { documentKindOf } from "../../viewers/registry"
 import { runAction, slideHasAction } from "../actions/actions"
 import type { API_output_style } from "../actions/api"
@@ -223,8 +223,14 @@ export async function playDocument(data: OutSlide | null, next: boolean, loop = 
     }
     if (!units) return
 
+    // a document that is not on the output yet starts at the unit shown in the operator preview
+    const preview = get(documentPreviewState)
+    const previewUnit = unit === undefined && getFirstActiveOutput()?.out?.slide?.id !== data.id && preview?.path === data.id ? preview.unit : undefined
+
     let nextUnit: number
-    if (unit !== undefined) {
+    if (previewUnit !== undefined) {
+        nextUnit = Math.min(Math.max(previewUnit, 0), units - 1)
+    } else if (unit !== undefined) {
         nextUnit = unit
     } else {
         // legacy outputs store the page instead of the unit

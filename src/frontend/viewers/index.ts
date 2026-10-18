@@ -6,5 +6,6 @@ import xlsxViewer from "./xlsx"
 
 ;[pdfViewer, docxViewer, xlsxViewer].forEach(registerViewer)
 
+export * from "./previewState"
 export * from "./registry"
 export * from "./types"

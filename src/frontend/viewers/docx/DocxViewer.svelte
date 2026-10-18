@@ -11,6 +11,7 @@
     export let scrollY = 0
     export let fit: DocumentFit = "page"
     export let interactive = false
+    export let keyboard = true
     export let background = ""
 
     const dispatch = createEventDispatcher<{ info: DocumentInfo; state: Partial<DocumentViewState>; error: string }>()
@@ -93,7 +94,7 @@
     }
 
     function onKeydown(e: KeyboardEvent) {
-        if (!interactive || !pages) return
+        if (!interactive || !keyboard || !pages) return
         let next = unit
         if (e.key === "ArrowLeft" || e.key === "ArrowUp" || e.key === "PageUp") next = unit - 1
         else if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "PageDown") next = unit + 1

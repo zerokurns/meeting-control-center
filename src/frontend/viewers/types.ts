@@ -44,10 +44,14 @@ export const DEFAULT_VIEW_STATE: DocumentViewState = { unit: 0, zoom: 1, scrollY
  *   - "state" with Partial<DocumentViewState> when the user changes unit/zoom/scroll interactively
  *   - "error" with a message when the file cannot be rendered
  * `interactive` is true in the operator preview (clicks, wheel zoom, scrolling) and false on outputs.
+ * `keyboard` (default true) lets the viewer handle unit-navigation keys itself (arrows, PageUp/Down, Home/End).
+ * The operator preview passes false: those keys are handled by the global shortcut, which drives the output,
+ * and the preview follows the output. Wheel scrolling and ctrl+wheel zoom are not affected.
  */
 export interface DocumentViewerProps extends DocumentViewState {
     path: string
     interactive?: boolean
+    keyboard?: boolean
     background?: string
 }
 
