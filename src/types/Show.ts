@@ -53,7 +53,6 @@ export interface Show {
         composer?: string
         publisher?: string
         copyright?: string
-        CCLI?: string
         year?: string
         key?: string
     }
@@ -291,7 +290,6 @@ export interface Line {
         customType?: string // "disableTemplate"
         sourceDynamicKey?: string // used for scripture slides to link back to the dynamic value key (only scripture_text currently)
     }[]
-    chords?: Chords[]
 }
 
 export interface List {
@@ -303,12 +301,6 @@ export interface List {
 export interface ListItem {
     text: string
     icon?: string
-}
-
-export interface Chords {
-    id: string
-    pos: number
-    key: string
 }
 
 export interface Layout {
