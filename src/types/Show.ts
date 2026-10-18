@@ -608,6 +608,13 @@ export interface OutSlide {
     page?: number // PDF
     pages?: number // PDF
     screen?: { id: string; name?: string } // PPT
+    // MCC document items (type "document"): see src/frontend/viewers/types.ts DocumentViewState
+    kind?: "pdf" | "docx" | "xlsx"
+    unit?: number
+    units?: number
+    zoom?: number
+    scrollY?: number
+    fit?: "page" | "width"
 }
 
 export interface OutTransition {
@@ -643,6 +650,6 @@ export interface Tag {
 
 export type ID = string
 export type ItemType = "text" | "media" | "camera" | "timer" | "clock" | "button" | "weather" | "variable" | "web" | "qr_code" | "icon" | "slide_tracker" | "visualizer" | "captions" | "current_output" | "chart" | "table" // "shape" | "video"
-export type ShowType = "DIVIDER" | "show" | "image" | "video" | "audio" | "player" | "section" | "overlay" | "effect" | "pdf" | "ppt" | "screen" | "ndi" | "camera" | "folder" | "show_placeholder" // "private"
+export type ShowType = "DIVIDER" | "show" | "image" | "video" | "audio" | "player" | "section" | "overlay" | "effect" | "pdf" | "ppt" | "screen" | "ndi" | "camera" | "folder" | "show_placeholder" | "document" | "timer" // MCC: "document" = any file opened through src/frontend/viewers (id is the copied file path); "timer" = agenda timer item (id is a timers-store id) // "private"
 export type TransitionType = "none" | "blur" | "fade" | "crossfade" | "fly" | "scale" | "slide" | "spin"
 export type MediaType = "media" | "video" | "image" | "effect" | "screen" | "ndi" | "omt" | "camera" | "player" | "audio"
