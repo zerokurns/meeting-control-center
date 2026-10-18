@@ -137,6 +137,21 @@ upstream. Numbers below are the starting point; MCC work must not make them wors
 | `npm run test:format`  | 40 files not Prettier-clean (mostly `src/frontend/components`). Pre-existing.            |
 | `npm run test:svelte`  | 195 errors, 60 warnings. Pre-existing; identical with and without build output present.  |
 
+## Data locations and moving from FreeShow
+
+MCC keeps its data apart from FreeShow:
+
+| What | FreeShow | Meeting Control Center |
+| --- | --- | --- |
+| Electron `userData` (settings, projects, caches) | `…/FreeShow` (`…/freeshow` in dev) | `…/Meeting Control Center` (`…/meeting-control-center` in dev) |
+| Default data folder (shows, media, backups) | `~/Documents/FreeShow` | `~/Documents/Meeting Control Center` |
+
+On Linux `…` is `~/.config`, on macOS `~/Library/Application Support`, on Windows `%APPDATA%`. Nothing is
+migrated automatically. To reuse FreeShow content, quit both apps, copy the FreeShow `userData` directory to the
+MCC one (or just `projects.json`, `settings_synced.json`, `themes.json`, `templates.json`, `overlays.json`,
+`stage.json`) and copy or point `config.dataPath` at the old data folder from Settings → Files. Shows removed
+by the church-feature strip (scripture, chords, calendar items) load as plain text slides or are skipped.
+
 ## Platform notes
 
 - **Linux (reference).** Everything above. Electron needs `--no-sandbox` under some sandboxes/CI; the
