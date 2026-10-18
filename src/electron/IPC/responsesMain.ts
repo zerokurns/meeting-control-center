@@ -39,7 +39,6 @@ import { getMachineId } from "../utils/helpers"
 import { closeMidiInPorts, getMidiInputs, getMidiOutputs, receiveMidi, sendMidi } from "../utils/midi"
 import { deleteShows, deleteShowsNotIndexed, getAllShows, getEmptyShows, refreshAllShows } from "../utils/shows"
 import { correctSpelling } from "../utils/spellcheck"
-import { executeSpotifyCommand, getSpotifyState } from "../utils/spotify"
 import checkForUpdates from "../utils/updater"
 import { sendToMain } from "./main"
 
@@ -221,12 +220,6 @@ export const mainResponses: MainResponses = {
     [Main.TIMECODE_VALUE]: (data) => updateTimecodeValue(data),
     [Main.TIMECODE_STATUS]: (data) => console.log(data),
     [Main.TIMECODE_AUDIO_DATA]: (data) => processAudioData(data),
-    // Spotify
-    [Main.SPOTIFY_GET_STATE]: () => getSpotifyState(),
-    [Main.SPOTIFY_COMMAND]: async (data) => {
-        await executeSpotifyCommand(data.command, data.value)
-        return true
-    },
     // FFmpeg
     [Main.FFMPEG_CHECK]: async () => {
         const path = await resolveFfmpegPath()

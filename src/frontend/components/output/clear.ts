@@ -28,7 +28,7 @@ export function clearAll(button = false) {
     clearBackground()
     clearSlide(!keepLastSlide)
     clearOverlays()
-    clearAudio("", { clearPlaylist: true, commonClear: true })
+    clearAudio("", { commonClear: true })
     clearTimers()
 }
 

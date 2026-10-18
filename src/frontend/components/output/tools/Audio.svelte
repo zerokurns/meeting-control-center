@@ -1,8 +1,7 @@
 <script lang="ts">
     import { onDestroy } from "svelte"
     import { AudioPlayer } from "../../../audio/audioPlayer"
-    import { AudioPlaylist } from "../../../audio/audioPlaylist"
-    import { activeFocus, activePlaylist, activeShow, audioPlaylists, focusMode, outLocked, playingAudio } from "../../../stores"
+    import { activeFocus, activeShow, focusMode, outLocked, playingAudio } from "../../../stores"
     import { triggerClickOnEnterSpace } from "../../../utils/clickable"
     import { translateText } from "../../../utils/language"
     import Icon from "../../helpers/Icon.svelte"
@@ -98,7 +97,7 @@
 
     <Button title={name} on:click={() => openAudio(key, playing)} active={$activeShow?.id === key || $activeShow?.id === path} style="padding: 5px 10px;opacity: 0.8;width: 100%;z-index: 2;" bold={false} center>
         {#if playing.isMic}<Icon id="microphone" size={1.2} right />{/if}
-        <p style="font-size: 0.9em;">{$activePlaylist?.activeKey === key || $activePlaylist?.active === path ? `${$audioPlaylists[$activePlaylist.id]?.name}: ` : ""}{name}</p>
+        <p style="font-size: 0.9em;">{name}</p>
     </Button>
 
     <!-- AUDIO CONTROLS -->
@@ -111,7 +110,7 @@
                 title={translateText(paused ? "media.play" : "media.pause")}
                 on:click={() => {
                     if ($outLocked) return
-                    AudioPlayer.start(path, { name }, { pauseIfPlaying: true, startAt: currentTime, playlistIndex: playing.index, playlistId: playing.playlistId })
+                    AudioPlayer.start(path, { name }, { pauseIfPlaying: true, startAt: currentTime })
                 }}
             >
                 <Icon id={paused ? "play" : "pause"} white={paused} size={1.2} />
@@ -136,12 +135,6 @@
                     {joinTime(secondsToTime(duration - Math.floor(currentTime)))}
                 {/if}
             </span>
-
-            {#if $activePlaylist?.activeKey === key || $activePlaylist?.active === path}
-                <Button style="flex: 0" disabled={$outLocked} center title={translateText("media.next")} on:click={() => AudioPlaylist.next()}>
-                    <Icon id="audio_forward" size={1.2} />
-                </Button>
-            {/if}
         </div>
     {/if}
 {/if}

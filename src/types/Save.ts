@@ -19,7 +19,6 @@ export type SaveListSyncedSettings =
     | "scenes"
     | "interactions"
     | "audioStreams"
-    | "audioPlaylists"
     | "groups"
     | "midiIn"
     | "emitters"

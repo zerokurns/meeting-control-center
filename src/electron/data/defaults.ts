@@ -104,7 +104,6 @@ export const defaultSyncedSettings: { [key in SaveListSyncedSettings]: any } = {
     scenes: {},
     interactions: {},
     audioStreams: {},
-    audioPlaylists: {},
     groups: defaultGroups,
     midiIn: {},
     emitters: {},

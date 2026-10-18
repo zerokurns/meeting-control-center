@@ -11,11 +11,11 @@ import { addToPos } from "./mover"
 import { deselect } from "./select"
 import { getFileName } from "./media"
 
-export type DropAreas = "all_slides" | "slides" | "slide" | "edit" | "shows" | "project" | "projects" | "overlays" | "templates" | "scenes" | "navigation" | "audio_playlist" | "effects_library"
+export type DropAreas = "all_slides" | "slides" | "slide" | "edit" | "shows" | "project" | "projects" | "overlays" | "templates" | "scenes" | "navigation" | "effects_library"
 
 const areas = {
     all_slides: ["template"],
-    slides: ["media", "player", "urls", "audio", "audio_effect", "overlay", "sound", "effect", "screen", "ndi", "camera", "microphone", "category_audio", "audio_stream", "show", "global_timer", "variable", "midi", "action", "omt", "blackmagic", "scene"], // group
+    slides: ["media", "player", "urls", "audio", "audio_effect", "overlay", "sound", "effect", "screen", "ndi", "camera", "microphone", "audio_stream", "show", "global_timer", "variable", "midi", "action", "omt", "blackmagic", "scene"], // group
     // slide: ["overlay", "sound", "camera"], // "media",
     // projects: ["folder"],
     project: ["show_drawer", "media", "audio", "audio_effect", "overlay", "player", "effect", "screen", "ndi", "camera", "omt", "blackmagic"],
@@ -31,7 +31,6 @@ const areaChildren = {
     slides: ["slide", "group", "global_group", "effect", "screen", "ndi", "camera", "microphone", "media", "player", "urls", "audio", "audio_effect", "show", "omt", "blackmagic"],
     all_slides: [],
     navigation: ["show", "show_drawer", "media", "audio", "audio_effect", "overlay", "template"],
-    audio_playlist: ["audio"],
     effects_library: ["audio", "audio_effect", "media"]
 }
 
@@ -47,7 +46,7 @@ export async function ondrop(e: any, id: string) {
     let elem: HTMLElement | null = null
     if (e !== null) {
         // if (id === "project" || sel.id === "slide" || sel.id === "group" || sel.id === "global_group" || sel.id === "media") elem = e.target.closest(".selectElem")
-        if (id === "project" || id === "projects" || id === "slides" || id === "all_slides" || id === "navigation" || id === "templates" || id === "audio_playlist" || id === "effects_library") elem = e.target.closest(".selectElem")
+        if (id === "project" || id === "projects" || id === "slides" || id === "all_slides" || id === "navigation" || id === "templates" || id === "effects_library") elem = e.target.closest(".selectElem")
         else if (id === "slide") elem = e.target.querySelector(".selectElem")
     }
 

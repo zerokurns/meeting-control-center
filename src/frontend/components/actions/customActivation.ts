@@ -28,7 +28,6 @@ export const customActionActivations = [
 
     { id: "audio_start", common: true, name: "actions.activate_audio_starting", icon: "music" },
     { id: "audio_end", name: "actions.activate_audio_ending", icon: "music" },
-    { id: "audio_playlist_ended", common: true, name: "actions.activate_audio_playlist_ended", icon: "music" },
 
     { id: "timer_start", common: true, name: "actions.activate_timer_starting", icon: "timer", inputs: true },
     { id: "timer_end", common: true, name: "actions.activate_timer_ending", icon: "timer", inputs: true },

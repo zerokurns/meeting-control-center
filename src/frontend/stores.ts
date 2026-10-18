@@ -6,7 +6,7 @@ import { type Writable, writable } from "svelte/store"
 import type { ContentProviderId } from "../electron/contentProviders/base/types"
 import type { TimecodeMode } from "../electron/timecode/timecode"
 import type { AiFeatureStatus } from "../types/ai/Ai"
-import type { AudioChannelData, AudioStream, Playlist } from "../types/Audio"
+import type { AudioChannelData, AudioStream } from "../types/Audio"
 import type { AudioRoutingConfig } from "../types/AudioRouting"
 import type { Event } from "../types/Calendar"
 import type { Effects } from "../types/Effects"
@@ -116,7 +116,6 @@ export const playingAudio: Writable<{ [key: string]: AudioData }> = writable({})
 export const playingAudioPaths: Writable<string[]> = writable([])
 export const playingVideos: Writable<VideoAudioData[]> = writable([])
 export const playingVideoState: Writable<{ [key: string]: PlayingVideoState }> = writable({})
-export const activePlaylist: Writable<any> = writable(null)
 export const visualizerData: Writable<any> = writable(null)
 export const channelSidechainMultipliers: Writable<{ [channelId: string]: number }> = writable({})
 export const isFadingOut: Writable<any> = writable(false)
@@ -264,7 +263,6 @@ export const deletedDefaults: Writable<{ [key: string]: string[] }> = writable({
 // AUDIO
 export const audioFolders: Writable<Categories> = writable({}) // {default}
 export const audioStreams: Writable<{ [key: string]: AudioStream }> = writable({}) // {}
-export const audioPlaylists: Writable<{ [key: string]: Playlist }> = writable({}) // {}
 export const audioChannelsData: Writable<{ [key: string]: AudioChannelData }> = writable({}) // {}
 export const audioRouting: Writable<AudioRoutingConfig | null> = writable(null) // {init}
 export const effectsLibrary: Writable<{ path: string; name: string }[]> = writable([]) // []

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte"
     import type { SelectIds } from "../../../types/Main"
-    import { actions, activeActionTagFilter, activeDrawerTab, activePlaylist, activeVariableTagFilter, activeTimerTagFilter, audioPlaylists, drawerTabsData, templates } from "../../stores"
+    import { actions, activeActionTagFilter, activeDrawerTab, activeVariableTagFilter, activeTimerTagFilter, drawerTabsData, templates } from "../../stores"
     import { translateText } from "../../utils/language"
     import { customIconsColors } from "../../values/customIcons"
     import { getActionIcon } from "../actions/actions"
@@ -35,7 +35,6 @@
     $: submenuActive = isSubmenu ? (active === "actions" ? $activeActionTagFilter.includes(id) : active === "variables" ? $activeVariableTagFilter.includes(id) : active === "timer" ? $activeTimerTagFilter.includes(id) : false) : false
     $: isActive = submenuActive || active === id
 
-    $: showOutline = drawerId === "audio" ? $activePlaylist?.id === id : false
 
     $: drawerId = $activeDrawerTab
     $: selectId = `category_${drawerId}` as SelectIds
@@ -68,10 +67,7 @@
     const tabsWithCategories = ["shows", "media", "audio", "overlays", "templates"]
 
     $: noEdit = !tabsWithCategories.includes(drawerId) || defaultFolders.includes(id)
-    $: className = noEdit ? "" : $audioPlaylists[id] ? "context #playlist" : `context #category_${drawerId}_button${readOnly ? "_readonly" : ""}`
-
-    // drag and drop audio playlists
-    $: draggable = !!(drawerId === "audio" && $audioPlaylists[id])
+    $: className = noEdit ? "" : `context #category_${drawerId}_button${readOnly ? "_readonly" : ""}`
 
     // SUB MENU
 
@@ -97,8 +93,8 @@
     }
 </script>
 
-<SelectElem style="width: 100%;" id={selectId} selectable={!noEdit} {draggable} borders="center" trigger="column" data={id}>
-    <MaterialButton class={className} style="width: 100%;font-weight: normal;padding: 0.2em {boxedIcon ? 0.64 : 0.8}em;" {isActive} {showOutline} on:click={click} on:dblclick={dblclick} tab>
+<SelectElem style="width: 100%;" id={selectId} selectable={!noEdit} borders="center" trigger="column" data={id}>
+    <MaterialButton class={className} style="width: 100%;font-weight: normal;padding: 0.2em {boxedIcon ? 0.64 : 0.8}em;" {isActive} on:click={click} on:dblclick={dblclick} tab>
         <div style="max-width: 85%;{boxedIcon ? 'gap: 9px;' : ''}" data-title={translateText(label)}>
             <Icon id={icon} size={isSubmenu ? 0.85 : 1} color={isSubmenu ? category.color : boxedIcon ? customIconsColors[icon] || "" : ""} white custom={customIcon} boxed={isSubmenu || boxedIcon} />
 

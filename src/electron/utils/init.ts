@@ -3,7 +3,6 @@ import { isProd, isWindows, setAutoProfile } from ".."
 import { catchErrors } from "../IPC/responsesMain"
 import { OutputHelper } from "../output/OutputHelper"
 import { detectNewFiles } from "./files"
-import { initSpotify } from "./spotify"
 
 export function parseCommandLineArgs() {
     const result: { profile?: string } = {}
@@ -35,8 +34,6 @@ export function mainWindowInitialize() {
     OutputHelper.init()
 
     detectNewFiles()
-
-    initSpotify()
 
     if (!isProd) return
 

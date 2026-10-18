@@ -265,7 +265,6 @@ export const contextMenuLayouts: { [key: string]: string[] } = {
     category_templates_button: ["GROUP_rename_icon", "delete", "SEPARATOR", "use_as_archive"],
     category_media_button: ["GROUP_rename_only", "delete_remove", "SEPARATOR", "media_type", "SEPARATOR", "system_open"],
     category_audio_button: ["GROUP_rename_only", "delete_remove", "SEPARATOR", "system_open"],
-    playlist: ["GROUP_rename_only", "delete"],
     calendar_item: ["GROUP_rename_recolor", "delete"],
     calendar_item_unlabeled: ["delete"],
     // CONTENT
@@ -309,7 +308,6 @@ export const contextMenuLayouts: { [key: string]: string[] } = {
     player_button: ["GROUP_open", "player_tag_set", "player_tag_filter", "SEPARATOR", "rename", "delete"],
     audio_button: ["GROUP_open", "effects_library_add", "favourite", "SEPARATOR", "system_open"],
     audio_effect_button: ["GROUP_rename_only", "remove", "SEPARATOR", "system_open"],
-    audio_button_playlist: ["GROUP_open", "remove", "SEPARATOR", "system_open"],
     // "addToFirstSlide"
     screen_card: ["recording"],
     camera_card: ["GROUP_edit", "startup_activate", "SEPARATOR", "recording"],

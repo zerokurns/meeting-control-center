@@ -96,7 +96,7 @@ export class AudioMicrophone {
     static stop(id: string) {
         if (!id) return
         const micId = id.startsWith("mic_sub_") ? id : "mic_sub_" + id
-        clearAudio(micId, { clearPlaylist: false, clearMicrophones: true })
+        clearAudio(micId, { clearMicrophones: true })
         // AudioPlayer.stop(micId)
     }
 

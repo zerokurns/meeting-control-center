@@ -44,7 +44,6 @@
 
     const NODE_ICONS: Record<string, string> = {
         drawer_audio: "audio",
-        playlist: "playlist",
         mic: "mic",
         desktop_audio: "volume",
         output_window: "display_settings",

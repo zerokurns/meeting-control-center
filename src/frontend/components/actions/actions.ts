@@ -1,7 +1,7 @@
 import { writable, get } from "svelte/store"
 import { uid } from "uid"
 import { gainToDb, MIN_DB } from "../../audio/dBUtils"
-import { actionHistory, actions, audioPlaylists, audioRouting, audioStreams, outputs, runningActions, scenes, shows, stageShows, styles } from "../../stores"
+import { actionHistory, actions, audioRouting, audioStreams, outputs, runningActions, scenes, shows, stageShows, styles } from "../../stores"
 import { newToast, wait } from "../../utils/common"
 import { translateText } from "../../utils/language"
 import { getDynamicValue } from "../edit/scripts/itemHelpers"
@@ -273,7 +273,6 @@ const namedObjects = {
     id_select_show: () => get(shows),
     start_scene: () => get(scenes),
     start_audio_stream: () => get(audioStreams),
-    start_playlist: () => get(audioPlaylists),
     id_select_stage_layout: () => get(stageShows),
     start_output_recording: () => get(outputs)
 }

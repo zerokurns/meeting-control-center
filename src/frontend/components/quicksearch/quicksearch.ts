@@ -12,7 +12,6 @@ import {
     activeStyle,
     alertMessage,
     audioFolders,
-    audioPlaylists,
     categories,
     currentOutputSettings,
     disabledServers,
@@ -232,10 +231,6 @@ export async function quicksearch(searchValue: string, categoryFilter: null | Se
 
     // --- AUDIO ---
     if (isVisible("audio")) {
-        // playlists
-        const playlists = trimValues(sort(keysToID(get(audioPlaylists))))
-        addValues(playlists, "audio_playlist", "playlist")
-
         // audio files
         const folderPaths = Object.values(get(audioFolders)).map((a) => a.path!)
         const audioMedia = trimValues(await getMediaResults(searchValue, folderPaths), MAX_RESULTS_LARGE)
@@ -479,14 +474,6 @@ const triggerActions = {
                 activeShow.set({ ...newShow, index: newIndex })
             }
         }
-    },
-    audio_playlist: (id: string) => {
-        openDrawer("audio")
-
-        drawerTabsData.update((a) => {
-            if (a.audio) a.audio.activeSubTab = id
-            return a
-        })
     },
     media: (id: string, data: any) => {
         const path = id
@@ -747,7 +734,6 @@ const faq = [
     { id: "https://youtu.be/DEbn8XLrQJA", name: "Actions Are Your Best Friend", icon: "youtube" },
     { id: "https://youtu.be/Jm4forUHP9M", name: "Using MIDI Outputs", icon: "youtube" },
     { id: "https://youtu.be/r2R_TcvGCqQ", name: "Make Multiple Versions of the Same Song", icon: "youtube" },
-    { id: "https://youtu.be/H7iqWjXzlpw", name: "Autoplay Your Playlists", icon: "youtube" },
     { id: "https://youtu.be/b6Q5qe9Re44", name: "Schedule Shows to Start Automatically", icon: "youtube" },
     { id: "https://youtu.be/y3wUt--XFOs", name: "Loop Videos", icon: "youtube" },
     { id: "https://youtu.be/J5qM3xVv7yo", name: "Control the Show from Stage View", icon: "youtube" },
@@ -787,7 +773,6 @@ const faq = [
     { id: "https://youtu.be/OxqJ7Z-VvYs", name: "Virtual Outputs", icon: "youtube" },
     { id: "https://youtu.be/RVqV1nNjqgY", name: "Learn Timer Settings", icon: "youtube" },
     { id: "https://youtu.be/Twh5RlMtXI8", name: "How to Adjust Background Video in Real-time", icon: "youtube" },
-    { id: "https://youtu.be/CmSXXyvtVpg", name: "How to Make a Music Playlist", icon: "youtube" },
     { id: "https://youtu.be/iSWum8-52k0", name: "Understanding Output Settings", icon: "youtube" },
     { id: "https://youtu.be/Mz-Vk-fvCqk", name: "Edit Photos", icon: "youtube" }
 ]

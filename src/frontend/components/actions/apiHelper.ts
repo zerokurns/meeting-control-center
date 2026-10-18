@@ -6,9 +6,8 @@ import type { DropData, Selected, Variable } from "../../../types/Main"
 import { isChannelRecording, startChannelRecording, stopAllChannelRecordings, stopChannelRecording, toggleChannelRecording } from "../../audio/audioChannelRecorder"
 import { clearAudio } from "../../audio/audioFading"
 import { AudioPlayer } from "../../audio/audioPlayer"
-import { AudioPlaylist } from "../../audio/audioPlaylist"
 import { dbToGain } from "../../audio/dBUtils"
-import { activeEdit, activePage, activeProject, activeRecording, activeShow, activeTimers, audioChannelsData, audioPlaylists, audioRouting, folders, groupNumbers, groups, media, outLocked, outputs, overlays, pdfImports, playingAudio, projects, refreshEditSlide, selected, shows, showsCache, sortedShowsList, special, styles, timers, variables } from "../../stores"
+import { activeEdit, activePage, activeProject, activeRecording, activeShow, activeTimers, audioChannelsData, audioRouting, folders, groupNumbers, groups, media, outLocked, outputs, overlays, pdfImports, playingAudio, projects, refreshEditSlide, selected, shows, showsCache, sortedShowsList, special, styles, timers, variables } from "../../stores"
 import { newToast, triggerFunction } from "../../utils/common"
 import { send } from "../../utils/request"
 import { startOutputRecording, stopMediaRecorder } from "../drawer/live/recorder"
@@ -378,19 +377,6 @@ export function toggleOutputRecording(data: API_toggle_id = {}) {
         if (isRecording) stopMediaRecorder()
         else startOutputRecording(outputId)
     }
-}
-
-// AUDIO
-
-export function startPlaylistByName(name: string) {
-    if (get(outLocked)) return
-
-    if (name.includes("{")) name = getDynamicValue(name)
-    const sortedPlaylists = sortByClosestMatch(keysToID(get(audioPlaylists)), name)
-    const playlistId = sortedPlaylists[0]?.id
-    if (!playlistId) return
-
-    AudioPlaylist.start(playlistId)
 }
 
 /// EDIT
@@ -782,7 +768,7 @@ export function pauseAudio(data: API_media) {
 }
 export function stopAudio(data: API_media) {
     if (get(outLocked)) return
-    clearAudio(data.path, { clearPlaylist: true, commonClear: true })
+    clearAudio(data.path, { commonClear: true })
 }
 export function audioSeekTo(data: API_seek) {
     if (get(outLocked)) return

@@ -375,7 +375,7 @@ export const previewShortcuts = {
     },
     F4: () => {
         if (get(outLocked)) return
-        clearAudio("", { clearPlaylist: true, clearMicrophones: true, commonClear: true })
+        clearAudio("", { clearMicrophones: true, commonClear: true })
         timelineRecordingAction.set({ id: "clear_audio" })
     },
     F5: () => {

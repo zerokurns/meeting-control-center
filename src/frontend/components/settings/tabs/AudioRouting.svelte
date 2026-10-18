@@ -7,7 +7,7 @@
     import { AudioPlayer } from "../../../audio/audioPlayer"
     import { deduplicateConnections, syncOutputAudioChannels } from "../../../audio/routing/audioRoutingInit"
     import { AudioRoutingManager } from "../../../audio/routing/audioRoutingManager"
-    import { activePopup, audioChannelsData, audioEffects, audioPlaylists, audioRouting, outputs, selected, special } from "../../../stores"
+    import { activePopup, audioChannelsData, audioEffects, audioRouting, outputs, selected, special } from "../../../stores"
     import { newToast } from "../../../utils/common"
     import { translateText } from "../../../utils/language"
     import { keysToID } from "../../helpers/array"
@@ -50,7 +50,6 @@
     }
 
     const PARENT_PREFIX_MAP: Record<string, { parentId: string; prefix: string }> = {
-        playlist_sub_: { parentId: "playlists_default", prefix: "playlist_sub_" },
         mic_sub_: { parentId: "mic_default", prefix: "mic_sub_" },
         drawer_sub_: { parentId: "drawer_audio", prefix: "drawer_sub_" },
         speaker_sub_: { parentId: "speaker_default", prefix: "speaker_sub_" },
@@ -60,7 +59,6 @@
 
     const fixedInputs = [
         { id: "drawer_audio", name: translateText("tabs.audio"), type: "drawer_audio" },
-        { id: "playlists_default", name: translateText("audio.playlists"), type: "playlist" },
         { id: "mic_default", name: translateText("live.microphones"), type: "mic" },
         { id: "desktop_default", name: translateText("audio.desktop_audio"), type: "desktop_audio" },
         { id: "output_window", name: `${translateText("settings.display_settings")} <span style="font-size: 0.75em;opacity: 0.6;">(${translateText("category.videos")})</span>`, type: "output_window" }
@@ -103,12 +101,6 @@
     $: channelsList = config.channels || []
     $: inactiveOutputIds = keysToID($outputs).filter((a) => !a.enabled)
 
-    $: availablePlaylists = keysToID($audioPlaylists).map((p) => ({
-        id: `playlist_sub_${p.id}`,
-        name: p.name || p.id,
-        type: "playlist"
-    }))
-
     $: nonStageOutputs = getAllOutputs()
         .filter((out) => out && !out.stageOutput)
         .map((out) => ({
@@ -140,9 +132,7 @@
             type: "input",
             nodes: fixedInputs.map((node) => {
                 const subNodes =
-                    node.id === "playlists_default"
-                        ? availablePlaylists
-                        : node.id === "mic_default"
+                    node.id === "mic_default"
                           ? availableAudioInputs.map((mic) => {
                                 const micDeviceId = mic.value.startsWith("mic_sub_") ? mic.value.slice(8) : mic.value
                                 const configured = config?.inputs?.find((i) => i.id === mic.value || i.id === micDeviceId || i.deviceId === micDeviceId)
@@ -221,7 +211,7 @@
         }
     ] as RoutingColumn[]
 
-    $: if (config || expandedNodes || zoom || nonStageOutputs || networkOutputWindows || availablePlaylists || columns || $special) {
+    $: if (config || expandedNodes || zoom || nonStageOutputs || networkOutputWindows || columns || $special) {
         tick().then(requestUpdateConnectionLines)
     }
 
@@ -456,7 +446,7 @@
     // }
 
     function isValidConnection(fromId: string, toId: string): { valid: boolean; from: string; to: string } {
-        const isInput = (id: string) => fixedInputs.some((i) => i.id === id) || id.startsWith("playlist_sub_") || id.startsWith("mic_sub_") || id.startsWith("output_win_sub_")
+        const isInput = (id: string) => fixedInputs.some((i) => i.id === id) || id.startsWith("mic_sub_") || id.startsWith("output_win_sub_")
         const isChannel = (id: string) => channelsList.some((m) => m.id === id)
         const isOutput = (id: string) => fixedOutputs.some((o) => o.id === id) || id.startsWith("speaker_sub_") || id.startsWith("network_sub_")
 

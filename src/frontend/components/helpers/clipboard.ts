@@ -18,7 +18,6 @@ import {
     activeShow,
     activeStage,
     audioFolders,
-    audioPlaylists,
     audioRouting,
     audioStreams,
     categories,
@@ -814,25 +813,6 @@ const deleteActions = {
             return a
         })
     },
-    audio: (data: any) => {
-        // remove audio from playlist
-        const activePlaylist = get(drawerTabsData).audio?.activeSubTab || ""
-        if (!activePlaylist) return
-
-        audioPlaylists.update((a) => {
-            if (!a[activePlaylist]) return a
-
-            const songs = clone(a[activePlaylist].songs || [])
-            data.forEach((song) => {
-                const currentSongIndex = songs.findIndex((path) => path === song.path)
-                if (currentSongIndex >= 0) songs.splice(currentSongIndex, 1)
-            })
-
-            a[activePlaylist].songs = songs
-
-            return a
-        })
-    },
     folder: async (data: any) => {
         let projectIds: string[] = []
         let folderIds: string[] = []
@@ -864,8 +844,7 @@ const deleteActions = {
     category_shows: (data: any) => historyDelete("UPDATE", data, { updater: "category_shows" }),
     category_media: (data: any) => historyDelete("UPDATE", data, { updater: "category_media" }),
     category_audio: (data: any) => {
-        if (get(audioPlaylists)[data[0]]) historyDelete("UPDATE", data, { updater: "audio_playlists" })
-        else historyDelete("UPDATE", data, { updater: "category_audio" })
+        historyDelete("UPDATE", data, { updater: "category_audio" })
     },
     category_overlays: (data: any) => historyDelete("UPDATE", data, { updater: "category_overlays" }),
     category_templates: (data: any) => historyDelete("UPDATE", data, { updater: "category_templates" }),

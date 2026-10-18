@@ -25,7 +25,6 @@
     import ClearButtons from "./ClearButtons.svelte"
     import MultiOutputs from "./MultiOutputs.svelte"
     import IcecastStatus from "./IcecastStatus.svelte"
-    import SpotifyController from "./SpotifyController.svelte"
 
     $: allActiveOutputs = getActiveOutputs($outputs, true, true, true)
     $: outputId = allActiveOutputs[0]
@@ -297,7 +296,6 @@
         </div>
 
         <IcecastStatus />
-        <SpotifyController />
     {/if}
 </div>
 

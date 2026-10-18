@@ -1,13 +1,3 @@
-export interface Playlist {
-    name: string
-    songs: string[]
-    mode?: "default" | "shuffle"
-    loop?: boolean
-    autoNext?: boolean // auto play next song when current ends, enabled by default
-    crossfade?: number
-    volume?: number // playlist specific volume
-}
-
 export interface AudioChannelData {
     volume?: number
     isMuted?: boolean

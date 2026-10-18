@@ -73,8 +73,6 @@ export const actionData = {
     start_audio_stream: { slideId: "audioStream", common: true, name: "actions.start_audio_stream", icon: "audio_stream", input: "id" },
     toggle_audio_recording: { canAddMultiple: true, name: "actions.toggle_audio_recording", icon: "record", input: "toggle_channel_recording" },
     toggle_icecast: { name: "actions.toggle_specific", replace: ["Icecast"], icon: "cloud", input: "toggle" },
-    start_playlist: { common: true, name: "actions.start_playlist", icon: "playlist", input: "id", incompatible: ["playlist_next"] },
-    playlist_next: { name: "actions.playlist_next", icon: "playlist", incompatible: ["start_playlist"] },
     start_audio_effect: { common: true, canAddMultiple: true, name: "actions.start_audio_effect", icon: "effect", input: "audio_effects" },
     start_microphone: { common: true, name: "actions.start_microphone", icon: "mic", input: "microphone" },
     stop_microphone: { common: true, name: "actions.stop_microphone", icon: "mic", input: "microphone", red: true },
@@ -114,13 +112,6 @@ export const actionData = {
     obs_stop_livestream: { name: "OBS Studio: Stop livestream", icon: "camera", red: true },
     obs_start_recording: { name: "OBS Studio: Start recording", icon: "record" },
     obs_stop_recording: { name: "OBS Studio: Stop recording", icon: "record", red: true },
-
-    // SPOTIFY
-    spotify_play: { SECTION: "Spotify", name: "Spotify: media.play", icon: "play" },
-    spotify_pause: { name: "Spotify: media.pause", icon: "pause" },
-    spotify_fade_out: { name: "Spotify: media.fade_out", icon: "clear" },
-    spotify_next: { name: "Spotify: media.next", icon: "nextFull" },
-    spotify_previous: { name: "Spotify: media.previous", icon: "previousFull" },
 
     // Smart
     smart_toggle_stt: { SECTION: "settings.ai", name: "actions.toggle_specific", replace: ["STT"], icon: "mic", input: "toggle" },

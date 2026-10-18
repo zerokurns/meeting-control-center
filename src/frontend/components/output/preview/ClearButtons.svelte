@@ -37,7 +37,7 @@
         background: () => clearBackground(),
         slide: () => clearSlide(),
         overlays: () => clearOverlays(),
-        audio: () => clearAudio("", { clearPlaylist: true, clearMicrophones: true, commonClear: true }),
+        audio: () => clearAudio("", { clearMicrophones: true, commonClear: true }),
         nextTimer: () => clearTimers(),
         scene: () => clearScene()
     }

@@ -7,7 +7,7 @@ import type { EncoderDetection } from "../../electron/streaming/encoderDetection
 import type { TimecodeMode } from "../../electron/timecode/timecode"
 import type { AIProviderId, AiSetupOptions, EngineStatus } from "../ai/Ai"
 import type { SttEngineOptions } from "../ai/AiSettings"
-import type { ErrorLog, FileFolder, MainFilePaths, Media, MediaCodecInfo, OS, SpotifyState, Subtitle } from "../Main"
+import type { ErrorLog, FileFolder, MainFilePaths, Media, MediaCodecInfo, OS, Subtitle } from "../Main"
 import type { Output } from "../Output"
 import type { Folders, Projects } from "../Projects"
 import type { Dictionary, Resolution, Themes } from "../Settings"
@@ -149,9 +149,6 @@ export enum Main {
     TIMECODE_VALUE = "TIMECODE_VALUE",
     TIMECODE_AUDIO_DATA = "TIMECODE_AUDIO_DATA",
     TIMECODE_STATUS = "TIMECODE_STATUS",
-    // Spotify
-    SPOTIFY_GET_STATE = "SPOTIFY_GET_STATE",
-    SPOTIFY_COMMAND = "SPOTIFY_COMMAND",
     // FFmpeg Download
     FFMPEG_CHECK = "FFMPEG_CHECK",
     FFMPEG_DOWNLOAD = "FFMPEG_DOWNLOAD",
@@ -244,9 +241,6 @@ export interface MainSendPayloads {
     [Main.TIMECODE_VALUE]: number
     [Main.TIMECODE_STATUS]: "play" | "pause" | "stop"
     [Main.TIMECODE_AUDIO_DATA]: { mode: TimecodeMode; buffer: Uint8Array }
-    // Spotify
-    [Main.SPOTIFY_GET_STATE]: undefined
-    [Main.SPOTIFY_COMMAND]: { command: "playpause" | "next" | "prev" | "seek" | "setVolume" | "pause"; value?: number }
     // FFmpeg
     [Main.FFMPEG_CHECK]: undefined
     [Main.FFMPEG_DOWNLOAD]: undefined
@@ -339,9 +333,6 @@ export interface MainReturnPayloads {
     [Main.TIMECODE_VALUE]: number | void
     [Main.TIMECODE_AUDIO_DATA]: Buffer | void
     [Main.TIMECODE_STATUS]: "play" | "pause" | "stop" | void
-    // Spotify
-    [Main.SPOTIFY_GET_STATE]: Promise<SpotifyState | null>
-    [Main.SPOTIFY_COMMAND]: Promise<boolean>
     // FFmpeg
     [Main.FFMPEG_CHECK]: Promise<{ installed: boolean; path?: string }>
     [Main.FFMPEG_DOWNLOAD]: Promise<{ success: boolean; error?: string }>

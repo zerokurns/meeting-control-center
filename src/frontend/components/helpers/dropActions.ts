@@ -8,7 +8,7 @@ import type { DropData, Selected } from "../../../types/Main"
 import type { Item, Slide, SlideAction } from "../../../types/Show"
 import { sendMain } from "../../IPC/main"
 import { changeLayout, changeSlideGroups } from "../../show/slides"
-import { activeDrawerTab, activeEdit, activePage, activePopup, activeProject, activeShow, alertMessage, audioFolders, audioPlaylists, audioStreams, drawerTabsData, editingProjectTemplate, effectsLibrary, media, mediaFolders, overlays, playerVideos, projects, projectTemplates, scenes, shows, showsCache, slidesOptions, templates, timers } from "../../stores"
+import { activeDrawerTab, activeEdit, activePage, activePopup, activeProject, activeShow, alertMessage, audioFolders, audioStreams, drawerTabsData, editingProjectTemplate, effectsLibrary, media, mediaFolders, overlays, playerVideos, projects, projectTemplates, scenes, shows, showsCache, slidesOptions, templates, timers } from "../../stores"
 import { newToast } from "../../utils/common"
 import { getAccess } from "../../utils/profile"
 import { audioExtensions, imageExtensions, mediaExtensions, presentationExtensions, videoExtensions } from "../../values/extensions"
@@ -401,22 +401,6 @@ export const dropActions = {
             // return history
         }
 
-        // audio playlist
-        if (get(audioPlaylists)[drop.data] && (drag.id === "audio" || drag.id === "audio_effect")) {
-            h.id = "UPDATE"
-            h.location = { page: "drawer", id: "audio_playlist_key" }
-
-            const playlistId = drop.data
-            h.oldData = { id: playlistId }
-
-            const songs = clone(get(audioPlaylists)[playlistId]?.songs || [])
-            const newSongs = drag.data.map((a) => a.path)
-            songs.push(...newSongs)
-            h.newData = { key: "songs", data: songs }
-
-            return h
-        }
-
         if (drop.data === "effects_library" && (drag.id === "audio" || drag.id === "audio_effect" || drag.id === "media")) {
             const rawFiles: any[] = drag.data
             effectsLibrary.update((effects) => {
@@ -519,29 +503,6 @@ export const dropActions = {
                 addItem("text", null, {}, `{$${name}}`)
             })
         }
-    },
-    audio_playlist: ({ drag, drop }: Data, h: History) => {
-        h.id = "UPDATE"
-        h.location = { page: "drawer", id: "audio_playlist_key" }
-
-        const playlistId = get(drawerTabsData).audio?.activeSubTab
-        if (!playlistId) return
-
-        h.oldData = { id: playlistId }
-
-        let songs = clone(get(audioPlaylists)[playlistId]?.songs || [])
-        let dropIndex = drop.index
-        if (dropIndex === undefined) dropIndex = songs.length
-
-        if (drag.id === "files") {
-            const audioFiles = drag.data.map((a) => window.api.showFilePath(a))
-            songs = addToPos(songs, audioFiles, dropIndex)
-        } else {
-            songs = mover(songs, getIndexes(drag.data), dropIndex)
-        }
-
-        h.newData = { key: "songs", data: songs }
-        return h
     },
     effects_library: ({ drag }: Data) => {
         const rawFiles: any[] = drag.id === "files" ? drag.data.map((a: any) => ({ path: window.api.showFilePath(a), name: a.name })) : drag.data
@@ -779,13 +740,6 @@ const slideDrop = {
             h.newData = { name: audio.name || audio.path || audio.id, path: audio.path || audio.id, type: "audio" }
             history(h)
         })
-    },
-    category_audio: ({ drag, drop }: Data) => {
-        // drop playlist to create action
-        const playlistId = drag.data[0]
-        if (!playlistId || !get(audioPlaylists)[playlistId]) return
-
-        addSlideAction(drop.index ?? -1, "start_playlist", { id: playlistId })
     },
     scene: ({ drag, drop }: Data) => {
         drag.data.forEach((scene) => {
