@@ -349,6 +349,14 @@ OMT, Blackmagic, capture, RTMP/WebRTC streaming, Icecast, timecode, OBS integrat
 
 ## 10. Rebranding surface
 
+> **Status (task 4, 2026-10-18):** done on branch `task/04-rebrand`. Package `meeting-control-center`, product
+> name `Meeting Control Center`, app id `app.meetingcontrolcenter`, default data root `~/Documents/Meeting
+> Control Center`, placeholder icons, all user-visible text and the 31 language files renamed; Sentry, Google
+> Analytics, the upstream update check, Firebase interactions, the internet remote relay and freeshow.net share
+> links removed. Kept on purpose: persisted import ids (`freeshow_project` …), the `freeshow-protected://` and
+> `freeshow-cache` internal schemes, the `/freeshow/*` OSC address prefix (external API contract), the
+> `FREESHOW_VAAPI_DEVICE` env var, and the YouTube `Referer` workaround. The list below is the original survey.
+
 - `package.json` (`name`, `description`, `repository`), `config/building/electron-builder.yaml` and
   `electron-builder-lnxarm.yaml` (`appId: app.freeshow`, `productName`, artifact names, icons),
   `config/building/snapcraft.yaml`, `scripts/snap/`, `scripts/macos/notarize.js`, `config/building/rollup.config.mjs`.

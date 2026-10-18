@@ -44,9 +44,9 @@ files it names, and nothing else. This page is the shared part of every brief.
    remaining references except those the brief says to keep.
 2. `npm run build` exits 0 (this type-checks the Electron main process and bundles renderer + servers).
 3. `npm run test:svelte 2>&1 | tail -3` reports **no more errors than the current baseline** in `docs/dev-setup.md`
-   (177 after task 3). Record the number.
+   (151 after task 4). Record the number.
 4. `npm run test:unit 2>&1 | tail -6` reports **no more failures than the current baseline** in `docs/dev-setup.md`
-   (1 after task 3: `src/electron/streaming/RtmpStreamer.integration.test.ts`). Record the numbers.
+   (1 after task 4: `src/electron/streaming/RtmpStreamer.integration.test.ts`). Record the numbers.
 5. `xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npm run test:playwright` passes
    (boots the production build, completes first-run setup, creates a project and a show, saves). If it
    fails on a timeout, rerun once before investigating. Record the result.

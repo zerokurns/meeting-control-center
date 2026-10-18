@@ -109,7 +109,7 @@ Configuration for all of these lives under `config/` (`building/`, `formatting/`
 `public/build/` and restore the dev `index.html`, otherwise `git status` shows a spurious change and
 `npm start` serves the stale bundle.
 
-### Current baseline (after task 3, the church-feature strip, 2026-10-18)
+### Current baseline (after task 4, the rebrand and telemetry removal, 2026-10-18)
 
 | Check                  | Result                                                                                   |
 | ---------------------- | ---------------------------------------------------------------------------------------- |
@@ -118,7 +118,7 @@ Configuration for all of these lives under `config/` (`building/`, `formatting/`
 | `npm run test:playwright` | OK, 1 passed                                                                          |
 | `npm run test:unit`    | 104 passed, 1 failed: `src/electron/streaming/RtmpStreamer.integration.test.ts` (real-ffmpeg pipeline). Pre-existing. |
 | `npm run test:format`  | 32 files not Prettier-clean, all pre-existing upstream drift (the strip formatted only files it had changed). |
-| `npm run test:svelte`  | 177 errors, 56 warnings. Pre-existing.                                                   |
+| `npm run test:svelte`  | 151 errors, 56 warnings. Pre-existing.                                                   |
 
 Rule for every task: build and Playwright green; the other three not worse than this table. Update the table
 when a task legitimately moves a number.

@@ -1,79 +1,36 @@
-<p align='center'>
- <a href='https://freeshow.app/'>
-  <img src='https://github.com/ChurchApps/FreeShow/assets/17619496/02ac9807-1f47-47fc-b895-b35f857c2b57' width=150 />
- </a>
-</p>
+# Meeting Control Center
 
-<h1 align='center'>
-  FreeShow
-</h1>
+A personal-use presenter for virtual and hybrid meetings: one operator console drives the in-room screens and
+the Google Meet feed from a single run-of-show, with native viewing of PowerPoint, PDF, Word and Excel files.
 
-<p align='center'>
-  FreeShow is a free software with a user-friendly interface that offers powerful features for creating and editing slideshows. 
-</p>
+Meeting Control Center (MCC) is a fork of [FreeShow](https://github.com/ChurchApps/FreeShow) (GPL-3.0) with the
+church-specific features removed and meeting features added on top. It is early: see the roadmap below.
 
-<p align='center'>
-  <a href="https://github.com/ChurchApps/freeshow/releases"><img alt="Download" src="https://img.shields.io/github/downloads/ChurchApps/FreeShow/total?style=for-the-badge" /></a>
-  &nbsp;
-  <a href="https://github.com/ChurchApps/freeshow/blob/main/LICENSE"><img alt="Licence" src="https://img.shields.io/badge/licence-GPL-blue.svg?style=for-the-badge" /></a>
-  &nbsp;
-  <a href="https://github.com/ChurchApps/FreeShow/"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/ChurchApps/FreeShow?style=for-the-badge" /></a>
-</p>
-<br />
+## Status
 
-## Get Started Using FreeShow
+| Phase | State |
+| --- | --- |
+| 0 — Fork, strip, rebrand | in progress (fork builds, church features and telemetry removed, rebranded) |
+| 1 — Document viewers (PDF, XLSX, DOCX, PPTX) | not started |
+| 2 — Presenting core | not started |
+| 3 — Google Meet and control surfaces | not started |
+| 4 — Hardening and release | not started |
 
-[![](https://markdown-videos.vercel.app/youtube/9_1lUNcrU1w)](https://youtu.be/9_1lUNcrU1w)
+## Develop
 
-## Preview
+```sh
+git clone https://github.com/zerokurns/meeting-control-center.git
+cd meeting-control-center
+npm install
+npm start
+```
 
-<div style="display: flex;gap: 10px;">
-    <img style="width: 49%;" src="https://github.com/ChurchApps/FreeShow/assets/1447203/0e5e832d-9bb8-4c64-98cc-04f0ce3f966e">
-    <img style="width: 49%;" src="https://github.com/ChurchApps/FreeShow/assets/1447203/c1d71b2f-d873-4125-9f04-339e234e55f9">
-</div>
-<div style="display: flex;gap: 10px;margin-top: 10px;">
-    <img style="width: 49%;" src="https://github.com/ChurchApps/FreeShow/assets/1447203/39c344fd-5c22-4019-9cae-c6307364d580">
-    <img style="width: 49%;" src="https://github.com/ChurchApps/FreeShow/assets/1447203/b1275bfc-e966-4813-962e-a7350ba6a84a">
-</div>
+Prerequisites, platform notes, the check commands and the current baseline are in
+[`docs/dev-setup.md`](docs/dev-setup.md). The codebase is mapped in
+[`docs/codebase-map.md`](docs/codebase-map.md); architecture decisions are logged in
+[`docs/decisions.md`](docs/decisions.md); the product spec and roadmap are in [`docs/spec.md`](docs/spec.md).
 
-## Short description
+## Credits and license
 
-FreeShow is a free and open-source presentation program that makes it easy to show text on a big screen. It supports stage display, remote control, media, and many other advanced features. It is open-sourced meaning anyone can contribute.
-
-FreeShow exists because the creator found that other similar programs were either expensive or complex to use. He wanted to create a program that is easy to use and affordable for everyone, from small churches to large venues. FreeShow is now used by people all over the world.
-
-## Support Us
-
-The only reason this program is free is because of the generous support from users. If you want to support us to keep this free, please head over to [ChurchApps](https://churchapps.org/partner) or [sponsor us on GitHub](https://github.com/sponsors/ChurchApps/). Thank you so much!
-
-## Join the Community
-
-We have a great community for end-users on [Facebook](https://www.facebook.com/groups/freeshowapp). It's a good way to ask questions, get tips and follow new updates. Come join us!
-
-## Report an issue or request a feature
-
-If you notice a bug, or need a feature. Please create an [issue on GitHub](https://github.com/ChurchApps/freeshow/issues).
-
-## Give feedback
-
-Feedback is welcome! Please [open a discussion here](https://github.com/orgs/ChurchApps/discussions/categories/freeshow) or send a mail to [dev@freeshow.app](mailto:dev@freeshow.app).
-
-## Help translate
-
-Head over to [FreeShow on Transifex](https://app.transifex.com/nettbiter/freeshow/) to request a language.
-
-## Help the development
-
-You are welcome to contribute to the code!
-
-1. Clone the code in this repo
-2. Install [Node.js](https://nodejs.org/en/download/)
-3. Install [Python 3.12](https://www.python.org/downloads/), and the [`setuptools`](https://pypi.org/project/setuptools/) package
-4. On Windows, download [Visual Studio](https://visualstudio.microsoft.com/downloads/) and install "Desktop development with C++", also select the "Windows 10 SDK"
-5. On Linux, install the following library: `sudo apt-get install libfontconfig1-dev`
-6. In the terminal, run: `npm install`
-7. To start the app, run: `npm start`
-
-## Join us on Slack
-
-If you would like to get involved contributing in any way, head over to our [Slack Channel](https://join.slack.com/t/livechurchsolutions/shared_invite/zt-i88etpo5-ZZhYsQwQLVclW12DKtVflg) and introduce yourself. We'd love to hear from you.
+Built on FreeShow by ChurchApps and its contributors. Licensed under the GNU General Public License v3.0; see
+[`LICENSE`](LICENSE).
