@@ -2,7 +2,7 @@
  * Content Providers Module
  *
  * This module provides a unified interface for managing different content providers
- * like ChurchApps and Planning Center. It includes:
+ * like Canva. It includes:
  *
  * - Base classes and interfaces for creating new content providers
  * - Common authentication flows (OAuth2, PKCE)
@@ -13,21 +13,13 @@
 // Base classes and types
 export { ContentProvider, ContentProviderFactory } from "./base/ContentProvider"
 export { OAuth2Helper, PKCEHelper } from "./base/OAuth2Helper"
-export { ContentProviderError, ContentProviderErrorType, type ContentProviderSongData, type ContentProviderServicePlan, type ContentProviderPlanItem, type ContentProviderService, type LoadServicesOptions, type ExportDataOptions, type ContentProviderStatus } from "./base/types"
+export { ContentProviderError, ContentProviderErrorType, type ContentProviderServicePlan, type ContentProviderPlanItem, type ContentProviderService, type LoadServicesOptions, type ContentProviderStatus } from "./base/types"
 
 // Provider implementations (simplified versions for now)
-export { ChurchAppsProvider } from "./churchApps/ChurchAppsProvider"
-export { PlanningCenterProvider } from "./planningCenter/PlanningCenterProvider"
-export { OnStageProvider } from "./onStage/OnStageProvider"
 export { CanvaProvider } from "./canva/CanvaProvider"
 
-// Registry and legacy functions
-export {
-    ContentProviderRegistry,
-    // Legacy exports for backward compatibility (still used internally)
-    pcoConnect,
-    pcoRequest
-} from "./ContentProviderRegistry"
+// Registry
+export { ContentProviderRegistry } from "./ContentProviderRegistry"
 
 /**
  * How to add a new content provider:

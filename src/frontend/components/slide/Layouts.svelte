@@ -131,9 +131,7 @@
     $: referenceType = currentShow?.reference?.type
 </script>
 
-{#if referenceType === "lessons"}
-    <MaterialZoom hidden columns={$slidesOptions.columns} on:change={(e) => slidesOptions.set({ ...$slidesOptions, columns: e.detail })} />
-{:else if layoutSlides.length}
+{#if layoutSlides.length}
     <FloatingInputs arrow={!isLocked} let:open>
         <div slot="menu">
             {#if Object.keys($actions).length && !reference && (!isLocked || customAction)}

@@ -1,14 +1,12 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte"
-    import { activeEdit, activeFocus, activePage, activePopup, alertMessage, cachedShowsData, categories, focusMode, groups, lessonsLoaded, notFound, outLocked, outputs, outputSlideCache, showsCache, slidesOptions, special, templates } from "../../stores"
-    import { hasNewerUpdate, wait } from "../../utils/common"
+    import { activeEdit, activeFocus, activePage, cachedShowsData, categories, focusMode, groups, notFound, outLocked, outputs, outputSlideCache, showsCache, slidesOptions, special, templates } from "../../stores"
+    import { hasNewerUpdate } from "../../utils/common"
     import { getAccess } from "../../utils/profile"
-    import { videoExtensions } from "../../values/extensions"
     import { customActionActivation } from "../actions/actions"
     import { loadCustomFonts } from "../helpers/fonts"
     import { history } from "../helpers/history"
-    import { encodeFilePath, getExtension } from "../helpers/media"
-    import { getActiveOutputs, refreshOut, setOutput } from "../helpers/output"
+    import { getActiveOutputs, setOutput } from "../helpers/output"
     import { getCachedShow } from "../helpers/show"
     import { checkActionTrigger, getFewestOutputLines, getFewestOutputLinesReveal, getItemWithMostLines, updateOut } from "../helpers/showActions"
     import { _show } from "../helpers/shows"
@@ -44,7 +42,6 @@
         isDestroyed = true
         if (timeout && typeof timeout !== "boolean") clearTimeout(timeout)
         if (loadingTimeout) clearTimeout(loadingTimeout)
-        if (lessonsTimeout) clearTimeout(lessonsTimeout)
         if (nextScrollTimeout) clearTimeout(nextScrollTimeout)
     })
 
@@ -364,14 +361,6 @@
         startLazyLoader()
     }
 
-    $: isLessons = currentShow?.reference?.type === "lessons"
-    // let showLessonsAlert: boolean = false
-    let lessonsFailed = 0
-    // let currentTries: number = 0
-    let lessonsTimeout: NodeJS.Timeout | null = null
-
-    $: if (isLessons && $lessonsLoaded) startLazyLoader()
-
     let lazyLoading = false
     function startLazyLoader() {
         if (isDestroyed || !layoutSlides || timeout) return
@@ -380,63 +369,6 @@
             loaded = true
             lazyLoading = false
 
-            return
-        }
-
-        // check that media has loaded
-        if (isLessons) {
-            timeout = true
-            if (lessonsTimeout) clearTimeout(lessonsTimeout)
-
-            let count = $lessonsLoaded[showId]
-            if (count === undefined) {
-                lessonsTimeout = setTimeout(async () => {
-                    // might already be done (check first slide)
-                    let mediaId = layoutSlides[lazyLoader]?.background
-                    let mediaPath = currentShow.media?.[mediaId]?.path || ""
-                    let exists = await checkImage(mediaPath)
-
-                    if (exists) {
-                        // it exists before it's fully downloaded
-                        if (lazyLoader > 0) await wait(1000)
-
-                        lazyLoader = layoutSlides.length
-                        loaded = true
-                        lazyLoading = false
-
-                        return
-                    }
-
-                    // could not load
-                    lazyLoader++
-                    lessonsFailed++
-                    startLazyLoader()
-                }, 800)
-
-                timeout = null
-                return
-            }
-
-            let downloaded = count.finished + count.failed
-
-            // ensure media is loaded before initializing cache loading
-            lazyLoader = downloaded
-            lessonsFailed = count.failed
-
-            if (downloaded < layoutSlides.length) {
-                alertMessage.set(`Please wait! Downloading Lessons.church media ${downloaded + 1}/${layoutSlides.length} ...`)
-                activePopup.set("alert")
-            } else {
-                if (lessonsFailed) alertMessage.set(`Something went wrong!<br>Could not get ${count.failed} files of total ${layoutSlides.length}!<br><br>The files might have expired, but you can try importing again`)
-                else alertMessage.set(`Downloaded ${layoutSlides.length} files!`)
-                activePopup.set("alert")
-
-                loaded = true
-                lazyLoading = false
-                lessonsLoaded.set({})
-            }
-
-            timeout = null
             return
         }
 
@@ -454,30 +386,6 @@
         }
     }
 
-    function checkImage(src: string) {
-        let isVideo = videoExtensions.includes(getExtension(src))
-        let media: HTMLImageElement | HTMLVideoElement = new Image()
-        if (isVideo) media = document.createElement("video")
-
-        return new Promise((resolve) => {
-            let hasLoaded = false
-            if (isVideo) media.onloadeddata = onLoaded
-            else media.onload = onLoaded
-
-            media.onerror = () => {
-                if (hasLoaded) return
-                resolve(false)
-            }
-
-            media.src = encodeFilePath(src)
-
-            function onLoaded() {
-                hasLoaded = true
-                resolve(true)
-            }
-        })
-    }
-
     let loading = false
     $: if (showId) startLoading()
     $: if ($notFound.show?.includes(showId)) loading = false
@@ -490,7 +398,7 @@
         }, 8000)
     }
 
-    $: mode = isLessons ? "grid" : $slidesOptions.mode
+    $: mode = $slidesOptions.mode
 </script>
 
 <!-- TODO: tab enter not woring -->
@@ -521,7 +429,7 @@
 
                                 {#if hasMounted && (loaded || i < lazyLoader)}
                                     {#if currentSlide && (mode === "grid" || mode === "groups" || !slide.disabled) && (mode !== "groups" || currentSlide.group !== null || activeSlides[i] !== undefined)}
-                                        <Slide {showId} slide={currentSlide} show={currentShow} {layoutSlides} layoutSlide={slide} index={i} color={slide.color} output={activeSlides[i]} active={activeSlides[i] !== undefined} {endIndex} list={!gridMode} columns={$slidesOptions.columns} icons {altKeyPressed} disableThumbnails={isLessons && !loaded} centerPreview on:click={(e) => slideClick(e, i)} />
+                                        <Slide {showId} slide={currentSlide} show={currentShow} {layoutSlides} layoutSlide={slide} index={i} color={slide.color} output={activeSlides[i]} active={activeSlides[i] !== undefined} {endIndex} list={!gridMode} columns={$slidesOptions.columns} icons {altKeyPressed} centerPreview on:click={(e) => slideClick(e, i)} />
                                     {/if}
                                 {:else}
                                     <SkeletonSlide slide={currentSlide} index={i} color={slide.color} columns={$slidesOptions.columns} active={activeSlides[i] !== undefined} on:click={(e) => slideClick(e, i)} />

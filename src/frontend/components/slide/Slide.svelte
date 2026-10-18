@@ -45,9 +45,7 @@
     export let disableThumbnails = false
     export let centerPreview = false
 
-    $: isLessons = show?.reference?.type === "lessons"
-
-    $: viewMode = isLessons ? "grid" : $slidesOptions.mode || "grid"
+    $: viewMode = $slidesOptions.mode || "grid"
     $: background = layoutSlide.background ? show.media[layoutSlide.background] : slide?.settings?.backgroundImage ? { path: slide.settings.backgroundImage } : null
 
     let ghostBackground: Media | null = null
@@ -98,9 +96,6 @@
                 return
             }
         }
-
-        // make sure it's downloaded
-        if (isLessons) await wait(1000)
 
         // first ghost creates image (if not created) - as it's a different resolution
         if (ghostBackground) {

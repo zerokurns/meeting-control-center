@@ -18,13 +18,13 @@ export interface CustomFont {
 export interface Show {
     name: string
     id?: string // this id should not be stored (but often used in the program as a temporary value)
-    origin?: string // "pco" | "churchApps" | "hymnary", etc.
+    origin?: string // provider origin, e.g. "canva"
     private?: boolean // hide from drawer
     locked?: boolean // disable edits
     category: null | ID
     quickAccess?: any
     reference?: {
-        type: "calendar" | "scripture" | "lessons" | "canva" | "interaction"
+        type: "calendar" | "scripture" | "canva" | "interaction"
         data: any
     }
     settings: {
@@ -210,7 +210,7 @@ export interface ShowGroup {
 export interface Timer {
     id?: string
     name: string
-    type: "counter" | "clock" | "event" | "pco_live"
+    type: "counter" | "clock" | "event"
     viewType?: "time" | "line" | "circle"
     circleMask?: boolean
     showHours?: boolean // use just minutes or minutes and hours
@@ -220,13 +220,6 @@ export interface Timer {
     endDynamic?: string
     event?: string
     time?: string
-
-    // PCO Live
-    pco?: {
-        serviceTypeId: string
-        planId: string
-        countdownType: "end_on_time" | "full_length" | "end_service"
-    }
 
     warn?: boolean
     warnOffset?: number

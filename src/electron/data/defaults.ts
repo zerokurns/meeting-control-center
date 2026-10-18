@@ -76,14 +76,7 @@ export const defaultSettings: { [key in SaveListSettings]: any } = {
     special: {},
     timeline: {},
     timecode: {},
-    contentProviderData: {
-        planningcenter: {
-            localAlways: false
-        },
-        churchApps: {
-            syncCategories: ["song"]
-        }
-    },
+    contentProviderData: {},
     obsData: {},
     ai: {}
 }

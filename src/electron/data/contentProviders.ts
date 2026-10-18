@@ -1,6 +1,6 @@
 // ----- FreeShow -----
 // Content Provider Helper Functions
-// Handles access and settings for external content providers like Planning Center, ChurchApps (B1), etc.
+// Handles access and settings for external content providers like Canva.
 
 import type { ContentProviderId } from "../contentProviders/base/types"
 import { _store } from "./store"

@@ -50,8 +50,6 @@
 
         companion: 5505
         // rest: 5506
-
-        // PCO: 5501
     }
 
     $: port = $ports[id] || defaultPorts[id]

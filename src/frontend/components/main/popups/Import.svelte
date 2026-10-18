@@ -56,7 +56,6 @@
     ]
 
     const media_formats = [
-        { name: "Lessons.church", title: "ChurchApps\nhttps://lessons.church", extensions: ["json", "olp", "olf"], id: "lessons" },
         { name: "PDF", title: "Added to your project", extensions: ["pdf"], id: "pdf" },
         { name: "PowerPoint", extensions: [], id: "powerpoint" }
     ]

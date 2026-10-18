@@ -131,7 +131,7 @@ export async function importShow(id: string, files: string[] | null) {
 
     if (importId in specialImports) data = await specialImports[importId as keyof typeof specialImports](files)
     else {
-        // TXT | FreeShow | ProPresenter | VidoePsalm | OpenLP | OpenSong | XML Bible | Lessons.church
+        // TXT | FreeShow | ProPresenter | VidoePsalm | OpenLP | OpenSong | XML Bible
         await asyncPool(20, files, async (file) => {
             const batchData = await readFile(file, "utf8", id)
             data.push(batchData)

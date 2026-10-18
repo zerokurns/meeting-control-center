@@ -1,8 +1,6 @@
 <script lang="ts">
-    import { Main } from "../../../types/IPC/Main"
     import type { Show } from "../../../types/Show"
     import { syncCanvaShow } from "../../converters/canvaPresentation"
-    import { sendMain } from "../../IPC/main"
     import { activeDrawerTab, activeShow, drawer, labelsDisabled, openedInteractionId, openScripture, scriptures, shows } from "../../stores"
     import { createSlides, getDateString, getSelectedEvents, sortDays } from "../drawer/calendar/calendar"
     import { history } from "../helpers/history"
@@ -59,14 +57,6 @@
         if ($drawer.height <= 40) drawer.set({ height: $drawer.stored || 300, stored: null })
     }
 
-    function openURL(url: string) {
-        sendMain(Main.URL, url)
-    }
-
-    function removeMarkdownURL(text: string) {
-        return text.replace(/\[([^\]]+)\][^\)]+\)/g, "$1")
-    }
-
     // Canva
     let syncingCanva = false
     async function refreshCanva() {
@@ -101,22 +91,6 @@
         <MaterialButton on:click={openTab} style="white-space: nowrap;min-width: 100px;">
             <Icon id="scripture" />
             {#if !$labelsDisabled}<T id="main.open" />{/if}
-        </MaterialButton>
-    {:else if show?.reference?.type === "lessons"}
-        <p>
-            {#if data.studyName}
-                {data.studyName}{#if data.about}:{/if}
-            {/if}
-            {#if data.about}
-                <span style="font-size: 0.8em;opacity: 0.8;" data-title={removeMarkdownURL(data.about)}>{removeMarkdownURL(data.about)}</span>
-            {/if}
-        </p>
-
-        <div class="divider" />
-
-        <MaterialButton title="Open Lessons.church Website" on:click={() => openURL("https://lessons.church")} style="white-space: nowrap;min-width: 150px;">
-            <Icon id="book" />
-            Lessons.church
         </MaterialButton>
     {:else if show?.reference?.type === "canva"}
         <p>

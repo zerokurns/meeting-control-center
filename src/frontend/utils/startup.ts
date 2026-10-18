@@ -7,7 +7,7 @@ import { syncIcsCalendars } from "../components/drawer/calendar/calendars"
 import { getTimeFromInterval } from "../components/helpers/time"
 import { requestMain, requestMainMultiple, sendMain, sendMainMultiple } from "../IPC/main"
 import { cameraManager } from "../media/cameraManager"
-import { activePopup, activeProfile, alertMessage, cachePath, cloudSyncData, contentProviderData, currentWindow, dataPath, deviceId, driveKeys, isDev, loaded, loadedState, os, profiles, providerConnections, shows, special, version, windowState } from "../stores"
+import { activePopup, activeProfile, cachePath, cloudSyncData, currentWindow, dataPath, deviceId, isDev, loaded, loadedState, os, profiles, providerConnections, shows, special, version, windowState } from "../stores"
 import { startTracking } from "./analytics"
 import { setupCloudSync } from "./cloudSync"
 import { wait, waitUntilValueIsDefined } from "./common"
@@ -150,12 +150,8 @@ export async function contentProviderSync(startup = false, remainingOnly = false
         await waitUntilValueIsDefined(() => Object.keys(get(shows)).length, 50, 2000)
     }
 
-    const providers = [
-        { providerId: "planningcenter" as ContentProviderId, scope: "services", data: get(contentProviderData).planningcenter?.syncFolderIds || [], autoSync: get(contentProviderData).planningcenter?.autoSync !== false },
-        { providerId: "churchApps" as ContentProviderId, scope: "plans", data: { shows: get(shows), categories: get(contentProviderData).churchApps?.syncCategories || [] } },
-        { providerId: "amazinglife" as ContentProviderId, scope: "openid profile email" },
-        { providerId: "onstage" as ContentProviderId, scope: "presenter", data: get(contentProviderData).onstage || {}, autoSync: get(contentProviderData).onstage?.autoSync !== false }
-    ]
+    // none of the providers (Canva) need to load at startup, they connect when requested
+    const providers: { providerId: ContentProviderId; scope: string; data?: any; autoSync?: boolean }[] = []
 
     providers.forEach(({ providerId, scope, data, autoSync }) => {
         if (startup && autoSync === false) return
@@ -166,19 +162,8 @@ export async function contentProviderSync(startup = false, remainingOnly = false
         if (now - lastSync < 5000) return
         lastProviderSyncs[providerId] = now
 
-        const cloudOnly = providerId === "churchApps" && get(special).churchAppsCloudOnly
-        sendMain(Main.PROVIDER_STARTUP_LOAD, { providerId, scope, data, cloudOnly })
+        sendMain(Main.PROVIDER_STARTUP_LOAD, { providerId, scope, data })
     })
-
-    setTimeout(() => {
-        if (get(cloudSyncData).id) return
-
-        const hasDriveSync = typeof get(driveKeys) === "object" && Object.keys(get(driveKeys)).length
-        if (!Object.keys(get(providerConnections)).length && !get(activePopup) && Math.random() < (hasDriveSync ? 0.2 : 0.001)) {
-            alertMessage.set("You can now set up free cloud sync with ChurchApps! Go to Settings>Files to log in." + (hasDriveSync ? "<br>It's recommended to switch over from your current Google Sync!" : ""))
-            activePopup.set("alert")
-        }
-    }, 2000)
 }
 
 function getMainData() {
@@ -195,9 +180,6 @@ function getMainData() {
             if (!a) return
             providerConnections.update((c) => {
                 Object.keys(a).forEach((providerId) => {
-                    // churchApps is handled separately, due to cloud sync
-                    if (providerId === "churchApps") return
-
                     c[providerId as ContentProviderId] = true
                 })
                 return c

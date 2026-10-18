@@ -208,11 +208,6 @@ export async function getMedia(path: string, size: number = mediaSize.drawerSize
             return finish(path, path)
         }
 
-        // lessons
-        // let thumbnailPath = getThumbnailPath(path, data.size)
-        // // cache after it's downloaded
-        // setTimeout(() => loadThumbnail(path, data.size), 1000)
-
         const located = await locateMediaFile(path)
         if (!located) return null
 
@@ -681,10 +676,6 @@ export function captureCanvas(data: { input: string; output: string; size: any; 
         const ctx = canvas.getContext("2d")
         if (!ctx || completed || !mediaElem) return exit()
 
-        // ensure lessons are downloaded and loaded before capturing
-        const isLessons = data.input.includes("Lessons")
-        const loading = isLessons ? 3000 : 0
-        await wait(loading)
         ctx.drawImage(mediaElem, 0, 0, currentMediaSize.width, currentMediaSize.height, 0, 0, canvas.width, canvas.height)
         await new Promise(requestAnimationFrame)
 

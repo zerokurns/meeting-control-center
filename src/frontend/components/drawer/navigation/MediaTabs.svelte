@@ -5,7 +5,7 @@
     import { Main } from "../../../../types/IPC/Main"
     import { ToMain } from "../../../../types/IPC/ToMain"
     import { destroyMain, receiveToMain, requestMain, sendMain } from "../../../IPC/main"
-    import { drawerTabsData, labelsDisabled, media, mediaFolders, providerConnections, special } from "../../../stores"
+    import { drawerTabsData, labelsDisabled, media, mediaFolders, providerConnections } from "../../../stores"
     import { getAccess } from "../../../utils/profile"
     import { keysToID, sortObject } from "../../helpers/array"
     import { addDrawerFolder } from "../../helpers/dropActions"
@@ -58,7 +58,7 @@
         })
     }
 
-    $: curriculumProviders = contentProviders.filter((a) => (a.providerId !== "churchApps" || $special.churchAppsCloudOnly !== true) && a.providerId !== "canva")
+    $: curriculumProviders = contentProviders.filter((a) => a.providerId !== "canva")
 
     let sections: any[] = []
     $: sections = [

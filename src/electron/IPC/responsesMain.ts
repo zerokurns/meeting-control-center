@@ -17,11 +17,10 @@ import { getAudioMetadata } from "../audio/audio"
 import { openNowPlaying, setPlayingState, unsetPlayingAudio } from "../audio/nowPlaying"
 import { CaptureHelper } from "../capture/CaptureHelper"
 import { canSync, getSyncTeams, hasTeamData, markAsNewSync, restoreCloudBackup, syncData } from "../cloud/syncManager"
-import { ChurchAppsChat } from "../contentProviders/churchApps/ChurchAppsChat"
 import { ContentProviderRegistry } from "../contentProviders/ContentProviderRegistry"
 import { deleteBackup, getBackups, restoreFiles } from "../data/backup"
 import { getLocalIPs } from "../data/bonjour"
-import { checkIfMediaDownloaded, downloadLessonsMedia, downloadMedia } from "../data/downloadMedia"
+import { checkIfMediaDownloaded, downloadMedia } from "../data/downloadMedia"
 import { importShow } from "../data/import"
 import { save } from "../data/save"
 import { _store, appDataPath, config, createStores, getStore, getStoreValue, setStoreValue } from "../data/store"
@@ -127,7 +126,6 @@ export const mainResponses: MainResponses = {
     [Main.READ_EXIF]: (data) => readExifData(data),
     [Main.MEDIA_CODEC]: (data) => getMediaCodec(data),
     [Main.MEDIA_TRACKS]: (data) => getMediaTracks(data),
-    [Main.DOWNLOAD_LESSONS_MEDIA]: (data) => downloadLessonsMedia(data),
     [Main.MEDIA_DOWNLOAD]: (data) => downloadMedia(data),
     [Main.MEDIA_IS_DOWNLOADED]: async (data) => await checkIfMediaDownloaded(data),
     [Main.NOW_PLAYING]: (data) => setPlayingState(data),
@@ -198,14 +196,6 @@ export const mainResponses: MainResponses = {
         return { success: true }
     },
     [Main.PROVIDER_STARTUP_LOAD]: (data) => ContentProviderRegistry.startupLoad(data.providerId, data.scope || "", data.data, data.cloudOnly),
-    [Main.PROVIDER_FETCH_FOLDERS]: (data) => ContentProviderRegistry.fetchFolderTree(data.providerId),
-    [Main.PCO_FETCH_SERVICE_TREE]: () => ContentProviderRegistry.fetchServiceTree("planningcenter"),
-    [Main.PCO_LOAD_PLAN]: (data) => ContentProviderRegistry.loadSinglePlan(data.serviceTypeId, data.planId),
-    [Main.PCO_LIVE_GET]: (data) => ContentProviderRegistry.getPcoLiveData(data.serviceTypeId, data.planId).catch(() => null),
-    [Main.PCO_PUSHER_AUTH]: (data) => ContentProviderRegistry.getPcoPusherAuth(data.socketId, data.channelName, data.serviceTypeId),
-    [Main.ONSTAGE_GET_TEAMS]: () => ContentProviderRegistry.getOnStageTeams().catch(() => []),
-    [Main.ONSTAGE_SWITCH_TEAM]: (data) => ContentProviderRegistry.switchOnStageTeam(data.teamId).catch(() => ({ success: false })),
-    [Main.ONSTAGE_LOAD_SERVICE]: (data) => ContentProviderRegistry.loadOnStageService(data.serviceId, data.data),
     // Content Library
     [Main.GET_CONTENT_PROVIDERS]: () => {
         const providers = ContentProviderRegistry.getAvailableProviders()
@@ -361,14 +351,13 @@ function getVersion() {
     }
 }
 
-async function getConversationId(teamId: string): Promise<string | null> {
-    return ChurchAppsChat.getOrCreateConversation(teamId)
+// the ChurchApps chat backend is gone, so the cloud sync socket has nothing to talk to (removed with cloud sync)
+async function getConversationId(_teamId: string): Promise<string | null> {
+    return null
 }
 
-async function sendSocketMessage(data: { churchId: string; teamId: string; displayName: string; content: string }): Promise<boolean> {
-    const conversationId = await ChurchAppsChat.getOrCreateConversation(data.teamId)
-    if (!conversationId) return false
-    return ChurchAppsChat.sendMessage({ churchId: data.churchId, conversationId, displayName: data.displayName, content: data.content })
+async function sendSocketMessage(_data: { churchId: string; teamId: string; displayName: string; content: string }): Promise<boolean> {
+    return false
 }
 
 function getOS() {

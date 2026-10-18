@@ -4,13 +4,12 @@ import type { Stats } from "fs"
 import type { Bible } from "json-bible/lib/Bible"
 import type { SyncProviderId } from "../../electron/cloud/syncManager"
 import type { ContentFile, ContentLibraryCategory, ContentProviderId, MediaLicense } from "../../electron/contentProviders/base/types"
-import type { PCOFolderTreeNode } from "../../electron/contentProviders/planningCenter/request"
 import type { _store } from "../../electron/data/store"
 import type { EncoderDetection } from "../../electron/streaming/encoderDetection"
 import type { TimecodeMode } from "../../electron/timecode/timecode"
 import type { AIProviderId, AiSetupOptions, EngineStatus } from "../ai/Ai"
 import type { SttEngineOptions } from "../ai/AiSettings"
-import type { ErrorLog, FileFolder, LessonsData, LyricSearchResult, MainFilePaths, Media, MediaCodecInfo, OS, SpotifyState, Subtitle } from "../Main"
+import type { ErrorLog, FileFolder, LyricSearchResult, MainFilePaths, Media, MediaCodecInfo, OS, SpotifyState, Subtitle } from "../Main"
 import type { Output } from "../Output"
 import type { Folders, Projects } from "../Projects"
 import type { Dictionary, Resolution, Themes } from "../Settings"
@@ -98,7 +97,6 @@ export enum Main {
     READ_EXIF = "READ_EXIF",
     MEDIA_CODEC = "MEDIA_CODEC",
     MEDIA_TRACKS = "MEDIA_TRACKS",
-    DOWNLOAD_LESSONS_MEDIA = "DOWNLOAD_LESSONS_MEDIA",
     MEDIA_DOWNLOAD = "MEDIA_DOWNLOAD",
     MEDIA_IS_DOWNLOADED = "MEDIA_IS_DOWNLOADED",
     NOW_PLAYING = "NOW_PLAYING",
@@ -155,14 +153,6 @@ export enum Main {
     PROVIDER_CONNECTIONS = "PROVIDER_CONNECTIONS",
     PROVIDER_DISCONNECT = "PROVIDER_DISCONNECT",
     PROVIDER_STARTUP_LOAD = "PROVIDER_STARTUP_LOAD",
-    PROVIDER_FETCH_FOLDERS = "PROVIDER_FETCH_FOLDERS",
-    PCO_LIVE_GET = "PCO_LIVE_GET",
-    PCO_PUSHER_AUTH = "PCO_PUSHER_AUTH",
-    PCO_FETCH_SERVICE_TREE = "PCO_FETCH_SERVICE_TREE",
-    PCO_LOAD_PLAN = "PCO_LOAD_PLAN",
-    ONSTAGE_LOAD_SERVICE = "ONSTAGE_LOAD_SERVICE",
-    ONSTAGE_GET_TEAMS = "ONSTAGE_GET_TEAMS",
-    ONSTAGE_SWITCH_TEAM = "ONSTAGE_SWITCH_TEAM",
     // Content Library
     GET_CONTENT_PROVIDERS = "GET_CONTENT_PROVIDERS",
     GET_CONTENT_LIBRARY = "GET_CONTENT_LIBRARY",
@@ -225,7 +215,6 @@ export interface MainSendPayloads {
     [Main.READ_EXIF]: { id: string }
     [Main.MEDIA_CODEC]: { path: string }
     [Main.MEDIA_TRACKS]: { path: string }
-    [Main.DOWNLOAD_LESSONS_MEDIA]: LessonsData[]
     [Main.MEDIA_DOWNLOAD]: { url: string; contentFile?: any }
     [Main.MEDIA_IS_DOWNLOADED]: { url: string; contentFile?: any }
     [Main.NOW_PLAYING]: { filePath: string; name: string; unknownLang: string[]; format: string; duration: number }
@@ -272,14 +261,6 @@ export interface MainSendPayloads {
     [Main.PROVIDER_LOAD_SERVICES]: { providerId: ContentProviderId; cloudOnly?: boolean; data?: any }
     [Main.PROVIDER_DISCONNECT]: { providerId: ContentProviderId; scope?: string }
     [Main.PROVIDER_STARTUP_LOAD]: { providerId: ContentProviderId; scope?: string; data?: any; cloudOnly?: boolean }
-    [Main.PROVIDER_FETCH_FOLDERS]: { providerId: ContentProviderId }
-    [Main.PCO_LIVE_GET]: { serviceTypeId: string; planId: string }
-    [Main.PCO_PUSHER_AUTH]: { socketId: string; channelName: string; serviceTypeId: string }
-    [Main.PCO_FETCH_SERVICE_TREE]: undefined
-    [Main.PCO_LOAD_PLAN]: { serviceTypeId: string; planId: string }
-    [Main.ONSTAGE_LOAD_SERVICE]: { serviceId: string; data?: any }
-    [Main.ONSTAGE_GET_TEAMS]: undefined
-    [Main.ONSTAGE_SWITCH_TEAM]: { teamId: string }
     // Content Library
     [Main.GET_CONTENT_LIBRARY]: { providerId: ContentProviderId }
     [Main.GET_PROVIDER_CONTENT]: { providerId: ContentProviderId; key: string }
@@ -388,12 +369,6 @@ export interface MainReturnPayloads {
     // Provider-based routing
     [Main.PROVIDER_CONNECTIONS]: { [key in ContentProviderId]?: boolean }
     [Main.PROVIDER_DISCONNECT]: { success: boolean }
-    [Main.PROVIDER_FETCH_FOLDERS]: Promise<PCOFolderTreeNode[]>
-    [Main.PCO_FETCH_SERVICE_TREE]: Promise<PCOFolderTreeNode[]>
-    [Main.PCO_LIVE_GET]: Promise<{ liveId: string | null; liveChannel: string | null; orgId: string | null; liveStartAt: string | null; liveEndAt: string | null; length: number | null; isPreService: boolean; serviceStartAt: string | null; serviceEndAt: string | null } | null>
-    [Main.PCO_PUSHER_AUTH]: Promise<{ auth: string; channel_data?: string } | null>
-    [Main.ONSTAGE_GET_TEAMS]: Promise<{ id: string; name: string; current: boolean }[]>
-    [Main.ONSTAGE_SWITCH_TEAM]: Promise<{ success: boolean }>
     // Content Library
     [Main.GET_CONTENT_PROVIDERS]: { providerId: ContentProviderId; displayName: string; hasContentLibrary: boolean }[]
     [Main.GET_CONTENT_LIBRARY]: Promise<ContentLibraryCategory[]>

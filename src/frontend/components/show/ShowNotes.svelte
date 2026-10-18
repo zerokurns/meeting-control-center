@@ -55,7 +55,6 @@
     }
 
     // $: reference = currentShow?.reference?.type
-    // $: if (reference === "lessons") showNotesActive.set(true)
 </script>
 
 {#if $showNotesActive}

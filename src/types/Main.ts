@@ -1,5 +1,4 @@
 import type { Stats } from "fs"
-import type { dataFolderNames } from "../electron/utils/files"
 import type { Cropping } from "./Settings"
 
 export interface Config {
@@ -11,12 +10,6 @@ export interface Config {
     graphicsDevice: string | null
     autoErrorReporting?: boolean
     mediaFolderPath?: string
-
-    // ChurchApps API URLs
-    churchAppsApiUrl?: string
-    churchAppsAppUrl?: string
-    churchAppsContentUrl?: string
-    churchAppsLessonsUrl?: string
 }
 
 export interface OS {
@@ -258,22 +251,6 @@ export interface DriveData {
     closeWhenFinished: boolean
 }
 
-export interface LessonsData {
-    type?: keyof typeof dataFolderNames
-    showId: string
-    name: string
-    files: LessonFile[]
-}
-export interface LessonFile {
-    name: string
-    url: string
-    type: string
-    fileType: string
-    streamUrl?: string
-    loopVideo?: boolean
-    loop?: boolean
-}
-
 export interface Variable {
     id?: string
     name: string
@@ -471,15 +448,12 @@ export type Popups =
     | "cloud_sync"
     | "cloud_update"
     | "cloud_method"
-    | "sync_categories"
     | "effect_items"
     | "timeline"
     | "timecode"
     | "drawer_search_options"
     | "template_info"
     | "cleaning_utility"
-    | "pco_picker"
-    | "sync_folders"
     | "node_options"
     | "ai_model_manager"
     | "ai_chat"

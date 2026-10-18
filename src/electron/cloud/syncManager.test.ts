@@ -4,7 +4,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vites
 import { _store, createStores } from "../data/store"
 import { compressToZip, decompressZipStream } from "../data/zip"
 import { getDataFolderPath, writeFileAsync } from "../utils/files"
-import { resetSyncManagerModule, setLocalFileModified, syncData } from "./syncManager"
+import { getManager, resetSyncManagerModule, setLocalFileModified, syncData } from "./syncManager"
 
 // 1. Host the temporary folder setup so it runs before imports are resolved
 const h = vi.hoisted(() => {
@@ -263,11 +263,7 @@ class MockProvider {
 
 const mockProviderInstance = new MockProvider()
 
-vi.mock("./ChurchAppsSyncManager", () => {
-    return {
-        getChurchAppsSyncManager: () => mockProviderInstance
-    }
-})
+getManager.churchApps = () => mockProviderInstance
 
 describe("syncManager tests", () => {
     beforeAll(() => {

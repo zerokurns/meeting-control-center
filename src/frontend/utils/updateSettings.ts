@@ -426,12 +426,6 @@ const updateList: { [key in SaveListSettings | SaveListSyncedSettings]: any } = 
         }
 
         // DEPRECATED (migrate)
-        if (v.pcoLocalAlways) {
-            contentProviderData.update((a) => ({ ...a, planningcenter: { localAlways: true } }))
-            delete v.pcoLocalAlways
-        }
-
-        // DEPRECATED (migrate)
         v.customUserDataLocation = true
 
         // DEPRECATED (migrate)
@@ -460,10 +454,6 @@ const updateList: { [key in SaveListSettings | SaveListSyncedSettings]: any } = 
     },
     timeline: (v: any) => timeline.set(v),
     timecode: (v: any) => timecode.set(v),
-    // @ts-ignore - DEPERACTED (migrate)
-    chumsSyncCategories: (v: any) => {
-        if (v?.length > 1) contentProviderData.set({ ...get(contentProviderData), churchApps: { syncCategories: v } })
-    },
     contentProviderData: (v: any) => contentProviderData.set(v),
     obsData: (v: any) => obsData.set(v),
     effects: (a: any) => effects.set(a),

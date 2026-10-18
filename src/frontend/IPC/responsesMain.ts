@@ -1,23 +1,18 @@
 import { get } from "svelte/store"
-import type { ContentProviderId } from "../../electron/contentProviders/base/types"
 import type { ToMainSendPayloads } from "../../types/IPC/ToMain"
 import { ToMain } from "../../types/IPC/ToMain"
-import type { Project } from "../../types/Projects"
-import type { Show, Slide } from "../../types/Show"
 import { Transcript } from "../ai/stt/transcript"
 import { API_ACTIONS, triggerAction } from "../components/actions/api"
 import { receivedMidi } from "../components/actions/midi"
 import { menuClick } from "../components/context/menuClick"
-import { generateScriptureShowFromReference } from "../components/drawer/bible/scripture"
 import { getCurrentTimerValue } from "../components/drawer/timers/timers"
 import { _getVariableValue, getDynamicValue } from "../components/edit/scripts/itemHelpers"
-import { clone, keysToID } from "../components/helpers/array"
+import { clone } from "../components/helpers/array"
 import { addDrawerFolder } from "../components/helpers/dropActions"
-import { history } from "../components/helpers/history"
 import { captureCanvas, getExtension, getFileName, removeExtension, setMediaTracks } from "../components/helpers/media"
 import { getActiveOutputs } from "../components/helpers/output"
 import { loadShows, saveTextCache } from "../components/helpers/setShow"
-import { checkName, getGlobalGroup, getLabelId } from "../components/helpers/show"
+import { getLabelId } from "../components/helpers/show"
 import { joinTimeBig } from "../components/helpers/time"
 import { defaultThemes } from "../components/settings/tabs/defaultThemes"
 import { processTimecodeFrame, updateTimelineStatus, updateTimelineTime } from "../components/timeline/timecode"
@@ -28,8 +23,7 @@ import { convertCSV } from "../converters/csv"
 import { convertEasyslides } from "../converters/easyslides"
 import { convertEasyWorship } from "../converters/easyworship"
 import { createImageShow } from "../converters/imageShow"
-import { createCategory, importAction, importOverlay, importShow, importSpecific, importStage, importTemplate, setTempShows } from "../converters/importHelpers"
-import { convertLessonsPresentation } from "../converters/lessonsChurch"
+import { importAction, importOverlay, importShow, importSpecific, importStage, importTemplate } from "../converters/importHelpers"
 import { convertMediaShout } from "../converters/mediashout"
 import { convertOpenLP } from "../converters/openlp"
 import { convertOpenSong } from "../converters/opensong"
@@ -46,20 +40,17 @@ import {
     activeEdit,
     activePage,
     activePopup,
-    activeProject,
     activeShow,
     activeTimers,
     aiSttStatus,
     alertMessage,
     audioData,
-    contentProviderData,
     currentOutputSettings,
     dataPath,
     driveKeys,
     events,
     folders,
     icecastStatus,
-    lessonsLoaded,
     media,
     mediaDownloads,
     outputs,
@@ -69,7 +60,6 @@ import {
     presentationData,
     projects,
     projectTemplates,
-    projectView,
     providerConnections,
     recentFiles,
     redoHistory,
@@ -88,10 +78,8 @@ import {
     variables,
     windowState
 } from "../stores"
-import { setupCloudSync } from "../utils/cloudSync"
 import { newToast } from "../utils/common"
 import { translateText } from "../utils/language"
-import { confirmCustom } from "../utils/popup"
 import { initializeClosing, saveComplete } from "../utils/save"
 import { invalidateSearchIndex } from "../utils/searchFast"
 import { updateSettings, updateSyncedSettings, updateThemeValues } from "../utils/updateSettings"
@@ -240,7 +228,6 @@ export const mainResponses: MainResponses = {
     [Main.MAXIMIZED]: (data) => windowState.set({ ...windowState, maximized: data }),
     // MEDIA CACHE
     [ToMain.CAPTURE_CANVAS]: (data) => captureCanvas(data),
-    [ToMain.LESSONS_DONE]: (data) => lessonsLoaded.set({ ...get(lessonsLoaded), [data.showId]: data.status }),
     [ToMain.IMAGES_TO_SHOW]: (data) => createImageShow(data),
     [ToMain.RTMP_STATUS]: (data) => rtmpStatus.update((a) => ({ ...a, [data.outputId]: data.destinations })),
     [ToMain.ICECAST_STATUS]: (data) => icecastStatus.set(data),
@@ -348,196 +335,6 @@ export const mainResponses: MainResponses = {
 
         if (data.isFirstConnection) {
             newToast("main.finished")
-
-            if (data.providerId === "churchApps") {
-                setTimeout(() => setupCloudSync(false), 1000)
-            }
-        }
-    },
-    [ToMain.PROVIDER_PROJECTS]: async (data) => {
-        if (!data.projects) return
-
-        // Planning Center items are seperated into multiple categories based on the type: Songs (default) & Regular items (generic)
-        if (data.providerId === "planningcenter" && data.shows.some((a) => a.category === "planning_center_generic")) {
-            createCategory("Planning Center (Generic)", "presentation")
-        }
-
-        // CREATE CATEGORY
-        createCategory(data.categoryName)
-
-        const replaceIds: { [key: string]: string } = {}
-        const allShows = keysToID(get(shows))
-        const songOrigin = get(contentProviderData)[data.providerId]?.songOrigin
-        const linkKey = data.providerId === "planningcenter" ? "pcoLink" : data.providerId === "churchApps" ? "chumsLink" : data.providerId === "amazinglife" ? "alLink" : data.providerId === "onstage" ? "onstageLink" : ""
-        const origin = data.providerId === "planningcenter" ? "pco" : data.providerId
-
-        function updateExistingShow(showId: string) {
-            shows.update((a) => {
-                if (!a[showId]) return a // should always exist
-
-                a[showId].origin = origin
-                return a
-            })
-
-            // update showsCache directly in case it's not yet saved to a local file
-            showsCache.update((a) => {
-                if (!a[showId]) return a
-
-                // we should not set link when requesting to use local show, that way it will ask next time as well
-                // if (!a[showId].quickAccess) a[showId].quickAccess = {}
-                // if (linkKey) a[showId].quickAccess[linkKey] = originId
-
-                a[showId].origin = origin
-                return a
-            })
-        }
-
-        // CREATE SHOWS
-        const tempShows: { id: string; show: Show }[] = []
-        for (const show of data.shows) {
-            const id = show.id
-
-            // if empty content and name is a scripture reference, generate slides from the active scripture
-            const isEmptyContent = Object.keys(show.slides || {}).length === 0
-            let isScriptureShow = false
-            if (isEmptyContent) {
-                const scriptureShow = await generateScriptureShowFromReference(show.name)
-                if (scriptureShow) {
-                    isScriptureShow = true
-                    const originalId = show.id
-                    const originalQuickAccess = show.quickAccess
-                    Object.assign(show, scriptureShow)
-                    show.id = originalId
-                    if (originalQuickAccess) show.quickAccess = originalQuickAccess
-                }
-            }
-
-            const providerName = data.providerId === "planningcenter" ? "Planning Center" : data.providerId === "churchApps" ? "ChurchApps" : data.providerId === "onstage" ? "OnStage" : "the cloud"
-
-            // first find any shows linked to the id
-            const linkedShow = linkKey ? allShows.find(({ quickAccess, id: showId }) => quickAccess?.[linkKey] === id || showId === id) : null
-            // if provider item name is a scripture reference, and the name has changed, we should always use the provider version
-            const changedName = isScriptureShow && linkedShow?.name !== show.name
-            if (linkedShow && !changedName) {
-                replaceIds[id] = linkedShow.id
-
-                // no need to use local show if it doesn't have any slide content
-                // so if the name in provider changes, it will update (mostly for updating scripture references)
-                await loadShows([linkedShow.id])
-                const showData = get(showsCache)[linkedShow.id]
-                const hasSlides = Object.keys(showData.slides || {}).length > 0
-
-                const useLocal = !hasSlides || songOrigin === "online" ? false : songOrigin === "local" || (await confirmCustom(`This show already exists: ${linkedShow.name}.<br><br>Would you like to use the local version instead of the one from ${providerName}?`))
-                if (useLocal) continue
-
-                downloadShow(linkedShow.id)
-                continue
-            }
-
-            // find existing show with same name and ask to replace
-            const showName = show?.name?.toLowerCase() || ""
-            const existingShow = allShows.find(({ id: existingId, name }) => existingId !== id && name?.toLowerCase() === showName)
-            // const existingShowHasContent = existingShow && (await loadShows([existingShow.id])) && getSlidesText(get(showsCache)[existingShow.id].slides)
-            if (existingShow && songOrigin !== "online") {
-                const useLocal = songOrigin === "local" || (await confirmCustom(`There is an existing show with the same name: ${existingShow.name}.<br><br>Would you like to use the local version instead of the one from ${providerName}?`))
-                if (useLocal) {
-                    replaceIds[id] = existingShow.id
-                    updateExistingShow(existingShow.id)
-                    continue
-                }
-            }
-
-            const targetId = existingShow?.id || id
-            replaceIds[id] = targetId
-
-            if ((existingShow && songOrigin !== "local") || songOrigin === "online") {
-                // set link so we will automatically update from the provider in the future
-                if (!show.quickAccess) show.quickAccess = {}
-                show.quickAccess[linkKey] = id
-            }
-
-            downloadShow(targetId)
-
-            // replace local show with provider song
-            function downloadShow(showId: string) {
-                // replace group names with existing global groups
-                Object.values<Slide>(show.slides).forEach((slide) => {
-                    if (slide.globalGroup || !slide.group) return
-
-                    const globalGroup = getGlobalGroup(slide.group)
-                    if (globalGroup) slide.globalGroup = globalGroup
-                })
-
-                // set modified to now, so it will update properly in history
-                if (show.timestamps) show.timestamps.modified = Date.now()
-
-                delete show.id
-                tempShows.push({ id: showId, show: { ...show, origin, name: checkName(show.name, showId) } })
-            }
-        }
-        setTempShows(tempShows)
-
-        function createProviderProject(providerId: ContentProviderId, projectBase: Project) {
-            const templateId = get(contentProviderData)[providerId]?.projectTemplate || ""
-            if (!templateId) return projectBase
-
-            let templateItems = clone(get(projectTemplates)[templateId]?.shows || [])
-            let pcoItems = clone(projectBase.shows || [])
-
-            // project template first, then append the synced items (first to any placeholders, then to the end)
-            templateItems = templateItems.map((item) => {
-                if (item.type === "show_placeholder") {
-                    const show = pcoItems.shift()
-                    if (show) return show
-                }
-
-                return item
-            })
-
-            projectBase.shows = [...templateItems, ...pcoItems]
-            return projectBase
-        }
-
-        data.projects.forEach((currentProject) => {
-            // CREATE PROJECT FOLDER
-            const folderId = currentProject.folderId
-            if (folderId && (!get(folders)[folderId] || get(folders)[folderId].deleted)) {
-                history({ id: "UPDATE", newData: { replace: { parent: "/", name: currentProject.folderName } }, oldData: { id: folderId }, location: { page: "show", id: "project_folder" } })
-            }
-
-            // CREATE PROJECT
-            const projectBase: Project = {
-                name: currentProject.name,
-                created: currentProject.created,
-                used: Date.now(), // show on top in last used list
-                parent: folderId || "/",
-                shows: currentProject.items || [],
-                origin
-            }
-            const project = createProviderProject(data.providerId, projectBase)
-
-            // REPLACE IDS
-            project.shows = project.shows.map((a) => ({ ...a, id: replaceIds[a.id] || a.id }))
-
-            const projectId = currentProject.id
-            history({ id: "UPDATE", newData: { data: project }, oldData: { id: projectId }, location: { page: "show", id: "project" } })
-        })
-
-        // open closest to today
-        const nextProjectId = data.projects.sort((a, b) => a.scheduledTo - b.scheduledTo)[0]?.id
-        if (nextProjectId) {
-            activeProject.set(nextProjectId)
-            projectView.set(false)
-        }
-
-        // store available PCO plans for Live timer setup
-        if (data.providerId === "planningcenter" && data.pcoPlans?.length) {
-            contentProviderData.update((a) => {
-                if (!a.planningcenter) a.planningcenter = {}
-                const existing = a.planningcenter.availablePlans || []
-                a.planningcenter.availablePlans = [...existing.filter((e) => !data.pcoPlans!.some((i) => i.planId === e.planId)), ...data.pcoPlans!]
-                return a
-            })
         }
     },
     [ToMain.OPEN_FOLDER2]: (a) => {
@@ -605,7 +402,6 @@ export const mainResponses: MainResponses = {
             easyslides: () => convertEasyslides(data),
             verseview: () => convertVerseVIEW(data),
             // Media
-            lessons: () => convertLessonsPresentation(data),
             // Other
             calendar: () => convertCalendar(data),
             // Bibles

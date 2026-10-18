@@ -189,7 +189,9 @@
     }
 
     let disconnecting = false
-    async function contentProviderConnect(providerId: ContentProviderId) {
+    async function contentProviderConnect(provider: ContentProviderId | "churchApps") {
+        // the ChurchApps provider is gone (cloud sync is removed separately), so this is only kept for the cloud UI to compile
+        const providerId = provider as ContentProviderId
         if (!$providerConnections[providerId]) {
             cloudSyncData.set({})
             special.update((a) => {
@@ -199,7 +201,7 @@
 
             sendMain(Main.PROVIDER_LOAD_SERVICES, { providerId, cloudOnly: true })
         } else {
-            if (providerId === "churchApps" && !$special.churchAppsCloudOnly) {
+            if (provider === "churchApps" && !$special.churchAppsCloudOnly) {
                 const enabled = !$cloudSyncData.enabled
                 cloudSyncData.set({ enabled, id: "churchApps" })
                 toggleSync(enabled)
