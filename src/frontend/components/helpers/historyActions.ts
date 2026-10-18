@@ -254,7 +254,7 @@ async function handleShows(obj, _data, initializing) {
                 })
             }
         })
-        notFound.set({ show: [], bible: [] })
+        notFound.set({ show: [] })
     }
 
     const duplicates: string[] = []
@@ -741,7 +741,7 @@ function handleTemplate(obj, data, initializing) {
 
             const changeOverflowItems = !!(slide.settings?.template || createItems)
             const mode = slideTemplate?.settings?.mode
-            let newItems = mergeWithTemplate(slide.items, slideTemplate.items, changeOverflowItems, obj.save !== false, createItems, mode, slide.customDynamicValues)
+            let newItems = mergeWithTemplate(slide.items, slideTemplate.items, changeOverflowItems, obj.save !== false, createItems, mode)
 
             if (changeOverflowItems) {
                 const templateItemCount = getItemsCountByType(slideTemplate.items)

@@ -166,7 +166,7 @@
     <MaterialTextInput label="settings.font_family" value={fontFamily} disabled={addingFont} on:change={(e) => updateFontFamily(e.detail)} />
 
     <InputRow>
-        <MaterialFilePicker label="scripture.local (.woff/.ttf/.otf)" title="actions.import" value="" icon="text" filter={{ name: "Font File", extensions: ["woff", "woff2", "ttf", "otf"] }} disabled={!isValidFamily || addingFont} style="width: initial;flex: 1;" on:change={(e) => addLocalFont(e.detail)} />
+        <MaterialFilePicker label="popup.import_local_file (.woff/.ttf/.otf)" title="actions.import" value="" icon="text" filter={{ name: "Font File", extensions: ["woff", "woff2", "ttf", "otf"] }} disabled={!isValidFamily || addingFont} style="width: initial;flex: 1;" on:change={(e) => addLocalFont(e.detail)} />
 
         <MaterialButton icon="web" title="Import from Google Fonts" disabled={!isValidFamily || addingFont} on:click={addGoogleFont}>Google Fonts</MaterialButton>
     </InputRow>

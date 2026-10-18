@@ -420,13 +420,13 @@
             {#if !playingInOutput}
                 <div class="divider" />
 
-                <MediaPicker id="subtitles" title={translateText("scripture.local")} filter={{ name: "Video Text Track", extensions: ["vtt", "srt"] }} on:picked={subtitlePicked} dark={false}>
+                <MediaPicker id="subtitles" title={translateText("popup.import_local_file")} filter={{ name: "Video Text Track", extensions: ["vtt", "srt"] }} on:picked={subtitlePicked} dark={false}>
                     <Icon id="add" right={!tracks.length} />
-                    {#if !tracks.length}<T id="scripture.local" />{/if}
+                    {#if !tracks.length}<T id="popup.import_local_file" />{/if}
                     <!-- <Icon id="captions" right={!tracks.length} />
                     {#if !tracks.length}<T id="actions.manage_subtitles" />{/if} -->
                 </MediaPicker>
-                <!-- <MaterialFilePicker label="scripture.local" style="flex: 1;" icon="add" value="" filter={{ name: "Video Text Track", extensions: ["vtt", "srt"] }} on:change={subtitlePicked} /> -->
+                <!-- <MaterialFilePicker label="popup.import_local_file" style="flex: 1;" icon="add" value="" filter={{ name: "Video Text Track", extensions: ["vtt", "srt"] }} on:change={subtitlePicked} /> -->
             {/if}
         </FloatingInputs>
     {/if}

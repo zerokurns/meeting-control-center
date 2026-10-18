@@ -5,18 +5,15 @@
     import FunctionsTabs from "./navigation/FunctionsTabs.svelte"
     import MediaTabs from "./navigation/MediaTabs.svelte"
     import OverlaysTabs from "./navigation/OverlaysTabs.svelte"
-    import ScriptureTabs from "./navigation/ScriptureTabs.svelte"
     import ShowsTabs from "./navigation/ShowsTabs.svelte"
     import TemplatesTabs from "./navigation/TemplatesTabs.svelte"
 
-    export let id: "shows" | "media" | "overlays" | "audio" | "effects" | "scripture" | "calendar" | "functions" | "templates" | "timers"
+    export let id: "shows" | "media" | "overlays" | "audio" | "effects" | "calendar" | "functions" | "templates" | "timers"
 </script>
 
 <div class="main">
     <div class="categories context #category_{id}">
-        {#if id === "scripture"}
-            <ScriptureTabs />
-        {:else if id === "calendar"}
+        {#if id === "calendar"}
             <CalendarTabs />
         {:else if id === "functions"}
             <FunctionsTabs />

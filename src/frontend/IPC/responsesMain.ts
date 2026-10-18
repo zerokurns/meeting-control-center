@@ -16,7 +16,6 @@ import { getLabelId } from "../components/helpers/show"
 import { joinTimeBig } from "../components/helpers/time"
 import { defaultThemes } from "../components/settings/tabs/defaultThemes"
 import { processTimecodeFrame, updateTimelineStatus, updateTimelineTime } from "../components/timeline/timecode"
-import { importBibles } from "../converters/bible"
 import { convertCalendar } from "../converters/calendar"
 import { convertCSV } from "../converters/csv"
 import { createImageShow } from "../converters/imageShow"
@@ -376,9 +375,7 @@ export const mainResponses: MainResponses = {
             word: () => convertTexts(data),
             // Media
             // Other
-            calendar: () => convertCalendar(data),
-            // Bibles
-            BIBLE: () => importBibles(data)
+            calendar: () => convertCalendar(data)
         }
 
         if (!receiveIMPORT[a.channel]) return

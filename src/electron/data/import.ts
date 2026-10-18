@@ -6,7 +6,6 @@ import { ToMain } from "../../types/IPC/ToMain"
 import { sendToMain } from "../IPC/main"
 import { pptToShow } from "../output/ppt/pptToShow"
 import { asyncPool, doesPathExist, getDataFolderPath, getExtension, readFileAsync } from "../utils/files"
-import { detectFileType } from "./bibleDetecter"
 import { filePathHashCode } from "./thumbnails"
 import { decompressZip, decompressZipStream, isZip } from "./zip"
 
@@ -71,7 +70,7 @@ export async function importShow(id: string, files: string[] | null) {
 
     if (importId in specialImports) data = await specialImports[importId as keyof typeof specialImports](files)
     else {
-        // TXT | FreeShow | XML Bible
+        // TXT | FreeShow
         await asyncPool(20, files, async (file) => {
             const batchData = await readFile(file, "utf8")
             data.push(batchData)
@@ -79,11 +78,6 @@ export async function importShow(id: string, files: string[] | null) {
     }
 
     if (!data.length) return
-
-    // auto detect version
-    if (id === "BIBLE") {
-        data = (data as FileData[]).map((file) => ({ ...file, type: detectFileType(file.content as string) }))
-    }
 
     sendToMain(ToMain.IMPORT2, { channel: id, data })
 }

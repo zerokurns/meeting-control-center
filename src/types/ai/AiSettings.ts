@@ -2,8 +2,6 @@ export interface AiSettings {
     enabled?: boolean
     stt?: SttSettings
     llm?: LlmSettings
-
-    scripture?: AiScriptureSettings
 }
 
 interface SttSettings {
@@ -35,7 +33,3 @@ interface LlmSettings {
     model?: string
 }
 
-export type ConfidenceLevels = "ask" | "highest" | "high" | "medium"
-interface AiScriptureSettings {
-    confidence?: ConfidenceLevels
-}

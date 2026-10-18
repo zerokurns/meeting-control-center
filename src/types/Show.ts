@@ -24,7 +24,7 @@ export interface Show {
     category: null | ID
     quickAccess?: any
     reference?: {
-        type: "calendar" | "scripture" | "canva" | "interaction"
+        type: "calendar" | "canva" | "interaction"
         data: any
     }
     settings: {
@@ -103,7 +103,6 @@ export interface Slide {
     items: Item[]
     timeline?: Timeline
 
-    customDynamicValues?: { [key: string]: string | [string, string][] } // used for scripture slides
 }
 
 export interface Item {
@@ -125,7 +124,7 @@ export interface Item {
     clock?: Clock
     events?: DynamicEvent
     type?: ItemType
-    decoration?: boolean // ppt imported shapes & scripture items (no selection directly)
+    decoration?: boolean // ppt imported shapes (no selection directly)
 
     src?: string // media item path
     customSvg?: string
@@ -288,7 +287,7 @@ export interface Line {
         value: string
         style: string
         customType?: string // "disableTemplate"
-        sourceDynamicKey?: string // used for scripture slides to link back to the dynamic value key (only scripture_text currently)
+        sourceDynamicKey?: string // link back to the dynamic value key
     }[]
 }
 
@@ -548,7 +547,7 @@ export interface TemplateStyleOverride {
     templateId?: string
 }
 export interface TemplateSettings {
-    mode?: "default" | "scripture" | "item" | "text"
+    mode?: "default" | "item" | "text"
     resolution?: Resolution
     backgroundColor?: string
     backgroundPath?: string
@@ -612,7 +611,7 @@ export interface OutSlide {
     projectIndex?: number // only used to reference back to the project item index
     tempItems?: Item[]
     previousSlides?: Item[][]
-    settings?: any // settings for temp (e.g. scripture background color)
+    settings?: any // settings for temp
     nextSlides?: Item[][]
     line?: number // styles limit lines
     revealCount?: number // reveal one by one line
@@ -623,10 +622,6 @@ export interface OutSlide {
     page?: number // PDF
     pages?: number // PDF
     screen?: { id: string; name?: string } // PPT
-
-    translations?: number // scripture translations count (for style template)
-    attributionString?: string // scripture custom attributionString
-    customDynamicValues?: { [key: string]: string | [string, string][] } // used for scripture slides
 }
 
 export interface OutTransition {

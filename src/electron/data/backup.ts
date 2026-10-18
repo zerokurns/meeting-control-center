@@ -25,7 +25,6 @@ export async function startBackup({ customTriggers }: { customTriggers?: SaveAct
         })
     )
 
-    // bibles are not backed up because they are located in the Bibles folder
     // "SYNCED_SETTINGS" and "STAGE" has to be before "SETTINGS" and "SHOWS" (can't remember why)
     await syncStores("SETTINGS")
 

@@ -167,17 +167,15 @@
                 <Icon size={1.1} id="locked" />
             </MaterialButton>
         {:else}
-            {#if !open && (isTranslated || referenceType === "scripture")}
+            {#if !open && isTranslated}
                 <MaterialButton on:click={() => activePopup.set("translate")} title="popup.translate">
                     <Icon size={1.1} id="translate" white={!isTranslated} />
                 </MaterialButton>
             {/if}
 
-            {#if open || totalTime !== "0s" || referenceType !== "scripture"}
-                <MaterialButton title="popup.next_timer{totalTime !== '0s' ? ': ' + totalTime : ''} [Ctrl+Shift+D]" on:click={() => activePopup.set("next_timer")}>
-                    <Icon size={1.1} id="clock" white={totalTime === "0s"} />
-                </MaterialButton>
-            {/if}
+            <MaterialButton title="popup.next_timer{totalTime !== '0s' ? ': ' + totalTime : ''} [Ctrl+Shift+D]" on:click={() => activePopup.set("next_timer")}>
+                <Icon size={1.1} id="clock" white={totalTime === "0s"} />
+            </MaterialButton>
         {/if}
 
         {#if open}

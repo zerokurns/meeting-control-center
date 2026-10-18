@@ -1,7 +1,6 @@
 // ----- FreeShow -----
 // Here are all the global app variables
 
-import type { Bible } from "json-bible/lib/Bible"
 import type { ICommonTagsResult } from "music-metadata"
 import { type Writable, writable } from "svelte/store"
 import type { ContentProviderId } from "../electron/contentProviders/base/types"
@@ -18,7 +17,7 @@ import type { Dictionary, Styles, Themes } from "../types/Settings"
 import type { Action, CustomFont, Emitter, ID, Overlays, Scene, ShowGroups, ShowList, Shows, ShowType, SlideTimer, Tag, Templates, Timer, Transition, TrimmedShows } from "../types/Show"
 import type { ServerData } from "../types/Socket"
 import type { ActiveStage, StageLayouts } from "../types/Stage"
-import type { BibleCategories, Categories, DrawerTabs, EditMode, SettingsTabs, TopViews } from "../types/Tabs"
+import type { Categories, DrawerTabs, EditMode, SettingsTabs, TopViews } from "../types/Tabs"
 import type { AiSuggestion } from "./../types/ai/Ai"
 import type { AiSettings } from "./../types/ai/AiSettings"
 import type { Outputs, RtmpStatus, SyncedOutputs } from "./../types/Output"
@@ -74,13 +73,11 @@ export const focusedArea: Writable<string> = writable("")
 export const hoveredEffectItem: Writable<number | null> = writable(null)
 export const activeAnimate: Writable<any> = writable({ slide: -1, index: -1 })
 export const allOutputs: Writable<Outputs> = writable({}) // stage data in output windows
-export const activeScripture: Writable<{ id?: string; reference?: { book: number | string; chapters: (number | string)[]; verses: (number | string)[][] } }> = writable({})
 export const activeCanvaPresentation: Writable<{ designId: string; presentationName: string; slideCount?: number; thumbnail?: string; providerId?: ContentProviderId } | null> = writable(null)
 export const websiteAction: Writable<WebsiteAction | null> = writable(null)
 export const activeTriggerFunction: Writable<string> = writable("")
 export const guideActive: Writable<boolean> = writable(false)
 export const runningActions: Writable<string[]> = writable([])
-export const scriptureMode: Writable<"grid" | "list"> = writable("list")
 export const providerConnections: Writable<{ [key in ContentProviderId]?: boolean }> = writable({})
 export const mediaDownloads: Writable<Map<string, { progress: number; total: number; status: string; name?: string }>> = writable(new Map())
 export const rtmpStatus: Writable<{ [outputId: string]: RtmpStatus }> = writable({})
@@ -155,10 +152,8 @@ export const cachedShowsData: Writable<any> = writable({})
 export const quickTextCache: Writable<{ name: string; text: string; fromSearch?: boolean }> = writable({ name: "", text: "" })
 export const loadedMediaThumbnails: Writable<{ [key: string]: string }> = writable({})
 export const cachePath: Writable<string> = writable("")
-export const scriptureHistory: Writable<any[]> = writable([])
 export const actionHistory: Writable<{ action: string; data: any; time: number; count: number; source?: string }[]> = writable([])
 export const audioData: Writable<{ [key: string]: { metadata: ICommonTagsResult } }> = writable({})
-export const customScriptureBooks: Writable<{ [key: string]: string[] }> = writable({})
 export const actionRevealUsed: Writable<boolean> = writable(false)
 export const actionMoreOptionsUsed: Writable<boolean> = writable(false)
 export const dynamicValuesRevealUsed: Writable<boolean> = writable(false)
@@ -177,7 +172,7 @@ export const textEditZoom: Writable<number> = writable(10)
 export const spellcheck: Writable<{ misspelled: string; suggestions: string[] } | null> = writable(null)
 
 // OTHER
-export const notFound: Writable<{ show: string[]; bible: string[] }> = writable({ show: [], bible: [] })
+export const notFound: Writable<{ show: string[] }> = writable({ show: [] })
 export const toastMessages: Writable<string[]> = writable([])
 export const alertMessage: Writable<string> = writable("")
 export const popupData: Writable<any> = writable({})
@@ -186,7 +181,6 @@ export const previousShow: Writable<any> = writable(null)
 export const projectToolSize: Writable<number> = writable(150)
 export const forceClock: Writable<boolean> = writable(false)
 export const lastSavedCache: Writable<any> = writable(null)
-export const openScripture: Writable<any> = writable(null)
 export const deletedShows: Writable<{ name: string; id: string }[]> = writable([])
 export const renamedShows: Writable<{ id: string; name: string; oldName: string }[]> = writable([])
 export const selectAllMedia: Writable<boolean> = writable(false)
@@ -306,23 +300,6 @@ export const calendarAddShow: Writable<string> = writable("") // ""
 
 // STAGE
 export const stageShows: Writable<StageLayouts> = writable({}) // {default}
-
-// SCRIPTURE
-export const scriptures: Writable<{ [key: string]: BibleCategories }> = writable({}) // {default}
-export const scripturesCache: Writable<{ [key: string]: Bible }> = writable({}) // {}
-export const scriptureSettings: Writable<any> = writable({
-    template: "scripture",
-    versesPerSlide: 3,
-    verseNumbers: true,
-    showVersion: false,
-    showVerse: true,
-    referenceDivider: ":",
-    splitLongVerses: false,
-    longVersesChars: 100,
-    longVersesTolerance: 0,
-    splitLongVersesSuffix: false,
-    smartSplit: true
-}) // {default}
 
 // DRAWER
 export const drawerTabsData: Writable<DrawerTabs> = writable({}) // {default}
@@ -455,9 +432,6 @@ export const $ = {
     templates,
     events,
     stageShows,
-    scriptures,
-    scripturesCache,
-    scriptureSettings,
     drawerTabsData,
     drawer,
     mediaOptions,

@@ -55,7 +55,7 @@
         </MaterialButton>
     </div>
 {:else if importType === "local"}
-    <p style="font-size: 1.1em;"><T id="scripture.supported_formats" /></p>
+    <p style="font-size: 1.1em;"><T id="popup.supported_formats" /></p>
     <ul style="list-style: inside;margin-top: 10px;">
         <li>
             <span style="font-size: 0.9em;font-weight: bold;">iCalendar</span>

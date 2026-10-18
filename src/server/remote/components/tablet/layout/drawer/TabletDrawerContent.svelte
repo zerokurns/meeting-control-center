@@ -1,12 +1,6 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte"
-
     export let id: string
     export let searchValue: string
-
-    const dispatch = createEventDispatcher()
-
-    const handleScriptureSearchClear = () => dispatch("search-clear")
 
     // Track which tabs have been loaded (session cache)
     let loaded: string[] = []
@@ -20,7 +14,6 @@
     let TabletDrawerTemplates: any = null
     let TabletDrawerCalendar: any = null
     let TabletDrawerFunctions: any = null
-    let Scripture: any = null
 
     // Lazy load components on first access
     $: if (loaded.includes("shows") && !TabletDrawerShows) {
@@ -43,9 +36,6 @@
     }
     $: if (loaded.includes("functions") && !TabletDrawerFunctions) {
         import("./pages/TabletDrawerFunctions.svelte").then((m) => (TabletDrawerFunctions = m.default))
-    }
-    $: if (loaded.includes("scripture") && !Scripture) {
-        import("../../../pages/Scripture.svelte").then((m) => (Scripture = m.default))
     }
 </script>
 
@@ -86,14 +76,6 @@
         <div style="display: {id === 'templates' ? 'contents' : 'none'}">
             {#if TabletDrawerTemplates}
                 <svelte:component this={TabletDrawerTemplates} {searchValue} />
-            {/if}
-        </div>
-    {/if}
-
-    {#if loaded.includes("scripture")}
-        <div style="height: 100%; overflow: hidden; display: {id === 'scripture' ? 'flex' : 'none'}; flex-direction: column;">
-            {#if Scripture}
-                <svelte:component this={Scripture} tablet searchValueFromDrawer={searchValue} on:search-clear={handleScriptureSearchClear} />
             {/if}
         </div>
     {/if}

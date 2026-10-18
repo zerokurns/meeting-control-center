@@ -107,7 +107,6 @@ export function focusArea(e: any) {
     if (!id) {
         if (e.target.closest(".timeline")) focusedArea.set("timeline")
         else if (e.target.closest(".editArea")) focusedArea.set("edit_items")
-        else if (e.target.closest(".scripture")) focusedArea.set("scripture")
     }
 }
 

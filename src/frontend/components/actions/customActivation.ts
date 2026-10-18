@@ -21,8 +21,6 @@ export const customActionActivations = [
     { id: "slide_cleared", common: true, name: "actions.activate_slide_cleared", icon: "slide" },
     { id: "background_cleared", common: true, name: "actions.activate_background_cleared", icon: "image" },
 
-    { id: "scripture_start", common: true, name: "actions.activate_scripture_start", icon: "scripture" },
-
     { id: "video_start", common: true, name: "actions.activate_video_starting: actions.any", icon: "video" },
     { id: "video_start_foreground", name: "actions.activate_video_starting: preview.foreground", icon: "video" },
     { id: "video_start_background", name: "actions.activate_video_starting: preview.background", icon: "video" },

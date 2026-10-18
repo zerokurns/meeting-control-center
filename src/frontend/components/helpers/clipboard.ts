@@ -44,8 +44,6 @@ import {
     projectTemplates,
     refreshEditSlide,
     scenes,
-    scriptures,
-    scriptureSettings,
     selectAllAudio,
     selectAllMedia,
     selected,
@@ -374,11 +372,6 @@ const selectActions = {
         const newSelection: any[] = Object.keys(get(templateCategories))
         selected.set({ id: "category_templates", data: newSelection })
     },
-    category_scripture: () => {
-        const newSelection: any[] = Object.values(get(scriptures)).map(({ id }) => id)
-        selected.set({ id: "category_scripture", data: newSelection })
-    },
-    scripture: () => triggerFunction("scripture_selectAll"),
     stage: () => {
         let newSelection: any[] = Object.keys(get(stageShows))
         newSelection = newSelection.map((id) => ({ id }))
@@ -888,14 +881,9 @@ const deleteActions = {
         let styleTemplates: string[] = []
         Object.values(get(styles)).forEach((a) => {
             if (a.template) styleTemplates.push(a.template)
-            if (a.templateScripture) styleTemplates.push(a.templateScripture)
         })
         if (ids.some((id) => styleTemplates.includes(id))) {
             if (!(await confirmCustom(translateText("This template is in use by Styles.<br>popup.delete_show_confirmation?")))) return
-        }
-        // SCRIPTURE
-        if (ids.includes(get(scriptureSettings).template)) {
-            if (!(await confirmCustom(translateText("This template is in use by Scripture.<br>popup.delete_show_confirmation?")))) return
         }
         // TEMPLATE (First slide template)
         let firstSlideTemplateIds: string[] = []
@@ -909,19 +897,6 @@ const deleteActions = {
         // Style overwrites (not relevant as it's not in the global list)
 
         historyDelete("UPDATE", data, { updater: "template" })
-    },
-    category_scripture: (data: any) => {
-        scriptures.update((a) => {
-            data.forEach((id: string) => {
-                let key: string | null = null
-                Object.entries(a).forEach(([sId, value]) => {
-                    if (value.id === id || sId === id) key = sId
-                })
-
-                if (key) delete a[key]
-            })
-            return a
-        })
     },
     event: (data: any) => {
         history({ id: "UPDATE", newData: { id: data.id }, location: { page: "drawer", id: "event" } })

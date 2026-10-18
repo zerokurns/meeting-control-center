@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onDestroy } from "svelte"
     import type { DrawerTabIds } from "../../../types/Tabs"
-    import { activeDrawerTab, activeEdit, activePage, activePopup, activeProject, activeShow, activeTriggerFunction, dictionary, drawer, drawerOpenedInEdit, drawerTabsData, focusMode, labelsDisabled, mediaOptions, os, previousShow, projects, quickTextCache, scriptureSettings, selected, showsCache } from "../../stores"
+    import { activeDrawerTab, activeEdit, activePage, activePopup, activeProject, activeShow, activeTriggerFunction, dictionary, drawer, drawerOpenedInEdit, drawerTabsData, focusMode, labelsDisabled, mediaOptions, os, previousShow, projects, quickTextCache, selected, showsCache } from "../../stores"
     import { DEFAULT_DRAWER_HEIGHT, DEFAULT_WIDTH, MENU_BAR_HEIGHT } from "../../utils/common"
     import { startResizing, stopResizing } from "../../utils/cursor"
     import { translateText } from "../../utils/language"
@@ -291,16 +291,6 @@
                 {#if !$labelsDisabled && !$focusMode}<p style="opacity: 0.8;font-size: 1.1em;"><T id="main.search" /></p>{/if}
             </Button>
         {:else}
-            {#if $activeDrawerTab === "scripture"}
-                <div class="clearSearch autocomplete">
-                    <Icon id="autofill" white />
-                </div>
-                <div class="clearSearch options" on:mousedown|stopPropagation on:mouseup|stopPropagation>
-                    <Button style="height: 100%;" title={translateText("edit.options")} on:click={() => activePopup.set("drawer_search_options")}>
-                        <Icon id="options" white={!$scriptureSettings.enterSwapped} />
-                    </Button>
-                </div>
-            {/if}
             <div class="clearSearch">
                 <Button
                     style="height: 100%;"
@@ -398,16 +388,6 @@
         height: calc(100% - 4px);
         z-index: 1;
     }
-    .clearSearch.options {
-        right: 40px;
-    }
-    .clearSearch.autocomplete {
-        right: 90px;
-        display: flex;
-        align-items: center;
-        opacity: 0.2;
-        pointer-events: none;
-    }
 
     .hidden {
         display: none;
@@ -429,7 +409,7 @@
         border-inline-end: 2px solid var(--primary-lighter);
         overflow-y: auto;
     }
-    /* scripture preview */
+    /* split preview */
     .right.row :global(.scroll.split .zoomed) {
         flex: 1;
     }

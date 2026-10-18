@@ -20,9 +20,6 @@
     const caret = $popupData.caret || {}
     onMount(() => popupData.set({}))
 
-    let mode: null | "scripture" = null
-    if ($activePage === "edit" && $activeEdit.type === "template" && ($templates[$activeEdit.id || ""]?.settings?.mode === "scripture" || $templates[$activeEdit.id || ""]?.category === "scripture")) mode = "scripture"
-
     let showAll = $dynamicValuesRevealUsed
     function toggleShowAll() {
         showAll = !showAll
@@ -36,7 +33,7 @@
     let values = getValues()
 
     function getValues() {
-        let list = getDynamicIds(false, mode, showAll).map((id) => ({ id }))
+        let list = getDynamicIds(false, null, showAll).map((id) => ({ id }))
 
         // WIP organize better - and don't hide any values
         // _color is only for CSS "var(--slide-group-color)", but we should show them in a seperate way
@@ -51,7 +48,7 @@
 
         let separatorId = ""
         // the ones that can have a custom name should be first (to prevent it from overwriting a category)
-        const separators = ["$", "timer_", "meta_", "rss_", "txt_", "project_", "time_", "show_", "slide_text", "exif_", "video_", "audio_", "scripture_", "interaction_"]
+        const separators = ["$", "timer_", "meta_", "rss_", "txt_", "project_", "time_", "show_", "slide_text", "exif_", "video_", "audio_", "interaction_"]
 
         let newList: { [key: string]: typeof list } = {}
         list.forEach((value) => {
@@ -71,7 +68,6 @@
 
     function getTitle(id: string) {
         if (id === "interaction_") return "tabs.interactions"
-        if (id === "scripture_") return "tabs.scripture"
         if (id === "time_") return "timer.time"
         if (id === "project_") return "guide_title.project"
         if (id === "show_") return "guide_title.show"

@@ -10,13 +10,12 @@
     import CalendarInfo from "./CalendarInfo.svelte"
     import FunctionsInfo from "./FunctionsInfo.svelte"
     import MediaInfo from "./MediaInfo.svelte"
-    import ScriptureInfo from "./ScriptureInfo.svelte"
     import ShowInfo from "./ShowInfo.svelte"
     import TemplateInfo from "./TemplateInfo.svelte"
 
     export let id: string
 
-    const hasOptions = ["shows", "media", "templates", "scripture", "calendar"]
+    const hasOptions = ["shows", "media", "templates", "calendar"]
     let optionsOpen = false
     $: if (id) optionsOpen = false
 </script>
@@ -32,8 +31,6 @@
         <OverlayInfo /> -->
     {:else if !$forceClock && id === "templates"}
         <TemplateInfo {optionsOpen} />
-    {:else if !$forceClock && id === "scripture"}
-        <ScriptureInfo {optionsOpen} />
     {:else if !$forceClock && id === "calendar"}
         <CalendarInfo {optionsOpen} />
     {:else if !$forceClock && id === "functions"}

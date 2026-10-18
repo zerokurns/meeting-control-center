@@ -3,7 +3,6 @@ import { uid } from "uid"
 import type { Show } from "../../types/Show"
 import type { ClientMessage } from "../../types/Socket"
 import { AudioRoutingManager } from "../audio/routing/audioRoutingManager"
-import { loadJsonBible } from "../components/drawer/bible/scripture"
 import { clone, keysToID, removeDeleted } from "../components/helpers/array"
 import { getThumbnailPath, mediaSize } from "../components/helpers/media"
 import { getFirstActiveOutput, setOutput } from "../components/helpers/output"
@@ -13,7 +12,7 @@ import { updateOut } from "../components/helpers/showActions"
 import { _show } from "../components/helpers/shows"
 import { clearAll } from "../components/output/clear"
 import { REMOTE } from "./../../types/Channels"
-import { actions, actionTags, activePage, activeProject, activeShow, activeTimers, audioChannelsData, audioRouting, categories, connections, dictionary, folders, language, openedFolders, outLocked, outputs, overlayCategories, overlays, playerVideos, projects, runningActions, scriptures, serverData, shows, showsCache, sortedShowsList, styles, templateCategories, templates, theme, themes, timers, variables, variableTags } from "./../stores"
+import { actions, actionTags, activePage, activeProject, activeShow, activeTimers, audioChannelsData, audioRouting, categories, connections, dictionary, folders, language, openedFolders, outLocked, outputs, overlayCategories, overlays, playerVideos, projects, runningActions, serverData, shows, showsCache, sortedShowsList, styles, templateCategories, templates, theme, themes, timers, variables, variableTags } from "./../stores"
 import { lastClickTime } from "./common"
 import { translateText } from "./language"
 import { send } from "./request"
@@ -173,64 +172,6 @@ export const receiveREMOTE: any = {
 
         return msg
     },
-    GET_SCRIPTURE: async (msg: ClientMessage) => {
-        const { id, bookKey, chapterKey, bookIndex, chapterIndex } = msg.data || {}
-        if (!id) return
-
-        const jsonBible = await loadJsonBible(id)
-        if (!jsonBible) return
-
-        const scriptureData: any = get(scriptures)[id]
-        const isApi = scriptureData?.api === true
-
-        if (!isApi) {
-            msg.data.bible = jsonBible.data
-            return msg
-        }
-
-        if (bookKey && !chapterKey) {
-            try {
-                const bookData = await jsonBible.getBook(bookKey)
-                const mapped = (bookData.data.chapters || []).map((c) => ({
-                    number: c.number,
-                    keyName: c.number
-                }))
-                msg.data.bibleUpdate = { kind: "chapters", id, bookIndex, chapters: mapped }
-            } catch (error) {
-                console.warn(`Failed to load book ${bookKey}:`, error)
-                msg.data.bibleUpdate = { kind: "chapters", id, bookIndex, chapters: [] }
-            }
-            return msg
-        }
-
-        if (bookKey && chapterKey) {
-            try {
-                const bookData = await jsonBible.getBook(bookKey)
-                const chapterData = await bookData.getChapter(chapterKey)
-                const versesData = chapterData.data.verses
-                const mappedVerses = versesData.map((v) => ({
-                    number: v.number,
-                    text: v.text,
-                    keyName: v.number
-                }))
-                msg.data.bibleUpdate = { kind: "verses", id, bookIndex, chapterIndex, verses: mappedVerses }
-            } catch (error) {
-                console.warn(`Failed to load ${bookKey} ${chapterKey}:`, error)
-                msg.data.bibleUpdate = { kind: "verses", id, bookIndex, chapterIndex, verses: [] }
-            }
-            return msg
-        }
-
-        const books = jsonBible.data.books
-        const mappedBooks = (books || []).map((b) => ({
-            name: b.name,
-            number: b.number,
-            keyName: b.id,
-            chapters: []
-        }))
-        msg.data.bible = { books: mappedBooks }
-        return msg
-    },
     SEARCH_SHOWS: (msg: ClientMessage) => {
         const { query = "", limit = 500 } = msg.data || {}
         const trimmed = typeof query === "string" ? query.trim() : ""
@@ -244,78 +185,6 @@ export const receiveREMOTE: any = {
         // Return matching show IDs and scores to keep payload light
         const results = matches.slice(0, limit).map((s) => ({ id: s.id, match: s.match }))
         msg.data = { query: trimmed, results }
-        return msg
-    },
-    SEARCH_SCRIPTURE: async (msg: ClientMessage) => {
-        const { id, searchTerm, searchType, bookFilter } = msg.data || {}
-        if (!id || !searchTerm) return
-
-        const jsonBible = await loadJsonBible(id)
-        if (!jsonBible) return
-
-        const scriptureData: any = get(scriptures)[id]
-        const isApi = scriptureData?.api === true
-
-        // For local bibles, return null to use cached search
-        if (!isApi) {
-            msg.data.searchResults = null
-            return msg
-        }
-
-        try {
-            if (searchType === "reference") {
-                // Use bookSearch for reference parsing (e.g., "John 3:16")
-                const result = jsonBible.bookSearch(searchTerm)
-                if (result) {
-                    // Get book name if we have book number
-                    let bookName: string | null = null
-                    if (result.book) {
-                        const bookObj = jsonBible.data.books.find((b: any) => b.number === result.book || b.id === result.book)
-                        bookName = bookObj?.name || null
-                    }
-                    msg.data.searchResults = {
-                        type: "reference",
-                        autocompleted: result.autocompleted || undefined,
-                        book: result.book || null,
-                        bookName: bookName,
-                        chapter: result.chapter || null,
-                        verses: result.verses || []
-                    }
-                } else {
-                    msg.data.searchResults = { type: "reference", found: false }
-                }
-            } else {
-                // Use textSearch for content search (minimum 3 characters)
-                if (searchTerm.length < 3) {
-                    msg.data.searchResults = { type: "text", results: [], bookFilter }
-                    return msg
-                }
-                const results = await jsonBible.textSearch(searchTerm)
-                let filteredResults = (results || []).map((ref: any) => ({
-                    book: ref.book,
-                    chapter: ref.chapter,
-                    verseNumber: typeof ref.verse === "object" ? ref.verse.number : ref.verse,
-                    reference: `${ref.book}.${ref.chapter}.${typeof ref.verse === "object" ? ref.verse.number : ref.verse}`,
-                    referenceFull: ref.reference || "",
-                    verseText: typeof ref.verse === "object" ? ref.verse.text : ref.text || ""
-                }))
-
-                // Apply book filter if provided
-                if (bookFilter) {
-                    filteredResults = filteredResults.filter((ref: any) => ref.book === bookFilter)
-                }
-
-                msg.data.searchResults = {
-                    type: "text",
-                    results: filteredResults.slice(0, 50),
-                    bookFilter
-                }
-            }
-        } catch (err) {
-            console.error("Scripture search error:", err)
-            msg.data.searchResults = { type: searchType, error: true }
-        }
-
         return msg
     },
     GET_OVERLAYS: (msg: any) => {
@@ -382,13 +251,12 @@ export async function initializeRemote(id: string) {
     }
 
     // Send targeted initial state to this connection
-    // Use sendData so the proper OUT payload is constructed (handles scripture 'temp' etc.)
+    // Use sendData so the proper OUT payload is constructed
     sendData(REMOTE, { id, channel: "OUT" })
     sendData(REMOTE, { id, channel: "OUT_DATA" })
 
     // Send additional data
     sendThemeToRemote()
-    send(REMOTE, ["SCRIPTURE"], get(scriptures))
     send(REMOTE, ["CATEGORIES"], get(categories))
     send(REMOTE, ["AUDIO_ROUTING"], getFilteredAudioChannels())
     send(REMOTE, ["AUDIO_CHANNELS_DATA"], get(audioChannelsData))

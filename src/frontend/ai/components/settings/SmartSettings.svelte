@@ -3,7 +3,6 @@
     import Tip from "../../../components/main/Tip.svelte"
     import { activePopup, ai, popupData, sttTempDisabled } from "../../../stores"
     import { translateText } from "../../../utils/language"
-    import AutoScriptureOptions from "./AutoScriptureOptions.svelte"
     import STTOptions from "./STTOptions.svelte"
 
     $: isEnabled = $ai.enabled
@@ -28,8 +27,6 @@
 
 {#if isEnabled}
     <STTOptions />
-
-    <AutoScriptureOptions />
 
     <!-- TODO: auto lyrics & more -->
 {:else}

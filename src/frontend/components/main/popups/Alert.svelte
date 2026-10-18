@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { Main } from "../../../../types/IPC/Main"
-    import { sendMain } from "../../../IPC/main"
     import { activePopup, alertMessage } from "../../../stores"
     import { translateText } from "../../../utils/language"
     import { registerPopupSubmit } from "../../../utils/popup"
@@ -14,17 +12,6 @@
     let msg = ""
     $: msg = $alertMessage.toString()
 
-    // UPDATER
-    $: if (msg.includes("link#")) {
-        msg = msg.replace("link#bible-converter", '<a id="bible-converter">Bible Converter</a>')
-    }
-
-    function click(e: any) {
-        if (e.target.closest("a#bible-converter")) {
-            sendMain(Main.URL, "https://github.com/vassbo/bible-converter")
-        }
-    }
-
     function close() {
         activePopup.set(null)
     }
@@ -36,7 +23,7 @@
         <Loader />
     </div>
 {:else}
-    <p on:click={click}>
+    <p>
         {#key msg}
             {#if msg.includes("captions#")}
                 {translateText("captions.info")}

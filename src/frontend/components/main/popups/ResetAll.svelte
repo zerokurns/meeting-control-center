@@ -2,7 +2,7 @@
     import { Main } from "../../../../types/IPC/Main"
     import type { SaveData } from "../../../../types/Save"
     import { sendMain } from "../../../IPC/main"
-    import { activeEdit, activePage, activePopup, activeShow, deletedShows, renamedShows, scripturesCache } from "../../../stores"
+    import { activeEdit, activePage, activePopup, activeShow, deletedShows, renamedShows } from "../../../stores"
     import { save } from "../../../utils/save"
     import T from "../../helpers/T.svelte"
     import MaterialButton from "../../inputs/MaterialButton.svelte"
@@ -38,13 +38,12 @@
         } as SaveData)
 
         // WIP reset error log / other config files
-        // all content in FreeShow/ folder, including Shows/Scripture files are not deleted
+        // all content in FreeShow/ folder, including Shows files are not deleted
         // media cache is not deleted
 
         clearAll()
 
         // showsCache.set({})
-        scripturesCache.set({})
         deletedShows.set([])
         renamedShows.set([])
 

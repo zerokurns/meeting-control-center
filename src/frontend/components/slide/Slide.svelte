@@ -224,9 +224,8 @@
     $: if ($special.styleTemplatePreview !== false) updateItemsList(slide)
     else itemsList = clone(slide.items) || []
     function updateItemsList(_updater: any = null) {
-        // WIP show scripture style preview as well
-        if (!allOutputsHasStyleTemplate(show?.reference?.type === "scripture")) return
-        itemsList = setTemplateStyle({ id: showId, index }, currentStyle, itemsList, outputId, slide?.customDynamicValues)
+        if (!allOutputsHasStyleTemplate()) return
+        itemsList = setTemplateStyle({ id: showId, index }, currentStyle, itemsList, outputId)
     }
 
     // $: styleTemplate = getStyleTemplate(null, currentStyle)

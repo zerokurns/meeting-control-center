@@ -4,8 +4,8 @@ import type { MainFilePaths } from "../../types/Main"
 import type { Overlay, Template } from "../../types/Show"
 import { DEFAULT_ITEM_STYLE } from "../components/edit/scripts/itemHelpers"
 import { setShow } from "../components/helpers/setShow"
-import { activePopup, audioFolders, deletedDefaults, effects, folders, language, mediaFolders, outputs, overlays, projects, scriptures, serverData, shows, templates, variables } from "../stores"
-import { stageShows, templateCategories } from "./../stores"
+import { activePopup, audioFolders, deletedDefaults, effects, folders, mediaFolders, outputs, overlays, projects, serverData, shows, templates, variables } from "../stores"
+import { stageShows } from "./../stores"
 import { translateText } from "./language"
 import { save } from "./save"
 
@@ -79,24 +79,6 @@ export function createData(paths: MainFilePaths) {
     if (get(variables).default?.name === "Counter") {
         variables.update((a) => {
             a.default.name = translateText("variables.number")
-            return a
-        })
-    }
-
-    // region specific
-    if (get(language) === "no") {
-        scriptures.update((a) => {
-            a = {}
-            a.nb11 = {
-                api: true,
-                id: "eea18ccd2ca05dde-01",
-                name: "Bibel 2011 Bokmål"
-            }
-            a.nn11 = {
-                api: true,
-                id: "7bcaa2f2e77739d5-01",
-                name: "Bibel 2011 Nynorsk"
-            }
             return a
         })
     }
@@ -519,30 +501,10 @@ export function setExampleTemplates() {
         return a
     })
 
-    templateCategories.update((a) => {
-        a.scripture = { default: true, name: "category.scripture", icon: "scripture" }
-        return a
-    })
-
     templates.set({ ...get(templates), ...getDefaultTemplates() })
     createDoubleTemplate()
 }
 
-export function setDefaultScriptureTemplates() {
-    const templatesList = getDefaultScriptureTemplates()
-
-    deletedDefaults.update((a) => {
-        a.templates = (get(deletedDefaults).templates || []).filter((id) => !Object.keys(templatesList).includes(id))
-        return a
-    })
-
-    templateCategories.update((a) => {
-        a.scripture = { default: true, name: "category.scripture", icon: "scripture" }
-        return a
-    })
-
-    templates.set({ ...get(templates), ...templatesList })
-}
 
 function createDefaultTemplates() {
     const deletedIds = get(deletedDefaults).templates || []
@@ -980,336 +942,6 @@ function getDefaultTemplates() {
         ]
     }
 
-    return { ...a, ...getDefaultScriptureTemplates() }
-}
-
-function getDefaultScriptureTemplates() {
-    const a: Record<string, Template> = {}
-
-    // text
-    a.brackets = {
-        isDefault: true,
-        name: "Brackets",
-        color: "#515151",
-        category: "scripture",
-        settings: { mode: "text" },
-        items: [
-            {
-                style: DEFAULT_ITEM_STYLE,
-                align: "",
-                lines: [{ align: "", text: [{ value: "[Brackets]", style: "font-style: italic;color: rgb(255 255 255 / 0.6);" }] }]
-            }
-        ]
-    }
-    a.parentheses = {
-        isDefault: true,
-        name: "Parentheses",
-        color: "#515151",
-        category: "scripture",
-        settings: { mode: "text" },
-        items: [
-            {
-                style: DEFAULT_ITEM_STYLE,
-                align: "",
-                lines: [{ align: "", text: [{ value: "(Parentheses)", style: "font-weight: normal;color: rgb(255 255 255 / 0.8);" }] }]
-            }
-        ]
-    }
-
-    // scripture
-    a.scripture = {
-        isDefault: true,
-        name: translateText("category.scripture"),
-        color: "#876543",
-        category: "scripture",
-        settings: {
-            mode: "scripture",
-            styleOverrides: [
-                { id: "brackets", pattern: "/\\[(.*?)\\]/", templateId: "brackets" },
-                { id: "parentheses", pattern: "/\\((.*?)\\)/", templateId: "parentheses" }
-            ]
-        },
-        items: [
-            {
-                // textFit: "shrinkToFit",
-                style: "top: 30px;left: 30px;width: 1860px;height: 865px;background-color: rgb(0 0 0 / 0.4);border-radius: 20px;padding: 25px;",
-                align: "",
-                lines: [
-                    {
-                        align: "text-align: left;",
-                        text: [
-                            { value: "{scripture_number} ", style: "font-size: 40px;color: rgb(255 255 255 / 0.6);" },
-                            { value: "{scripture_text}", style: "font-size: 80px;" }
-                        ]
-                    }
-                ]
-            },
-            {
-                style: "top: 900px;left: 30px;width: 1860px;height: 150px;",
-                align: "",
-                lines: [
-                    { align: "", text: [{ value: "{scripture_reference}", style: "font-size: 55px;color: rgb(255 255 255 / 0.8);" }] },
-                    { align: "", text: [{ value: "{scripture_name}", style: "font-size: 40px;color: rgb(255 255 255 / 0.7);" }] }
-                ]
-            }
-        ]
-    }
-    a.scripture_2 = {
-        isDefault: true,
-        name: translateText("category.scripture 2"),
-        color: "#876543",
-        category: "scripture",
-        settings: { mode: "scripture" },
-        items: [
-            {
-                // textFit: "shrinkToFit",
-                style: "top: 40px;left: 30px;width: 1860px;height: 400px;background-color: rgb(0 0 0 / 0.4);border-radius: 20px;padding: 25px;border-width: 1px;border-color: #cccccc;",
-                align: "",
-                lines: [
-                    {
-                        align: "text-align: left;",
-                        text: [
-                            { value: "{scripture1_number} ", style: "font-size: 35px;color: rgb(255 255 255 / 0.6);" },
-                            { value: "{scripture1_text}", style: "font-size: 70px;" }
-                        ]
-                    }
-                ]
-            },
-            {
-                // textFit: "shrinkToFit",
-                style: "top: 475px;left: 30px;width: 1860px;height: 400px;background-color: rgb(0 0 0 / 0.4);border-radius: 20px;padding: 25px;border-width: 1px;border-color: #cccccc;",
-                align: "",
-                lines: [
-                    {
-                        align: "text-align: left;",
-                        text: [
-                            { value: "{scripture2_number} ", style: "font-size: 35px;color: rgb(255 255 255 / 0.6);" },
-                            { value: "{scripture2_text}", style: "font-size: 70px;" }
-                        ]
-                    }
-                ]
-            },
-            {
-                style: "top: 900px;left: 30px;width: 1860px;height: 150px;",
-                align: "",
-                lines: [
-                    { align: "", text: [{ value: "{scripture_reference}", style: "font-size: 55px;color: rgb(255 255 255 / 0.8);" }] },
-                    { align: "", text: [{ value: "{scripture_name}", style: "font-size: 40px;color: rgb(255 255 255 / 0.7);" }] }
-                ]
-            }
-        ]
-    }
-    a.scripture_3 = {
-        isDefault: true,
-        name: translateText("category.scripture 3"),
-        color: "#876543",
-        category: "scripture",
-        settings: { mode: "scripture" },
-        items: [
-            {
-                // textFit: "shrinkToFit",
-                style: "top: 40px;left: 30px;width: 1860px;height: 250px;background-color: rgb(0 0 0 / 0.4);border-radius: 20px;padding: 25px;border-width: 1px;border-color: #cccccc;",
-                align: "",
-                lines: [
-                    {
-                        align: "text-align: left;",
-                        text: [
-                            { value: "{scripture1_number} ", style: "font-size: 30px;color: rgb(255 255 255 / 0.6);" },
-                            { value: "{scripture1_text}", style: "font-size: 60px;" }
-                        ]
-                    }
-                ]
-            },
-            {
-                // textFit: "shrinkToFit",
-                style: "top: 320px;left: 30px;width: 1860px;height: 250px;background-color: rgb(0 0 0 / 0.4);border-radius: 20px;padding: 25px;border-width: 1px;border-color: #cccccc;",
-                align: "",
-                lines: [
-                    {
-                        align: "text-align: left;",
-                        text: [
-                            { value: "{scripture2_number} ", style: "font-size: 30px;color: rgb(255 255 255 / 0.6);" },
-                            { value: "{scripture2_text}", style: "font-size: 60px;" }
-                        ]
-                    }
-                ]
-            },
-            {
-                // textFit: "shrinkToFit",
-                style: "top: 600px;left: 30px;width: 1860px;height: 250px;background-color: rgb(0 0 0 / 0.4);border-radius: 20px;padding: 25px;border-width: 1px;border-color: #cccccc;",
-                align: "",
-                lines: [
-                    {
-                        align: "text-align: left;",
-                        text: [
-                            { value: "{scripture3_number} ", style: "font-size: 30px;color: rgb(255 255 255 / 0.6);" },
-                            { value: "{scripture3_text}", style: "font-size: 60px;" }
-                        ]
-                    }
-                ]
-            },
-            {
-                style: "top: 900px;left: 30px;width: 1860px;height: 150px;",
-                align: "",
-                lines: [
-                    { align: "", text: [{ value: "{scripture_reference}", style: "font-size: 55px;color: rgb(255 255 255 / 0.8);" }] },
-                    { align: "", text: [{ value: "{scripture_name}", style: "font-size: 40px;color: rgb(255 255 255 / 0.7);" }] }
-                ]
-            }
-        ]
-    }
-    a.scripture_4 = {
-        isDefault: true,
-        name: translateText("category.scripture 4"),
-        color: "#876543",
-        category: "scripture",
-        settings: { mode: "scripture" },
-        items: [
-            {
-                // textFit: "shrinkToFit",
-                style: "top: 40px;left: 30px;width: 1860px;height: 200px;background-color: rgb(0 0 0 / 0.4);border-radius: 20px;padding: 25px;border-width: 1px;border-color: #cccccc;",
-                align: "",
-                lines: [
-                    {
-                        align: "text-align: left;",
-                        text: [
-                            { value: "{scripture1_number} ", style: "font-size: 30px;color: rgb(255 255 255 / 0.6);" },
-                            { value: "{scripture1_text}", style: "font-size: 60px;" }
-                        ]
-                    }
-                ]
-            },
-            {
-                // textFit: "shrinkToFit",
-                style: "top: 250px;left: 30px;width: 1860px;height: 200px;background-color: rgb(0 0 0 / 0.4);border-radius: 20px;padding: 25px;border-width: 1px;border-color: #cccccc;",
-                align: "",
-                lines: [
-                    {
-                        align: "text-align: left;",
-                        text: [
-                            { value: "{scripture2_number} ", style: "font-size: 30px;color: rgb(255 255 255 / 0.6);" },
-                            { value: "{scripture2_text}", style: "font-size: 60px;" }
-                        ]
-                    }
-                ]
-            },
-            {
-                // textFit: "shrinkToFit",
-                style: "top: 460px;left: 30px;width: 1860px;height: 200px;background-color: rgb(0 0 0 / 0.4);border-radius: 20px;padding: 25px;border-width: 1px;border-color: #cccccc;",
-                align: "",
-                lines: [
-                    {
-                        align: "text-align: left;",
-                        text: [
-                            { value: "{scripture3_number} ", style: "font-size: 30px;color: rgb(255 255 255 / 0.6);" },
-                            { value: "{scripture3_text}", style: "font-size: 60px;" }
-                        ]
-                    }
-                ]
-            },
-            {
-                // textFit: "shrinkToFit",
-                style: "top: 670px;left: 30px;width: 1860px;height: 200px;background-color: rgb(0 0 0 / 0.4);border-radius: 20px;padding: 25px;border-width: 1px;border-color: #cccccc;",
-                align: "",
-                lines: [
-                    {
-                        align: "text-align: left;",
-                        text: [
-                            { value: "{scripture4_number} ", style: "font-size: 30px;color: rgb(255 255 255 / 0.6);" },
-                            { value: "{scripture4_text}", style: "font-size: 60px;" }
-                        ]
-                    }
-                ]
-            },
-            {
-                style: "top: 900px;left: 30px;width: 1860px;height: 150px;",
-                align: "",
-                lines: [
-                    { align: "", text: [{ value: "{scripture_reference}", style: "font-size: 55px;color: rgb(255 255 255 / 0.8);" }] },
-                    { align: "", text: [{ value: "{scripture_name}", style: "font-size: 40px;color: rgb(255 255 255 / 0.7);" }] }
-                ]
-            }
-        ]
-    }
-    a.scriptureLT = {
-        isDefault: true,
-        name: translateText("category.scripture Lower Third"),
-        color: "#876543",
-        category: "scripture",
-        settings: { mode: "scripture" },
-        items: [
-            {
-                style: "left:30px;top:765px;width:1860px;height:238px;border-radius:20px;padding:25px;background-color:#FFFFFF;",
-                align: "",
-                lines: [
-                    {
-                        align: "text-align: left;",
-                        text: [
-                            { value: "{scripture_number} ", style: "font-size: 40px;color: rgb(255 255 255 / 0.6);text-shadow:0px 0px 0px #000000;" },
-                            { value: "{scripture_text}", style: "font-size: 80px;color:#000000;text-shadow:0px 0px 0px #000000;" }
-                        ]
-                    }
-                ],
-                auto: true
-            },
-            {
-                style: "left:1442px;top:960px;width:448px;height:88px;background-color:#ff851b;padding:3px;border-radius:10px;",
-                align: "",
-                lines: [
-                    { align: "", text: [{ value: "{scripture_reference}", style: "text-shadow:0px 0px 0px #000000;font-size:40px;" }] },
-                    { align: "", text: [{ value: "{scripture_name}", style: "text-shadow:0px 0px 0px #000000;font-size:30px;" }] }
-                ],
-                auto: true
-            }
-        ]
-    }
-    a.scriptureLT_2 = {
-        isDefault: true,
-        name: translateText("category.scripture Lower Third 2"),
-        color: "#876543",
-        category: "scripture",
-        settings: { mode: "scripture" },
-        items: [
-            {
-                style: "left:30px;top:765px;width:1860px;height:120px;border-radius:20px;padding:25px;background-color:#FFFFFF;",
-                align: "",
-                lines: [
-                    {
-                        align: "text-align: left;",
-                        text: [
-                            { value: "{scripture1_number} ", style: "font-size: 40px;color:rgb(255 255 255 / 0.6);text-shadow:0px 0px 0px #000000;" },
-                            { value: "{scripture1_text}", style: "font-size: 80px;color:#000000;text-shadow:0px 0px 0px #000000;" }
-                        ]
-                    }
-                ],
-                auto: true
-            },
-            {
-                style: "left:30px;top:885px;width:1860px;height:120px;border-radius:20px;padding:25px;background-color:#DDDDDD;",
-                align: "",
-                lines: [
-                    {
-                        align: "text-align: left;",
-                        text: [
-                            { value: "{scripture2_number} ", style: "font-size: 40px;color:rgb(255 255 255 / 0.6);text-shadow:0px 0px 0px #000000;" },
-                            { value: "{scripture2_text}", style: "font-size: 80px;color:#000000;text-shadow:0px 0px 0px #000000;" }
-                        ]
-                    }
-                ],
-                auto: true
-            },
-            {
-                style: "left:1442px;top:960px;width:448px;height:88px;background-color:#ff851b;padding:3px;border-radius:10px;",
-                align: "",
-                lines: [
-                    { align: "", text: [{ value: "{scripture_reference}", style: "text-shadow:0px 0px 0px #000000;font-size:40px;" }] },
-                    { align: "", text: [{ value: "{scripture_name}", style: "text-shadow:0px 0px 0px #000000;font-size:30px;" }] }
-                ],
-                auto: true
-            }
-        ]
-    }
-
     return a
 }
 
@@ -1397,7 +1029,7 @@ export function getDefaultElements() {
 }
 
 // "message" is removed
-const templateIds = ["metadata", "message", "header", "text", "big", "default", "small", "bigBold", "defaultBold", "smallBold", "blur_box", "faded", "box", "trendy", "trendy_curved", "fade", "lowerThird", "lowerThirdWhite", "lowerThirdBlue", "lowerThirdColor", "lowerThirdPastel", "scripture", "scripture_2", "scripture_3", "scripture_4", "scriptureLT", "scriptureLT_2", "blueHeader", "blueMain", "bullets"]
+const templateIds = ["metadata", "message", "header", "text", "big", "default", "small", "bigBold", "defaultBold", "smallBold", "blur_box", "faded", "box", "trendy", "trendy_curved", "fade", "lowerThird", "lowerThirdWhite", "lowerThirdBlue", "lowerThirdColor", "lowerThirdPastel", "blueHeader", "blueMain", "bullets"]
 function getDeletedTemplates() {
     if (get(deletedDefaults).templates) return
 

@@ -776,12 +776,12 @@ function insertOffsetVariants(idList: string[]): string[] {
 }
 
 export const dynamicValueText = (id: string) => `{${id}}`
-export function getDynamicIds(noVariables = false, mode: null | "scripture" | "dropdown" = null, showAll: boolean = true): string[] {
+export function getDynamicIds(noVariables = false, mode: null | "dropdown" = null, showAll: boolean = true): string[] {
     const rawMainValues = Object.keys(dynamicValues).filter((id) => !deprecatedDynamicValues.includes(id) && (showAll ? true : !commonOnly.find((cId) => id.startsWith(cId))))
     const mainValues = mode !== "dropdown" ? insertOffsetVariants(rawMainValues) : rawMainValues
 
     const metaValues = showAll ? Object.keys(getCustomMetadata()).map((id) => `meta_${id.replaceAll(" ", "_").toLowerCase()}`) : []
-    const mergedValues = [...(mode === "scripture" ? Object.keys(scriptureDynamicValues) : []), ...mainValues, ...metaValues]
+    const mergedValues = [...mainValues, ...metaValues]
     if (noVariables) return mergedValues
 
     const timersList: string[] = []
@@ -953,10 +953,6 @@ export function replaceDynamicValues(text: string, { showId, layoutId, slideInde
 
     const currentShow = showId ? _show(showId).get() || null : null
     if (type === "show" && !currentShow) return ""
-
-    // remove unused scripture dynamic values ({scripture_X} / {scriptureNUM_X})
-    const regex = /\{scripture(?:\d+)?_[^}]*\}/g
-    if (regex.test(text) && !popup) text = text.replace(regex, "")
 
     const validIds = getValidDynamicIds(mode || "")
     const matches = text.match(/\{([^}]+)\}/g) || []
@@ -1144,10 +1140,6 @@ export function replaceDynamicValues(text: string, { showId, layoutId, slideInde
             return get(special).logSongUsage ? "true" : "false"
         }
 
-        if (scriptureDynamicValues[dynamicId]) {
-            return scriptureDynamicValues[dynamicId]() || ""
-        }
-
         if (!dynamicValues[dynamicId]) return ""
 
         const rawValue = dynamicValues[dynamicId]({ show, ref, slideIndex, layout, projectRef, outSlide, bgPath, videoData, audioTime, audioDuration, audioPath, offset }) ?? ""
@@ -1328,26 +1320,6 @@ const dynamicValues = {
     interaction_leaderboard: ({ show }) => getInteractionLeaderboard(show)
 }
 
-// placeholder values
-const scriptureDynamicValues = {
-    scripture_text: () => "In the beginning...",
-    scripture_book: () => "Genesis",
-    scripture_book_abbr: () => "Gen",
-    scripture_chapter: () => "1",
-    scripture_verses: () => "1-3",
-    scripture_reference: () => "Genesis 1:1-3", // current slide only
-    scripture_reference_full: () => "Genesis 1:1-10", // across all slides
-    scripture_reference_last: () => "Last slide only", // full reference, only on last slide
-    scripture_name: () => "King James Version", // version
-    // scripture_name_abbr: () => "KJV",
-    // chapter_verses, book_chapters
-    // add number for collections scripture1_
-
-    // not replaced directly, but the style is used:
-    scripture_number: () => "1",
-    scripture_red_jesus: () => "Words",
-    scripture_undertitle: () => "Title"
-}
 
 function getOffsetDate(offset = 0, unit: "date" | "month" | "year" | "hours" | "minutes" | "seconds" = "date") {
     const d = new Date()
@@ -1364,7 +1336,7 @@ function getOffsetDate(offset = 0, unit: "date" | "month" | "year" | "hours" | "
 export function getGroupText({ outSlide, show, ref, slideIndex }, groupOffset: number = 0) {
     if (!show) return ""
 
-    // fallback to current slide text if scripture
+    // fallback to current slide text if temp slide
     if (outSlide?.id === "temp") return getSlideText({ outSlide, show, ref }, slideIndex + groupOffset)
 
     const outIndex = outSlide?.index ?? slideIndex

@@ -10,7 +10,6 @@ import {
     actions,
     actionTags,
     activeProject,
-    activeScripture,
     activeShow,
     activeTimers,
     audioChannelsData,
@@ -39,7 +38,6 @@ import {
     projects,
     refreshSlideThumbnails,
     runningActions,
-    scriptures,
     shows,
     showsCache,
     slideTimelineSpeedMultiplier,
@@ -167,19 +165,6 @@ export function storeSubscriber() {
         // STAGE
         // WIP all stage listeners should not send to all stages, just the connected ids
         send(STAGE, ["EVENTS"], data)
-    })
-    scriptures.subscribe((data) => {
-        send(REMOTE, ["SCRIPTURE"], data)
-    })
-    activeScripture.subscribe(async (data) => {
-        // Debounce and filter ACTIVE_SCRIPTURE to avoid sending partial states (book-only/chapter-only)
-        if (await hasNewerUpdate("LISTENER_ACTIVE_SCRIPTURE", 120)) return
-
-        const source: any = (data && ((data as any).api || (data as any).bible)) || data || {}
-        const hasBook = source.bookId !== undefined && source.bookId !== null
-        const hasChapter = source.chapterId !== undefined && source.chapterId !== null
-        const hasVerses = Array.isArray(source.activeVerses) && source.activeVerses.length > 0
-        if (hasBook && hasChapter && hasVerses) send(REMOTE, ["ACTIVE_SCRIPTURE"], data)
     })
 
     outputs.subscribe(async (data) => {

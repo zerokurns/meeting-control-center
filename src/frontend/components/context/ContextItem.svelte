@@ -28,7 +28,6 @@
         projects,
         redoHistory,
         scenes,
-        scriptures,
         selected,
         shows,
         showsCache,
@@ -280,13 +279,8 @@
             disabled = true
         },
         favourite: () => {
-            if ($selected.id?.includes("category_scripture")) {
-                let id = $selected.data[0]
-                enabled = !!$scriptures[id]?.favorite
-            } else {
-                let path = $selected.data[0]?.path || $selected.data[0]?.id
-                enabled = !!$media[path]?.favourite
-            }
+            let path = $selected.data[0]?.path || $selected.data[0]?.id
+            enabled = !!$media[path]?.favourite
         },
         effects_library_add: () => {
             let path = $selected.data[0]?.path || $selected.data[0]?.id

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { uid } from "uid"
     import type { AspectRatio, Resolution, Styles } from "../../../../types/Settings"
-    import { activeDrawerTab, activeEdit, activePage, activeStyle, drawerTabsData, outputs, styles, templates } from "../../../stores"
+    import { activeDrawerTab, activeEdit, activePage, activeStyle, outputs, styles, templates } from "../../../stores"
     import { translateText } from "../../../utils/language"
     import { transitionTypes } from "../../../utils/transitions"
     import { mediaExtensions } from "../../../values/extensions"
@@ -68,9 +68,8 @@
     $: currentStyle = $styles[styleId] || clone(defaultStyle)
 
     $: styleTemplate = $templates[currentStyle.template || ""] || {}
-    $: styleTemplateScripture = $templates[currentStyle.templateScripture || ""] || {}
-    $: templateBackground = styleTemplate.settings?.backgroundColor || styleTemplateScripture.settings?.backgroundColor
-    $: templateBackgroundImage = styleTemplate.settings?.backgroundPath || styleTemplateScripture.settings?.backgroundPath
+    $: templateBackground = styleTemplate.settings?.backgroundColor
+    $: templateBackgroundImage = styleTemplate.settings?.backgroundPath
 
     function getAspectRatio(resolution: Resolution | undefined): AspectRatio {
         if (!resolution || (resolution.width === 1920 && resolution.height === 1080)) return { width: 16, height: 9 }
@@ -118,27 +117,11 @@
     // TEMPLATE OVERRIDE
 
     $: templateOverride = currentStyle.template || ""
-    $: templateOverrideScripture = currentStyle.templateScripture || ""
-    $: scriptureTemplateLabel = currentStyle.templateScripture ? $templates[currentStyle.templateScripture || ""]?.name : currentStyle.templateScripture_2 ? $templates[currentStyle.templateScripture_2 || ""]?.name + " (2)" : currentStyle.templateScripture_3 ? $templates[currentStyle.templateScripture_3 || ""]?.name + " (3)" : currentStyle.templateScripture_4 ? $templates[currentStyle.templateScripture_4 || ""]?.name + " (4)" : ""
 
     function editTemplate(id: string) {
         activeDrawerTab.set("templates")
         activeEdit.set({ type: "template", id, items: [] })
         activePage.set("edit")
-    }
-    function updateScriptureTemplate(e) {
-        const type = e.detail?.type || ""
-        const value = e.detail?.value ?? e.detail
-
-        if (!value) {
-            updateStyle("", "templateScripture")
-            if (currentStyle.templateScripture_2) updateStyle("", "templateScripture_2")
-            if (currentStyle.templateScripture_3) updateStyle("", "templateScripture_3")
-            if (currentStyle.templateScripture_4) updateStyle("", "templateScripture_4")
-            return
-        }
-
-        updateStyle(value, "templateScripture" + type)
     }
 
     // METADATA
@@ -191,14 +174,6 @@
     {/if}
 </InputRow>
 
-{#if $drawerTabsData?.scripture?.enabled !== false}
-    <InputRow>
-        <MaterialPopupButton id="scripture" label="settings.override_scripture_with_template" disabled={!activeLayers.includes("slide")} value={templateOverrideScripture || currentStyle.templateScripture_2 || currentStyle.templateScripture_3 || currentStyle.templateScripture_4} name={scriptureTemplateLabel} popupId="select_template" icon="templates" on:change={updateScriptureTemplate} allowEmpty />
-        {#if templateOverrideScripture && $templates[templateOverrideScripture]}
-            <MaterialButton title="titlebar.edit" icon="edit" on:click={() => editTemplate(templateOverrideScripture)} />
-        {/if}
-    </InputRow>
-{/if}
 
 <MaterialPopupButton id={styleId} label="meta.display_metadata" disabled={!activeLayers.includes("slide")} value={metadataDisplay} defaultValue="default" name={metadataDisplayLabel} popupId="metadata_display" icon="info" data={{ type: "style" }} on:change={(e) => updateStyle({ ...metadata, display: e.detail }, "metadata")} />
 

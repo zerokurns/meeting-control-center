@@ -22,24 +22,7 @@ interface SearchIndex {
     lastBuildTime: number
 }
 
-interface BibleVerseRef {
-    book: number
-    chapter: number
-    verse: number
-    reference: string
-    text: string
-}
-
-const BIBLE_INDEX_VERSION = 2 // Increment this to force index rebuild
-
-interface BibleIndex {
-    wordIndex: Map<string, BibleVerseRef[]>
-    bibleId: string
-    version: number
-}
-
 let searchIndex: SearchIndex | null = null
-let bibleIndex: BibleIndex | null = null
 let indexVersion = 0
 
 /**
@@ -79,115 +62,6 @@ export function buildSearchIndex(shows: ShowList[]) {
     indexVersion++
 
     return searchIndex
-}
-
-/**
- * Fast Bible search using inverted index
- */
-export function fastBibleSearch(searchValue: string, MAX_RESULTS = 50): BibleVerseRef[] {
-    if (!bibleIndex) return []
-
-    const formattedQuery = formatSearch(searchValue)
-    const queryWords = tokenize(formattedQuery)
-    if (queryWords.length === 0) return []
-
-    // Map: Verse Key (Book-Chapter-Verse) -> { ref, score }
-    const resultsMap = new Map<string, { ref: BibleVerseRef; score: number }>()
-
-    // Use word index to find candidates
-    for (const word of queryWords) {
-        if (word.length < 2) continue
-        const matches = bibleIndex.wordIndex.get(word) || []
-        for (const ref of matches) {
-            const key = `${ref.book}-${ref.chapter}-${ref.verse}`
-            if (!resultsMap.has(key)) {
-                resultsMap.set(key, { ref, score: 0 })
-            }
-            resultsMap.get(key)!.score += 1
-        }
-    }
-
-    // Generate subphrases for better scoring
-    const searchTerms = generateSearchTerms(queryWords, 2)
-
-    // Re-score based on phrases and exact matches
-    const finalResults = Array.from(resultsMap.values())
-        .filter((r) => r.score >= Math.min(queryWords.length, 2)) // Require at least 2 word matches if possible
-        .map((r) => {
-            let extraScore = 0
-            const verseText = formatSearch(r.ref.text)
-
-            for (const { term, weight, isPhrase } of searchTerms) {
-                if (isPhrase && verseText.includes(term)) {
-                    // Match found for this subphrase or full phrase
-                    extraScore += weight * 20
-                }
-            }
-
-            // Word frequency bonus (if multiple query words appear multiple times)
-            // But score already counts matched unique query words.
-            // Let's add the extraScore to the original score (which is word match count)
-            return { ...r, finalScore: r.score + extraScore }
-        })
-        .sort((a, b) => b.finalScore - a.finalScore)
-        .slice(0, MAX_RESULTS)
-        .map((r) => r.ref)
-
-    return finalResults
-}
-
-/**
- * Build search index for a Bible
- */
-export async function buildBibleIndex(bibleId: string, bibleData: any) {
-    if (bibleIndex?.bibleId === bibleId && bibleIndex?.version === BIBLE_INDEX_VERSION) return bibleIndex
-
-    const wordIndex = new Map<string, BibleVerseRef[]>()
-
-    // We expect bibleData to have books
-    const books = bibleData.books || []
-
-    for (const book of books) {
-        const bookIndex = book.number
-        const bookName = book.name
-        const chapters = book.chapters || []
-
-        for (const chapter of chapters) {
-            const chapterIndex = chapter.number
-            const verses = chapter.verses || []
-
-            for (const verse of verses) {
-                const verseIndex = verse.number
-                const text = verse.text || ""
-                const formattedText = formatSearch(text)
-                const tokens = tokenize(formattedText)
-
-                const ref: BibleVerseRef = {
-                    book: bookIndex,
-                    chapter: chapterIndex,
-                    verse: verseIndex,
-                    reference: `${bookName} ${chapterIndex}:${verseIndex}`,
-                    text: text
-                }
-
-                // Index each unique word in the verse
-                const uniqueTokens = new Set(tokens)
-                for (const token of uniqueTokens) {
-                    if (token.length < 2) continue
-                    if (!wordIndex.has(token)) wordIndex.set(token, [])
-                    wordIndex.get(token)!.push(ref)
-                }
-            }
-        }
-    }
-
-    bibleIndex = {
-        wordIndex,
-        bibleId,
-        version: BIBLE_INDEX_VERSION
-    }
-
-    return bibleIndex
 }
 
 function indexWords(index: Map<string, IndexEntry[]>, showId: string, words: string[], field: "name" | "content") {

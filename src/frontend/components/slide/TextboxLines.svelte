@@ -266,7 +266,6 @@
         stopInterval()
     })
 
-    // $: isScripture = ref?.id === "scripture" || ref?.showId === "temp" || $showsCache[ref.showId || ""]?.reference?.type === "scripture"
 </script>
 
 <div class="align" class:hasShapeOutside={!!shapeOutside} class:hidden={hideContent} class:isStage class:scrolling={!isStage && item?.scrolling?.type} style="--scrollSpeed: {(item?.scrolling?.speed ?? 30) * 1.5}s;{style ? item?.align : null};" use:measureScroll={"align"}>
@@ -453,7 +452,7 @@
         font-size: var(--font-size) !important;
     }
 
-    /* bible parts */
+    /* uncertain and undertitle parts */
     .break :global(span.uncertain) {
         opacity: 0.7;
         font-size: 0.8em;

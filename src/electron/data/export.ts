@@ -17,7 +17,7 @@ import { exportOptions } from "../utils/windowOptions"
 import { filePathHashCode } from "./thumbnails"
 import { compressToZip } from "./zip"
 
-// SHOW: .show, PROJECT: .project, BIBLE: .fsb
+// SHOW: .show, PROJECT: .project
 const customJSONExtensions = {
     TEMPLATE: ".fstemplate",
     OVERLAY: ".fsoverlay",

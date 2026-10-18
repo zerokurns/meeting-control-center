@@ -4,7 +4,7 @@
     import type { ProjectShowRef, Tree } from "../../../types/Projects"
     import type { ShowType } from "../../../types/Show"
     import { addProjectItem, addToProject, updateRecentlyAddedFiles } from "../../converters/project"
-    import { actions, activeFocus, activePopup, activeProject, activeShow, contextActive, drawer, drawerTabsData, editingProjectTemplate, focusMode, fullColors, playerVideos, popupData, projects, projectTemplates, projectView, recentFiles, selected, special } from "../../stores"
+    import { actions, activeFocus, activePopup, activeProject, activeShow, contextActive, drawer, editingProjectTemplate, focusMode, fullColors, playerVideos, popupData, projects, projectTemplates, projectView, recentFiles, selected, special } from "../../stores"
     import { triggerFunction } from "../../utils/common"
     import { getAccess } from "../../utils/profile"
     import { getActionIcon } from "../actions/actions"
@@ -427,7 +427,7 @@
 
 {#if projectId && !$projectView && !$focusMode && !recentlyUsedList.length && !projectReadOnly}
     {#if addMenuOpen}
-        <!-- new show, new media, new PDF/PPT?, new scripture, new section -->
+        <!-- new show, new media, new PDF/PPT?, new section -->
         <div class="addMenu" transition:fade={{ duration: 80 }} role="none" on:click={() => (addMenuOpen = false)}>
             <!-- createShow -->
             <MaterialButton variant="outlined" icon="slide" title="tooltip.show" on:click={() => openSearch("shows")}>
@@ -445,18 +445,6 @@
                 <MaterialButton variant="outlined" icon="slide" title="new.placeholder" on:click={addShowPlaceholder} white>
                     <div class="label">
                         <p><T id="new.placeholder" /></p>
-                    </div>
-                </MaterialButton>
-            {/if}
-
-            {#if $drawerTabsData.scripture?.enabled !== false}
-                <MaterialButton variant="outlined" icon="scripture" title="new.scripture" on:click={() => openSearch("scripture")} white>
-                    <div class="label">
-                        <p><T id="tabs.scripture" /></p>
-                    </div>
-
-                    <div class="actionType">
-                        <Icon id="search" size={0.7} white />
                     </div>
                 </MaterialButton>
             {/if}

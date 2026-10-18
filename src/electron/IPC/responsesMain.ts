@@ -33,7 +33,7 @@ import { downloadFfmpeg, resolveFfmpegPath } from "../streaming/ffmpegManager"
 import { processAudioData, timecodeStart, timecodeStop, updateTimecodeValue } from "../timecode/timecode"
 import { apiReturnData, emitOSC, startWebSocketAndRest, stopApiListener } from "../utils/api"
 import { closeMain } from "../utils/close"
-import { addToMediaFolder, bundleMediaFiles, createFolder, getDataFolderPath, getDataFolderRoot, getFileInfo, getMediaCodec, getMediaSyncFolderPath, getMediaTracks, getPaths, getSimularPaths, loadFile, loadShowsAsync, locateMediaFile, openInSystem, readExifData, readFile, readFolder, readFolderContent, selectFiles, selectFilesDialog, selectFolder, setMediaSyncFolderPath, writeFile } from "../utils/files"
+import { addToMediaFolder, bundleMediaFiles, createFolder, getDataFolderPath, getDataFolderRoot, getFileInfo, getMediaCodec, getMediaSyncFolderPath, getMediaTracks, getPaths, getSimularPaths, loadFile, loadShowsAsync, locateMediaFile, openInSystem, readExifData, readFile, readFolderContent, selectFiles, selectFilesDialog, selectFolder, setMediaSyncFolderPath, writeFile } from "../utils/files"
 import { listGraphicsDevices } from "../utils/gpu"
 import { getMachineId } from "../utils/helpers"
 import { closeMidiInPorts, getMidiInputs, getMidiOutputs, receiveMidi, sendMidi } from "../utils/midi"
@@ -82,7 +82,6 @@ export const mainResponses: MainResponses = {
     [Main.DELETE_BACKUP]: (data) => deleteBackup(data),
     [Main.IMPORT]: (data) => startImport(data),
     [Main.IMPORT_FILES]: (data) => importFiles(data),
-    [Main.BIBLE]: (data) => loadScripture(data),
     [Main.SHOW]: (data) => loadShow(data),
     // MAIN
     [Main.SHOWS]: (() => loadShowsAsync()) as any,
@@ -165,7 +164,6 @@ export const mainResponses: MainResponses = {
     [Main.GET_SIMILAR]: (data) => getSimularPaths(data),
     [Main.BUNDLE_MEDIA_FILES]: (data) => bundleMediaFiles(data),
     [Main.MEDIA_FOLDER_COPY]: (data) => addToMediaFolder(data.paths),
-    [Main.READ_BIBLES_FOLDER]: () => readBiblesFolder(),
     [Main.FILE_INFO]: (data) => getFileInfo(data),
     [Main.READ_FOLDER]: (data) => readFolderContent(data),
     [Main.READ_FILE]: (data) => ({ content: readFile(data.path) }),
@@ -279,43 +277,6 @@ export async function startImport(data: { channel: string; format: { name: strin
 
 function importFiles(data: { id: string; paths: string[] }) {
     importShow(data.id, data.paths)
-}
-
-// BIBLE
-export function loadScripture(msg: { id: string; name: string }) {
-    const bibleFolder: string = getDataFolderPath("scriptures")
-    let filePath: string = path.join(bibleFolder, msg.name + ".fsb")
-
-    let bible = loadFile(filePath, msg.id)
-
-    // pre v0.5.6
-    if (bible.error) filePath = path.join(app.getPath("documents"), "Bibles", msg.name + ".fsb")
-    bible = loadFile(filePath, msg.id)
-
-    // convert "value" keys to correct "text" key, pre v1.3.0
-    if (bible.content?.[1]?.books?.[0]?.chapters?.[0]?.verses?.[0]?.value) {
-        bible.content[1].books.forEach((book: any) => {
-            book.chapters.forEach((chapter: any) => {
-                chapter.verses.forEach((verse: any) => {
-                    if (!verse.text) {
-                        verse.text = verse.value || ""
-                        delete verse.value
-                    }
-                })
-            })
-        })
-    }
-
-    return bible
-}
-
-function readBiblesFolder() {
-    const bibleFolder: string = getDataFolderPath("scriptures")
-    const names = readFolder(bibleFolder)
-    return names.map((name) => {
-        const filePath = path.join(bibleFolder, name)
-        return { path: filePath, name: name.replace(/\.fsb$/i, "") }
-    })
 }
 
 // SHOW

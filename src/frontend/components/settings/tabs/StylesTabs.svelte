@@ -62,9 +62,7 @@
                 fit: "blur",
                 layers: ["slide", "overlays"],
                 lines: 2,
-                template: "lowerThird",
-                templateScripture: "scriptureLT",
-                templateScripture_2: "scriptureLT_2"
+                template: "lowerThird"
             }
             const name = translateText("tabs.live") // || currentStyle.name + " 2"
             history({ id: "UPDATE", newData: { data: liveStyle, replace: { name } }, oldData: { id: styleId }, location: { page: "settings", id: "settings_style" } })

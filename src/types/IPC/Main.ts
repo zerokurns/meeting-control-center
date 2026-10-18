@@ -1,7 +1,6 @@
 import type { Display } from "electron"
 import type { ExifData } from "exif"
 import type { Stats } from "fs"
-import type { Bible } from "json-bible/lib/Bible"
 import type { ContentFile, ContentLibraryCategory, ContentProviderId, MediaLicense } from "../../electron/contentProviders/base/types"
 import type { _store } from "../../electron/data/store"
 import type { EncoderDetection } from "../../electron/streaming/encoderDetection"
@@ -55,7 +54,6 @@ export enum Main {
     /////
     IMPORT = "IMPORT",
     IMPORT_FILES = "IMPORT_FILES",
-    BIBLE = "BIBLE",
     SHOW = "SHOW",
     SAVE = "SAVE",
     BACKUPS = "BACKUPS",
@@ -130,7 +128,6 @@ export enum Main {
     GET_SIMILAR = "GET_SIMILAR",
     BUNDLE_MEDIA_FILES = "BUNDLE_MEDIA_FILES",
     MEDIA_FOLDER_COPY = "MEDIA_FOLDER_COPY",
-    READ_BIBLES_FOLDER = "READ_BIBLES_FOLDER",
     FILE_INFO = "FILE_INFO",
     READ_FOLDER = "READ_FOLDER",
     READ_FILE = "READ_FILE",
@@ -179,7 +176,6 @@ export interface MainSendPayloads {
     /////
     [Main.IMPORT]: { channel: string; format: { name: string; extensions: string[] } }
     [Main.IMPORT_FILES]: { id: string; paths: string[] }
-    [Main.BIBLE]: { id: string; name: string }
     [Main.SHOW]: { id: string; name: string }
     [Main.SAVE]: SaveData
     ////////////
@@ -298,7 +294,6 @@ export interface MainReturnPayloads {
     [Main.CLOSE]: boolean | void
     [Main.MAXIMIZED]: boolean
     /////////////////////
-    [Main.BIBLE]: { id: string; error?: string; content?: [string, Bible] }
     [Main.SHOW]: { id: string; error?: string; content?: [string, Show] }
     ///
     [Main.GET_DISPLAYS]: Display[]
@@ -329,7 +324,6 @@ export interface MainReturnPayloads {
     [Main.MEDIA_FOLDER_COPY]: Promise<boolean>
     [Main.LOCATE_MEDIA_FILE]: Promise<{ path: string; hasChanged: boolean } | null>
     [Main.GET_MEDIA_FOLDER_PATH]: string
-    [Main.READ_BIBLES_FOLDER]: { path: string; name: string }[]
     [Main.FILE_INFO]: { path: string; stat: Stats; extension: string; folder: boolean } | null
     [Main.READ_FOLDER]: Promise<{ [key: string]: FileFolder }>
     [Main.READ_FILE]: { content: string }

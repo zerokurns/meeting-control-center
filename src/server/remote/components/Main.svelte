@@ -10,11 +10,10 @@
     import Loading from "../../common/components/Loading.svelte"
     import { translate } from "../util/helpers"
     import { send } from "../util/socket"
-    import { _set, active, activeProject, activeShow, activeTab, createShow, dictionary, isCleared, outShow, projects, projectsOpened, scriptures, shows } from "../util/stores"
+    import { _set, active, activeProject, activeShow, activeTab, createShow, dictionary, isCleared, outShow, projects, projectsOpened, shows } from "../util/stores"
 
     // Phone mode components (always loaded - small footprint)
     import Project from "./pages/Project.svelte"
-    import Scripture from "./pages/Scripture.svelte"
     import Show from "./pages/Show.svelte"
     import ShowContent from "./pages/ShowContent.svelte"
     import Shows from "./pages/Shows.svelte"
@@ -29,14 +28,12 @@
     let tabs: TabsObj = {}
     $: tabs = {
         shows: { name: translate("remote.shows", $dictionary), icon: "search" }, // shows
-        scripture: { name: translate("tabs.scripture", $dictionary), icon: "scripture" },
         project: { name: translate("remote.project", $dictionary), icon: "project" },
         show: { name: translate("remote.show", $dictionary), icon: "show" },
         slide: { name: translate("remote.slide", $dictionary), icon: "display_settings" } // slide
     }
     $: tabsDisabled = {
         shows: $shows.length,
-        scripture: Object.keys($scriptures).length,
         project: $projects.length || $activeProject,
         show: $activeShow || ($active?.type || "show") !== "show",
         slide: $outShow
@@ -62,9 +59,6 @@
             ;(document.querySelector("#showSearch") as any)?.focus()
         } else if (id === "project") {
             _set("projectsOpened", !$projectsOpened)
-        } else if (id === "scripture") {
-            tab = ""
-            setTimeout(() => (tab = "scripture"))
         }
     }
 
@@ -138,8 +132,6 @@
         <div class="content">
             {#if tab === "shows"}
                 <Shows />
-            {:else if tab === "scripture"}
-                <Scripture />
             {:else if tab === "project"}
                 <Project />
             {:else if tab === "show"}
@@ -153,7 +145,7 @@
             {/if}
         </div>
 
-        <Tabs {tabs} bind:active={tab} disabled={tabsDisabled} on:double={double} noTopRadius={(tab === "show" && ($activeShow?.id === $outShow?.id || !$isCleared.all)) || tab === "slide" || tab === "shows" || tab === "scripture"} />
+        <Tabs {tabs} bind:active={tab} disabled={tabsDisabled} on:double={double} noTopRadius={(tab === "show" && ($activeShow?.id === $outShow?.id || !$isCleared.all)) || tab === "slide" || tab === "shows"} />
     </section>
 {/if}
 

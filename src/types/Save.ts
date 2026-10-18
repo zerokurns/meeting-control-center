@@ -1,4 +1,3 @@
-import type { Bible } from "json-bible/lib/Bible"
 import type { Event } from "./Calendar"
 import type { History, HistoryNew } from "./History"
 import type { Media } from "./Main"
@@ -21,8 +20,6 @@ export type SaveListSyncedSettings =
     | "interactions"
     | "audioStreams"
     | "audioPlaylists"
-    | "scriptures"
-    | "scriptureSettings"
     | "groups"
     | "midiIn"
     | "emitters"
@@ -104,7 +101,6 @@ export interface SaveData {
     THEMES: { [key: string]: Themes }
     // CACHES SAVED TO MULTIPLE FILES
     showsCache?: Shows
-    scripturesCache?: { [key: string]: Bible }
     deletedShows?: { name: string; id: string }[]
     renamedShows?: { id: string; name: string; oldName: string }[]
     // CACHES

@@ -11,7 +11,7 @@ import { getActiveTimelinePlayback } from "../timeline/TimelinePlayback"
 
 export function clearAll(button = false) {
     if (get(outLocked)) return
-    if (!button && (get(activePopup) || (get(selected).id && get(selected).id !== "scripture") || (get(activePage) === "edit" && get(activeEdit).items.length) || get(activeStage).items.length || get(contextActive) || get(topContextActive))) return
+    if (!button && (get(activePopup) || get(selected).id || (get(activePage) === "edit" && get(activeEdit).items.length) || get(activeStage).items.length || get(contextActive) || get(topContextActive))) return
 
     // reset slide cache on Escape
     outputSlideCache.set({})

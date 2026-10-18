@@ -8,13 +8,9 @@ export interface AiFeatureStatus {
 }
 
 export interface MatchResult {
-    type: "scripture" | "scripture_version" | "lyrics" | "quote" | "announcement" | "empty"
-    content: string // "scripture" = reference (e.g., "Genesis 1:1")
+    type: "lyrics" | "quote" | "announcement" | "empty"
+    content: string
     confidence: number // 1-100
-
-    scriptureMatchType?: "content"
-    scriptureTranslation?: string
-    scriptureIsNewTranslation?: boolean
 }
 
 export interface AiSuggestion {
@@ -24,8 +20,6 @@ export interface AiSuggestion {
     timestamp: number
     confidence: number
     trigger?: () => void
-
-    scriptureTranslation?: string
 }
 
 // models

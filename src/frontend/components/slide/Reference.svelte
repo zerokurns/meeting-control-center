@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Show } from "../../../types/Show"
     import { syncCanvaShow } from "../../converters/canvaPresentation"
-    import { activeDrawerTab, activeShow, drawer, labelsDisabled, openedInteractionId, openScripture, scriptures, shows } from "../../stores"
+    import { activeDrawerTab, activeShow, drawer, labelsDisabled, openedInteractionId, shows } from "../../stores"
     import { createSlides, getDateString, getSelectedEvents, sortDays } from "../drawer/calendar/calendar"
     import { history } from "../helpers/history"
     import { setDrawerTabData } from "../helpers/historyHelpers"
@@ -28,23 +28,6 @@
         let string = getDateString(from)
         if (sortedDays[0] - sortedDays[1] < 0) string += " - " + getDateString(to)
         return string
-    }
-
-    function openTab() {
-        let collection = data.collection
-        if (!collection || !show) return
-
-        let scriptureId = $scriptures[collection] ? collection : Object.values($scriptures).find((a) => a.id === collection)
-        if (!scriptureId) return
-
-        openScripture.set(show.reference!.data)
-
-        setDrawerTabData("scripture", collection)
-        activeDrawerTab.set("scripture")
-        // WIP set book, chapter and verses too
-
-        // open drawer if closed
-        if ($drawer.height <= 40) drawer.set({ height: $drawer.stored || 300, stored: null })
     }
 
     function openInteraction() {
@@ -82,15 +65,6 @@
         <MaterialButton on:click={updateCalendar} style="white-space: nowrap;min-width: 100px;">
             <Icon id="calendar" />
             {#if !$labelsDisabled}<T id="show.update" />{/if}
-        </MaterialButton>
-    {:else if show?.reference?.type === "scripture"}
-        <p data-title={data.version || ""}><T id="tabs.scripture" />: {data.version || ""}</p>
-
-        <div class="divider" />
-
-        <MaterialButton on:click={openTab} style="white-space: nowrap;min-width: 100px;">
-            <Icon id="scripture" />
-            {#if !$labelsDisabled}<T id="main.open" />{/if}
         </MaterialButton>
     {:else if show?.reference?.type === "canva"}
         <p>

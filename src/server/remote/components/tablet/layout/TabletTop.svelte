@@ -5,7 +5,7 @@
     import Button from "../../../../common/components/Button.svelte"
 
     // "show" or "edit" mode
-    // activeTab will now track this mode instead of "shows"/"scripture"/etc
+    // activeTab will now track this mode instead of "shows"/etc
 </script>
 
 <div class="top">

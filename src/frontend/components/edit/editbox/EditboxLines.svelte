@@ -2,8 +2,7 @@
     import { onDestroy, onMount, tick } from "svelte"
     import { uid } from "uid"
     import type { Item, Line } from "../../../../types/Show"
-    import { splitCustomDynamicValues } from "../../../show/slides"
-    import { activeEdit, activeShow, activeStage, overlays, redoHistory, refreshListBoxes, showsCache, special, stageShows, templates } from "../../../stores"
+    import { activeEdit, activeShow, activeStage, overlays, redoHistory, refreshListBoxes, special, stageShows, templates } from "../../../stores"
     import { newToast } from "../../../utils/common"
     import { getNormalizedKey, isComposing, isFormattingKey } from "../../../utils/shortcuts"
     import T from "../../helpers/T.svelte"
@@ -183,21 +182,6 @@
         newSlide.group = null
         newSlide.color = null
 
-        // update scripture dynamic values based on current firstLines & secondLines
-        if (newSlide.customDynamicValues) {
-            let firstItems = clone(_show().slides([ref.id]).get("items")[0]) || []
-            firstItems[editItemIndex] = { ...firstItems[editItemIndex], lines: firstLines }
-            const split = splitCustomDynamicValues(newSlide.customDynamicValues, firstItems, newSlide.items)
-            if (split) {
-                showsCache.update((a) => {
-                    const showId = ref.showId || $activeShow?.id || ""
-                    if (a[showId]?.slides?.[ref.id]) a[showId].slides[ref.id].customDynamicValues = split.firstDV
-                    return a
-                })
-                newSlide.customDynamicValues = split.secondDV
-            }
-        }
-
         // add new slide
         let id = uid()
         _show().slides([id]).add([newSlide])
@@ -294,53 +278,6 @@
                 })
             }
 
-            // update stored scripture custom dynamic values
-            const showId = ref.showId || $activeShow?.id || ""
-            if (showId && $showsCache[showId]?.slides?.[ref.id]?.customDynamicValues) {
-                showsCache.update((a) => {
-                    const storage = a[showId]?.slides?.[ref.id]?.customDynamicValues
-                    if (!storage) return a
-
-                    const collected: Record<string, { [index: number]: string }> = {}
-                    let currentVerseIdx = 0
-                    newLines.forEach((line) => {
-                        line.text?.forEach((text) => {
-                            if (!text || text.customType?.includes("disableTemplate")) return
-
-                            let [key, idxStr] = text.sourceDynamicKey?.split(":") || []
-                            let idx = idxStr !== undefined ? Number(idxStr) : currentVerseIdx
-                            if (text.sourceDynamicKey?.includes("_text")) currentVerseIdx = idx
-                            else key = index === 0 ? "scripture_text" : `scripture${index + 1}_text`
-
-                            if (!collected[key]) collected[key] = {}
-                            collected[key][idx] = (collected[key][idx] || "") + (text.value || "")
-                        })
-                    })
-
-                    Object.keys(storage).forEach((key) => {
-                        if (!Array.isArray(storage[key])) return
-                        const coll = collected[key] || (key === "scripture1_text" ? collected.scripture_text : key === "scripture_text" ? collected.scripture1_text : undefined)
-                        if (!coll) return
-
-                        storage[key] = storage[key]
-                            .map((item: any, idx: number) => {
-                                if (!Array.isArray(item)) return item
-                                const verseNum = item[0] || "0"
-                                let textVal = (coll[idx] ?? "").trim()
-                                if (verseNum !== "0" && textVal.startsWith(verseNum)) {
-                                    textVal = textVal.slice(verseNum.length).trim()
-                                }
-                                return textVal ? [verseNum, textVal] : null
-                            })
-                            .filter(Boolean)
-                    })
-
-                    if (storage.scripture_text && !storage.scripture1_text) storage.scripture1_text = clone(storage.scripture_text)
-                    if (storage.scripture1_text && !storage.scripture_text) storage.scripture_text = clone(storage.scripture_text)
-
-                    return a
-                })
-            }
 
             history({ id: "SHOW_ITEMS", newData: { key: "lines", data: clone([newLines]), slides: [ref.id], items: [index], showId: ref.showId }, location: { page: "none", override: itemRef } })
 
@@ -856,7 +793,7 @@
   display: inline-table; */
     }
 
-    /* bible parts */
+    /* uncertain parts */
     .edit :global(.break span.uncertain) {
         opacity: 0.7;
         font-size: 0.8em;

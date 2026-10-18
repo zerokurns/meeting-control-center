@@ -166,7 +166,6 @@
         // WIP AUDIO PLAYLISTS?
         { id: "overlays", label: "tabs.overlays", icon: "overlays", access: overlayCategoryAccess, options: accessInputsRW, list: overlayCategoryList },
         { id: "templates", label: "tabs.templates", icon: "templates", access: templateCategoryAccess, options: accessInputs, list: templateCategoryList },
-        // WIP SCRIPTURE?
         // WIP CALENDAR?
         { id: "actions", label: "tabs.actions", icon: "actions", access: actionsAccess, options: accessInputsRW, list: actionsList },
         { id: "timers", label: "tabs.timers", icon: "timer", access: timersAccess, options: accessInputsRW, list: timersList },

@@ -1,11 +1,9 @@
 import { get, Writable, writable } from "svelte/store"
 import type { AudioChannelData } from "../../../types/Audio"
 import type { AudioRoutingConfig } from "../../../types/AudioRouting"
-import type { Bible } from "../../../types/Bible"
 import type { OutData } from "../../../types/Output"
 import type { Dictionary } from "../../../types/Settings"
 import type { Overlays, Show, ShowList } from "../../../types/Show"
-import type { BibleCategories } from "../../../types/Tabs"
 import { clone } from "../../common/util/helpers"
 import { __update, DeepKey, DeepNested, Inferred, Nested } from "../../common/util/stores"
 import type { Project, ProjectShowRef } from "./../../../types/Projects"
@@ -49,16 +47,8 @@ export let openedFolders: Writable<any[]> = writable([])
 export let projects: Writable<any[]> = writable([])
 export let project: Writable<string> = writable("")
 
-export let scriptures: Writable<{ [key: string]: BibleCategories }> = writable({})
-export let selectedTranslationIndex: Writable<number | null> = writable(0) // null = all, number = specific translation index
 export let categories: Writable<{ [key: string]: any }> = writable({})
 export let resized: Writable<{ [key: string]: number }> = writable({})
-export let scriptureViewList = writable(false)
-export let scriptureWrapText = writable(false)
-export let scriptureMultiSelect = writable(false)
-export let selectedVerses = writable<string[]>([])
-export let openedScripture = writable(localStorage.getItem("scripture") || "")
-export let collectionId = writable(localStorage.getItem("collectionId") || "")
 
 export let actions: Writable<{ [key: string]: any }> = writable({})
 export let actionTags: Writable<{ [key: string]: any }> = writable({})
@@ -74,20 +64,6 @@ export let activeVariableTagFilter: Writable<string[]> = writable([])
 export let activeTimerTagFilter: Writable<string[]> = writable([])
 export let functionsSubTab: Writable<string> = writable("actions")
 
-export type CurrentScriptureState = {
-    scriptureId: string
-    bookId: number
-    chapterId: number
-    activeVerses: number[]
-}
-
-export let currentScriptureState: Writable<CurrentScriptureState> = writable({
-    scriptureId: "",
-    bookId: -1,
-    chapterId: -1,
-    activeVerses: []
-})
-
 export let overlays: Writable<Overlays> = writable({})
 export let overlayCategories: Writable<{ [key: string]: any }> = writable({})
 export let activeOverlayCategory: Writable<string> = writable("all")
@@ -99,7 +75,6 @@ export let activeTemplateCategory: Writable<string> = writable("all")
 export let mediaCache: Writable<any> = writable({})
 export let textCache: Writable<any> = writable({})
 export let groupsCache: Writable<any> = writable({})
-export let scriptureCache: Writable<{ [key: string]: Bible }> = writable({})
 
 export let playingAudioData: Writable<any> = writable({})
 export let playingAudioTime: Writable<number> = writable(0)
@@ -110,7 +85,6 @@ export let playingVideoLoop: Writable<boolean> = writable(true)
 export let playingVideoMuted: Writable<boolean> = writable(true)
 
 export let pdfPages: Writable<{ [key: string]: string[] }> = writable({})
-export let scriptureSearchResults: Writable<any> = writable(null)
 
 export let audio: Writable<{ [key: string]: any }> = writable({})
 export let mixer: Writable<any> = writable(null)
@@ -146,12 +120,8 @@ export const _ = {
     openedFolders,
     projects,
     project,
-    scriptures,
     categories,
     resized,
-    openedScripture,
-    collectionId,
-    currentScriptureState,
     overlays,
     overlayCategories,
     activeOverlayCategory,
@@ -161,7 +131,6 @@ export const _ = {
     mediaCache,
     textCache,
     groupsCache,
-    scriptureCache,
     playingAudioData,
     playingAudioTime,
     playingVideoTime,
@@ -170,7 +139,6 @@ export const _ = {
     playingVideoLoop,
     playingVideoMuted,
     pdfPages,
-    scriptureSearchResults,
     audio,
     mixer,
     audioRouting,

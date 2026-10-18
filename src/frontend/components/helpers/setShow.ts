@@ -245,7 +245,7 @@ export async function loadShows(s: string[], deleting = false) {
 let updateTimeout: NodeJS.Timeout | null = null
 let tempCache: { [key: string]: string } = {}
 export function saveTextCache(id: string, show: Show) {
-    // don't cache scripture/calendar shows text or archived categories
+    // don't cache calendar shows text or archived categories
     if (!show?.slides || show?.reference?.type || get(categories)[show.category || ""]?.isArchive) return
 
     const txt = getTextCacheString(show)

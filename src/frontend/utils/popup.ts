@@ -24,7 +24,6 @@ import ColorGradient from "../components/main/popups/ColorGradient.svelte"
 import Conditions from "../components/main/popups/Conditions.svelte"
 import Confirm from "../components/main/popups/Confirm.svelte"
 import Connect from "../components/main/popups/Connect.svelte"
-import CreateCollection from "../components/main/popups/CreateCollection.svelte"
 import CreatePlayer from "../components/main/popups/CreatePlayer.svelte"
 import CreateShow from "../components/main/popups/createShow/CreateShow.svelte"
 import CustomAction from "../components/main/popups/CustomAction.svelte"
@@ -32,7 +31,6 @@ import CustomText from "../components/main/popups/CustomText.svelte"
 import DeleteDuplicatedShows from "../components/main/popups/DeleteDuplicatedShows.svelte"
 import DeleteShow from "../components/main/popups/DeleteShow.svelte"
 import DisplayDuration from "../components/main/popups/DisplayDuration.svelte"
-import DrawerSearchOptions from "../components/main/popups/DrawerSearchOptions.svelte"
 import DynamicValues from "../components/main/popups/DynamicValues.svelte"
 import EditChart from "../components/main/popups/EditChart.svelte"
 import EditEvent from "../components/main/popups/EditEvent.svelte"
@@ -43,7 +41,6 @@ import FindReplace from "../components/main/popups/FindReplace.svelte"
 import History from "../components/main/popups/History.svelte"
 import Import from "../components/main/popups/Import.svelte"
 import ImportCalendar from "../components/main/popups/ImportCalendar.svelte"
-import ImportScripture from "../components/main/popups/ImportScripture.svelte"
 import Initialize from "../components/main/popups/Initialize.svelte"
 import InteractionInput from "../components/main/popups/InteractionInput.svelte"
 import Translate from "../components/main/popups/localization/Translate.svelte"
@@ -128,9 +125,7 @@ export const popups: { [key in Popups]: ComponentType } = {
     transition: Transition,
     media_fit: MediaFit,
     metadata_display: MetadataDisplay,
-    import_scripture: ImportScripture,
     import_calendar: ImportCalendar,
-    create_collection: CreateCollection,
     edit_event: EditEvent,
     edit_chart: EditChart,
     choose_screen: ChooseScreen,
@@ -166,7 +161,6 @@ export const popups: { [key in Popups]: ComponentType } = {
     effect_items: EffectItems,
     timeline: TimelineSettings,
     timecode: Timecode,
-    drawer_search_options: DrawerSearchOptions,
     template_info: TemplateInfo,
     cleaning_utility: CleaningUtility,
     node_options: NodeOptions,

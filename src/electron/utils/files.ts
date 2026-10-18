@@ -338,7 +338,6 @@ export async function openInSystem(filePath: string, openFolder = false) {
 export const dataFolderNames = {
     shows: "Shows",
     backups: "Backups",
-    scriptures: "Bibles",
     onlineMedia: "Online",
     media: "Media",
     exports: "Exports",
@@ -1329,9 +1328,6 @@ function getTextCacheString(show: Show) {
 export function parseShow(jsonData: string) {
     return parseJSON(jsonData) as [string, Show] | null
 }
-// export function parseBible(jsonData: string) {
-//     return parseJSON(jsonData) as [string, Bible] | null
-// }
 export function parseJSON(jsonData: string) {
     let show: [string, any] | null = null
 

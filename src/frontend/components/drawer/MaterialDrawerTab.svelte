@@ -1,13 +1,12 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte"
     import type { SelectIds } from "../../../types/Main"
-    import { actions, activeActionTagFilter, activeDrawerTab, activePlaylist, activeVariableTagFilter, activeTimerTagFilter, audioPlaylists, drawerTabsData, outputs, templates } from "../../stores"
+    import { actions, activeActionTagFilter, activeDrawerTab, activePlaylist, activeVariableTagFilter, activeTimerTagFilter, audioPlaylists, drawerTabsData, templates } from "../../stores"
     import { translateText } from "../../utils/language"
     import { customIconsColors } from "../../values/customIcons"
     import { getActionIcon } from "../actions/actions"
     import { clone } from "../helpers/array"
     import Icon from "../helpers/Icon.svelte"
-    import { getFirstActiveOutput } from "../helpers/output"
     import { metadataDisplayValues } from "../helpers/show"
     import HiddenInput from "../inputs/HiddenInput.svelte"
     import MaterialButton from "../inputs/MaterialButton.svelte"
@@ -36,11 +35,10 @@
     $: submenuActive = isSubmenu ? (active === "actions" ? $activeActionTagFilter.includes(id) : active === "variables" ? $activeVariableTagFilter.includes(id) : active === "timer" ? $activeTimerTagFilter.includes(id) : false) : false
     $: isActive = submenuActive || active === id
 
-    $: output = getFirstActiveOutput($outputs)
-    $: showOutline = drawerId === "scripture" ? (output?.out?.slide as any)?.categoryId === id : drawerId === "audio" ? $activePlaylist?.id === id : false
+    $: showOutline = drawerId === "audio" ? $activePlaylist?.id === id : false
 
     $: drawerId = $activeDrawerTab
-    $: selectId = `category_${drawerId}${drawerId === "scripture" ? "___" + icon : ""}` as SelectIds
+    $: selectId = `category_${drawerId}` as SelectIds
 
     const dispatch = createEventDispatcher()
     function click(e: any) {
@@ -67,7 +65,7 @@
     }
 
     const defaultFolders = ["all", "unlabeled", "number", "favourites", "effects_library", "effects", "online", "inputs"]
-    const tabsWithCategories = ["shows", "media", "audio", "overlays", "templates", "scripture"]
+    const tabsWithCategories = ["shows", "media", "audio", "overlays", "templates"]
 
     $: noEdit = !tabsWithCategories.includes(drawerId) || defaultFolders.includes(id)
     $: className = noEdit ? "" : $audioPlaylists[id] ? "context #playlist" : `context #category_${drawerId}_button${readOnly ? "_readonly" : ""}`

@@ -55,7 +55,6 @@ import {
     mediaFolders,
     mediaOptions,
     openedInteractionId,
-    openScripture,
     outLocked,
     outputs,
     overlayCategories,
@@ -70,7 +69,6 @@ import {
     quickSearchActive,
     refreshEditSlide,
     scenes,
-    scriptures,
     selected,
     settingsTab,
     showRecentlyUsedProjects,
@@ -98,7 +96,6 @@ import { updateThemeValues } from "../../utils/updateSettings"
 import { getActionTriggerId } from "../actions/actions"
 import { moveStageConnection } from "../actions/apiHelper"
 import { midiInListen } from "../actions/midi"
-import { createScriptureShow, openActiveInRouteBible } from "../drawer/bible/scripture"
 import { deleteCalendarEvents } from "../drawer/calendar/calendars"
 import { startOutputRecording, stopMediaRecorder } from "../drawer/live/recorder"
 import { playPauseGlobal } from "../drawer/timers/timers"
@@ -130,7 +127,7 @@ interface ObjData {
 export function menuClick(id: string, enabled = true, menu: ContextMenuItem | null = null, contextElem: HTMLElement | null = null, actionItem: HTMLElement | null = null, sel: Selected | null = null) {
     if (!clickActions[id]) return console.error("MISSING CONTEXT: ", id)
 
-    if (sel?.id) sel.id = sel.id.split("___")[0] as SelectIds // different selection ID, same action (currently used to seperate scripture navigation buttons)
+    if (sel?.id) sel.id = sel.id.split("___")[0] as SelectIds // different selection ID, same action
 
     const obj = { sel, actionItem, enabled, contextElem, menu }
     console.info("MENU CLICK: " + id, obj)
@@ -263,9 +260,6 @@ const clickActions = {
         else if (id === "slide" || id === "group" || id === "audio_effect") activePopup.set("rename")
         else if (obj.contextElem?.classList?.contains("#audio_channel") || obj.contextElem?.classList?.contains("#audio_channel_main")) {
             selected.set({ id: "audio_channel", data: [{ id: obj.contextElem?.id }] })
-            activePopup.set("rename")
-        } else if (obj.contextElem?.classList?.contains("#bible_book_local")) {
-            selected.set({ id: "bible_book", data: [{ index: Number(obj.contextElem?.id) }] })
             activePopup.set("rename")
         } else if (obj.contextElem?.classList?.contains("#calendar_item")) {
             selected.set({ id: "calendar", data: [{ id: obj.contextElem?.id }] })
@@ -946,21 +940,6 @@ const clickActions = {
         id = id.split("__")[1] || id
         history({ id: "UPDATE", location: { page: "drawer", id } })
     },
-    newScripture: () => activePopup.set("import_scripture"),
-
-    open_reference: (obj: ObjData) => {
-        if (obj.contextElem?.classList.contains("#scripture_search_result")) {
-            const book = Number(obj.contextElem.dataset.book)
-            const chapter = Number(obj.contextElem.dataset.chapter)
-            const verse = Number(obj.contextElem.dataset.verse)
-
-            if (book && chapter && verse) openScripture.set({ book, chapter, verses: [[verse]], play: false })
-        }
-    },
-    route_bible: () => openActiveInRouteBible(),
-    createCollection: () => {
-        activePopup.set("create_collection")
-    },
     create_show: (obj: ObjData) => {
         if (obj.contextElem?.classList.contains("#media_preview")) {
             const path = obj.contextElem.id
@@ -987,11 +966,6 @@ const clickActions = {
             show.layouts[layoutId].slides = layoutSlides
 
             history({ id: "UPDATE", newData: { data: show, remember: { project: get(activeProject) } }, location: { page: "show", id: "show" } })
-        } else if (obj.contextElem?.classList.contains("chapters")) {
-            triggerFunction("scripture_selectAll")
-            setTimeout(createScriptureShow)
-        } else if (obj.sel?.id === "scripture") {
-            createScriptureShow()
         }
     },
 
@@ -1653,17 +1627,6 @@ const clickActions = {
     },
     favourite: (obj: ObjData) => {
         if (!obj.sel) return
-
-        if (obj.sel.id === "category_scripture") {
-            const isFavourite = get(scriptures)[obj.sel.data[0]]?.favorite !== true
-            scriptures.update((a) => {
-                obj.sel!.data.forEach((id) => {
-                    a[id].favorite = isFavourite
-                })
-                return a
-            })
-            return
-        }
 
         const favourite: boolean = get(media)[obj.sel.data[0]?.path || obj.sel.data[0]?.id]?.favourite !== true
         media.update((a) => {

@@ -70,7 +70,7 @@ export function shouldItemBeShown(item: Item, allItems: Item[] = [], { outputId,
     return true
 }
 
-// get "temp" items (scripture) if stage
+// get "temp" items if stage
 function getTempItems(item: Item, allItems: Item[]) {
     const slideOffset = item.type ? Number((item as StageItem).slideOffset || 0) : 0
     const currentOutput = get(output)

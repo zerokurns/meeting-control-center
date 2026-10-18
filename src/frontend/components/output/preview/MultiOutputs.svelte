@@ -11,7 +11,6 @@
     import { defaultLayers, getOutputResolution, startRtmpStreaming, startStreaming, stopRtmpStreaming, stopStreaming } from "../../helpers/output"
     import { getUnhealthyDestinations, hasStreamableDestination } from "../../helpers/rtmpDestinations"
     import { bindSlidesToOutput, getLayoutRef } from "../../helpers/show"
-    import { _show } from "../../helpers/shows"
     import MaterialButton from "../../inputs/MaterialButton.svelte"
     import OutputPreviewLabel from "./OutputPreviewLabel.svelte"
     import PreviewOutput from "./PreviewOutput.svelte"
@@ -122,9 +121,6 @@
     //         fullscreen = false
     //     }
     // }
-
-    $: slideId = outs[0]?.out?.slide?.id || ""
-    $: isScriptureOutput = slideId === "temp" || _show(slideId).get("reference")?.type === "scripture"
 
     // drag-and-drop: bind slide to output
     const SLIDE_DROP_IDS = new Set(["slide"])
@@ -246,7 +242,7 @@ aria-label={fullscreen ? "Exit fullscreen preview" : "Toggle fullscreen preview"
     {#each outs as output (output.id)}
         {@const style = $styles[output.style || ""] || {}}
         {@const layers = Array.isArray(style.layers) ? style.layers : clone(defaultLayers)}
-        {@const styleTemplate = isScriptureOutput ? style.templateScripture : style.template}
+        {@const styleTemplate = style.template}
         {@const isMuted = $audioChannelsData[`channel_${output.id}`]?.isMuted}
         {@const isNetworkOutput = output.ndi || output.webrtc || output.rtmp}
 
@@ -317,7 +313,7 @@ aria-label={fullscreen ? "Exit fullscreen preview" : "Toggle fullscreen preview"
                         {#if styleTemplate && $templates[styleTemplate]}
                             {#if layers.length < 3}<div class="divider"></div>{/if}
 
-                            <div class="icon" data-title={`<b>${translateText(`settings.override${isScriptureOutput ? "_scripture" : ""}_with_template`)}</b>:<br>${$templates[styleTemplate].name}`}>
+                            <div class="icon" data-title={`<b>${translateText(`settings.override_with_template`)}</b>:<br>${$templates[styleTemplate].name}`}>
                                 <Icon id="templates" size={0.8} white />
                             </div>
                         {/if}

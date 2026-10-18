@@ -1,35 +1,7 @@
 import type { Item, Show } from "../../../types/Show"
-import { sanitizeVerseText } from "../../common/util/scripture"
 import { applyThemeColors, setError, translate } from "./helpers"
 import { send } from "./socket"
-import { _, _get, _set, _update, activeTimers, currentScriptureState, overlays, runningActions, scriptureCache, scriptures, timers } from "./stores"
-
-function sanitizeBiblePayload(bible: any) {
-    if (!bible || !Array.isArray(bible.books)) return bible
-
-    const books = bible.books.map((book: any) => ({
-        ...book,
-        chapters: Array.isArray(book.chapters)
-            ? book.chapters.map((chapter: any) => ({
-                  ...chapter,
-                  verses: sanitizeChapterVerses(chapter.verses)
-              }))
-            : book.chapters
-    }))
-
-    return { ...bible, books }
-}
-
-function sanitizeChapterVerses(verses: any) {
-    if (!Array.isArray(verses)) return verses
-
-    return verses.map((verse: any, index: number) => {
-        const sanitizedVerse = { ...verse }
-        sanitizedVerse.number = sanitizedVerse.number || index + 1
-        sanitizedVerse.text = sanitizeVerseText(sanitizedVerse.text || sanitizedVerse.value || "")
-        return sanitizedVerse
-    })
-}
+import { _, _get, _set, _update, activeTimers, overlays, runningActions, timers } from "./stores"
 
 export type ReceiverKey = keyof typeof receiver
 export const receiver = {
@@ -63,7 +35,7 @@ export const receiver = {
         if (storedPwd && storedPwd.length) localStorage.password = storedPwd
         _set("isConnected", true)
 
-        // Request current output data which should include scripture state
+        // Request current output data
         send("API:get_output")
     },
 
@@ -90,7 +62,7 @@ export const receiver = {
     OUT: (data: any) => {
         if (!_get("isConnected")) return
 
-        // scripture
+        // temp slide
         if (data.id === "temp") {
             _set("outSlide", 0)
             _set("outLayout", "default")
@@ -148,112 +120,12 @@ export const receiver = {
             if (!_get("activeShow") && !_get("quickPlay")) _set("activeTab", "project")
         }
     },
-    SCRIPTURE: (data: any) => {
-        scriptures.set(data)
-    },
     CATEGORIES: (data: any) => {
         _.categories.set(data)
     },
-    ACTIVE_SCRIPTURE: (data: any) => {
-        const source: any = data?.api || data?.bible || data || {}
-        const scriptureId: string = String(source.scriptureId || source.id || "")
-
-        type NormalizedScriptureState = {
-            scriptureId: string
-            bookId: number
-            chapterId: number
-            activeVerses: number[]
-        }
-
-        const normalized: NormalizedScriptureState = {
-            scriptureId,
-            // Treat numeric bookId as zero-based if provided and valid, else -1
-            bookId: Number.isInteger(source.bookId) && source.bookId >= 0 ? (source.bookId as number) : -1,
-            // Normalize chapterId consistently to zero-based when provided as a string like "book.chapter"
-            // If numeric and integer, assume it is already zero-based (upstream contract)
-            chapterId: (() => {
-                const chapter = source.chapterId
-                if (Number.isInteger(chapter)) return chapter as number
-                if (typeof chapter === "string") {
-                    const parts = chapter.split(".")
-                    const num = parseInt(parts[1] ?? parts[0], 10)
-                    return Number.isFinite(num) ? num - 1 : -1
-                }
-                return -1
-            })(),
-            // Sanitize, dedupe and sort verses to make "latest" deterministic
-            activeVerses: (() => {
-                const raw = Array.isArray(source.activeVerses) ? source.activeVerses : []
-                const nums: number[] = raw.map((v: any) => parseInt(v, 10)).filter((n: number): n is number => Number.isFinite(n) && n > 0)
-                return Array.from(new Set<number>(nums)).sort((a: number, b: number) => a - b)
-            })()
-        }
-
-        currentScriptureState.set(normalized)
-    },
-    GET_SCRIPTURE: (data: any) => {
-        if (!data) return
-
-        if (data.bible) {
-            _update("scriptureCache", data.id, sanitizeBiblePayload(data.bible))
-            return
-        }
-
-        const update = data.bibleUpdate
-        if (!update) return
-
-        if (update.kind === "chapters") {
-            const { id, bookIndex, chapters } = update
-            if (!id || typeof bookIndex !== "number" || !Array.isArray(chapters)) return
-
-            scriptureCache.update((cache) => {
-                const bible = cache[id] || { books: [] as any[] }
-                const books = Array.isArray(bible.books) ? bible.books : []
-                const book = books[bookIndex] || {}
-                book.chapters = (chapters || []).map((c: any) => ({
-                    number: c.number,
-                    keyName: c.keyName,
-                    verses: []
-                }))
-                books[bookIndex] = book
-                cache[id] = { ...bible, books }
-                return cache
-            })
-            return
-        }
-
-        if (update.kind === "verses") {
-            const { id, bookIndex, chapterIndex, verses } = update
-            if (!id || typeof bookIndex !== "number" || typeof chapterIndex !== "number" || !Array.isArray(verses)) return
-
-            scriptureCache.update((cache) => {
-                const bible = cache[id] || { books: [] as any[] }
-                const books = Array.isArray(bible.books) ? bible.books : []
-                const book = books[bookIndex] || { chapters: [] as any[] }
-                const chaptersArr = Array.isArray(book.chapters) ? book.chapters : []
-                const chapter = chaptersArr[chapterIndex] || { verses: [] }
-                chapter.verses = (verses || []).map((v: any, i: number) => ({
-                    number: v.number || i + 1,
-                    text: sanitizeVerseText(v.text || v.value || "")
-                }))
-                chaptersArr[chapterIndex] = chapter
-                book.chapters = chaptersArr
-                books[bookIndex] = book
-                cache[id] = { ...bible, books }
-                return cache
-            })
-        }
-    },
-    // SCRIPTURE_CHAPTERS and SCRIPTURE_VERSES are handled by GET_SCRIPTURE's bibleUpdate handling
     SEARCH_SHOWS: (data: any) => {
         if (data && data.results !== undefined) {
             _set("showSearchResults", data)
-        }
-    },
-    SEARCH_SCRIPTURE: (data: any) => {
-        // Store search results for the search component to use
-        if (data.searchResults !== undefined) {
-            _set("scriptureSearchResults", data.searchResults)
         }
     },
     OVERLAYS: (data: any) => {

@@ -70,7 +70,6 @@ import {
     setTemplate,
     startPlaylistByName,
     startProjectItemByName,
-    startScripture,
     stopAudio,
     stopTimerById,
     stopTimerByName,
@@ -136,7 +135,6 @@ export type API_layout = { showId: string; layoutId: string }
 export type API_slide_thumbnail = { showId?: string; layoutId?: string; index?: number }
 export type API_seek = { id?: string; seconds: number }
 export type API_media = { path: string; index?: number; data?: any }
-export type API_scripture = { id?: string; reference: string; play?: boolean }
 export type API_toggle = { id: string; value?: boolean }
 export type API_toggle_specific = { value?: boolean }
 export type API_toggle_id = { id?: string; value?: boolean }
@@ -262,11 +260,6 @@ export const API_ACTIONS = {
     index_select_overlay: (data: API_index) => selectOverlayByIndex(data.index), // BC
     name_select_overlay: (data: API_strval) => selectOverlayByName(data.value), // BC
     id_select_overlay: (data: API_id) => selectOverlayById(data.id),
-
-    // SCRIPTURE
-    start_scripture: (data: API_scripture) => startScripture(data), // BC
-    scripture_next: () => triggerFunction("scripture_next"), // BC
-    scripture_previous: () => triggerFunction("scripture_previous"), // BC
 
     // OUTPUT
     start_scene: (data: API_id) => startScene(data.id),

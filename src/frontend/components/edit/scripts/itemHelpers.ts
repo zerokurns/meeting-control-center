@@ -342,7 +342,7 @@ export function shouldItemBeShown(item: Item, allItems: Item[] = [], { outputId,
     return isConditionMet(condition, itemsText, type)
 }
 
-// get "temp" items (scripture) if stage
+// get "temp" items if stage
 function getTempItems(item: Item, allItems: Item[]) {
     const stageOutputId = getStageOutputId(get(outputs))
     const currentOutput = get(outputs)[stageOutputId] || get(allOutputs)[stageOutputId] || {}
@@ -380,9 +380,6 @@ export function isConditionMet(condition: Condition | undefined, itemsText: stri
         return cached.result
     }
 
-    // remove unused scripture dynamic values ({scripture_X} / {scriptureNUM_X})
-    const regex = /\{scripture(?:\d+)?_[^}]*\}/g
-    if (regex.test(itemsText)) itemsText = itemsText.replace(regex, "").trim()
 
     // outerOr
     const conditionMet = !!condition.find((outerAnd) => {

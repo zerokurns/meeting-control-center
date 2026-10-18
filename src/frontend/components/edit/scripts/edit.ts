@@ -67,7 +67,6 @@ const drawerPages: { [key: string]: DrawerTabIds } = {
     overlays: "overlays",
     effects: "overlays",
     templates: "templates",
-    scripture: "scripture",
     calendar: "calendar",
     functions: "functions",
 
@@ -93,8 +92,6 @@ export function openDrawer(id: string, openPopup = false) {
     // first subtab
     if (id === "calendar") id = "event"
     else if (id === "functions") id = "actions"
-    else if (id === "scripture")
-        id = "" // Object.keys(get(scriptures))[0]
     else if (id === drawerPageId) id = "all"
     else if (id === "media_inputs" || id === "audio_inputs") id = "inputs"
 

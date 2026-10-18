@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte"
     import type { Item, OutSlide, SlideData, TimelineAction } from "../../../../types/Show"
-    import { scriptureSettings, showsCache, slideTimelineSpeedMultiplier, templates } from "../../../stores"
+    import { showsCache, slideTimelineSpeedMultiplier } from "../../../stores"
     import { waitUntilValueIsDefined } from "../../../utils/common"
     import { shouldItemBeShown } from "../../edit/scripts/itemHelpers"
     import { getItemText } from "../../edit/scripts/textStyle"
@@ -199,7 +199,6 @@
         if (slide?.items?.some(itemNeedsAutoSize)) return true
 
         let customTemplate = getStyleTemplate(out, style)
-        if (!Object.keys(customTemplate).length && out?.id === "temp") customTemplate = $templates[$scriptureSettings.template] || {}
 
         return slideHasAutoSizeItem(customTemplate)
     }

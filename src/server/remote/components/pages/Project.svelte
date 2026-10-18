@@ -501,7 +501,7 @@
     }
 
     /* Project ShowButton icon and text alignment
-       Override `box` sizes and inner margins to align icons and text like scripture */
+       Override `box` sizes and inner margins to align icons and text */
     .show-button-wrapper :global(svg) {
         width: 1.5em;
         height: 1.5em;

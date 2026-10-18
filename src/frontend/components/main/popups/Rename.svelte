@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { SlideData } from "../../../../types/Show"
-    import { activePopup, activeShow, audioRouting, calendars, customScriptureBooks, drawerTabsData, effectsLibrary, scripturesCache, selected, showsCache } from "../../../stores"
+    import { activePopup, activeShow, audioRouting, calendars, effectsLibrary, selected, showsCache } from "../../../stores"
     import { renameCalendar } from "../../drawer/calendar/calendars"
     import { removeDuplicates } from "../../helpers/array"
     import { history } from "../../helpers/history"
@@ -32,12 +32,6 @@
                 if (i === 0) groupName = name
             })
             list = removeDuplicates(list)
-        } else if ($selected.id === "bible_book") {
-            const scriptureId = $drawerTabsData.scripture?.activeSubTab || ""
-            const activeBible = $scripturesCache[scriptureId]
-            const bookIndex = selectionData[0]?.index - 1
-            const book = activeBible.books?.[bookIndex] || {}
-            groupName = (book as any).customName || book.name || ""
         } else if ($selected.id === "audio_channel") {
             const channelId = selectionData[0]?.id
             const channel = ($audioRouting?.channels || []).find((m) => m.id === channelId)
@@ -166,23 +160,6 @@
             effectsLibrary.update((a) => {
                 let index = a.findIndex((a) => a.path === selectedPath)
                 if (index > -1) a[index].name = groupName
-                return a
-            })
-        },
-        bible_book: () => {
-            const scriptureId = $drawerTabsData.scripture?.activeSubTab || ""
-            const bookIndex = $selected.data[0]?.index - 1
-            scripturesCache.update((a: any) => {
-                if (!a[scriptureId]?.books?.[bookIndex]) return a
-
-                a[scriptureId].books[bookIndex].customName = groupName
-                return a
-            })
-
-            // update in drawer real time
-            customScriptureBooks.update((a) => {
-                if (!a[scriptureId]) a[scriptureId] = []
-                a[scriptureId][bookIndex] = groupName
                 return a
             })
         },

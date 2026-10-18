@@ -2,7 +2,7 @@
     import Button from "../../../../../common/components/Button.svelte"
     import Icon from "../../../../../common/components/Icon.svelte"
     import { buildCategoryData, keysToID, sortByName, translate, type CategoryData } from "../../../../util/helpers"
-    import { _set, actions, actionTags, activeActionTagFilter, activeCategory, activeOverlayCategory, activeTemplateCategory, activeTimerTagFilter, activeVariableTagFilter, categories, collectionId, dictionary, functionsSubTab, openedScripture, overlayCategories, overlays, scriptures, shows, templateCategories, templates, timers, timerTags, variables, variableTags } from "../../../../util/stores"
+    import { _set, actions, actionTags, activeActionTagFilter, activeCategory, activeOverlayCategory, activeTemplateCategory, activeTimerTagFilter, activeVariableTagFilter, categories, dictionary, functionsSubTab, overlayCategories, overlays, shows, templateCategories, templates, timers, timerTags, variables, variableTags } from "../../../../util/stores"
     import MaterialButton from "../../../MaterialButton.svelte"
     import CategoryListRenderer from "./CategoryListRenderer.svelte"
 
@@ -37,47 +37,6 @@
     function setTemplateCategory(catId: string) {
         activeTemplateCategory.set(catId)
     }
-
-    // Scripture tab logic - only computed when scripture tab is active
-    $: scriptureEntries = id === "scripture" ? keysToID($scriptures).map((a: any) => ({ ...a, icon: a.api ? "scripture_alt" : a.collection ? "collection" : "scripture" })) : []
-    $: favoritesList =
-        id === "scripture"
-            ? sortByName(
-                  scriptureEntries.filter((a) => a.favorite),
-                  "name"
-              )
-            : []
-    $: favoriteIds = new Set(favoritesList.map((a) => a.id))
-    $: collectionList =
-        id === "scripture"
-            ? sortByName(
-                  scriptureEntries.filter((a) => a.collection && !favoriteIds.has(a.id)),
-                  "name"
-              )
-            : []
-    $: localBibles =
-        id === "scripture"
-            ? sortByName(
-                  scriptureEntries.filter((a) => !a.collection && !a.api && !favoriteIds.has(a.id)),
-                  "name"
-              )
-            : []
-    $: apiBibles =
-        id === "scripture"
-            ? sortByName(
-                  scriptureEntries.filter((a) => !a.collection && a.api && !favoriteIds.has(a.id)),
-                  "name"
-              )
-            : []
-
-    $: scriptureSections =
-        id === "scripture"
-            ? [
-                  { id: "favorites", label: "category.favourites", items: favoritesList },
-                  { id: "collections", label: "scripture.collections", items: collectionList },
-                  { id: "local", label: "scripture.bibles_section", items: [...localBibles, ...apiBibles] }
-              ].filter((s) => s.items.length > 0)
-            : []
 
     function setCategory(catId: string) {
         _set("activeCategory", catId)
@@ -263,38 +222,6 @@
         <CategoryListRenderer categoryData={overlaysData} activeItem={activeOverlay} onSelect={setOverlayCategory} />
     {:else if id === "templates"}
         <CategoryListRenderer categoryData={templatesData} activeItem={activeTemplate} onSelect={setTemplateCategory} />
-    {:else if id === "scripture"}
-        <div class="tabSection">
-            {#each scriptureSections as section}
-                <div class="section">
-                    <div class="title">{translate(section.label, $dictionary)}</div>
-                    {#each section.items as item}
-                        <MaterialButton
-                            class="tab {($collectionId || $openedScripture) === item.id ? 'active' : ''}"
-                            on:click={() => {
-                                const id = item.collection ? item.collection.versions[0] : item.id
-                                const colId = item.collection ? item.id : ""
-                                openedScripture.set(id)
-                                collectionId.set(colId)
-                                localStorage.setItem("scripture", id)
-                                localStorage.setItem("collectionId", colId)
-                            }}
-                            style="width: 100%; font-weight: normal; padding: 0.2em 0.8em;"
-                            isActive={($collectionId || $openedScripture) === item.id}
-                            tab
-                        >
-                            <div style="max-width: 85%;" data-title={item.customName || item.name}>
-                                <Icon id={item.icon} size={1} white={($collectionId || $openedScripture) === item.id} />
-                                <p style="margin: 5px;">{item.customName || item.name}</p>
-                            </div>
-                            {#if item.collection?.versions?.length}
-                                <span class="count">{item.collection.versions.length}</span>
-                            {/if}
-                        </MaterialButton>
-                    {/each}
-                </div>
-            {/each}
-        </div>
     {:else}
         <!-- Other tabs - simple placeholder -->
         <div class="tabs">

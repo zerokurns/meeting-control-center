@@ -1,4 +1,3 @@
-import type { Bible } from "json-bible/lib/Bible"
 import path from "path"
 import type { Main } from "../../types/IPC/Main"
 import { ToMain } from "../../types/IPC/ToMain"
@@ -53,15 +52,6 @@ export async function save(data: SaveData) {
         await safeStoreSet(store, newData, key)
 
         if (reset) sendMain(key as Main, newData)
-    }
-
-    // scriptures
-    const scriptureFolderPath = getDataFolderPath("scriptures")
-    if (data.scripturesCache) Object.entries(data.scripturesCache).forEach(saveScripture)
-    function saveScripture([id, value]: [string, Bible]) {
-        if (!value || !isValidJSON(value)) return
-        const filePath: string = path.join(scriptureFolderPath, value.name + ".fsb")
-        writeFile(filePath, JSON.stringify([id, value]), id)
     }
 
     const showsPath = getDataFolderPath("shows")

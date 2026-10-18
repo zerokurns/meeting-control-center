@@ -3,7 +3,7 @@
     import { OUTPUT } from "../../../types/Channels"
     import type { Styles } from "../../../types/Settings"
     import type { Item, Slide, TemplateStyleOverride, Transition } from "../../../types/Show"
-    import { currentWindow, groups, outputs, overlays, scriptureSettings, showsCache, styles, templates, variables } from "../../stores"
+    import { currentWindow, groups, outputs, overlays, showsCache, styles, templates, variables } from "../../stores"
     import { wait } from "../../utils/common"
     import { send } from "../../utils/request"
     import autosize from "../edit/scripts/autosize"
@@ -180,21 +180,11 @@
     let slideData: Slide | null = null
     let groupTemplateId = ""
     let resolvedTemplateId = ""
-    let scriptureSettingsTemplateId = ""
-    let showReference: any = null
-    let isScriptureContext = false
-    let scriptureTranslationKey = ""
-    let styleScriptureTemplateId = ""
     $: slideData = (() => {
         if (!ref?.showId) return null
         const slideId = ref.slideId || ref.id
         if (!slideId) return null
         return ($showsCache[ref.showId]?.slides?.[slideId] as Slide) || null
-    })()
-    // remember show-level reference metadata so we can identify scripture flows
-    $: showReference = (() => {
-        if (!ref?.showId) return null
-        return $showsCache[ref.showId]?.reference || null
     })()
     $: groupTemplateId = (() => {
         if (!slideData) return ""
@@ -203,24 +193,6 @@
 
         // pick up template supplied by group overrides (if present)
         return $groups[groupId]?.template || ""
-    })()
-    // scripture slides can come from drawer preview or a stored show reference
-    $: isScriptureContext = (() => {
-        if (ref?.id === "scripture" || ref?.showId === "temp") return true
-        return (showReference?.type || "") === "scripture"
-    })()
-    // translation count dictates which style-specific template should apply
-    $: scriptureTranslationKey = isScriptureContext ? buildScriptureTranslationKey(showReference) : ""
-    // prefer the output-style scripture template when the current output overrides scripture layouts
-    $: styleScriptureTemplateId = (() => {
-        if (!isScriptureContext || !outputStyle) return ""
-        const translationTemplate = scriptureTranslationKey ? (outputStyle[`templateScripture${scriptureTranslationKey}` as keyof Styles] as string | undefined) : undefined
-        return translationTemplate || outputStyle.templateScripture || ""
-    })()
-    // fall back to the template captured when the scripture show was created
-    $: scriptureSettingsTemplateId = (() => {
-        if (ref?.id === "scripture" || ref?.showId === "temp") return $scriptureSettings.template || ""
-        return ""
     })()
     // track whether this textbox belongs to the first slide for the active layout
     let isFirstLayoutSlide = false
@@ -251,7 +223,7 @@
         if (slideData?.settings?.template) return slideData.settings.template
 
         // favor output-driven templates first so overrides don't bleed between outputs
-        const styleResolved = resolveTemplate(isScriptureContext ? styleScriptureTemplateId : outputStyle?.template || "")
+        const styleResolved = resolveTemplate(outputStyle?.template || "")
         if (styleResolved) return styleResolved
 
         // group templates provide per-group defaults
@@ -260,10 +232,6 @@
 
         const showResolved = resolveTemplate(currentShowTemplateId)
         if (showResolved) return showResolved
-
-        // finally fall back to the template captured when the scripture show was generated
-        const scriptureResolved = resolveTemplate(scriptureSettingsTemplateId)
-        if (scriptureResolved) return scriptureResolved
 
         return ""
     })()
@@ -274,22 +242,6 @@
 
         return clone($templates[resolvedTemplateId]?.settings?.styleOverrides || [])
     })()
-
-    // convert translation metadata into the suffix used by templateScripture_* settings
-    function buildScriptureTranslationKey(reference: any) {
-        const translationCount = getScriptureTranslationCount(reference)
-        if (translationCount <= 1) return ""
-        const limitedCount = Math.min(4, translationCount)
-        return `_${limitedCount}`
-    }
-
-    // count how many translations are present for the current scripture selection
-    function getScriptureTranslationCount(reference: any) {
-        if (!reference?.data) return 1
-        if (reference.data.translations) return Number(reference.data.translations) || 1
-        const versionList = typeof reference.data.version === "string" ? reference.data.version.split("+") : []
-        return versionList.filter((value) => value.trim().length).length || 1
-    }
 
     // AUTO SIZE
 
@@ -474,7 +426,7 @@
             const itemText = allText.filter((a) => !a.customType?.includes("disableTemplate")) || []
             let itemFontSize = Number(getStyles(itemText[0]?.style, true)?.["font-size"] || "") || 100
 
-            // get scripture verse ratio
+            // get ratio of text with disabled template styling
             const verseItemText = allText.filter((a) => a.customType?.includes("disableTemplate")) || []
             const verseItemSize = Number(getStyles(verseItemText[0]?.style, true)?.["font-size"] || "") || 0
             customTypeRatio = verseItemSize / 100 || 1

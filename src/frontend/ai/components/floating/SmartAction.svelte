@@ -1,10 +1,8 @@
 <script lang="ts">
     import { fly } from "svelte/transition"
-    import { getShortBibleName } from "../../../components/drawer/bible/scripture"
     import Icon from "../../../components/helpers/Icon.svelte"
     import MaterialButton from "../../../components/inputs/MaterialButton.svelte"
-    import { aiSmartAction, scriptures } from "../../../stores"
-    import { translateText } from "../../../utils/language"
+    import { aiSmartAction } from "../../../stores"
     import AiRing from "./AiRing.svelte"
     import ConfidenceMeter from "./ConfidenceMeter.svelte"
 
@@ -47,17 +45,6 @@
                         <Icon id="play" white />
 
                         <p>Click to present:</p>
-                        <span style="font-weight: bold;">
-                            {smartAction.content}
-
-                            {#if smartAction?.scriptureTranslation}
-                                <span class="translation">({getShortBibleName($scriptures[smartAction.scriptureTranslation]?.name)})</span>
-                            {/if}
-                        </span>
-                    {:else if smartAction?.action === "open_scripture"}
-                        <Icon id="scripture" white />
-
-                        <p>{translateText("main.open")}:</p>
                         <span style="font-weight: bold;">
                             {smartAction.content}
                         </span>

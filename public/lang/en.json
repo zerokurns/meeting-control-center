@@ -477,6 +477,8 @@
         "outro": "Outro"
     },
     "popup": {
+        "import_local_file": "Import local file",
+        "supported_formats": "Supported formats:",
         "show": "New show",
         "select_show": "Select show",
         "select_template": "Select template",
