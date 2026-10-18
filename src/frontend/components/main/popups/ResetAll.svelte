@@ -26,7 +26,6 @@
             PROJECTS: { projects: {}, folders: {}, projectTemplates: {} },
             OVERLAYS: {},
             TEMPLATES: {},
-            EVENTS: {},
             MEDIA: {},
             THEMES: {},
             CACHE: { media: {}, text: {} },

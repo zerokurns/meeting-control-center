@@ -44,8 +44,6 @@ import {
     editMode,
     effects,
     effectsLibrary,
-    eventEdit,
-    events,
     focusMode,
     forceClock,
     guideActive,
@@ -96,7 +94,6 @@ import { updateThemeValues } from "../../utils/updateSettings"
 import { getActionTriggerId } from "../actions/actions"
 import { moveStageConnection } from "../actions/apiHelper"
 import { midiInListen } from "../actions/midi"
-import { deleteCalendarEvents } from "../drawer/calendar/calendars"
 import { startOutputRecording, stopMediaRecorder } from "../drawer/live/recorder"
 import { playPauseGlobal } from "../drawer/timers/timers"
 import { rearrangeItems, rearrangeStageItems } from "../edit/scripts/itemHelpers"
@@ -261,9 +258,6 @@ const clickActions = {
         else if (obj.contextElem?.classList?.contains("#audio_channel") || obj.contextElem?.classList?.contains("#audio_channel_main")) {
             selected.set({ id: "audio_channel", data: [{ id: obj.contextElem?.id }] })
             activePopup.set("rename")
-        } else if (obj.contextElem?.classList?.contains("#calendar_item")) {
-            selected.set({ id: "calendar", data: [{ id: obj.contextElem?.id }] })
-            activePopup.set("rename")
         } else if (id === "show") activeRename.set("show_" + data.id + "#" + data.index)
         else if (obj.contextElem?.classList?.contains("#project_template")) activeRename.set("project_" + id)
         else if (obj.contextElem?.classList?.contains("#video_subtitle")) activeRename.set("subtitle_" + id)
@@ -310,10 +304,6 @@ const clickActions = {
     recolor: (obj: ObjData) => {
         if (obj.contextElem?.classList?.contains("#audio_channel") || obj.contextElem?.classList?.contains("#audio_channel_main")) {
             selected.set({ id: "audio_channel", data: [{ id: obj.contextElem?.id }] })
-        } else if (obj.contextElem?.classList?.contains("#calendar_item")) {
-            const calendarName = obj.contextElem.id
-            const calColor = Object.values(get(events)).find((e) => e.origin === calendarName)?.color || "#FF5733"
-            selected.set({ id: "calendar", data: [{ id: calendarName, color: calColor }] })
         }
 
         // "slide" || "group" || "overlay" || "template" || "output" || "effect"
@@ -369,14 +359,6 @@ const clickActions = {
             deleteAction({ id: "video_marker", data: { index: obj.contextElem.id } })
             return
         }
-        if (obj.contextElem?.classList.value.includes("#event")) {
-            deleteAction({ id: "event", data: { id: obj.contextElem.id } })
-            return
-        }
-        if (obj.contextElem?.classList.value.includes("#calendar_item")) {
-            deleteCalendarEvents(obj.contextElem.id)
-            return
-        }
         if (obj.contextElem?.classList.value.includes("#interaction_input")) {
             deleteAction({ id: "interaction_input", data: { index: Number(obj.contextElem.id?.slice(1)) } })
             return
@@ -398,19 +380,6 @@ const clickActions = {
         console.error("COULD NOT DELETE", obj)
     },
     delete_remove: (obj: ObjData) => clickActions.delete(obj),
-    delete_all: (obj: ObjData) => {
-        if (obj.contextElem?.classList.value.includes("#event")) {
-            const group = get(events)[obj.contextElem.id].group
-            if (!group) return
-
-            const eventIds: string[] = []
-            Object.entries(get(events)).forEach(([id, event]) => {
-                if (event.group === group) eventIds.push(id)
-            })
-
-            history({ id: "UPDATE", newData: { id: "keys" }, oldData: { keys: eventIds }, location: { page: "drawer", id: "event" } })
-        }
-    },
     delete_row: () => window.dispatchEvent(new CustomEvent("delete-row")),
     delete_col: () => window.dispatchEvent(new CustomEvent("delete-col")),
     duplicate: (obj: ObjData) => {
@@ -426,11 +395,6 @@ const clickActions = {
         }
 
         if (updateEffectItem(obj, (items, index) => items.splice(index + 1, 0, clone(items[index])))) return
-
-        if (obj.contextElem?.classList.value.includes("#event")) {
-            duplicate({ id: "event", data: { id: obj.contextElem.id } })
-            return
-        }
 
         if (obj.contextElem?.classList.value.includes("#interaction_input")) {
             const index = parseInt(obj.contextElem.id.slice(1))
@@ -1317,9 +1281,6 @@ const clickActions = {
             activeProject.set(null)
             editingProjectTemplate.set(obj.contextElem.id)
             projectView.set(false)
-        } else if (obj.contextElem?.classList.value.includes("#event")) {
-            eventEdit.set(obj.contextElem.id)
-            activePopup.set("edit_event")
         } else if (obj.contextElem?.classList.value.includes("output_button")) {
             currentOutputSettings.set(obj.contextElem.id)
             settingsTab.set("display_settings")

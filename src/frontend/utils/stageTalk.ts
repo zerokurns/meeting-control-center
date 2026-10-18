@@ -9,7 +9,7 @@ import { getCurrentProjectIndexes, getProjectItems } from "../components/helpers
 import { getGroupName, getLayoutRef } from "../components/helpers/show"
 import { _show } from "../components/helpers/shows"
 import { getCustomStageLabel } from "../components/stage/stage"
-import { actions, activeProject, activeShow, events, groups, media, outputs, projects, showsCache, stageShows, timeFormat, timers, variables } from "../stores"
+import { actions, activeProject, activeShow, groups, media, outputs, projects, showsCache, stageShows, timeFormat, timers, variables } from "../stores"
 import { connections } from "./../stores"
 import { translateText } from "./language"
 import { send } from "./request"
@@ -101,7 +101,6 @@ export const receiveSTAGE = {
         sendData(STAGE, { id: connectionId, channel: "OUT" })
         sendData(STAGE, { id: connectionId, channel: "SHOW_DATA" })
         window.api.send(STAGE, { id: connectionId, channel: "TIMERS", data: get(timers) })
-        window.api.send(STAGE, { id: connectionId, channel: "EVENTS", data: get(events) })
         window.api.send(STAGE, { id: connectionId, channel: "VARIABLES", data: get(variables) })
         send(STAGE, ["DATA"], { timeFormat: get(timeFormat) })
 

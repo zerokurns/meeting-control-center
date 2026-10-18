@@ -12,7 +12,6 @@ export const DEFAULT_DICTIONARY = {
         search: "No match",
         backgrounds: "No backgrounds in show",
         groups: "No groups",
-        events: "No events",
         text: "Type something",
         timers: "No timers"
     },
@@ -25,7 +24,6 @@ export const DEFAULT_DICTIONARY = {
         media: "Media",
         audio: "Audio",
         overlays: "Overlays",
-        calendar: "Calendar",
         templates: "Templates",
         functions: "Functions",
         actions: "Actions",
@@ -52,7 +50,6 @@ export const DEFAULT_DICTIONARY = {
         notice: "Notice",
         visuals: "Visuals",
         info: "Info",
-        events: "Events",
         pictures: "Pictures",
         videos: "Videos",
         music: "Music",

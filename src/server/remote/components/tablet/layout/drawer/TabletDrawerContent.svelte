@@ -12,7 +12,6 @@
     let TabletDrawerAudio: any = null
     let TabletDrawerOverlays: any = null
     let TabletDrawerTemplates: any = null
-    let TabletDrawerCalendar: any = null
     let TabletDrawerFunctions: any = null
 
     // Lazy load components on first access
@@ -30,9 +29,6 @@
     }
     $: if (loaded.includes("templates") && !TabletDrawerTemplates) {
         import("./pages/TabletDrawerTemplates.svelte").then((m) => (TabletDrawerTemplates = m.default))
-    }
-    $: if (loaded.includes("calendar") && !TabletDrawerCalendar) {
-        import("./pages/TabletDrawerCalendar.svelte").then((m) => (TabletDrawerCalendar = m.default))
     }
     $: if (loaded.includes("functions") && !TabletDrawerFunctions) {
         import("./pages/TabletDrawerFunctions.svelte").then((m) => (TabletDrawerFunctions = m.default))
@@ -80,13 +76,6 @@
         </div>
     {/if}
 
-    {#if loaded.includes("calendar")}
-        <div style="display: {id === 'calendar' ? 'contents' : 'none'}">
-            {#if TabletDrawerCalendar}
-                <svelte:component this={TabletDrawerCalendar} />
-            {/if}
-        </div>
-    {/if}
 
     {#if loaded.includes("functions")}
         <div style="display: {id === 'functions' ? 'contents' : 'none'}">

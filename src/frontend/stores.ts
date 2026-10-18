@@ -8,7 +8,6 @@ import type { TimecodeMode } from "../electron/timecode/timecode"
 import type { AiFeatureStatus } from "../types/ai/Ai"
 import type { AudioChannelData, AudioStream } from "../types/Audio"
 import type { AudioRoutingConfig } from "../types/AudioRouting"
-import type { Event } from "../types/Calendar"
 import type { Effects } from "../types/Effects"
 import type { History, HistoryNew } from "../types/History"
 import type { ActiveEdit, Clipboard, Interaction, Media, MediaOptions, NumberObject, OS, Popups, Profiles, Selected, SlidesOptions, Variable } from "../types/Main"
@@ -104,12 +103,6 @@ export const activePlayerTagFilter: Writable<string[]> = writable([])
 export const activeActionTagFilter: Writable<string[]> = writable([])
 export const activeVariableTagFilter: Writable<string[]> = writable([])
 export const activeTimerTagFilter: Writable<string[]> = writable([])
-
-// CALENDAR
-export const activeDays: Writable<number[]> = writable([])
-export const eventEdit: Writable<null | string> = writable(null)
-export const nextActionEventStart: Writable<any> = writable({})
-export const nextActionEventPaused: Writable<boolean> = writable(false)
 
 // AUDIO
 export const playingAudio: Writable<{ [key: string]: AudioData }> = writable({})
@@ -291,11 +284,6 @@ export const templateCategories: Writable<Categories> = writable({}) // {default
 export const templates: Writable<Templates> = writable({}) // {default}
 export const globalRegexes: Writable<{ [key: string]: { label: string; value: string } }> = writable({}) // {}
 
-// CALENDAR
-export const calendars: Writable<{ [key: string]: any }> = writable({}) // {}
-export const events: Writable<{ [key: string]: Event }> = writable({}) // {}
-export const calendarAddShow: Writable<string> = writable("") // ""
-
 // STAGE
 export const stageShows: Writable<StageLayouts> = writable({}) // {default}
 
@@ -383,13 +371,11 @@ export const $ = {
     activeShow,
     activeEdit,
     activeStage,
-    activeDays,
     activeTimers,
     activeRename,
     activeDrawerTab,
     settingsTab,
     projectView,
-    eventEdit,
     playingAudio,
     playingVideos,
     visualizerData,
@@ -428,7 +414,6 @@ export const $ = {
     playerVideos,
     templateCategories,
     templates,
-    events,
     stageShows,
     drawerTabsData,
     drawer,
@@ -455,8 +440,7 @@ export const $ = {
     outLocked,
     ports,
     maxConnections,
-    providerConnections,
-    calendars
+    providerConnections
 }
 
 // DEBUG STORE UPDATES

@@ -14,7 +14,6 @@ import type { Dictionary, Resolution, Themes } from "../Settings"
 import type { Overlays, Show, Shows, Templates, TrimmedShows } from "../Show"
 import type { ServerData } from "../Socket"
 import type { StageLayouts } from "../Stage"
-import type { Event } from "./../Calendar"
 import type { History } from "./../History"
 import type { SaveData, SaveListSyncedSettings } from "./../Save"
 
@@ -39,7 +38,6 @@ export enum Main {
     PROJECTS = "PROJECTS",
     OVERLAYS = "OVERLAYS",
     TEMPLATES = "TEMPLATES",
-    EVENTS = "EVENTS",
     MEDIA = "MEDIA",
     THEMES = "THEMES",
     HISTORY = "HISTORY",
@@ -278,7 +276,6 @@ export interface MainReturnPayloads {
     [Main.PROJECTS]: { projects: Projects; folders: Folders; projectTemplates: Projects }
     [Main.OVERLAYS]: Overlays
     [Main.TEMPLATES]: Templates
-    [Main.EVENTS]: { [key: string]: Event }
     [Main.MEDIA]: Media
     [Main.THEMES]: { [key: string]: Themes }
     [Main.HISTORY]: { undo: History[]; redo: History[] }

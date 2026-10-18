@@ -249,7 +249,7 @@
         setTimeout(() => (searchActive = true))
     }
 
-    const hiddenInFocusMode = ["templates", "calendar"]
+    const hiddenInFocusMode = ["templates"]
 </script>
 
 <svelte:window on:mouseup={mouseup} on:mousemove={mousemove} on:keydown={keydown} />

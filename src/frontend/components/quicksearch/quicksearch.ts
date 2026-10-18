@@ -551,7 +551,6 @@ const mainPages = [
     { id: "audio", name: "tabs.audio", icon: "audio", aliases: ["category.music", "media.volume", "audio.settings"] },
     { id: "overlays", name: "tabs.overlays", icon: "overlays", aliases: ["-Props", "-Alerts", "-Messages", "-Popups", "-Notices"] },
     { id: "templates", name: "tabs.templates", icon: "templates" },
-    { id: "calendar", name: "tabs.calendar", icon: "calendar", aliases: ["menu._title_calendar"] },
     { id: "functions", name: "tabs.functions", icon: "functions" },
     // other
     { id: "projects", name: "remote.projects", icon: "project", aliases: ["-Playlists", "-Schedules", "-Agendas", "-Services", "-Sermons", "-Events"] }
@@ -586,8 +585,6 @@ const drawerSubmenus = [
     { id: "audio_inputs", name: "emitters.inputs", icon: "input", aliases: ["live.microphones", "live.audio_streams"] },
     // overlays
     { id: "effects", name: "tabs.effects", icon: "effect" },
-    // calendar
-    { id: "action", name: "calendar.schedule_action", icon: "actions" },
     // functions
     { id: "actions", name: "tabs.actions", icon: "actions", aliases: ["-Macros"] },
     { id: "timer", name: "tabs.timers", icon: "timer" },
@@ -620,8 +617,6 @@ const popups = [
     { id: "output", name: "settings.new_output", icon: "add", data: { settingsTab: "display_settings" } },
     { id: "style", name: "new.style", icon: "add", data: { settingsTab: "styles" } },
     { id: "profile", name: "new.profile", icon: "add", data: { settingsTab: "profiles" } },
-    { id: "edit_event", name: "new.event", icon: "add", data: { drawerTab: "calendar" } },
-    { id: "edit_event", name: "new.event_action", icon: "add", data: { drawerTab: "action" } },
     // custom (no popup)
     { id: "category", name: "new.category", icon: "add", data: { drawerTab: "shows" } },
     { id: "project", name: "new.project", icon: "add", aliases: ["-New Playlist", "-New Schedule", "-New Agenda", "-New Service", "-New Sermon", "-New Event"] },

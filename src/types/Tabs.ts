@@ -44,7 +44,7 @@ export interface DrawerTabs {
     }
 }
 
-export type DrawerTabIds = "shows" | "media" | "overlays" | "audio" | "calendar" | "timers" | "templates" | "functions"
+export type DrawerTabIds = "shows" | "media" | "overlays" | "audio" | "timers" | "templates" | "functions"
 export type SettingsTabs = "general" | "files" | "display_settings" | "audio" | "styles" | "connection" | "profiles" | "theme" | "ai" | "other" // "calendar"
-export type TopViews = "show" | "edit" | "reflow" | "stage" | "calendar" | "settings"
+export type TopViews = "show" | "edit" | "reflow" | "stage" | "settings"
 export type EditMode = "default" | "text_edit"

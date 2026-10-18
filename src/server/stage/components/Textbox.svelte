@@ -352,8 +352,6 @@
         <Timer {item} id={item.timerId || ""} {today} style="font-size: {fontSize}px;" /> -->
     {:else if item?.type === "clock"}
         <Clock autoSize={fontSize} {...item.clock} />
-        <!-- {:else if item?.type === "events"}
-        <DynamicEvents {...item.events} /> -->
         <!-- {:else if item?.type === "variable"}
         <Variable {item} style="font-size: {fontSize}px;" /> -->
     {:else if item?.type === "icon"}

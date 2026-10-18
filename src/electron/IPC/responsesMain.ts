@@ -62,7 +62,6 @@ export const mainResponses: MainResponses = {
     [Main.PROJECTS]: () => getStore("PROJECTS"),
     [Main.OVERLAYS]: () => getStore("OVERLAYS"),
     [Main.TEMPLATES]: () => getStore("TEMPLATES"),
-    [Main.EVENTS]: () => getStore("EVENTS"),
     [Main.MEDIA]: () => getStore("MEDIA"),
     [Main.THEMES]: () => getStore("THEMES"),
     [Main.HISTORY]: () => getStore("HISTORY"),

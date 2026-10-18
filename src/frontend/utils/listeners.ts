@@ -21,7 +21,6 @@ import {
     customMessageCredits,
     customMetadata,
     effects,
-    events,
     folders,
     globalRegexes,
     groups,
@@ -159,13 +158,6 @@ export function storeSubscriber() {
         send(REMOTE, ["OVERLAY_CATEGORIES"], data)
     })
 
-    events.subscribe((data) => {
-        send(OUTPUT, ["EVENTS"], data)
-
-        // STAGE
-        // WIP all stage listeners should not send to all stages, just the connected ids
-        send(STAGE, ["EVENTS"], data)
-    })
 
     outputs.subscribe(async (data) => {
         // wait in case multiple slide layers get activated right after each other - to reduce the amount of updates
@@ -411,7 +403,6 @@ const initalOutputData = {
 
     TEMPLATES: "templates",
     OVERLAYS: "overlays",
-    EVENTS: "events",
     GROUPS: "groups",
 
     VISUALIZER_DATA: "visualizerData",

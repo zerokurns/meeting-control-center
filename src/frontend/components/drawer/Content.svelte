@@ -3,7 +3,6 @@
     import T from "../helpers/T.svelte"
     import MaterialButton from "../inputs/MaterialButton.svelte"
     import Audio from "./audio/Audio.svelte"
-    import Calendar from "./calendar/Calendar.svelte"
     import Media from "./media/Media.svelte"
     import Actions from "./pages/Actions.svelte"
     import Interactions from "./pages/Interactions.svelte"
@@ -60,8 +59,6 @@
         <Overlays {active} {searchValue} />
     {:else if id === "templates"}
         <Templates {active} {searchValue} />
-    {:else if id === "calendar"}
-        <Calendar {active} {searchValue} />
     {:else if id === "functions"}
         {#if active === "actions"}
             <Actions {searchValue} />

@@ -228,7 +228,7 @@
 
     // -----
 
-    const setItemStyle = ["timer", "clock", "icon", "events", "camera", "variable", "web", "slide_tracker", "table"]
+    const setItemStyle = ["timer", "clock", "icon", "camera", "variable", "web", "slide_tracker", "table"]
 
     const setBox = () => clone(itemBoxes[id])!
     let box = setBox()
@@ -358,13 +358,6 @@
         setBoxInputValue(box, "default", "tracker.childProgress", "hidden", item.tracker?.type !== "group")
         setBoxInputValue(box, "default", "tracker.oneLetter", "hidden", item.tracker?.type !== "group")
         setBoxInputValue(box, "default", "tracker.projectMetadata", "hidden", item.tracker?.type !== "project")
-    }
-    $: if (id === "events" && item) {
-        setBoxInputValue(box, "default", "events.startDaysFromToday", "disabled", !!item.events?.enableStartDate)
-        setBoxInputValue(box, "default", "events.startDate", "hidden", !item.events?.enableStartDate)
-        setBoxInputValue(box, "default", "events.startTime", "hidden", !item.events?.enableStartDate)
-        setBoxInputValue(box, "default", "events.fromTime", "hidden", !item.events?.justOneDay)
-        setBoxInputValue(box, "default", "events.toTime", "hidden", !item.events?.justOneDay)
     }
     $: if (id === "chart" && item) {
         setBoxInputValue(box, "default", "chart.holeSize", "hidden", item.chart?.type !== "pie")

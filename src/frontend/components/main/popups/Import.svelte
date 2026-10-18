@@ -77,11 +77,6 @@
         displayTutorial(format)
     }
 
-    // function openCalendar() {
-    //     activeDrawerTab.set("calendar")
-    //     activePage.set("show")
-    //     activePopup.set(null)
-    // }
 
     let openedPage = ""
 </script>
@@ -127,10 +122,6 @@
     </div>
 
     <!-- <div style="display: flex;gap: 5px;margin-top: 10px;">
-        <MaterialButton variant="outlined" style="flex: 1;min-height: 50px;padding: 10px;gap: 15px;" on:click={openCalendar}>
-            <Icon style="height: 60px;" id="calendar" size={2.5} white />
-            <p>{translateText("tabs.calendar")}</p>
-        </MaterialButton>
     </div> -->
 {:else if mode === "project"}
     <div style="display: flex;gap: 5px;">

@@ -9,7 +9,6 @@ export const drawerTabs = {
     overlays: { name: "tabs.overlays", icon: "overlays", title: "" },
     templates: { name: "tabs.templates", icon: "templates", title: "" },
 
-    calendar: { name: "tabs.calendar", icon: "calendar", title: "" },
 
     functions: { name: "tabs.functions", icon: "functions", title: "" }
 }
@@ -21,7 +20,6 @@ export const drawerTabs = {
 //     overlays: { name: "tabs.overlays", icon: "overlays", style: "background-color: #4b0b3a !important;color: #ff3aff;" },
 //     templates: { name: "tabs.templates", icon: "templates", style: "background-color: #3a0b4b !important;color: #af3aff;" },
 
-//     calendar: { name: "tabs.calendar", icon: "calendar", style: "background-color: #0b4b3a !important;color: #3affaf;" },
 
 //     functions: { name: "tabs.functions", icon: "functions", style: "background-color: #2b2b2b !important;color: #aaaaaa;" }
 // }

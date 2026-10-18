@@ -102,7 +102,6 @@ export type SelectIds =
     | "profile"
     | "audio_channel"
     | "tag"
-    | "calendar"
 
 export interface Selected {
     id: null | SelectIds
@@ -378,8 +377,6 @@ export type Popups =
     | "transition"
     | "media_fit"
     | "metadata_display"
-    | "import_calendar"
-    | "edit_event"
     | "edit_chart"
     | "choose_screen"
     | "choose_media_input"

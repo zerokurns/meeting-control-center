@@ -463,8 +463,7 @@ function createNew() {
         addSection() // project
     else if (selectId.includes("category_")) {
         // if (selectId.includes("media") || selectId.includes("audio")) sendMain(Main.OPEN_FOLDER, { channel: id, title, path })
-        if (selectId.includes("calendar")) activePopup.set("import_calendar")
-        else history({ id: "UPDATE", location: { page: "drawer", id: selectId } })
+        history({ id: "UPDATE", location: { page: "drawer", id: selectId } })
     } else if (selectId === "overlay") history({ id: "UPDATE", location: { page: "drawer", id: "overlay" } })
     else if (selectId === "template") history({ id: "UPDATE", location: { page: "drawer", id: "template" } })
     else if (selectId === "global_timer") activePopup.set("timer")

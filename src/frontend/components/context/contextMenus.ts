@@ -44,7 +44,6 @@ export const contextMenuItems: { [key: string]: ContextMenuItem } = {
     rename: { label: "actions.rename", icon: "rename", iconColor: "#6effbe", shortcuts: ["F2"] },
     delete: { label: "actions.delete", icon: "delete", iconColor: "#ff5454", shortcuts: ["Del"] },
     delete_remove: { label: "actions.remove", icon: "delete", iconColor: "#ff6b54", shortcuts: ["Del"] },
-    delete_all: { label: "actions.delete_all", icon: "delete", iconColor: "#ff5454" },
     delete_row: { label: "actions.delete_row", icon: "delete", iconColor: "#ff5454" },
     delete_col: { label: "actions.delete_col", icon: "delete", iconColor: "#ff5454" },
     import: { label: "actions.import", icon: "import" },
@@ -265,8 +264,6 @@ export const contextMenuLayouts: { [key: string]: string[] } = {
     category_templates_button: ["GROUP_rename_icon", "delete", "SEPARATOR", "use_as_archive"],
     category_media_button: ["GROUP_rename_only", "delete_remove", "SEPARATOR", "media_type", "SEPARATOR", "system_open"],
     category_audio_button: ["GROUP_rename_only", "delete_remove", "SEPARATOR", "system_open"],
-    calendar_item: ["GROUP_rename_recolor", "delete"],
-    calendar_item_unlabeled: ["delete"],
     // CONTENT
     drawer_show: ["newShowPopup", "SEPARATOR", "manage_show_tags", "display_tags", "tag_filter", "sort_shows_by", "SEPARATOR", "selectAll"],
     // , "changeCategory" ? edit with rename & categories...
@@ -402,7 +399,6 @@ export const contextMenuLayouts: { [key: string]: string[] } = {
     timeline_node: ["delete"],
 
     // CALENDAR
-    event: ["GROUP_edit", "duplicate", "delete", "delete_all"],
 
     // SETTINGS
     theme: ["GROUP_rename_only", "duplicate", "delete", "SEPARATOR", "export", "SEPARATOR", "reset_theme"], // "GROUP_rename"

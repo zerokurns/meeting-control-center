@@ -359,21 +359,6 @@ export function splitIntoRows(inputs: EditInput[]) {
     return inputs.map((a) => [a])
 }
 
-function eventText(defaultSection: any) {
-    const defaultTextSection = clone(textSections.default)
-
-    return clone({
-        default: defaultSection,
-        font: defaultTextSection,
-        // align: textSections.align,
-        text: textSections.text,
-        lines: textSections.lines,
-        outline: textSections.outline,
-        shadow: textSections.shadow,
-        CSS: textSections.CSS
-    })
-}
-
 function nonTextboxTextStyle(defaultSection: EditBoxSection) {
     const defaultTextSection = clone(textSections.default)
     defaultTextSection.inputs[1][1].value = "growToFit"
@@ -564,27 +549,6 @@ export const itemBoxes: Box2 = {
                     [{ type: "checkbox", id: "tracker.childProgress", value: false, values: { label: "edit.sub_indexes" } }],
                     [{ type: "checkbox", id: "tracker.oneLetter", value: false, values: { label: "edit.one_letter" } }],
                     [{ id: "tracker.projectMetadata", type: "dropdown", value: "name", values: { label: "tools.metadata", options: [{ value: "name", label: "show.name" }] } }]
-                ]
-            })
-        }
-    },
-    events: {
-        icon: "calendar",
-        sections: {
-            ...eventText({
-                inputs: [
-                    [{ id: "events.maxEvents", type: "number", value: 5, values: { label: "edit.max_events", max: 20 } }],
-                    [{ id: "events.startDaysFromToday", type: "number", value: 0, values: { label: "edit.start_days_from_today", max: 10000 } }],
-                    [{ id: "events.justOneDay", type: "checkbox", value: false, values: { label: "edit.just_one_day" } }],
-                    [
-                        { id: "events.fromTime", type: "time", hidden: true, value: "00:00", values: { label: "calendar.from_time" } },
-                        { id: "events.toTime", type: "time", hidden: true, value: "00:00", values: { label: "calendar.to_time" } }
-                    ],
-                    [{ id: "events.enableStartDate", type: "checkbox", value: false, values: { label: "edit.enable_start_date" } }],
-                    [
-                        { id: "events.startDate", type: "date", hidden: true, value: "", values: { label: "calendar.from_date" } },
-                        { id: "events.startTime", type: "time", hidden: true, value: "", values: { label: "calendar.from_time" } }
-                    ]
                 ]
             })
         }

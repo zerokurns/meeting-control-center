@@ -42,7 +42,6 @@ export let playingAudioTime: Writable<number> = writable(0)
 
 ///
 
-export let events: Writable<any> = writable({})
 export let timers: Writable<any> = writable({})
 export let variables: Writable<any> = writable({})
 export let activeTimers: Writable<any[]> = writable([])

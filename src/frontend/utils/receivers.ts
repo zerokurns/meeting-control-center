@@ -26,7 +26,6 @@ import {
     customMetadata,
     dynamicValueData,
     effects,
-    events,
     focusMode,
     globalRegexes,
     groups,
@@ -230,7 +229,6 @@ export const receiveOUTPUTasOUTPUT: any = {
 
     TEMPLATES: (a: any) => templates.set(a),
     OVERLAYS: (a: any) => overlays.set(clone(a)),
-    EVENTS: (a: any) => events.set(a),
     GROUPS: (a: any) => groups.set(a),
 
     VISUALIZER_DATA: (a: any) => visualizerData.set(a),

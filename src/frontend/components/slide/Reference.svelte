@@ -1,9 +1,7 @@
 <script lang="ts">
     import type { Show } from "../../../types/Show"
     import { syncCanvaShow } from "../../converters/canvaPresentation"
-    import { activeDrawerTab, activeShow, drawer, labelsDisabled, openedInteractionId, shows } from "../../stores"
-    import { createSlides, getDateString, getSelectedEvents, sortDays } from "../drawer/calendar/calendar"
-    import { history } from "../helpers/history"
+    import { activeDrawerTab, drawer, labelsDisabled, openedInteractionId } from "../../stores"
     import { setDrawerTabData } from "../helpers/historyHelpers"
     import Icon from "../helpers/Icon.svelte"
     import T from "../helpers/T.svelte"
@@ -14,21 +12,6 @@
 
     $: data = show?.reference?.data || {}
 
-    async function updateCalendar() {
-        let currentEvents = getSelectedEvents(data.days)
-
-        let showId: string = $activeShow?.id || ""
-        let slidesData = await createSlides(currentEvents, showId)
-
-        history({ id: "UPDATE", newData: { data: slidesData.show }, oldData: { id: showId }, location: { page: "show", id: "show_key" } })
-    }
-
-    function getDaysString() {
-        let { sortedDays, from, to } = sortDays(data.days)
-        let string = getDateString(from)
-        if (sortedDays[0] - sortedDays[1] < 0) string += " - " + getDateString(to)
-        return string
-    }
 
     function openInteraction() {
         openedInteractionId.set(data.id)
@@ -52,21 +35,7 @@
 </script>
 
 <div>
-    {#if show?.reference?.type === "calendar"}
-        <p>
-            <T id="menu.calendar" />: {getDaysString()}
-            {#if data.show && $shows[data.show]}
-                {" + "}{$shows[show.reference.data.show].name}
-            {/if}
-        </p>
-
-        <div class="divider" />
-
-        <MaterialButton on:click={updateCalendar} style="white-space: nowrap;min-width: 100px;">
-            <Icon id="calendar" />
-            {#if !$labelsDisabled}<T id="show.update" />{/if}
-        </MaterialButton>
-    {:else if show?.reference?.type === "canva"}
+    {#if show?.reference?.type === "canva"}
         <p>
             Canva: {data.presentationName || show.name || ""}
         </p>

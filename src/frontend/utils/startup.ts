@@ -3,7 +3,6 @@ import type { ContentProviderId } from "../../electron/contentProviders/base/typ
 import { OUTPUT, STARTUP } from "../../types/Channels"
 import { Main } from "../../types/IPC/Main"
 import { checkStartupActions } from "../components/actions/actions"
-import { syncIcsCalendars } from "../components/drawer/calendar/calendars"
 import { getTimeFromInterval } from "../components/helpers/time"
 import { requestMain, requestMainMultiple, sendMain, sendMainMultiple } from "../IPC/main"
 import { cameraManager } from "../media/cameraManager"
@@ -92,7 +91,6 @@ async function startupMain() {
     unsavedUpdater()
     windowFocusListener()
     cameraManager.initializeCameraWarming()
-    syncIcsCalendars()
 
     // CHECK LISTENERS
     // console.log(window.api.getListeners())
@@ -181,7 +179,7 @@ function getMainData() {
 }
 
 async function getStoredData() {
-    sendMainMultiple([Main.SYNCED_SETTINGS, Main.STAGE, Main.PROJECTS, Main.OVERLAYS, Main.TEMPLATES, Main.EVENTS, Main.MEDIA, Main.THEMES, Main.HISTORY, Main.CACHE, Main.USAGE])
+    sendMainMultiple([Main.SYNCED_SETTINGS, Main.STAGE, Main.PROJECTS, Main.OVERLAYS, Main.TEMPLATES, Main.MEDIA, Main.THEMES, Main.HISTORY, Main.CACHE, Main.USAGE])
 
     await waitUntilValueIsDefined(() => get(loadedState).includes("synced_settings"), 200, 8000)
     sendMain(Main.SETTINGS)

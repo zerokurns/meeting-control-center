@@ -9,7 +9,6 @@ import { getProjectsInFolder } from "../../converters/project"
 import { sendMain } from "../../IPC/main"
 import {
     actions,
-    activeDays,
     activeDrawerTab,
     activePage,
     activePopup,
@@ -27,7 +26,6 @@ import {
     drawerTabsData,
     editingProjectTemplate,
     effects,
-    events,
     focusedArea,
     folders,
     interactions,
@@ -240,7 +238,6 @@ export function selectAll(data: any = {}) {
     } else if (!selectId) {
         if (get(activeEdit) && get(activePage) === "edit") selectId = "edit_items"
         else if (get(activeStage) && get(activePage) === "stage") selectId = "stage_items"
-        else if (get(activeDrawerTab) === "calendar" && get(drawerTabsData).calendar?.activeSubTab !== "timers") selectId = "events"
         else if ((get(activeShow)?.type === "show" || get(activeShow)?.type === undefined) && get(activePage) === "show") selectId = "slide"
         else return
     }
@@ -254,13 +251,8 @@ export function selectAll(data: any = {}) {
     else console.info("MISSING SELECT:", selectId)
 
     // NOT IN USE
-    // category_calendar
     // media, player, cameram, microphone, audio
 }
-
-// WIP duplicate of functions in Calendar.svelte
-const getMonthIndex = (month: number) => (month + 1 < 12 ? month + 1 : 0)
-const getDaysInMonth = (year: number, month: number) => new Date(year, getMonthIndex(month), 0).getDate()
 
 /// //
 
@@ -329,18 +321,6 @@ const selectActions = {
 
         activeStage.set({ ...get(activeStage), items })
         return
-    },
-    events: () => {
-        const currentDay = get(activeDays)[0]
-        if (!currentDay) return
-
-        const dayDate = new Date(currentDay)
-        const year = dayDate.getFullYear()
-        const month = dayDate.getMonth()
-
-        const daysList: number[] = []
-        for (let i = 1; i <= getDaysInMonth(year, month); i++) daysList.push(new Date(year, month, i).getTime())
-        activeDays.set(daysList)
     },
     slide: () => {
         let newSelection: any[] = []
@@ -877,9 +857,6 @@ const deleteActions = {
 
         historyDelete("UPDATE", data, { updater: "template" })
     },
-    event: (data: any) => {
-        history({ id: "UPDATE", newData: { id: data.id }, location: { page: "drawer", id: "event" } })
-    },
     midi: (data: any) => {
         data = data[0]
         const id: string = data.id
@@ -1067,17 +1044,6 @@ const deleteActions = {
 }
 
 const duplicateActions = {
-    event: (data: any) => {
-        const event = clone(get(events)[data.id])
-        if (!event) return
-
-        event.name += " 2"
-        event.repeat = false
-        delete event.group
-        delete event.repeatData
-
-        history({ id: "UPDATE", newData: { data: event }, location: { page: "drawer", id: "event" } })
-    },
     show: (data: any) => {
         const isTemplate = !!get(editingProjectTemplate)
         const projectId = isTemplate ? get(editingProjectTemplate) : get(activeProject)

@@ -65,9 +65,6 @@
                 else if ($shows[show.id]?.category && $categories[$shows[show.id].category || ""]) {
                     custom = true
                     iconID = $categories[$shows[show.id].category || ""].icon || null
-                } else if ($showsCache[show.id]?.reference?.type === "calendar") {
-                    custom = true
-                    iconID = "event"
                 } else iconID = "noIcon"
             } else if (type === "audio") {
                 iconID = "music"

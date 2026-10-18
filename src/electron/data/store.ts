@@ -5,7 +5,6 @@
 import Store from "electron-store"
 import { mkdirSync, statSync } from "fs"
 import path from "path"
-import type { Event } from "../../types/Calendar"
 import type { History } from "../../types/History"
 import { Main } from "../../types/IPC/Main"
 import { ToMain } from "../../types/IPC/ToMain"
@@ -38,7 +37,6 @@ export const storeFilesData = {
     STAGE: { fileName: "stage", portable: true, defaults: {} as StageLayouts },
     OVERLAYS: { fileName: "overlays", portable: true, defaults: {} as Overlays },
     TEMPLATES: { fileName: "templates", portable: true, defaults: {} as Templates },
-    EVENTS: { fileName: "events", portable: true, defaults: {} as { [key: string]: Event } },
 
     HISTORY: { fileName: "history", portable: false, defaults: {} as { undo: History[]; redo: History[] }, minify: true },
     MEDIA: { fileName: "media", portable: false, defaults: {} as Media, minify: true },

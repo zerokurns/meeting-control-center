@@ -33,14 +33,12 @@ import DeleteShow from "../components/main/popups/DeleteShow.svelte"
 import DisplayDuration from "../components/main/popups/DisplayDuration.svelte"
 import DynamicValues from "../components/main/popups/DynamicValues.svelte"
 import EditChart from "../components/main/popups/EditChart.svelte"
-import EditEvent from "../components/main/popups/EditEvent.svelte"
 import EffectItems from "../components/main/popups/EffectItems.svelte"
 import Emitters from "../components/main/popups/Emitters.svelte"
 import Export from "../components/main/popups/export/Export.svelte"
 import FindReplace from "../components/main/popups/FindReplace.svelte"
 import History from "../components/main/popups/History.svelte"
 import Import from "../components/main/popups/Import.svelte"
-import ImportCalendar from "../components/main/popups/ImportCalendar.svelte"
 import Initialize from "../components/main/popups/Initialize.svelte"
 import InteractionInput from "../components/main/popups/InteractionInput.svelte"
 import Translate from "../components/main/popups/localization/Translate.svelte"
@@ -125,8 +123,6 @@ export const popups: { [key in Popups]: ComponentType } = {
     transition: Transition,
     media_fit: MediaFit,
     metadata_display: MetadataDisplay,
-    import_calendar: ImportCalendar,
-    edit_event: EditEvent,
     edit_chart: EditChart,
     choose_screen: ChooseScreen,
     choose_output_input: ChooseOutput,

@@ -468,7 +468,7 @@ function isTimerRunning(timerId: string) {
     const timer = get(timers)[timerId]
     if (!timer) return false
 
-    if (timer.type === "clock" || timer.type === "event") {
+    if (timer.type === "clock") {
         const value = Number(getTimerValue(timerId))
         return value > 0
     }

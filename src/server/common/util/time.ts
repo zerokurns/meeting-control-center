@@ -1,7 +1,7 @@
 import { get } from "svelte/store"
 import type { Time } from "../../../types/Main"
 import type { Timer } from "../../../types/Show"
-import { activeTimers, events } from "../../stage/util/stores"
+import { activeTimers } from "../../stage/util/stores"
 
 export const padString = (a: number) => a.toString().padStart(2, "0")
 
@@ -80,9 +80,6 @@ export function getCurrentTimerValue(timer: Timer, ref: any, today: Date, update
     } else if (timer.type === "clock") {
         let todayTime = new Date([today.getMonth() + 1, today.getDate(), today.getFullYear(), timer.time].join(" "))
         currentTime = (todayTime.getTime() - today.getTime()) / 1000
-    } else if (timer.type === "event") {
-        let eventTime = new Date(get(events)[timer.event!]?.from)?.getTime() || 0
-        currentTime = (eventTime - today.getTime()) / 1000
     }
 
     if (currentTime < 0 && !timer.overflow) currentTime = 0

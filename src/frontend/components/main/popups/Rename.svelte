@@ -1,7 +1,6 @@
 <script lang="ts">
     import type { SlideData } from "../../../../types/Show"
-    import { activePopup, activeShow, audioRouting, calendars, effectsLibrary, selected, showsCache } from "../../../stores"
-    import { renameCalendar } from "../../drawer/calendar/calendars"
+    import { activePopup, activeShow, audioRouting, effectsLibrary, selected, showsCache } from "../../../stores"
     import { removeDuplicates } from "../../helpers/array"
     import { history } from "../../helpers/history"
     import { getLayoutRef } from "../../helpers/show"
@@ -36,9 +35,6 @@
             const channelId = selectionData[0]?.id
             const channel = ($audioRouting?.channels || []).find((m) => m.id === channelId)
             groupName = channel?.name || ""
-        } else if ($selected.id === "calendar") {
-            const calId = selectionData[0]?.id
-            groupName = $calendars?.[calId]?.name || ""
         } else if (selectionData[0]?.name) {
             groupName = selectionData[0].name
         }
@@ -163,12 +159,6 @@
                 return a
             })
         },
-        calendar: () => {
-            const oldName = $selected.data?.[0]?.id
-            if (oldName && groupName && groupName.trim() && groupName.trim() !== oldName) {
-                renameCalendar(oldName, groupName.trim())
-            }
-        }
     }
 
     function rename() {

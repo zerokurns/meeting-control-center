@@ -1,4 +1,3 @@
-import type { Event } from "./Calendar"
 import type { History, HistoryNew } from "./History"
 import type { Media } from "./Main"
 import type { Folders, Projects } from "./Projects"
@@ -6,7 +5,7 @@ import type { Themes } from "./Settings"
 import type { Overlays, Shows, Templates, TrimmedShows } from "./Show"
 import type { StageLayouts } from "./Stage"
 
-export type SaveList = SaveListSettings | SaveListSyncedSettings | "themes" | "events" | "templates" | "overlays"
+export type SaveList = SaveListSettings | SaveListSyncedSettings | "themes" | "templates" | "overlays"
 
 export type SaveListSyncedSettings =
     | "categories"
@@ -24,7 +23,6 @@ export type SaveListSyncedSettings =
     | "emitters"
     | "playerVideos"
     | "videoMarkers"
-    | "calendars"
     | "mediaTags"
     | "playerTags"
     | "actionTags"
@@ -73,7 +71,6 @@ export type SaveListSettings =
     | "transitionData"
     | "audioRouting"
     | "audioChannelsData"
-    | "calendarAddShow"
     | "audioEffects"
     | "audioEffectPresets"
     | "effectsLibrary"
@@ -95,7 +92,6 @@ export interface SaveData {
     PROJECTS: { projects: Projects; folders: Folders; projectTemplates: Projects }
     OVERLAYS: Overlays
     TEMPLATES: Templates
-    EVENTS: { [key: string]: Event }
     MEDIA: Media
     THEMES: { [key: string]: Themes }
     // CACHES SAVED TO MULTIPLE FILES

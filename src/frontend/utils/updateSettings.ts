@@ -26,8 +26,6 @@ import {
     audioStreams,
     autoOutput,
     autosave,
-    calendarAddShow,
-    calendars,
     categories,
     contentProviderData,
     customFonts,
@@ -386,14 +384,12 @@ const updateList: { [key in SaveListSettings | SaveListSyncedSettings]: any } = 
     emitters: (v: any) => emitters.set(v),
     midiIn: (v: any) => actions.set(v),
     videoMarkers: (v: any) => videoMarkers.set(v),
-    calendars: (v: any) => calendars.set(v),
     mediaTags: (v: any) => mediaTags.set(v),
     playerTags: (v: any) => playerTags.set(v),
     actionTags: (v: any) => actionTags.set(v),
     variableTags: (v: any) => variableTags.set(v),
     timerTags: (v: any) => timerTags.set(v),
     customizedIcons: (v: any) => customizedIcons.set(v),
-    calendarAddShow: (v: any) => calendarAddShow.set(v),
     audioEffects: (v: any) => audioEffects.set(v),
     audioEffectPresets: (v: any) => audioEffectPresets.set(v),
     effectsLibrary: (v: any) => effectsLibrary.set(v),
@@ -433,12 +429,6 @@ const updateList: { [key in SaveListSettings | SaveListSyncedSettings]: any } = 
             delete v.deletedEffects
         }
         if (Object.keys(deletedDefaultsValue).length) deletedDefaults.set(deletedDefaultsValue)
-
-        // DEPRECATED (migrate) - only in 1.6.5-beta
-        if (v.calendars && !Object.keys(get(calendars)).length) {
-            calendars.set(v.calendars)
-            delete v.calendars
-        }
 
         special.set(v)
     },

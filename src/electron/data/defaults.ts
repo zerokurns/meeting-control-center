@@ -67,7 +67,6 @@ export const defaultSettings: { [key in SaveListSettings]: any } = {
     },
     audioRouting: {},
     audioChannelsData: {},
-    calendarAddShow: "",
     audioEffects: {},
     audioEffectPresets: {},
     effectsLibrary: [],
@@ -116,7 +115,6 @@ export const defaultSyncedSettings: { [key in SaveListSyncedSettings]: any } = {
         messiah: { name: "Messiah", type: "vimeo", id: "144160599" }
     },
     videoMarkers: {},
-    calendars: {},
     mediaTags: {},
     playerTags: {},
     actionTags: {},

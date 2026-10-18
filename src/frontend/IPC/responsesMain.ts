@@ -16,7 +16,6 @@ import { getLabelId } from "../components/helpers/show"
 import { joinTimeBig } from "../components/helpers/time"
 import { defaultThemes } from "../components/settings/tabs/defaultThemes"
 import { processTimecodeFrame, updateTimelineStatus, updateTimelineTime } from "../components/timeline/timecode"
-import { convertCalendar } from "../converters/calendar"
 import { convertCSV } from "../converters/csv"
 import { createImageShow } from "../converters/imageShow"
 import { importAction, importOverlay, importShow, importSpecific, importStage, importTemplate } from "../converters/importHelpers"
@@ -34,7 +33,6 @@ import {
     audioData,
     currentOutputSettings,
     dataPath,
-    events,
     folders,
     icecastStatus,
     media,
@@ -111,7 +109,6 @@ export const mainResponses: MainResponses = {
     },
     [Main.OVERLAYS]: (a) => overlays.set(a),
     [Main.TEMPLATES]: (a) => templates.set(a),
-    [Main.EVENTS]: (a) => events.set(a),
     [Main.MEDIA]: (a) => media.set(a),
     [Main.THEMES]: (a) => {
         themes.set(Object.keys(a).length ? a : clone(defaultThemes))
@@ -375,7 +372,6 @@ export const mainResponses: MainResponses = {
             word: () => convertTexts(data),
             // Media
             // Other
-            calendar: () => convertCalendar(data)
         }
 
         if (!receiveIMPORT[a.channel]) return

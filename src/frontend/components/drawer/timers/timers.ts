@@ -1,7 +1,7 @@
 import { get } from "svelte/store"
 import { uid } from "uid"
 import type { Timer } from "../../../../types/Show"
-import { activeTimers, events, timers } from "../../../stores"
+import { activeTimers, timers } from "../../../stores"
 import { clone, keysToID, sortByName } from "../../helpers/array"
 import { _show } from "../../helpers/shows"
 import { showsCache } from "./../../../stores"
@@ -93,7 +93,6 @@ export function createGlobalTimerFromLocalTimer(showId: string | undefined) {
     })
 }
 
-const ONE_HOUR = 3600000 // 60 * 60 * 1000
 export function getCurrentTimerValue(timer: Timer, ref: any, today: Date, updater = get(activeTimers), _updater: any = null) {
     let currentTime = 0
     if (!timer) return currentTime
@@ -105,16 +104,6 @@ export function getCurrentTimerValue(timer: Timer, ref: any, today: Date, update
         }
     } else if (timer.type === "clock") {
         currentTime = getTimeUntilClock(timer.time!, today)
-    } else if (timer.type === "event") {
-        let currentEvent = get(events)[timer.event || ""] || {}
-        // if repeating event & has passed more than an hour ago
-        if (currentEvent.group && (new Date(currentEvent.from)?.getTime() || 0) < today.getTime() - ONE_HOUR) {
-            const newEvent = getClosestUpcommingEvent(currentEvent.group)
-            if (newEvent) currentEvent = newEvent
-        }
-
-        const eventTime = new Date(currentEvent.from)?.getTime() || 0
-        currentTime = (eventTime - today.getTime()) / 1000
     }
 
     if (currentTime < 0 && !timer.overflow) currentTime = 0
@@ -136,25 +125,6 @@ export function getTimerDynamicValue(val: string | undefined, _updater: any = nu
     }
 
     return isNaN(Number(val)) ? 0 : Number(val)
-}
-
-function getClosestUpcommingEvent(eventGroup: string) {
-    const eventsList = keysToID(get(events)).filter((a) => a.group === eventGroup)
-    if (!eventsList.length) return null
-
-    const today = Date.now()
-
-    let closestTime = 0
-    let closestId = ""
-    eventsList.forEach((a) => {
-        const currentTime = new Date(a?.from)?.getTime() || 0
-        if (currentTime > today && (!closestTime || currentTime < closestTime)) {
-            closestTime = currentTime
-            closestId = a.id
-        }
-    })
-
-    return get(events)[closestId]
 }
 
 export function getTimeUntilClock(time: string, today: Date = new Date(), _updater: any = null) {

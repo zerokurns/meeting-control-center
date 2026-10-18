@@ -15,7 +15,6 @@
         drawerTabsData,
         effects,
         effectsLibrary,
-        events,
         forceClock,
         globalTags,
         livePrepare,
@@ -269,14 +268,6 @@
         play_no_filters: () => {
             let path = $selected.data[0]?.path || $selected.data[0]?.id
             if (!path || !$media[path]?.filter) disabled = true
-        },
-        delete_all: () => {
-            if (!contextElem?.classList.value.includes("#event")) return
-
-            let group = $events[contextElem.id].group
-            if (group && Object.entries($events).find(([id, event]) => id !== contextElem.id && event.group === group)) return
-
-            disabled = true
         },
         favourite: () => {
             let path = $selected.data[0]?.path || $selected.data[0]?.id

@@ -24,7 +24,7 @@ export interface Show {
     category: null | ID
     quickAccess?: any
     reference?: {
-        type: "calendar" | "canva" | "interaction"
+        type: "canva" | "interaction"
         data: any
     }
     settings: {
@@ -122,7 +122,6 @@ export interface Item {
     timer?: { id: string; [key: string]: any }
     timerId?: string // pre 1.5.0
     clock?: Clock
-    events?: DynamicEvent
     type?: ItemType
     decoration?: boolean // ppt imported shapes (no selection directly)
 
@@ -207,7 +206,7 @@ export interface ShowGroup {
 export interface Timer {
     id?: string
     name: string
-    type: "counter" | "clock" | "event"
+    type: "counter" | "clock"
     viewType?: "time" | "line" | "circle"
     circleMask?: boolean
     showHours?: boolean // use just minutes or minutes and hours
@@ -215,7 +214,6 @@ export interface Timer {
     end?: number
     startDynamic?: string
     endDynamic?: string
-    event?: string
     time?: string
 
     warn?: boolean
@@ -242,17 +240,6 @@ export interface Clock {
     // custom:
     customFormat?: string
     offsetDays?: number
-}
-
-export interface DynamicEvent {
-    maxEvents: number
-    startDaysFromToday: number
-    justOneDay: boolean
-    enableStartDate: boolean
-    startDate?: string
-    startTime?: string
-    fromTime?: string
-    toTime?: string
 }
 
 export interface Scrolling {
@@ -656,7 +643,7 @@ export interface Tag {
 // types
 
 export type ID = string
-export type ItemType = "text" | "media" | "camera" | "timer" | "clock" | "button" | "events" | "weather" | "variable" | "web" | "qr_code" | "icon" | "slide_tracker" | "visualizer" | "captions" | "current_output" | "chart" | "table" // "shape" | "video"
+export type ItemType = "text" | "media" | "camera" | "timer" | "clock" | "button" | "weather" | "variable" | "web" | "qr_code" | "icon" | "slide_tracker" | "visualizer" | "captions" | "current_output" | "chart" | "table" // "shape" | "video"
 export type ShowType = "DIVIDER" | "show" | "image" | "video" | "audio" | "player" | "section" | "overlay" | "effect" | "pdf" | "ppt" | "screen" | "ndi" | "camera" | "folder" | "show_placeholder" // "private"
 export type TransitionType = "none" | "blur" | "fade" | "crossfade" | "fly" | "scale" | "slide" | "spin"
 export type MediaType = "media" | "video" | "image" | "effect" | "screen" | "ndi" | "omt" | "camera" | "player" | "audio"

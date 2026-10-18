@@ -1,10 +1,9 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte"
+    import { onDestroy } from "svelte"
     import { uid } from "uid"
     import type { Timer } from "../../../../types/Show"
-    import { events, timers, drawerTabsData } from "../../../stores"
+    import { timers, drawerTabsData } from "../../../stores"
     import { translateText } from "../../../utils/language"
-    import { getDateString } from "../../drawer/calendar/calendar"
     import { getTimer, getTimerDynamicValue } from "../../drawer/timers/timers"
     import T from "../../helpers/T.svelte"
     import { deselect, getSelected } from "../../helpers/select"
@@ -12,7 +11,6 @@
     import InputRow from "../../input/InputRow.svelte"
     import MaterialButton from "../../inputs/MaterialButton.svelte"
     import MaterialColorInput from "../../inputs/MaterialColorInput.svelte"
-    import MaterialDropdown from "../../inputs/MaterialDropdown.svelte"
     import MaterialMultiChoice from "../../inputs/MaterialMultiChoice.svelte"
     import MaterialNumberInput from "../../inputs/MaterialNumberInput.svelte"
     import MaterialTextInput from "../../inputs/MaterialTextInput.svelte"
@@ -24,7 +22,6 @@
         name: "",
         start: 300,
         end: 0,
-        event: "",
         time: "12:00"
     }
     $: if (currentTimer?.id) {
@@ -35,8 +32,7 @@
     let chosenType = ""
     $: timerTypes = [
         { id: "counter", name: translateText("timer.from_to"), translate: true, icon: "timer" },
-        { id: "clock", name: translateText("timer.to_time"), translate: true, icon: "clock" },
-        { id: "event", name: translateText("timer.to_event"), translate: true, icon: "calendar" }
+        { id: "clock", name: translateText("timer.to_time"), translate: true, icon: "clock" }
     ]
 
     // counter
@@ -61,40 +57,14 @@
 
     $: timeCountdownTime = secondsToTime(timeCountdown)
 
-    // event
-    let eventList: any[] = []
-    onMount(() => {
-        Object.entries($events).forEach(addEvent)
-        eventList = eventList.sort((a, b) => (new Date(a).getTime() > new Date(b).getTime() ? -1 : 1))
-        if (!timer.event) timer.event = eventList[0]?.id || ""
-    })
-
-    const addEvent = ([id, event]: any) => {
-        if (new Date(event.from).getTime() > today.getTime()) eventList.push({ value: id, label: `${getDateString(new Date(event.from))}: ${event.name}` })
-    }
-
     function updateTime(e: any) {
         timer.time = e.target?.value
     }
 
-    let eventTime: Date
-    let eventCountdown: any = { m: "00", s: "00" }
-    function updateEvent(e: any) {
-        timer.event = e.detail
-    }
-
-    $: if (timer.event && eventList.length) {
-        eventTime = new Date($events[timer.event].from)
-        eventCountdown = secondsToTime(eventTime.getTime() > today.getTime() ? (eventTime.getTime() - today.getTime()) / 1000 : 0)
-    }
-
     let timerNames: any = {
         counter: translateText("timer.counter"),
-        clock: translateText("timer.time"),
-        event: translateText("timer.event")
+        clock: translateText("timer.time")
     }
-    $: if (timer.event && eventList.length) updateEventName()
-    const updateEventName = () => (timerNames.event = eventList.find((a) => a.id === timer.event)?.name)
 
     function changeName(e: any) {
         let newName = e.detail
@@ -152,8 +122,7 @@
 
         if (timer.id) newTimer.id = timer.id
         if (timer.tags) newTimer.tags = timer.tags
-        if (timer.type === "event") newTimer.event = timer.event
-        else if (timer.type === "clock") newTimer.time = timer.time || "12:00"
+        if (timer.type === "clock") newTimer.time = timer.time || "12:00"
         else {
             newTimer.start = timer.start === undefined ? 300 : Number(timer.start)
             newTimer.end = timer.end === undefined ? 0 : Number(timer.end)
@@ -289,27 +258,6 @@
                 <!-- <Date value={to} on:change={(e) => (to = e.detail)} />x -->
                 <input type="time" step="2" value={timer.time} on:change={updateTime} />
             </div>
-        </div>
-    {:else if timer.type === "event"}
-        <div class="timerbox" style="width: 100%;margin: 20px 0;overflow: visible;">
-            <p style="border: none;min-height: unset;border-radius: 8px;" class="part">
-                <T id="timer.to_event" />
-
-                {#if Number(eventCountdown.m) > 0 || Number(eventCountdown.s) > 0}
-                    <span style="border: none;min-width: unset;flex: 0;font-weight: normal;display: flex;align-items: center;padding: 0px 10px;opacity: 0.6;font-size: 0.9em;">
-                        {#if Number(eventCountdown.d)}{eventCountdown.d},
-                        {/if}{#if Number(eventCountdown.h)}{eventCountdown.h}:{/if}{eventCountdown.m}:{eventCountdown.s}
-                    </span>
-                {/if}
-            </p>
-
-            {#if eventList.length}
-                <div>
-                    <MaterialDropdown label="timer.event" style="width: 100%;" options={eventList} value={timer.event || ""} on:change={updateEvent} />
-                </div>
-            {:else}
-                <div style="padding: 10px;display: flex;align-items: center;opacity: 0.5;"><T id="timer.no_events" /></div>
-            {/if}
         </div>
     {/if}
 
