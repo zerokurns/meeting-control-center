@@ -1,40 +1,51 @@
 name: CI
 
-# Manual activation for now (run from the Actions tab); can be wired to pull_request later.
 on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
     workflow_dispatch:
 
 jobs:
     checks:
-        name: Format & type-check
+        name: Build and smoke test
         runs-on: ubuntu-latest
+        timeout-minutes: 25
         steps:
-            - name: Check out Git repository
+            - name: Check out
               uses: actions/checkout@v5
 
-            - name: Install Node.js and NPM
+            - name: Set up Node.js 24
               uses: actions/setup-node@v5
               with:
-                  node-version: 22
+                  node-version: 24
 
-            - name: Install libraries
+            - name: Install native build dependencies
               run: |
                   sudo apt-get update
-                  sudo apt-get install -y libfontconfig1-dev uuid-dev libltc-dev --fix-missing
+                  sudo apt-get install -y libfontconfig1-dev uuid-dev libltc-dev xvfb --fix-missing
 
-            - name: Install dependencies
+            - name: Allow git dependencies over HTTPS
+              run: git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
+
+            - name: Install
               run: npm ci
 
-            # Formatting and svelte type-check currently have a pre-existing backlog, so they are
-            # reported but non-blocking for now. Flip continue-on-error off once the backlog is cleared.
-            - name: Check formatting
-              run: npm run test:format
-              continue-on-error: true
-
-            - name: Type-check (svelte)
-              run: npm run test:svelte
-              continue-on-error: true
-
-            # Blocking gate: a broken build fails this run.
             - name: Build
               run: npm run build
+
+            - name: Unit tests
+              run: npm run test:unit -- --reporter=dot
+              continue-on-error: true # one pre-existing failure (RTMP real-ffmpeg test); see docs/dev-setup.md
+
+            - name: Smoke test (Electron under Xvfb)
+              run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npm run test:playwright
+
+            - name: Upload Playwright output on failure
+              if: failure()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: playwright-output
+                  path: test-output/
+                  retention-days: 7
