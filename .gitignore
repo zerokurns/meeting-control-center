@@ -22,3 +22,5 @@ test-results/
 *.ipr
 *.iws
 .serena
+# Claude Code agent worktrees
+.claude/worktrees/
