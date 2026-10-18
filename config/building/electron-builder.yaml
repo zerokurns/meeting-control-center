@@ -35,7 +35,6 @@ win:
         - "!**/node_modules/openmediatransport/lib/{macos,linux-*,win-arm64}/**"
     asarUnpack:
         - "**/node_modules/macadam/**/*.node"
-        - "**/node_modules/libspotifyctl/**/*"
         - "**/node_modules/openmediatransport/**"
         - "**/node_modules/sherpa-onnx-*/**"
     azureSignOptions:
