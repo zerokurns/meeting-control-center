@@ -36,8 +36,6 @@ import {
     groups,
     livePrepare,
     media,
-    metronome,
-    metronomeTimer,
     ndiData,
     omtData,
     outputDisplay,
@@ -272,8 +270,6 @@ export const receiveOUTPUTasOUTPUT: any = {
     PLAYING_VIDEO_STATE: (a: any) => playingVideoState.set(a),
     WEBSITE_ACTION: (a: any) => websiteAction.set(a),
 
-    METRONOME: (a: any) => metronome.set(a),
-    METRONOME_TIMER: (a: any) => metronomeTimer.set(a),
 
     // dynamic values
     PLAYING_AUDIO: (a: any) => playingAudioPaths.set(a),

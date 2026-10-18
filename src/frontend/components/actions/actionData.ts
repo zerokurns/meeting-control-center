@@ -78,7 +78,6 @@ export const actionData = {
     toggle_icecast: { name: "actions.toggle_specific", replace: ["Icecast"], icon: "cloud", input: "toggle" },
     start_playlist: { common: true, name: "actions.start_playlist", icon: "playlist", input: "id", incompatible: ["playlist_next"] },
     playlist_next: { name: "actions.playlist_next", icon: "playlist", incompatible: ["start_playlist"] },
-    start_metronome: { name: "actions.start_metronome", icon: "metronome", input: "metronome" },
     start_audio_effect: { common: true, canAddMultiple: true, name: "actions.start_audio_effect", icon: "effect", input: "audio_effects" },
     start_microphone: { common: true, name: "actions.start_microphone", icon: "mic", input: "microphone" },
     stop_microphone: { common: true, name: "actions.stop_microphone", icon: "mic", input: "microphone", red: true },

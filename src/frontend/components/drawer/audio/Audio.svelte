@@ -24,7 +24,6 @@
     import Folder from "../media/Folder.svelte"
     import AudioEffect from "./AudioEffect.svelte"
     import AudioFile from "./AudioFile.svelte"
-    import Metronome from "./Metronome.svelte"
 
     export let active: string | null
     export let searchValue = ""
@@ -38,10 +37,10 @@
 
     $: playlist = active && $audioPlaylists[active]
 
-    $: isDefault = ["all", "favourites", "effects_library", "inputs", "metronome"].includes(active || "")
+    $: isDefault = ["all", "favourites", "effects_library", "inputs"].includes(active || "")
     $: rootPath = isDefault || playlist ? "" : active !== null ? $audioFolders[active]?.path || "" : ""
     $: path = isDefault || playlist ? "" : rootPath
-    $: name = active === "all" ? "category.all" : active === "favourites" ? "category.favourites" : active === "effects_library" ? "category.sound_effects" : rootPath === path ? (active !== "inputs" && active !== "metronome" && active !== null ? $audioFolders[active]?.name || "" : "") : splitPath(path).name
+    $: name = active === "all" ? "category.all" : active === "favourites" ? "category.favourites" : active === "effects_library" ? "category.sound_effects" : rootPath === path ? (active !== "inputs" && active !== null ? $audioFolders[active]?.name || "" : "") : splitPath(path).name
 
     // get list of files & folders
     let prevActive: null | string = null
@@ -76,7 +75,7 @@
 
             requestFiles(path)
         } else {
-            // inputs & metronome
+            // inputs
             prevActive = active
         }
     }
@@ -138,7 +137,7 @@
 
     let filteredFiles: FileFolder[] = []
     function filterFiles() {
-        if (active === "inputs" || active === "metronome") return
+        if (active === "inputs") return
 
         let localFilteredFiles: FileFolder[] = sortFilenames(filesList)
 
@@ -337,8 +336,6 @@
             {:else if inputsTab === "audio_streams"}
                 <AudioStreams />
             {/if}
-        {:else if active === "metronome"}
-            <Metronome />
         {:else if playlist && playlistSettings}
             <div class="settings">
                 <MaterialNumberInput label="settings.audio_crossfade (s)" value={playlist?.crossfade || 0} max={60} on:change={(e) => AudioPlaylist.update(active || "", "crossfade", e.detail)} sliderValues={{ max: 10, step: 0.5 }} showSlider />
@@ -390,7 +387,7 @@
     </div>
 </div>
 
-{#if active === "effects_library" || active === "metronome"}
+{#if active === "effects_library"}
     <!-- nothing -->
 {:else if active === "inputs"}
     {#if inputsTab === "audio_streams"}

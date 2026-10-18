@@ -8,7 +8,7 @@ import { clearAudio } from "../../audio/audioFading"
 import { AudioPlayer } from "../../audio/audioPlayer"
 import { AudioPlaylist } from "../../audio/audioPlaylist"
 import { dbToGain } from "../../audio/dBUtils"
-import { activeDrawerTab, activeEdit, activePage, activeProject, activeRecording, activeShow, activeTimers, audioChannelsData, audioPlaylists, audioRouting, draw, drawSettings, drawTool, folders, groupNumbers, groups, media, openScripture, outLocked, outputs, overlays, pdfImports, playingAudio, playingMetronome, projects, refreshEditSlide, selected, shows, showsCache, sortedShowsList, special, styles, timers, variables } from "../../stores"
+import { activeDrawerTab, activeEdit, activePage, activeProject, activeRecording, activeShow, activeTimers, audioChannelsData, audioPlaylists, audioRouting, draw, drawSettings, drawTool, folders, groupNumbers, groups, media, openScripture, outLocked, outputs, overlays, pdfImports, playingAudio, projects, refreshEditSlide, selected, shows, showsCache, sortedShowsList, special, styles, timers, variables } from "../../stores"
 import { newToast, triggerFunction } from "../../utils/common"
 import { send } from "../../utils/request"
 import { parseEngScriptureRefToNumbers, resolveScriptureReference } from "../drawer/bible/scripture"
@@ -683,7 +683,7 @@ export function setTemplate(templateId: string) {
 export function getClearedState() {
     const o = get(outputs)
 
-    const audio = !Object.keys(get(playingAudio)).length && !get(playingMetronome)
+    const audio = !Object.keys(get(playingAudio)).length
     const background = isOutCleared("background", o)
     const slide = isOutCleared("slide", o)
     const overlaysCleared = isOutCleared("overlays", o, true)

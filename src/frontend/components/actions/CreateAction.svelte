@@ -50,7 +50,6 @@
         // "change_volume",
         "start_audio_stream",
         "start_playlist",
-        "start_metronome",
         "id_start_timer",
         "start_slide_timers",
         "stop_timers",

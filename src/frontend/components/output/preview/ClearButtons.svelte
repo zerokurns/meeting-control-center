@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte"
     import { clearAudio } from "../../../audio/audioFading"
-    import { activeTimers, dictionary, isFadingOut, isTimelinePlaying, labelsDisabled, media, outLocked, outputCache, outputs, overlayTimers, playingAudio, playingMetronome, styles, timelineRecordingAction } from "../../../stores"
+    import { activeTimers, dictionary, isFadingOut, isTimelinePlaying, labelsDisabled, media, outLocked, outputCache, outputs, overlayTimers, playingAudio, styles, timelineRecordingAction } from "../../../stores"
     import { translateText } from "../../../utils/language"
     import { presentationControllersKeysDisabled } from "../../../utils/shortcuts"
     import Icon from "../../helpers/Icon.svelte"
@@ -14,8 +14,8 @@
     export let autoChange: any
     export let activeClear: any
 
-    $: audioCleared = !Object.keys($playingAudio).length && !$playingMetronome
-    $: audioClearedWithoutMics = !Object.values($playingAudio).filter((a) => !a.isMic).length && !$playingMetronome
+    $: audioCleared = !Object.keys($playingAudio).length
+    $: audioClearedWithoutMics = !Object.values($playingAudio).filter((a) => !a.isMic).length
     $: allCleared = isOutCleared(null, $outputs) && audioClearedWithoutMics
     $: if (allCleared) autoChange = true
 
@@ -75,7 +75,6 @@
     $: backgroundData = $media[outBackground.path || ""] || {}
 
     $: isScripture = outputContent?.id === "temp"
-    $: isMetronome = $playingMetronome && !Object.keys($playingAudio).length
     $: isTimer = !output.out?.transition && !Object.values($overlayTimers).find((a) => a.outputId === outputId) && Object.keys($activeTimers).length
 
     $: slideCleared = isOutCleared("slide", $outputs)
@@ -91,7 +90,7 @@
     // audio fade out
     let audioIcon = "audio"
     $: if ($isFadingOut) startAudioIcon()
-    else audioIcon = isMetronome ? "metronome" : "audio"
+    else audioIcon = "audio"
     function startAudioIcon() {
         audioIcon = "volume"
         setTimeout(() => {

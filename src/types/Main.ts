@@ -97,7 +97,6 @@ export type SelectIds =
     | "media"
     | "audio"
     | "audio_effect"
-    | "metronome"
     | "overlay"
     | "template"
     | "action"

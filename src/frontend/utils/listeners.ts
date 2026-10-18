@@ -32,8 +32,6 @@ import {
     groups,
     livePrepare,
     media,
-    metronome,
-    metronomeTimer,
     openedFolders,
     outputs,
     outputSlideCache,
@@ -352,15 +350,6 @@ export function storeSubscriber() {
 
     playingVideoState.subscribe((data) => {
         send(OUTPUT, ["PLAYING_VIDEO_STATE"], data)
-    })
-
-    metronome.subscribe((data) => {
-        send(OUTPUT, ["METRONOME"], data)
-        send(STAGE, ["METRONOME"], data)
-    })
-    metronomeTimer.subscribe((data) => {
-        send(OUTPUT, ["METRONOME_TIMER"], data)
-        send(STAGE, ["METRONOME_TIMER"], data)
     })
 
     timeFormat.subscribe((a) => {

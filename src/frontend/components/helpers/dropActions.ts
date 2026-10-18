@@ -1055,17 +1055,6 @@ const slideDrop = {
         history.newData = { key: "actions", data: actions, indexes: [drop.index] }
         return history
     },
-    metronome: ({ drag, drop }: Data, history: History) => {
-        if (drop.index === undefined) return
-        history.id = "SHOW_LAYOUT"
-
-        const data = drag.data[0]
-        const actions = createSlideAction("start_metronome", drop.index, data, true)
-        if (!actions) return
-
-        history.newData = { key: "actions", data: actions, indexes: [drop.index] }
-        return history
-    },
     global_timer: ({ drag, drop }: Data, history: History) => {
         // let data = drag.data
         // let center = drop.center

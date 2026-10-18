@@ -1,7 +1,7 @@
 export interface AudioRoutingItem {
     id: string
     name: string
-    type: string // "drawer_audio" | "mic" | "metronome" | "output_window" for inputs; "speaker" | "network" | "icecast" for outputs
+    type: string // "drawer_audio" | "mic" | "output_window" for inputs; "speaker" | "network" | "icecast" for outputs
     enabled?: boolean
     deviceId?: string
     channels?: number

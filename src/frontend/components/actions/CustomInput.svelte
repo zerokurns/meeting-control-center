@@ -9,7 +9,6 @@
     import { actions, activePopup, audioPlaylists, audioRouting, audioStreams, effects, effectsLibrary, groups, interactions, outputs, overlays, popupData, projects, scenes, shows, stageShows, styles, templates, timers, variables } from "../../stores"
     import { translateText } from "../../utils/language"
     import { obsGetScenes } from "../../utils/obsTalk"
-    import MetronomeInputs from "../drawer/audio/MetronomeInputs.svelte"
     import T from "../helpers/T.svelte"
     import { keysToID, sortByName } from "../helpers/array"
     import MaterialButton from "../inputs/MaterialButton.svelte"
@@ -32,8 +31,7 @@
 
     onMount(() => {
         // set default
-        if (inputId === "metronome" && !value) updateValue("", { tempo: 120, beats: 4 })
-        else if ((inputId === "index" || inputId === "disable_slide") && value?.index === undefined) updateValue("index", 0)
+        if ((inputId === "index" || inputId === "disable_slide") && value?.index === undefined) updateValue("index", 0)
         else if (inputId === "volume" && value?.volume === undefined) updateValue("volume", 1)
     })
 
@@ -192,8 +190,6 @@
 {:else if inputId === "midi"}
     <!-- deprecated -->
     <MidiValues value={value?.midi || {}} type="output" on:change={(e) => updateValue("midi", e)} />
-{:else if inputId === "metronome"}
-    <MetronomeInputs values={value || { tempo: 120, beats: 4 }} on:change={(e) => updateValue("", e)} action />
 {:else if inputId === "variable"}
     <VariableInputs {value} on:update={(e) => updateValue(e.detail?.key, e.detail?.value)} />
 {:else if inputId === "toggle_action"}

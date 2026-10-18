@@ -2,7 +2,6 @@
 
 import { get } from "svelte/store"
 import { customActionActivation } from "../components/actions/actions"
-import { stopMetronome } from "../components/drawer/audio/metronome"
 import { activePlaylist, audioPlaylists, isFadingOut, playingAudio, special } from "../stores"
 import { AudioPlayer } from "./audioPlayer"
 import { AudioPlaylist } from "./audioPlaylist"
@@ -22,9 +21,6 @@ let forceClear = false
 export function clearAudio(audioPath = "", options: AudioClearOptions = {}) {
     // turn off any playlist
     if (options.clearPlaylist && (!audioPath || AudioPlaylist.getPlayingKey() === audioPath || AudioPlaylist.getPlayingPath() === audioPath)) activePlaylist.set(null)
-
-    // stop playing metronome
-    if (!options.isPlayingNew && options.clearPlaylist !== false && !audioPath) stopMetronome()
 
     if (clearing.includes(audioPath)) {
         if (!options.commonClear) return

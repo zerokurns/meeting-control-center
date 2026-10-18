@@ -2,7 +2,7 @@
     import { onDestroy } from "svelte"
     import { AudioPlayer } from "../../../audio/audioPlayer"
     import { AudioPlaylist } from "../../../audio/audioPlaylist"
-    import { activeFocus, activePlaylist, activeShow, audioPlaylists, focusMode, metronome, outLocked, playingAudio, playingMetronome } from "../../../stores"
+    import { activeFocus, activePlaylist, activeShow, audioPlaylists, focusMode, outLocked, playingAudio } from "../../../stores"
     import { triggerClickOnEnterSpace } from "../../../utils/clickable"
     import { translateText } from "../../../utils/language"
     import Icon from "../../helpers/Icon.svelte"
@@ -144,8 +144,6 @@
             {/if}
         </div>
     {/if}
-{:else if $playingMetronome}
-    <p style="text-align: center;opacity: 0.9;padding: 4px;">{$metronome.tempo || 120} | {$metronome.beats || 4}</p>
 {/if}
 
 <style>

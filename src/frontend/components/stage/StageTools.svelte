@@ -45,12 +45,7 @@
             if (active === "item") active = "text"
         }
 
-        if (item?.type === "metronome") {
-            tabs.text.disabled = true
-            if (active === "text") active = "item"
-        } else {
-            tabs.text.disabled = !activeItemId
-        }
+        tabs.text.disabled = !activeItemId
         tabs.item.disabled = !activeItemId
 
         if (activeItemId && (active === "text" || active === "item")) {

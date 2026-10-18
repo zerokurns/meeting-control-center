@@ -2,7 +2,6 @@
     import { onDestroy, onMount } from "svelte"
     import type { Item } from "../../../types/Show"
     import { currentWindow, slidesOptions } from "../../stores"
-    import MetronomeVisualizer from "../drawer/audio/MetronomeVisualizer.svelte"
     import BMDStream from "../drawer/live/BMDStream.svelte"
     import Cam from "../drawer/live/Cam.svelte"
     import NDIStream from "../drawer/live/NDIStream.svelte"
@@ -137,8 +136,6 @@
     <Captions {item} />
 {:else if item.type === "icon"}
     <IconItem {item} {ratio} />
-{:else if item.type === "metronome"}
-    <MetronomeVisualizer isItem />
 {:else if item.type === "variable"}
     <!-- moved to textbox in 1.3.3 -->
     <Variable {item} style={variableStyleString} ref={{ ...ref, slideIndex }} hideText={edit ? false : (ref.type === "stage" && !!$currentWindow) || preview} {edit} />

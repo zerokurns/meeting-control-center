@@ -402,7 +402,6 @@ export class AudioAnalyser {
 
     static getInputNodeIds(id?: string, outputId?: string): string[] {
         if (!id) return ["drawer_audio"]
-        if (id === "metronome") return ["metronome"]
 
         const audioPlaying = get(playingAudio)[id]
         const videoPlaying = get(playingVideos).some((v) => v.path === id)

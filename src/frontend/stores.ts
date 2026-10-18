@@ -7,7 +7,7 @@ import { type Writable, writable } from "svelte/store"
 import type { ContentProviderId } from "../electron/contentProviders/base/types"
 import type { TimecodeMode } from "../electron/timecode/timecode"
 import type { AiFeatureStatus } from "../types/ai/Ai"
-import type { AudioChannelData, AudioStream, MetronomeSettings, Playlist } from "../types/Audio"
+import type { AudioChannelData, AudioStream, Playlist } from "../types/Audio"
 import type { AudioRoutingConfig } from "../types/AudioRouting"
 import type { Event } from "../types/Calendar"
 import type { Draw, DrawLine, DrawSettings, DrawTools } from "../types/Draw"
@@ -83,7 +83,6 @@ export const guideActive: Writable<boolean> = writable(false)
 export const runningActions: Writable<string[]> = writable([])
 export const scriptureMode: Writable<"grid" | "list"> = writable("list")
 export const providerConnections: Writable<{ [key in ContentProviderId]?: boolean }> = writable({})
-export const metronomeTimer: Writable<{ beat: number; timeToNext: number }> = writable({ beat: 0, timeToNext: 0 })
 export const mediaDownloads: Writable<Map<string, { progress: number; total: number; status: string; name?: string }>> = writable(new Map())
 export const rtmpStatus: Writable<{ [outputId: string]: RtmpStatus }> = writable({})
 export const icecastStatus: Writable<{ connected: boolean; connecting?: boolean; error?: string }> = writable({ connected: false })
@@ -123,7 +122,6 @@ export const playingAudioPaths: Writable<string[]> = writable([])
 export const playingVideos: Writable<VideoAudioData[]> = writable([])
 export const playingVideoState: Writable<{ [key: string]: PlayingVideoState }> = writable({})
 export const activePlaylist: Writable<any> = writable(null)
-export const playingMetronome: Writable<boolean> = writable(false)
 export const visualizerData: Writable<any> = writable(null)
 export const channelSidechainMultipliers: Writable<{ [channelId: string]: number }> = writable({})
 export const isFadingOut: Writable<any> = writable(false)
@@ -284,7 +282,6 @@ export const audioFolders: Writable<Categories> = writable({}) // {default}
 export const audioStreams: Writable<{ [key: string]: AudioStream }> = writable({}) // {}
 export const audioPlaylists: Writable<{ [key: string]: Playlist }> = writable({}) // {}
 export const audioChannelsData: Writable<{ [key: string]: AudioChannelData }> = writable({}) // {}
-export const metronome: Writable<MetronomeSettings> = writable({}) // {}
 export const audioRouting: Writable<AudioRoutingConfig | null> = writable(null) // {init}
 export const effectsLibrary: Writable<{ path: string; name: string }[]> = writable([]) // []
 export interface AudioEffectsConfig {

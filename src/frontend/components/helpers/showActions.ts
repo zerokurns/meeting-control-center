@@ -46,7 +46,6 @@ import {
     overlays,
     playerVideos,
     playingAudio,
-    playingMetronome,
     playingVideoState,
     projects,
     projectTemplates,
@@ -1127,7 +1126,7 @@ export function replaceDynamicValues(text: string, { showId, layoutId, slideInde
             const backgroundActive = !isOutCleared("background")
             const slideActive = !isOutCleared("slide")
             const overlaysActive = !isOutCleared("overlays")
-            const audioActive = Object.keys(get(playingAudio)).length || get(playingMetronome)
+            const audioActive = Object.keys(get(playingAudio)).length
             return [backgroundActive ? "background" : "", slideActive ? "slide" : "", overlaysActive ? "overlays" : "", audioActive ? "audio" : ""].filter(Boolean).join(", ")
         } else if (dynamicId === "active_styles") {
             const activeOutputIds = getAllNormalOutputs().map((a) => a.id)

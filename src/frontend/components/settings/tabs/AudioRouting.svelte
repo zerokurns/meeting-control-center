@@ -62,7 +62,6 @@
         { id: "drawer_audio", name: translateText("tabs.audio"), type: "drawer_audio" },
         { id: "playlists_default", name: translateText("audio.playlists"), type: "playlist" },
         { id: "mic_default", name: translateText("live.microphones"), type: "mic" },
-        { id: "metronome", name: translateText("audio.metronome"), type: "metronome" },
         { id: "desktop_default", name: translateText("audio.desktop_audio"), type: "desktop_audio" },
         { id: "output_window", name: `${translateText("settings.display_settings")} <span style="font-size: 0.75em;opacity: 0.6;">(${translateText("category.videos")})</span>`, type: "output_window" }
     ]

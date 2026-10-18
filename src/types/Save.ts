@@ -81,7 +81,6 @@ export type SaveListSettings =
     | "cloudSyncData"
     | "driveData"
     | "calendarAddShow"
-    | "metronome"
     | "audioEffects"
     | "audioEffectPresets"
     | "effectsLibrary"

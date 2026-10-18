@@ -2,9 +2,8 @@ import { get } from "svelte/store"
 import type { OutSlide } from "../../../types/Show"
 import { clearAudio } from "../../audio/audioFading"
 import { AudioPlayer } from "../../audio/audioPlayer"
-import { activeEdit, activePage, activePopup, activeStage, contextActive, customMessageCredits, drawSettings, focusMode, outLocked, outputCache, outputs, outputSlideCache, overlays, overlayTimers, playingAudio, playingMetronome, selected, slideTimers, topContextActive } from "../../stores"
+import { activeEdit, activePage, activePopup, activeStage, contextActive, customMessageCredits, drawSettings, focusMode, outLocked, outputCache, outputs, outputSlideCache, overlays, overlayTimers, playingAudio, selected, slideTimers, topContextActive } from "../../stores"
 import { customActionActivation } from "../actions/actions"
-import { startMetronome } from "../drawer/audio/metronome"
 import { clone } from "../helpers/array"
 import { clearOverlayTimer, getAllActiveOutputIds, getAllActiveOutputs, isOutCleared, setOutput } from "../helpers/output"
 import { _show } from "../helpers/shows"
@@ -17,7 +16,7 @@ export function clearAll(button = false) {
     // reset slide cache on Escape
     outputSlideCache.set({})
 
-    const audioCleared = !Object.keys(get(playingAudio)).length && !get(playingMetronome)
+    const audioCleared = !Object.keys(get(playingAudio)).length
     const allCleared = isOutCleared(null) && audioCleared
     if (allCleared) return
 
@@ -50,7 +49,6 @@ function storeCache() {
             const playing = get(playingAudio)[path]
             return { path, metadata: { name: playing.name }, options: { startAt: playing.audio?.currentTime || 0 } }
         })
-        a.playingMetronome = get(playingMetronome)
 
         return a
     })
@@ -78,7 +76,6 @@ export function restoreOutput() {
             AudioPlayer.start(data.path, data.metadata, data.options)
         })
     }
-    if (get(outputCache).playingMetronome) startMetronome()
 
     outputCache.set(null)
 }

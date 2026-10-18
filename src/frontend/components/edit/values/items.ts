@@ -1,7 +1,7 @@
 import type { ItemType } from "../../../../types/Show"
 
 export interface AddItem {
-    id: ItemType | "icon" | "slide_text" | "current_output" | "metronome" | "more" | "dynamic_values"
+    id: ItemType | "icon" | "slide_text" | "current_output" | "more" | "dynamic_values"
     icon: string
     label: string
     title?: string
@@ -101,7 +101,6 @@ export const stageItems: AddItemGroup[] = [
                     { id: "web", icon: "web", label: "items.web" },
                     { id: "qr_code", icon: "qr_code", label: "items.qr_code" },
                     { id: "slide_tracker", icon: "percentage", label: "items.slide_tracker" },
-                    { id: "metronome", icon: "metronome", label: "items.metronome" },
                     { id: "visualizer", icon: "visualizer", label: "items.visualizer" }
                 ]
             }

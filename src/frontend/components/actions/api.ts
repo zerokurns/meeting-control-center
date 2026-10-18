@@ -15,7 +15,6 @@ import { save } from "../../utils/save"
 import { togglePlayingMedia } from "../../utils/shortcuts"
 import { contentProviderSync } from "../../utils/startup"
 import { updateTransition } from "../../utils/transitions"
-import { startMetronome } from "../drawer/audio/metronome"
 import { getInteraction, startInteraction, stopInteraction } from "../drawer/pages/interactions"
 import { pauseAllTimers } from "../drawer/timers/timers"
 import { getSlideThumbnail, getThumbnail } from "../helpers/media"
@@ -176,11 +175,6 @@ export interface API_midi extends MidiValues {
     type: "noteon" | "noteoff" | "control"
     defaultValues?: boolean // only used by actions
 }
-export type API_metronome = {
-    metadataBPM?: boolean // only used by actions
-    tempo?: number
-    beats?: number
-}
 export type API_rest_command = {
     url: string
     method: string
@@ -313,7 +307,6 @@ export const API_ACTIONS = {
     start_playlist: (data: API_id) => AudioPlaylist.start(data.id),
     name_start_playlist: (data: API_strval) => startPlaylistByName(data.value), // BC
     playlist_next: () => AudioPlaylist.next(), // BC
-    start_metronome: (data: API_metronome) => startMetronome(data),
     start_audio_effect: (data: API_media) => playAudio(data),
     start_microphone: (data: API_microphone) => AudioMicrophone.start(data.id, { name: data.name || "" }),
     stop_microphone: (data: API_microphone) => AudioMicrophone.stop(data.id),
