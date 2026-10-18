@@ -6,7 +6,7 @@ import { checkStartupActions } from "../components/actions/actions"
 import { getTimeFromInterval } from "../components/helpers/time"
 import { requestMain, requestMainMultiple, sendMain, sendMainMultiple } from "../IPC/main"
 import { cameraManager } from "../media/cameraManager"
-import { activePopup, activeProfile, cachePath, currentWindow, dataPath, deviceId, isDev, loaded, loadedState, os, profiles, providerConnections, shows, special, version, windowState } from "../stores"
+import { activePopup, activeProfile, cachePath, currentWindow, dataPath, isDev, loaded, loadedState, os, profiles, providerConnections, shows, special, version, windowState } from "../stores"
 import { wait, waitUntilValueIsDefined } from "./common"
 import { getDefaultElements } from "./createData"
 import { setLanguage } from "./language"
@@ -160,7 +160,6 @@ function getMainData() {
         [Main.IS_DEV]: (a) => isDev.set(a || false),
         [Main.GET_OS]: (a) => (a ? os.set(a) : null),
         [Main.GET_CACHE_PATH]: (a) => cachePath.set(a || ""),
-        [Main.DEVICE_ID]: (a) => deviceId.set(a || ""),
         [Main.MAXIMIZED]: (a) => windowState.set({ ...get(windowState), maximized: a ?? false }),
         [Main.DATA_PATH]: (a) => (a ? dataPath.set(a) : null),
         // get connected providers, even before the first sync of the session
