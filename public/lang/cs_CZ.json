@@ -49,18 +49,9 @@
         "cropping_tip": "Přesně přesunout obsah okna oříznutím hran."
     },
     "about": {
-        "check_updates": "Zkontrolovat aktualizace",
         "made": "V Norsku vytvořil",
-        "more": "Zkuste další z našich aplikací na",
         "report": "Pro nahlášení problému nebo zažádání nové funkce, jděte na",
-        "translate": "Chcete pomoci s překladem? Jděte na",
-        "mail": "Kontaktovat emailem",
-        "support": "Pokud jsi vděčný za tento projekt, zvaž prosím podpořit",
-        "assets": "Využité prostředky",
-        "new_update": "Nové aktualizace jsou k dispozici",
-        "download_latest": "Stáhnout nejnovější verzi",
-        "download_auto": "Automatická aktualizace je zapnutá, vyčkejte prosím pár minut pro stažení a instalaci. Poté restartujte aplikaci.",
-        "changes": "Co je nového?"
+        "assets": "Využité prostředky"
     },
     "tooltip": {
         "project": "Vytvořte nový projekt, ve kterém můžete přidávat a upravovat prezentace",
@@ -604,8 +595,7 @@
         "template": "Nová šablona",
         "action": "Nová akce",
         "effect": "Nový efekt",
-        "scene": "Nová scéna",
-        "interaction": "Nová interakce"
+        "scene": "Nová scéna"
     },
     "show": {
         "name": "Název",
@@ -909,7 +899,6 @@
         "all_shows": "Všechny prezentace",
         "all_projects": "Všechny projekty",
         "project": "Projekt",
-        "data_link": "Kopírovat Data URL",
         "option_type": "Co si přejete exportovat?",
         "option_format": "Jaký formát si přejete?",
         "include_media": "Zahrnout soubory médií",
@@ -1621,35 +1610,7 @@
         "hollow": "Dutý"
     },
     "interaction": {
-        "add_input": "Přidat vstup",
-        "add_option": "Přidat možnost",
-        "multi_choice": "Volba více možností",
-        "heading": "Nadpis",
-        "option": "Možnost",
-        "question": "Otázka",
-        "answer": "Odpověď",
-        "mark_as_correct": "Označit za správné",
-        "mark_as_incorrect": "Označit za nesprávné",
-        "reveal_answer": "Odhalit odpověď",
-        "allow_multiple": "Polovit více odpovědí",
-        "optional": "Volitelné",
-        "min": "Min",
-        "max": "Max",
-        "input": "Vstup",
-        "buttons": "Tlačítka",
-        "checkboxes": "Zaškrtávací políčka",
-        "radio_buttons": "Výběr z možnosti",
-        "dropdown": "Rozbalovací",
-        "slider": "Posuvník",
-        "range": "Rozsah",
-        "kick": "Kick",
-        "generate_slide": "Generovat snímek",
-        "require_name": "Vyžádat jména",
-        "random_names": "Náhodná jména",
-        "all_at_once": "Všechny vstupy naráz",
-        "max_time": "Maximální čas na vstup",
-        "score_system": "Bodovací systém",
-        "points": "Body"
+        "generate_slide": "Generovat snímek"
     },
     "info": {
         "created": "Vytvořeno",

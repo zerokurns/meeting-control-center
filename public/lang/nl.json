@@ -49,18 +49,9 @@
         "cropping_tip": "Pas de positie van de vensterinhoud nauwkeurig aan door de zijkanten bij te snijden"
     },
     "about": {
-        "check_updates": "Zoek naar updates",
         "made": "Gemaakt in Noorwegen door",
-        "more": "Bekijk meer van onze toepassingen op",
         "report": "Om een ​​probleem te melden of een functie aan te vragen, ga naar",
-        "translate": "Wil je helpen vertalen? Ga dan naar",
-        "mail": "Contact via e-mail",
-        "support": "Als u dankbaar bent voor dit project, overweeg dan om het te steunen",
-        "assets": "Gebruikte assets",
-        "new_update": "Nieuwe update beschikbaar",
-        "download_latest": "Download de nieuwste versie",
-        "download_auto": "U hebt automatische update ingeschakeld, wacht alstublieft een paar minuten tot de update wordt gedownload en automatisch wordt geïnstalleerd en start de toepassing opnieuw op.",
-        "changes": "Wat is nieuw"
+        "assets": "Gebruikte assets"
     },
     "tooltip": {
         "project": "Maak een nieuw project aan waar je shows kunt toevoegen en regelen.",
@@ -604,8 +595,7 @@
         "template": "Nieuw sjabloon",
         "action": "Nieuwe actie",
         "effect": "Nieuw effect",
-        "scene": "Nieuwe scène",
-        "interaction": "Nieuwe interactie"
+        "scene": "Nieuwe scène"
     },
     "show": {
         "name": "Naam",
@@ -909,7 +899,6 @@
         "all_shows": "Alle shows",
         "all_projects": "Alle projecten",
         "project": "Project",
-        "data_link": "Gegevens-URL kopiëren",
         "option_type": "Wat wil je exporteren?",
         "option_format": "Welk formaat wil je?",
         "include_media": "Inclusief mediabestanden",
@@ -1621,35 +1610,7 @@
         "hollow": "Hol"
     },
     "interaction": {
-        "add_input": "Invoer toevoegen",
-        "add_option": "Optie toevoegen",
-        "multi_choice": "Meervoudige keuze",
-        "heading": "Heading",
-        "option": "Optie",
-        "question": "Vraag",
-        "answer": "Antwoord",
-        "mark_as_correct": "Markeren als correct",
-        "mark_as_incorrect": "Markeren als onjuist",
-        "reveal_answer": "Antwoord onthullen",
-        "allow_multiple": "Meerdere antwoorden toestaan",
-        "optional": "Optioneel",
-        "min": "Min",
-        "max": "Max",
-        "input": "Input",
-        "buttons": "Knoppen",
-        "checkboxes": "Selectievakjes",
-        "radio_buttons": "Radio knoppen",
-        "dropdown": "Dropdown",
-        "slider": "Schuifregelaar",
-        "range": "Bereik",
-        "kick": "Kick",
-        "generate_slide": "Genereer dia",
-        "require_name": "Naam aanvragen",
-        "random_names": "Willekeurige namen",
-        "all_at_once": "Alle inputs tegelijk",
-        "max_time": "Maximale tijd per input",
-        "score_system": "Score systeem",
-        "points": "Punten"
+        "generate_slide": "Genereer dia"
     },
     "info": {
         "created": "Gemaakt",

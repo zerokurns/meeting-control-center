@@ -49,18 +49,9 @@
         "cropping_tip": "Kenarları kırparak pencere içeriğinin konumunu hassas bir şekilde ayarlayın"
     },
     "about": {
-        "check_updates": "Güncellemeleri ara",
         "made": "Norveç’te üretilmiştir, üretici:",
-        "more": "Lütfen daha fazla uygulamamıza göz atın",
         "report": "Bir sorunu bildirmek veya bir özellik talep etmek için şu adrese gidin",
-        "translate": "Çeviriye yardım etmek ister misiniz? Lütfen şu adrese gidin",
-        "mail": "E-posta yoluyla iletişim",
-        "support": "Bu proje için minnettarsanız, lütfen desteklemeyi düşünün",
-        "assets": "Kullanılan varlıklar",
-        "new_update": "Yeni güncelleme mevcut",
-        "download_latest": "En son sürümü indirin",
-        "download_auto": "Otomatik güncelleme özelliği etkinleştirilmiştir. Güncellemenin otomatik olarak indirilip yüklenmesi için lütfen birkaç dakika bekleyin, ardından uygulamayı yeniden başlatın.",
-        "changes": "Neler yeni"
+        "assets": "Kullanılan varlıklar"
     },
     "tooltip": {
         "project": "Gösteri ekleyebileceğiniz ve düzenleyebileceğiniz yeni bir proje oluşturun.",
@@ -604,8 +595,7 @@
         "template": "Yeni şablon",
         "action": "Yeni aksiyon",
         "effect": "Yeni efekt",
-        "scene": "Yeni sahne",
-        "interaction": "Yeni etkileşim"
+        "scene": "Yeni sahne"
     },
     "show": {
         "name": "İsim",
@@ -909,7 +899,6 @@
         "all_shows": "Tüm gösteriler",
         "all_projects": "Tüm projeler",
         "project": "Proje",
-        "data_link": "Veri URL'sini Kopyala",
         "option_type": "Ne ihraç etmek istersiniz?",
         "option_format": "Hangi formatı istersiniz?",
         "include_media": "Medya dosyalarını ekle",
@@ -1621,35 +1610,7 @@
         "hollow": "İçi boş"
     },
     "interaction": {
-        "add_input": "Giriş ekle",
-        "add_option": "Seçenek ekle",
-        "multi_choice": "Çoklu seçmeli",
-        "heading": "Başlık",
-        "option": "Seçenek",
-        "question": "Soru",
-        "answer": "Cevap",
-        "mark_as_correct": "Doğru olarak işaretle",
-        "mark_as_incorrect": "Hatalı olarak işaretle",
-        "reveal_answer": "Cevabı göster",
-        "allow_multiple": "Birden fazla yanıta izin ver",
-        "optional": "İsteğe bağlı",
-        "min": "Min",
-        "max": "Max",
-        "input": "Giriş",
-        "buttons": "Düğmeler",
-        "checkboxes": "Onay kutuları",
-        "radio_buttons": "Radyo düğmeleri",
-        "dropdown": "Açılır menü",
-        "slider": "Kaydırıcı",
-        "range": "Menzil",
-        "kick": "Tekme",
-        "generate_slide": "Slayt oluştur",
-        "require_name": "İstek adları",
-        "random_names": "Rastgele isimler",
-        "all_at_once": "Tüm girdiler aynı anda",
-        "max_time": "Girdi başına maksimum süre",
-        "score_system": "Puanlama sistemi",
-        "points": "Puanlar"
+        "generate_slide": "Slayt oluştur"
     },
     "info": {
         "created": "Oluşturuldu",

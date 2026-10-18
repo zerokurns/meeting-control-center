@@ -46,18 +46,9 @@
         "cropping_tip": "Zuschneiden, um die Position des Fensterinhalts anzupassen"
     },
     "about": {
-        "check_updates": "Auf Updates prüfen",
         "made": "Erstellt in Norwegen von",
-        "more": "Schau dir auch unsere anderen Programme an ",
         "report": "Um ein Problem zu melden oder eine neue Funktion vorzuschlagen, gehe zu",
-        "translate": "Möchtest du beim Übersetzen helfen? Gehe zu",
-        "mail": "Kontakt per E-Mail",
-        "support": "Wenn du für dieses Projekt dankbar bist, erwäge es zu unterstützen",
-        "assets": "Verwendete Erweiterungen",
-        "new_update": "Neues Update verfügbar",
-        "download_latest": "aktuellste Version herunterladen",
-        "download_auto": "Du hast automatische Updates aktiviert. Warte ein paar Minuten, bis das Update automatisch heruntergeladen und installiert wurde. Starte dann das Programm neu.",
-        "changes": "Was ist neu"
+        "assets": "Verwendete Erweiterungen"
     },
     "tooltip": {
         "project": "Erstelle ein neues Projekt, in das du Shows hinzufügen und anordnen kannst.",

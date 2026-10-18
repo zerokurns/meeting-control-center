@@ -47,18 +47,9 @@
         "cropping_tip": "Ajuste ligeiramente a posição do conteúdo da janela recortando as margens."
     },
     "about": {
-        "check_updates": "Procurar atualizações",
         "made": "Feito na Noruega por",
-        "more": "Veja mais das nossas aplicações em",
         "report": "Para reportar um problema ou solicitar uma funcionalidade, vá a...",
-        "translate": "Quer ajudar a traduzir? Clique em",
-        "mail": "Contacto via email",
-        "support": "Se estás grato pelo projeto, por favor considera apoiá-lo",
-        "assets": "Recursos utilizados",
-        "new_update": "Nova atualização disponível",
-        "download_latest": "Transferir a última versão",
-        "download_auto": "Tem a atualização automática ativada, por favor aguarde alguns minutos para que a atualização seja transferida e instalada automaticamente e depois reinicie a aplicação.",
-        "changes": "Novidades"
+        "assets": "Recursos utilizados"
     },
     "tooltip": {
         "project": "Cria um novo projeto onde pode adicionar e organizar Shows.",
@@ -579,8 +570,7 @@
         "overlay": "Nova sobreposição",
         "template": "Novo template",
         "action": "Nova ação",
-        "effect": "Novo efeito",
-        "interaction": "Nova interação"
+        "effect": "Novo efeito"
     },
     "show": {
         "name": "Nome",
@@ -869,7 +859,6 @@
         "all_shows": "Todos os shows",
         "all_projects": "Todos os projetos",
         "project": "Projeto",
-        "data_link": "Copiar URL de dados",
         "option_type": "O que gostaria de exportar?",
         "option_format": "Qual o formato que prefere?",
         "include_media": "Incluir ficheiros multimédia",
@@ -1545,34 +1534,7 @@
         "hollow": "Vazio"
     },
     "interaction": {
-        "add_input": "Adicionar entrada",
-        "add_option": "Adicionar opção",
-        "multi_choice": "Escolha múltipla",
-        "heading": "Cabeçalho",
-        "option": "Opção",
-        "question": "Pergunta",
-        "answer": "Resposta",
-        "mark_as_correct": "Marcar como correta",
-        "mark_as_incorrect": "Marcar como incorreta",
-        "reveal_answer": "Revelar resposta",
-        "allow_multiple": "Permitir múltiplas respostas",
-        "optional": "Opcional",
-        "min": "Min",
-        "max": "Max",
-        "input": "Entrada",
-        "buttons": "Botões",
-        "checkboxes": "Caixa de seleção",
-        "radio_buttons": "Botões de rádio",
-        "dropdown": "Dropdown",
-        "slider": "Slider",
-        "range": "Intervalo",
-        "kick": "Kick",
-        "generate_slide": "Gerar slide",
-        "require_name": "Pedir nomes",
-        "all_at_once": "Todas as entradas em simultâneo",
-        "max_time": "Tempo máximo por entrada",
-        "score_system": "Sistema de pontos",
-        "points": "Pontos"
+        "generate_slide": "Gerar slide"
     },
     "info": {
         "created": "Criado",

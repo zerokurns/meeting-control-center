@@ -44,17 +44,10 @@
         "cropping_tip": "Derinkite lango turinio poziciją apkarpydami šonus"
     },
     "about": {
-        "check_updates": "Tikrinti, ar yra atnaujinimų",
         "made": "Sukurta Norvegijoje, sukūrė",
-        "more": "Pasižiūrėkite daugiau mūsų programų, perėję į",
         "report": "Norėdami pranešti apie klaidą ar pateikti pasiūlymą, eikite į",
-        "translate": "Norite padėti versti? Pereikite į",
-        "mail": "Contact via email",
-        "support": "Jei esate dėkingi už šį projektą, apsvarstykite galimybę jį paremti",
         "assets": "Naudotos pagalbinės priemonės",
-        "new_update": "Yra prieinamas naujas atnaujinimas",
-        "download": "Norėdami atnaujinti programą paleiskite ją iš naujo arba apsilankykite freeshow.app, kad atsisiųstumėte rankiniu būdu",
-        "changes": "Kas naujo"
+        "download": "Norėdami atnaujinti programą paleiskite ją iš naujo arba apsilankykite freeshow.app, kad atsisiųstumėte rankiniu būdu"
     },
     "tooltip": {
         "project": "Create a new project where you can add and arrange shows.",

@@ -49,18 +49,9 @@
         "cropping_tip": "Finjuster plasseringen til innholdet i vinduet ved å beskjære sidene"
     },
     "about": {
-        "check_updates": "Se etter oppdateringer",
         "made": "Laget i Norge av",
-        "more": "Sjekk ut flere av våre apper på",
         "report": "For å rapportere en feil eller foreslå en funksjon, gå til",
-        "translate": "Vil du hjelpe med å oversette? Gå til",
-        "mail": "Kontakt via e-post",
-        "support": "Hvis du er takknemlig for dette prosjektet, vurder å støtte det",
-        "assets": "Ressurser brukt",
-        "new_update": "Ny oppdatering tilgjengelig",
-        "download_latest": "Last ned nyeste versjon",
-        "download_auto": "Du har auto-oppdatering aktivert, vennligst vent noen minutter slik at oppdateringen kan lastes ned og installeres automatisk, så kan du starte på nytt.",
-        "changes": "Hva er nytt"
+        "assets": "Ressurser brukt"
     },
     "tooltip": {
         "project": "Opprett ett nytt prosjekt hvor du kan legge til og organisere show.",
@@ -604,8 +595,7 @@
         "template": "Ny mal",
         "action": "Ny handling",
         "effect": "Ny effekt",
-        "scene": "Ny scene",
-        "interaction": "Ny samhandling"
+        "scene": "Ny scene"
     },
     "show": {
         "name": "Navn",
@@ -909,7 +899,6 @@
         "all_shows": "Alle show",
         "all_projects": "Alle prosjekter",
         "project": "Prosjekt",
-        "data_link": "Kopiér Data-URL",
         "option_type": "Hva vil du eksportere?",
         "option_format": "Hvilket format vil du ha?",
         "include_media": "Inkluder mediefiler",
@@ -1621,35 +1610,7 @@
         "hollow": "Hul"
     },
     "interaction": {
-        "add_input": "Legg til inndata",
-        "add_option": "Legg til alternativ",
-        "multi_choice": "Flervalg",
-        "heading": "Overskrift",
-        "option": "Alternativ",
-        "question": "Spørsmål",
-        "answer": "Svar",
-        "mark_as_correct": "Merk som riktig",
-        "mark_as_incorrect": "Merk som feil",
-        "reveal_answer": "Vis svar",
-        "allow_multiple": "Tillat flere svar",
-        "optional": "Valgfritt",
-        "min": "Min",
-        "max": "Maks",
-        "input": "Inndata",
-        "buttons": "Knapper",
-        "checkboxes": "Avmerkingsbokser",
-        "radio_buttons": "Radioknapper",
-        "dropdown": "Nedtrekksmeny",
-        "slider": "Glidebryter",
-        "range": "Spekter",
-        "kick": "Spark",
-        "generate_slide": "Generer lysbilde",
-        "require_name": "Be om navn",
-        "random_names": "Tilfeldige navn",
-        "all_at_once": "All inndata samtidig",
-        "max_time": "Maks tid per inndata",
-        "score_system": "Poengsystem",
-        "points": "Poeng"
+        "generate_slide": "Generer lysbilde"
     },
     "info": {
         "created": "Opprettet",

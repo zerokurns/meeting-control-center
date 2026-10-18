@@ -46,18 +46,9 @@
         "cropping_tip": "Finjustera skärmens innehållsposition genom att beskära sidorna"
     },
     "about": {
-        "check_updates": "Sök efter uppdateringar",
         "made": "Skapad i Norge av",
-        "more": "Kolla in våra andra appar här",
         "report": "För att rapportera ett problem eller ifall du har några idéer gå till",
-        "translate": "Vill du hjälpa till med översättningen? Gå vidare här",
-        "mail": "Kontakta via e-post",
-        "support": "Tycker du om det här projektet, överväg gärna att bidra till det",
-        "assets": "Använda resurser",
-        "new_update": "Ny uppdatering tillgänglig",
-        "download_latest": "Ladda ner den senaste versionen",
-        "download_auto": "Du har autouppdatering aktiverat, vänta ett par minuter för att uppdateringen ska laddas ner och installeras automatiskt, starta sedan om applikationen.",
-        "changes": "Vad är nytt"
+        "assets": "Använda resurser"
     },
     "tooltip": {
         "project": "Skapa ett projekt där du kan lägga till och arrangera shower",

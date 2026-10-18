@@ -49,18 +49,9 @@
         "cropping_tip": "Fine adjust the window content position by cropping the sides"
     },
     "about": {
-        "check_updates": "Look for updates",
         "made": "Made in Norway by",
-        "more": "Please check out more of our applications at",
         "report": "To report an issue or request a feature, go to",
-        "translate": "Want to help translate? Please head over to",
-        "mail": "Contact via email",
-        "support": "If you are grateful for this project, please consider supporting it",
-        "assets": "Assets used",
-        "new_update": "New update available",
-        "download_latest": "Download the latest version",
-        "download_auto": "You have auto update enabled, please wait a few minutes for the update to be downloaded and installed automatically, then restart the application.",
-        "changes": "What's new"
+        "assets": "Assets used"
     },
     "tooltip": {
         "project": "Create a new project where you can add and arrange shows.",
@@ -606,8 +597,7 @@
         "template": "New template",
         "action": "New action",
         "effect": "New effect",
-        "scene": "New scene",
-        "interaction": "New interaction"
+        "scene": "New scene"
     },
     "show": {
         "name": "Name",
@@ -911,7 +901,6 @@
         "all_shows": "All shows",
         "all_projects": "All projects",
         "project": "Project",
-        "data_link": "Copy Data URL",
         "option_type": "What would you like to export?",
         "option_format": "What format would you like?",
         "include_media": "Include media files",
@@ -1623,35 +1612,7 @@
         "hollow": "Hollow"
     },
     "interaction": {
-        "add_input": "Add input",
-        "add_option": "Add option",
-        "multi_choice": "Multiple choice",
-        "heading": "Heading",
-        "option": "Option",
-        "question": "Question",
-        "answer": "Answer",
-        "mark_as_correct": "Mark as correct",
-        "mark_as_incorrect": "Mark as incorrect",
-        "reveal_answer": "Reveal answer",
-        "allow_multiple": "Allow multiple answers",
-        "optional": "Optional",
-        "min": "Min",
-        "max": "Max",
-        "input": "Input",
-        "buttons": "Buttons",
-        "checkboxes": "Checkboxes",
-        "radio_buttons": "Radio buttons",
-        "dropdown": "Dropdown",
-        "slider": "Slider",
-        "range": "Range",
-        "kick": "Kick",
-        "generate_slide": "Generate slide",
-        "require_name": "Request names",
-        "random_names": "Random names",
-        "all_at_once": "All inputs at once",
-        "max_time": "Max time per input",
-        "score_system": "Score system",
-        "points": "Points"
+        "generate_slide": "Generate slide"
     },
     "info": {
         "created": "Created",
